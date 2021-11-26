@@ -1,7 +1,7 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../../types/blueprint'
-import { Control, ControlNode } from '../../types/control'
-import { addNode, findNode } from './blueprint'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
+import { Control, ControlNode } from 'types/control'
+import { addNode } from './blueprint'
 import { resolveImplicitTypedValue } from './value'
 
 /**
@@ -21,18 +21,6 @@ export const defaultControlNode: ControlNode = {
   enumStrict: true,
   enabled: true,
   writable: true,
-}
-
-/**
- * Find a control node by the given node id.
- * @param state Blueprint state
- * @param id Node id
- * @throws If the blueprint has no node with the given id
- * @throws If the node type does not match the expected type
- * @returns Control node
- */
-export const findControlNode = (state: BlueprintState, id: BlueprintNodeId) => {
-  return findNode(state, id, BlueprintNodeType.Control) as ControlNode
 }
 
 /**

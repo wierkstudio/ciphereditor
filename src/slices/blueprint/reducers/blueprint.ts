@@ -1,30 +1,11 @@
 
+import { getNode } from '../selectors/blueprint'
 import {
   BlueprintNode,
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from '../../types/blueprint'
-
-/**
- * Find a node by the given node id.
- * @param state Blueprint state
- * @param id Node id
- * @param expectedType Expected node type
- * @throws If the blueprint has no node with the given id
- * @throws If the node type does not match the expected type
- * @returns Node object
- */
-export const findNode = (state: BlueprintState, id: BlueprintNodeId, expectedType?: BlueprintNodeType) => {
-  const node = state.nodes[id]
-  if (node === undefined) {
-    throw new Error(`Node id ${id} is not part of the blueprint`)
-  }
-  if (expectedType !== undefined && node.type !== expectedType) {
-    throw new Error(`Expected node type '${expectedType}' but found '${node.type}'`)
-  }
-  return state.nodes[id]
-}
+} from 'types/blueprint'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -59,14 +40,14 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
     }
 
     // Add previous root node as a child to the new root node
-    const previousRootNode = findNode(state, state.rootProgramId)
+    const previousRootNode = getNode(state, state.rootProgramId)
     childNode.childIds.push(previousRootNode.id)
     previousRootNode.parentId = childNode.id
     state.rootProgramId = childNode.id
   }
 
   // Verify that the child node can be added to this parent node
-  const parentNode = findNode(state, parentId)
+  const parentNode = getNode(state, parentId)
   const parentType = parentNode.type
   if (parentType === BlueprintNodeType.Program ||
       (parentType === BlueprintNodeType.Operation &&
@@ -84,7 +65,7 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
  * @param nodeId Id of node to be removed
  */
 export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
-  const node = findNode(state, nodeId)
+  const node = getNode(state, nodeId)
 
   if (node.id === node.parentId) {
     throw new Error(`The root node can't be removed`)
@@ -96,7 +77,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
   // TODO: Detach from other relationships (e.g. variables)
 
   // Remove parent reference to self
-  const parentNode = findNode(state, node.parentId)
+  const parentNode = getNode(state, node.parentId)
   parentNode.childIds = parentNode.childIds.filter(childId => childId === nodeId)
 
   // Remove self from blueprint

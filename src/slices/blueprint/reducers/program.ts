@@ -1,7 +1,7 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../../types/blueprint'
-import { ProgramNode } from '../../types/program'
-import { addNode, findNode, nextNodeId } from './blueprint'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
+import { ProgramNode } from 'types/program'
+import { addNode, nextNodeId } from './blueprint'
 
 /**
  * Default program node object
@@ -12,18 +12,6 @@ export const defaultProgramNode: ProgramNode = {
   parentId: 1,
   childIds: [],
   label: 'Program 1',
-}
-
-/**
- * Find a program node by the given node id.
- * @param state Blueprint state
- * @param id Node id
- * @throws If the blueprint has no node with the given id
- * @throws If the node type does not match the expected type
- * @returns Program node
- */
-export const findProgramNode = (state: BlueprintState, id: BlueprintNodeId) => {
-  return findNode(state, id, BlueprintNodeType.Program) as ProgramNode
 }
 
 /**

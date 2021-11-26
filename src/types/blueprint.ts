@@ -2,10 +2,10 @@
 export type BlueprintNodeId = number
 
 export enum BlueprintNodeType {
-  Control,
-  Operation,
-  Program,
-  Variable,
+  Control = 'control',
+  Operation = 'operation',
+  Program = 'program',
+  Variable = 'variable',
 }
 
 /**
@@ -49,9 +49,19 @@ export interface BlueprintState {
   nodes: Record<number, BlueprintNode>
 
   /**
+   * Selected node id
+   */
+  selectedNodeId?: BlueprintNodeId
+
+  /**
    * Root program node id
    */
   rootProgramId: BlueprintNodeId
+
+  /**
+   * Active program node id
+   */
+  activeProgramId?: BlueprintNodeId
 
   /**
    * Node id counter

@@ -1,5 +1,5 @@
 
-import { ImplicitTypedValue, TypedValue } from '../../types/value'
+import { ImplicitTypedValue, TypedValue } from 'types/value'
 
 /**
  * Resolve an implicitly typed value to a typed value following set rules.
