@@ -8,6 +8,8 @@ import { addOperationNode } from './reducers/operation'
 import { resolveImplicitTypedValue } from './reducers/value'
 import { getNode } from './selectors/blueprint'
 import { getControlNode } from './selectors/control'
+import { addProgramControlNode } from './reducers/control'
+import { removeNode } from './reducers/blueprint'
 
 type AddOperationPayload = {
   /**
@@ -40,6 +42,13 @@ type LeaveProgramPayload = {
 
 }
 
+type AddEmptyControlPayload = {
+  /**
+   * Program node id the control should be added to
+   */
+  programId: BlueprintNodeId
+}
+
 type ChangeControlPayload = {
   /**
    * Control id the change should be applied to
@@ -55,6 +64,13 @@ type ChangeControlPayload = {
 type ChangeSelectedNodePayload = {
   /**
    * Node id to be selected
+   */
+  nodeId: BlueprintNodeId
+}
+
+type RemoveNodePayload = {
+  /**
+   * Node id to be removed
    */
   nodeId: BlueprintNodeId
 }
@@ -75,34 +91,40 @@ export const blueprintSlice = createSlice({
     /**
      * Instantiate a operation and add it to the target program
      */
-    addOperation: (state: BlueprintState, action: PayloadAction<AddOperationPayload>) => {
+    addOperationAction: (state, action: PayloadAction<AddOperationPayload>) => {
       addOperationNode(state, action.payload.programId, action.payload.operation)
     },
 
     /**
      * Add an empty program to the target program
      */
-    addEmptyProgram: (state: BlueprintState, action: PayloadAction<AddEmptyProgramPayload>) => {
+    addEmptyProgramAction: (state, action: PayloadAction<AddEmptyProgramPayload>) => {
       // TODO: Handle no active program
       addEmptyProgramNode(state, action.payload.programId ?? state.activeProgramId)
     },
 
-    enterProgram: (state: BlueprintState, action: PayloadAction<EnterProgramPayload>) => {
+    enterProgramAction: (state, action: PayloadAction<EnterProgramPayload>) => {
       state.activeProgramId = action.payload.programId
+      state.selectedNodeId = undefined
     },
 
-    leaveProgram: (state: BlueprintState, action: PayloadAction<LeaveProgramPayload>) => {
+    leaveProgramAction: (state, action: PayloadAction<LeaveProgramPayload>) => {
       if (state.activeProgramId && state.activeProgramId !== state.rootProgramId) {
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
       } else {
         state.activeProgramId = undefined
       }
+      state.selectedNodeId = undefined
+    },
+
+    addEmptyControlAction: (state, action: PayloadAction<AddEmptyControlPayload>) => {
+      addProgramControlNode(state, action.payload.programId)
     },
 
     /**
      * Apply a control change and propagate it through attached variables
      */
-    changeControl: (state: BlueprintState, action: PayloadAction<ChangeControlPayload>) => {
+    changeControlAction: (state, action: PayloadAction<ChangeControlPayload>) => {
       const control = getControlNode(state, action.payload.controlId)
       const change = action.payload.change
 
@@ -118,19 +140,25 @@ export const blueprintSlice = createSlice({
       control.enabled = change.enabled || control.enabled
     },
 
-    selectNode: (state: BlueprintState, action: PayloadAction<ChangeSelectedNodePayload>) => {
+    selectNodeAction: (state, action: PayloadAction<ChangeSelectedNodePayload>) => {
       state.selectedNodeId = action.payload.nodeId
     },
+
+    removeNodeAction: (state, action: PayloadAction<RemoveNodePayload>) => {
+      removeNode(state, action.payload.nodeId)
+    }
   }
 })
 
 export const {
-  addOperation,
-  addEmptyProgram,
-  enterProgram,
-  leaveProgram,
-  changeControl,
-  selectNode,
+  addOperationAction,
+  addEmptyProgramAction,
+  enterProgramAction,
+  leaveProgramAction,
+  addEmptyControlAction,
+  changeControlAction,
+  selectNodeAction,
+  removeNodeAction,
 } = blueprintSlice.actions
 
 export default blueprintSlice.reducer

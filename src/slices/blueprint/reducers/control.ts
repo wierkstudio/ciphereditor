@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
 import { Control, ControlNode } from 'types/control'
-import { addNode } from './blueprint'
+import { addNode, nextNodeId } from './blueprint'
 import { resolveImplicitTypedValue } from './value'
 
 /**
@@ -14,13 +14,32 @@ export const defaultControlNode: ControlNode = {
   childIds: [],
   name: '',
   label: '',
-  types: [],
-  initialValue: 0,
-  value: { value: 0, type: 'integer' },
+  types: ['text'],
+  initialValue: '',
+  value: { value: '', type: 'text' },
   enum: [],
   enumStrict: true,
   enabled: true,
   writable: true,
+}
+
+/**
+ * Add an empty control to the given program node id.
+ * @param state Blueprint state
+ * @param programId Program node id
+ * @param control Control to be added
+ * @returns New control node
+ */
+ export const addProgramControlNode = (state: BlueprintState, programId: BlueprintNodeId) => {
+  const id = nextNodeId(state)
+  const controlNode: ControlNode = {
+    ...defaultControlNode,
+    parentId: programId,
+    id,
+    name: `control${id}`,
+    label: `Control ${id}`,
+  }
+  return addNode(state, controlNode)
 }
 
 /**
@@ -34,6 +53,7 @@ export const addOperationControlNode = (state: BlueprintState, operationId: Blue
   const controlNode: ControlNode = {
     ...defaultControlNode,
     ...control,
+    id: nextNodeId(state),
     parentId: operationId,
     label: control.label || control.name,
     value: resolveImplicitTypedValue(control.initialValue),

@@ -76,9 +76,17 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
 
   // TODO: Detach from other relationships (e.g. variables)
 
+  // Remove blueprint references
+  if (state.selectedNodeId === nodeId) {
+    state.selectedNodeId = undefined
+  }
+  if (state.activeProgramId === nodeId) {
+    state.activeProgramId = node.parentId
+  }
+
   // Remove parent reference to self
   const parentNode = getNode(state, node.parentId)
-  parentNode.childIds = parentNode.childIds.filter(childId => childId === nodeId)
+  parentNode.childIds = parentNode.childIds.filter(id => id !== nodeId)
 
   // Remove self from blueprint
   delete state.nodes[node.id]

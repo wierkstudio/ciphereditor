@@ -28,5 +28,8 @@ export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType
 export const getSelectedNode = (state: BlueprintState) =>
   state.selectedNodeId ? getNode(state, state.selectedNodeId) : undefined
 
-export const getNodeChildren = (state: BlueprintState, parentId: BlueprintNodeId) =>
-  getNode(state, parentId).childIds.map(id => getNode(state, id))
+export const getNodeChildren = (state: BlueprintState, parentId: BlueprintNodeId, type?: BlueprintNodeType) =>
+  getNode(state, parentId)
+    .childIds
+    .map(id => getNode(state, id))
+    .filter(node => !type || node.type === type)
