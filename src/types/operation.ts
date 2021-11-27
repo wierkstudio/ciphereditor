@@ -1,5 +1,5 @@
 
-import { BlueprintNode, BlueprintNodeType } from './blueprint'
+import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { Control } from './control';
 
 /**
@@ -22,14 +22,34 @@ export interface Operation {
   controls: Control[]
 
   /**
-   * Bundle identifier
+   * Bundle url
    */
-  bundleId: string
+  bundleUrl: string
 
   /**
    * Bundle module id
    */
   moduleId: string
+}
+
+/**
+ * Operation state
+ */
+export enum OperationState {
+  /**
+   * The operation is idle and ready
+   */
+  Ready,
+
+  /**
+   * Computation task is ongoing
+   */
+  Busy,
+
+  /**
+   * Last computation task failed, await manual retry
+   */
+  Failed,
 }
 
 /**
@@ -47,14 +67,24 @@ export interface OperationNode extends BlueprintNode {
   label: string
 
   /**
-   * True, if awaiting response from operation
+   * Operation state
    */
-  busy: boolean
+  state: OperationState
 
   /**
-   * Bundle identifier
+   * Number identifying the current operation task
    */
-  bundleId: string
+  taskVersion?: number
+
+  /**
+   * Array of control node ids ordered by priority (highest to lowest)
+   */
+  priorityControlIds: BlueprintNodeId[]
+
+  /**
+   * Bundle url
+   */
+  bundleUrl: string
 
   /**
    * Bundle module id

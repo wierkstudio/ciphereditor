@@ -84,6 +84,15 @@ export interface ControlChange {
 }
 
 /**
+ * Control change source
+ */
+export enum ControlChangeSource {
+  Parent,
+  UserInput,
+  Variable,
+}
+
+/**
  * Control node
  * Controls are the building blocks of operation and program interfaces.
  */

@@ -26,9 +26,10 @@ function Node(props: NodeProps) {
         props.node.type === BlueprintNodeType.Program && dispatch(enterProgramAction({ programId: props.node.id }))}
     >
       <h3>{props.node.type + ' #' + props.node.id}</h3>
+      {(props.node as any).state ?? null}
       <div className="node__controls">
         {controls.map(node => (
-          <Control control={node} />
+          <Control key={node.id} control={node} />
         ))}
       </div>
     </div>

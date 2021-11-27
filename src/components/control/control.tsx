@@ -1,6 +1,6 @@
 
 import InputText from 'components/input-text/input-text'
-import { changeControlAction } from 'slices/blueprint'
+import { changeControlsAction } from 'slices/blueprint'
 import { ControlNode } from 'types/control'
 import { useAppDispatch } from 'utils/hooks'
 
@@ -16,9 +16,9 @@ function Control(props: ControlProps) {
       <div className="control__input">
         <InputText
           value={props.control.value.value as string}
-          onChange={value => dispatch(changeControlAction({
-            controlId: props.control.id,
-            change: { name: props.control.name, value: value }
+          onChange={value => dispatch(changeControlsAction({
+            nodeId: props.control.parentId,
+            changes: [{ name: props.control.name, value: value }],
           }))} />
       </div>
     </div>

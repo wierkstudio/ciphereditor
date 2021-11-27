@@ -1,14 +1,13 @@
 
-import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
-import { ControlChange } from 'types/control'
-import { Operation } from 'types/operation'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
+import { ControlChange, ControlChangeSource } from 'types/control'
+import { Operation, OperationNode, OperationState } from 'types/operation'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
-import { addOperationNode } from './reducers/operation'
-import { resolveImplicitTypedValue } from './reducers/value'
-import { getNode } from './selectors/blueprint'
-import { getControlNode } from './selectors/control'
+import { addOperationNode, changeOperationControls, setOperationState } from './reducers/operation'
 import { addProgramControlNode } from './reducers/control'
+import { getNode, hasNode } from './selectors/blueprint'
+import { getOperationNode } from './selectors/operation'
 import { removeNode } from './reducers/blueprint'
 
 type AddOperationPayload = {
@@ -49,16 +48,38 @@ type AddEmptyControlPayload = {
   programId: BlueprintNodeId
 }
 
-type ChangeControlPayload = {
+type ChangeControlsPayload = {
   /**
-   * Control id the change should be applied to
+   * Target node control changed should be applied to
    */
-  controlId: BlueprintNodeId
+  nodeId: BlueprintNodeId
 
   /**
-   * Control change to be applied
+   * Control changes to be applied
    */
-  change: ControlChange
+  changes: ControlChange[]
+}
+
+type CompleteOperationTaskPayload = {
+  /**
+   * Operation id of the completed task
+   */
+  operationId: BlueprintNodeId
+
+  /**
+   * Task version
+   */
+  taskVersion: number
+
+  /**
+   * Resulting control changes
+   */
+  controlChanges: ControlChange[]
+
+  /**
+   * Error object, if task failed
+   */
+  error?: string
 }
 
 type ChangeSelectedNodePayload = {
@@ -81,6 +102,7 @@ const defaultBlueprintState: BlueprintState = {
   selectedNodeId: undefined,
   rootProgramId: 1,
   activeProgramId: 1,
+  busyOperationIds: [],
   nodeIdCounter: 1,
 }
 
@@ -121,23 +143,35 @@ export const blueprintSlice = createSlice({
       addProgramControlNode(state, action.payload.programId)
     },
 
-    /**
-     * Apply a control change and propagate it through attached variables
-     */
-    changeControlAction: (state, action: PayloadAction<ChangeControlPayload>) => {
-      const control = getControlNode(state, action.payload.controlId)
-      const change = action.payload.change
-
-      if (change.value) {
-        // TODO: Propagate value
-        control.value = resolveImplicitTypedValue(change.value)
+    changeControlsAction: (state, action: PayloadAction<ChangeControlsPayload>) => {
+      const targetNode = getNode(state, action.payload.nodeId)
+      // TODO: Handle changes to program controls
+      if (targetNode.type === BlueprintNodeType.Operation) {
+        const operation = targetNode as OperationNode
+        changeOperationControls(state, operation, action.payload.changes, ControlChangeSource.UserInput)
       }
+    },
 
-      control.label = change.label || control.label
-      control.enum = change.enum || control.enum
-
-      // TODO: Propagate enabled state to attached program controls
-      control.enabled = change.enabled || control.enabled
+    completeOperationTaskAction: (state, action: PayloadAction<CompleteOperationTaskPayload>) => {
+      const { operationId, taskVersion, controlChanges, error } = action.payload
+      if (!hasNode(state, operationId)) {
+        // Operation node has been removed while being busy
+        return
+      }
+      const operation = getOperationNode(state, operationId)
+      if (operation.taskVersion !== taskVersion) {
+        // A task version mismatch implies that the control values have changed
+        // while completing the operation task; It needs to be redone
+        console.log('Operation task needs to be redone')
+        return
+      }
+      if (!error) {
+        console.log('Operation task completed', controlChanges)
+        changeOperationControls(state, operation, controlChanges, ControlChangeSource.Parent)
+      } else {
+        console.error('Operation task failed', error)
+        setOperationState(state, operation, OperationState.Failed)
+      }
     },
 
     selectNodeAction: (state, action: PayloadAction<ChangeSelectedNodePayload>) => {
@@ -156,7 +190,8 @@ export const {
   enterProgramAction,
   leaveProgramAction,
   addEmptyControlAction,
-  changeControlAction,
+  changeControlsAction,
+  completeOperationTaskAction,
   selectNodeAction,
   removeNodeAction,
 } = blueprintSlice.actions

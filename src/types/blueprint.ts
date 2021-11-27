@@ -64,6 +64,11 @@ export interface BlueprintState {
   activeProgramId?: BlueprintNodeId
 
   /**
+   * Busy operation node ids
+   */
+  busyOperationIds: BlueprintNodeId[]
+
+  /**
    * Node id counter
    */
   nodeIdCounter: number

@@ -1,8 +1,8 @@
 
+import { combineReducers } from 'redux'
 import blueprintReducer from './blueprint'
 
-const state = {
+export const rootReducer = combineReducers({
   blueprint: blueprintReducer,
-}
-
-export default state
+})
+export type RootState = ReturnType<typeof rootReducer>

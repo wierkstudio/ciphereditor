@@ -26,3 +26,15 @@ export const resolveImplicitTypedValue = (value: ImplicitTypedValue): TypedValue
       throw new Error(`Unable to resolve the implicit value type '${typeof value}'`)
   }
 }
+
+/**
+ * Check wether two values are considered equal
+ */
+export const compareValues = (a: TypedValue, b: TypedValue): boolean => {
+  if (a.type !== b.type) {
+    return false
+  }
+
+  // TODO: Needs implementation
+  return false
+}

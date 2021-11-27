@@ -4,8 +4,9 @@ import {
   BlueprintNodeType,
   BlueprintState,
 } from 'types/blueprint'
-import { OperationNode } from 'types/operation'
-import { getNode } from './blueprint'
+import { OperationNode, OperationState } from 'types/operation'
+import { getNode, hasNode } from './blueprint'
+import { getControlNode, getNodeControlValues } from './control'
 
 /**
  * Find a variable node by the given node id.
@@ -15,6 +16,34 @@ import { getNode } from './blueprint'
  * @throws If the node type does not match the expected type
  * @returns Operation node
  */
-export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId) => {
-  return getNode(state, id, BlueprintNodeType.Operation) as OperationNode
+export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId) =>
+  getNode(state, id, BlueprintNodeType.Operation) as OperationNode
+
+/**
+ * Return node ids of operations that are currently busy.
+ */
+export const getBusyOperationIds = (state: BlueprintState) =>
+  state.busyOperationIds
+
+/**
+ * Gather the data required to execute an operation.
+ * @returns A task object or undefined if the specified node does not exist or
+ * if there is no task available for it
+ */
+export const getOperationTask = (state: BlueprintState, operationId: BlueprintNodeId) => {
+  if (!hasNode(state, operationId)) {
+    return undefined
+  }
+  const operation = getOperationNode(state, operationId)
+  if (operation.state !== OperationState.Busy) {
+    return undefined
+  }
+  return {
+    operation,
+    version: operation.taskVersion!,
+    bundleUrl: operation.bundleUrl,
+    moduleId: operation.moduleId,
+    priorityControlNames: operation.priorityControlIds.map(id => getControlNode(state, id).name),
+    namedControlValues: getNodeControlValues(state, operation.id),
+  }
 }
