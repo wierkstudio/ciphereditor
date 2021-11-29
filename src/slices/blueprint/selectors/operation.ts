@@ -43,7 +43,8 @@ export const getOperationTask = (state: BlueprintState, operationId: BlueprintNo
     version: operation.taskVersion!,
     bundleUrl: operation.bundleUrl,
     moduleId: operation.moduleId,
-    priorityControlNames: operation.priorityControlIds.map(id => getControlNode(state, id).name),
+    priorityControlNames:
+      operation.priorityControlIds.map(id => getControlNode(state, id).name),
     namedControlValues: getNodeControlValues(state, operation.id),
   }
 }

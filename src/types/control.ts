@@ -54,14 +54,9 @@ export interface Control {
 }
 
 /**
- * Structured changes that can be made to an existing control
+ * Structured changes targeted to a control node
  */
 export interface ControlChange {
-  /**
-   * Name of the target control this change applies to
-   */
-  name: string
-
   /**
    * New label
    */
@@ -81,6 +76,16 @@ export interface ControlChange {
    * New enabled state
    */
   enabled?: boolean
+}
+
+/**
+ * Structured changes targeted to a control node identified by name
+ */
+export interface NamedControlChange extends ControlChange {
+  /**
+   * Target control name
+   */
+  name: string
 }
 
 /**

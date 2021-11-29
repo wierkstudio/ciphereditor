@@ -1,109 +1,25 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { ControlChange, ControlChangeSource } from 'types/control'
-import { Operation, OperationNode, OperationState } from 'types/operation'
+import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
+import { ControlChange, ControlChangeSource, NamedControlChange } from 'types/control'
+import { Operation, OperationState } from 'types/operation'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
-import { addOperationNode, changeOperationControls, setOperationState } from './reducers/operation'
-import { addProgramControlNode } from './reducers/control'
+import { addOperationNode, setOperationState } from './reducers/operation'
+import { addProgramControlNode, changeControl } from './reducers/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
-import { removeNode } from './reducers/blueprint'
-
-type AddOperationPayload = {
-  /**
-   * Program node id the operation should be added to
-   */
-  programId: BlueprintNodeId
-
-  /**
-   * Operation entity to be instantiated
-   */
-  operation: Operation
-}
-
-type AddEmptyProgramPayload = {
-  /**
-   * Program id a new program should be added to
-   * If empty, the program will be added to the active program
-   */
-  programId?: BlueprintNodeId
-}
-
-type EnterProgramPayload = {
-  /**
-   * Id of the program node that should become active
-   */
-  programId: BlueprintNodeId
-}
-
-type LeaveProgramPayload = {
-
-}
-
-type AddEmptyControlPayload = {
-  /**
-   * Program node id the control should be added to
-   */
-  programId: BlueprintNodeId
-}
-
-type ChangeControlsPayload = {
-  /**
-   * Target node control changed should be applied to
-   */
-  nodeId: BlueprintNodeId
-
-  /**
-   * Control changes to be applied
-   */
-  changes: ControlChange[]
-}
-
-type CompleteOperationTaskPayload = {
-  /**
-   * Operation id of the completed task
-   */
-  operationId: BlueprintNodeId
-
-  /**
-   * Task version
-   */
-  taskVersion: number
-
-  /**
-   * Resulting control changes
-   */
-  controlChanges: ControlChange[]
-
-  /**
-   * Error object, if task failed
-   */
-  error?: string
-}
-
-type ChangeSelectedNodePayload = {
-  /**
-   * Node id to be selected
-   */
-  nodeId: BlueprintNodeId
-}
-
-type RemoveNodePayload = {
-  /**
-   * Node id to be removed
-   */
-  nodeId: BlueprintNodeId
-}
+import { removeNode, selectNode } from './reducers/blueprint'
+import { linkControls } from './reducers/variables'
+import { getNodeNamedControls } from './selectors/control'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
   nodes: { 1: defaultProgramNode },
+  lastInsertNodeId: 1,
   selectedNodeId: undefined,
   rootProgramId: 1,
   activeProgramId: 1,
   busyOperationIds: [],
-  nodeIdCounter: 1,
 }
 
 export const blueprintSlice = createSlice({
@@ -113,47 +29,94 @@ export const blueprintSlice = createSlice({
     /**
      * Instantiate a operation and add it to the target program
      */
-    addOperationAction: (state, action: PayloadAction<AddOperationPayload>) => {
-      addOperationNode(state, action.payload.programId, action.payload.operation)
+    addOperationAction: (state, { payload }: PayloadAction<{
+      programId: BlueprintNodeId,
+      operation: Operation,
+    }>) => {
+      addOperationNode(state, payload.programId, payload.operation)
     },
 
     /**
      * Add an empty program to the target program
+     * If no program is given, it will be added to the active program
      */
-    addEmptyProgramAction: (state, action: PayloadAction<AddEmptyProgramPayload>) => {
+    addEmptyProgramAction: (state, { payload }: PayloadAction<{
+      programId?: BlueprintNodeId,
+    }>) => {
       // TODO: Handle no active program
-      addEmptyProgramNode(state, action.payload.programId ?? state.activeProgramId)
+      addEmptyProgramNode(state, payload.programId ?? state.activeProgramId)
     },
 
-    enterProgramAction: (state, action: PayloadAction<EnterProgramPayload>) => {
-      state.activeProgramId = action.payload.programId
+    /**
+     * Change the active program.
+     */
+    enterProgramAction: (state, { payload }: PayloadAction<{
+      programId: BlueprintNodeId,
+    }>) => {
+      state.activeProgramId = payload.programId
       state.selectedNodeId = undefined
+      state.linkControlId = undefined
     },
 
-    leaveProgramAction: (state, action: PayloadAction<LeaveProgramPayload>) => {
+    /**
+     * Move a level up, changing the active program to its parent program.
+     */
+    leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
       if (state.activeProgramId && state.activeProgramId !== state.rootProgramId) {
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
       } else {
         state.activeProgramId = undefined
       }
       state.selectedNodeId = undefined
+      state.linkControlId = undefined
     },
 
-    addEmptyControlAction: (state, action: PayloadAction<AddEmptyControlPayload>) => {
-      addProgramControlNode(state, action.payload.programId)
+    /**
+     * Add an empty control node to the given program.
+     */
+    addEmptyControlAction: (state, { payload }: PayloadAction<{
+      programId: BlueprintNodeId,
+    }>) => {
+      addProgramControlNode(state, payload.programId)
     },
 
-    changeControlsAction: (state, action: PayloadAction<ChangeControlsPayload>) => {
-      const targetNode = getNode(state, action.payload.nodeId)
-      // TODO: Handle changes to program controls
-      if (targetNode.type === BlueprintNodeType.Operation) {
-        const operation = targetNode as OperationNode
-        changeOperationControls(state, operation, action.payload.changes, ControlChangeSource.UserInput)
+    /**
+     * Mark a control as to be linked. If two controls are marked, link them.
+     */
+    linkControlAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+    }>) => {
+      const controlId = payload.controlId
+      if (state.linkControlId === undefined) {
+        state.linkControlId = controlId
+      } else if (state.linkControlId === controlId) {
+        state.linkControlId = undefined
+      } else {
+        linkControls(state, state.linkControlId, controlId)
+        state.linkControlId = undefined
       }
     },
 
-    completeOperationTaskAction: (state, action: PayloadAction<CompleteOperationTaskPayload>) => {
-      const { operationId, taskVersion, controlChanges, error } = action.payload
+    /**
+     * Apply control changes to the given parent node.
+     */
+    changeControlAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      change: ControlChange,
+    }>) => {
+      changeControl(state, payload.controlId, payload.change, ControlChangeSource.UserInput)
+    },
+
+    /**
+     * Apply an operation task result to the blueprint.
+     */
+    applyOperationTaskResultAction: (state, { payload }: PayloadAction<{
+      operationId: BlueprintNodeId,
+      taskVersion: number,
+      controlChanges: NamedControlChange[],
+      error?: string,
+    }>) => {
+      const { operationId, taskVersion, controlChanges, error } = payload
       if (!hasNode(state, operationId)) {
         // Operation node has been removed while being busy
         return
@@ -167,19 +130,39 @@ export const blueprintSlice = createSlice({
       }
       if (!error) {
         console.log('Operation task completed', controlChanges)
-        changeOperationControls(state, operation, controlChanges, ControlChangeSource.Parent)
+        const namedControls = getNodeNamedControls(state, operationId)
+        controlChanges.forEach(change => {
+          const control = namedControls[change.name]
+          // TODO: Validate wether control exists and is enabled and handle it
+          // TODO: Validate change set
+          changeControl(state, control.id, change, ControlChangeSource.Parent)
+        })
+        setOperationState(state, operation, OperationState.Ready)
       } else {
         console.error('Operation task failed', error)
         setOperationState(state, operation, OperationState.Failed)
       }
     },
 
-    selectNodeAction: (state, action: PayloadAction<ChangeSelectedNodePayload>) => {
-      state.selectedNodeId = action.payload.nodeId
+    /**
+     * Select a node.
+     */
+    selectNodeAction: (state, { payload }: PayloadAction<{
+      nodeId: BlueprintNodeId,
+    }>) => {
+      selectNode(state, payload.nodeId)
     },
 
-    removeNodeAction: (state, action: PayloadAction<RemoveNodePayload>) => {
-      removeNode(state, action.payload.nodeId)
+    /**
+     * Remove a node.
+     */
+    removeNodeAction: (state, { payload }: PayloadAction<{
+      nodeId?: BlueprintNodeId,
+    }>) => {
+      const nodeId = payload.nodeId ?? state.selectedNodeId
+      if (nodeId) {
+        removeNode(state, nodeId)
+      }
     }
   }
 })
@@ -190,8 +173,9 @@ export const {
   enterProgramAction,
   leaveProgramAction,
   addEmptyControlAction,
-  changeControlsAction,
-  completeOperationTaskAction,
+  changeControlAction,
+  linkControlAction,
+  applyOperationTaskResultAction,
   selectNodeAction,
   removeNodeAction,
 } = blueprintSlice.actions

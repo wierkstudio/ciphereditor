@@ -6,6 +6,7 @@ import {
 } from 'types/blueprint'
 import { ControlNode } from 'types/control'
 import { TypedValue } from 'types/value'
+import { mapNamedObjects } from 'utils/map'
 import { getNode, getNodeChildren } from './blueprint'
 
 /**
@@ -20,9 +21,14 @@ export const getControlNode = (state: BlueprintState, id: BlueprintNodeId) =>
   getNode(state, id, BlueprintNodeType.Control) as ControlNode
 
 /**
+ * Get an object mapping control names to control nodes.
+ */
+export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNodeId) =>
+  mapNamedObjects(getNodeChildren(
+    state, nodeId, BlueprintNodeType.Control) as ControlNode[])
+
+/**
  * Return an object mapping control names to values, embedded in the given node.
- * @param state Blueprint state
- * @param nodeId Node id
  */
 export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNodeId) => {
   const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[]
@@ -32,3 +38,9 @@ export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNod
   }
   return namedValues
 }
+
+/**
+ * Get the control node currently marked as linked.
+ */
+export const getLinkControl = (state: BlueprintState) =>
+  state.linkControlId ? getControlNode(state, state.linkControlId) : undefined

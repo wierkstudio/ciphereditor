@@ -2,10 +2,10 @@
 import Processor from 'app/Processor'
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId } from 'types/blueprint'
-import { ControlChange } from 'types/control'
+import { NamedControlChange } from 'types/control'
 import { OperationState } from 'types/operation'
 import { RootState } from 'slices'
-import { completeOperationTaskAction } from 'slices/blueprint'
+import { applyOperationTaskResultAction } from 'slices/blueprint'
 import { getBusyOperationIds, getOperationNode, getOperationTask } from 'slices/blueprint/selectors/operation'
 import { hasNode } from 'slices/blueprint/selectors/blueprint'
 
@@ -39,7 +39,7 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
   }
 
   // Try to execute the computations in the processor and await its response
-  let controlChanges: ControlChange[] = []
+  let controlChanges: NamedControlChange[] = []
   let error: string | undefined = undefined
   try {
     // TODO: Validate untrusted module response
@@ -48,13 +48,13 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
       task.moduleId,
       'onControlChange',
       [task.priorityControlNames, task.namedControlValues],
-    ) as ControlChange[]
+    ) as NamedControlChange[]
   } catch (err: any) {
     error = err.toString()
   }
 
   // Dispatch action to propagate operation task result
-  store.dispatch(completeOperationTaskAction({
+  store.dispatch(applyOperationTaskResultAction({
     operationId: task.operation.id,
     taskVersion: task.version,
     controlChanges,

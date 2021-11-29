@@ -13,7 +13,11 @@ type NodeProps = {
 function Node(props: NodeProps) {
   const dispatch = useAppDispatch()
   const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
-  const controls = useAppSelector(state => getNodeChildren(state.blueprint, props.node.id, BlueprintNodeType.Control)) as ControlNode[]
+  let controls = useAppSelector(state => getNodeChildren(state.blueprint, props.node.id, BlueprintNodeType.Control)) as ControlNode[]
+  if (props.node.type === BlueprintNodeType.Control) {
+    controls.push(props.node as ControlNode)
+  }
+
   const classNames = ['node']
   if (selectedNode?.id === props.node.id) {
     classNames.push('node--active')

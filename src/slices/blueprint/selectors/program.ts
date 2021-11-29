@@ -18,5 +18,8 @@ import { getNode } from './blueprint'
 export const getProgramNode = (state: BlueprintState, id: BlueprintNodeId) =>
   getNode(state, id, BlueprintNodeType.Program) as ProgramNode
 
+/**
+ * Get active program node.
+ */
 export const getActiveProgram = (state: BlueprintState) =>
   state.activeProgramId ? getProgramNode(state, state.activeProgramId) : undefined

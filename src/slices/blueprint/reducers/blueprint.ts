@@ -14,9 +14,9 @@ import {
  */
 export const nextNodeId = (state: BlueprintState) => {
   do {
-    state.nodeIdCounter = (state.nodeIdCounter + 1) % Number.MAX_SAFE_INTEGER
-  } while (state.nodes[state.nodeIdCounter] !== undefined)
-  return state.nodeIdCounter
+    state.lastInsertNodeId = (state.lastInsertNodeId + 1) % Number.MAX_SAFE_INTEGER
+  } while (state.nodes[state.lastInsertNodeId] !== undefined)
+  return state.lastInsertNodeId
 }
 
 /**
@@ -80,6 +80,9 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
   if (state.selectedNodeId === nodeId) {
     state.selectedNodeId = undefined
   }
+  if (state.linkControlId === nodeId) {
+    state.linkControlId = undefined
+  }
   if (state.activeProgramId === nodeId) {
     state.activeProgramId = node.parentId
   }
@@ -90,4 +93,11 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
 
   // Remove self from blueprint
   delete state.nodes[node.id]
+}
+
+/**
+ * Select a node or clear the selection.
+ */
+export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | undefined) => {
+  state.selectedNodeId = nodeId
 }

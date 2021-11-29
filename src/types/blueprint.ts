@@ -49,9 +49,19 @@ export interface BlueprintState {
   nodes: Record<number, BlueprintNode>
 
   /**
+   * Last insert node id (used for id generation)
+   */
+  lastInsertNodeId: BlueprintNodeId
+
+  /**
    * Selected node id
    */
   selectedNodeId?: BlueprintNodeId
+
+  /**
+   * Control node id that is marked to be linked next
+   */
+  linkControlId?: BlueprintNodeId
 
   /**
    * Root program node id
@@ -67,9 +77,4 @@ export interface BlueprintState {
    * Busy operation node ids
    */
   busyOperationIds: BlueprintNodeId[]
-
-  /**
-   * Node id counter
-   */
-  nodeIdCounter: number
 }

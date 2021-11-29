@@ -20,7 +20,10 @@ export const defaultProgramNode: ProgramNode = {
  * @param parentId Parent program node id
  * @returns New program node
  */
-export const addEmptyProgramNode = (state: BlueprintState, parentId?: BlueprintNodeId) => {
+export const addEmptyProgramNode = (
+  state: BlueprintState,
+  parentId?: BlueprintNodeId
+) => {
   const id = nextNodeId(state)
   const programNode = {
     ...defaultProgramNode,

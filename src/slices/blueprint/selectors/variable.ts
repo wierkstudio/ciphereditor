@@ -15,6 +15,5 @@ import { getNode } from './blueprint'
  * @throws If the node type does not match the expected type
  * @returns Variable node
  */
- export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) => {
-  return getNode(state, id, BlueprintNodeType.Variable) as VariableNode
-}
+export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) =>
+  getNode(state, id, BlueprintNodeType.Variable) as VariableNode
