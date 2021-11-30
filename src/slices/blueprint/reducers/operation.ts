@@ -38,6 +38,9 @@ export const addOperationNode = (
       .map(addOperationControlNode.bind(null, state, operationNode.id))
       .map(node => node.id)
 
+  // Set initial priority to control order
+  operationNode.priorityControlIds = operationNode.childIds.slice()
+
   return operationNode
 }
 

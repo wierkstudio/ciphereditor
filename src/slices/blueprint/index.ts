@@ -9,7 +9,7 @@ import { addProgramControlNode, changeControl } from './reducers/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { linkControls } from './reducers/variables'
+import { attachControls } from './reducers/variables'
 import { getNodeNamedControls } from './selectors/control'
 
 const defaultBlueprintState: BlueprintState = {
@@ -91,8 +91,8 @@ export const blueprintSlice = createSlice({
         state.linkControlId = controlId
       } else if (state.linkControlId === controlId) {
         state.linkControlId = undefined
-      } else {
-        linkControls(state, state.linkControlId, controlId)
+      } else if (state.activeProgramId !== undefined) {
+        attachControls(state, state.linkControlId, controlId, state.activeProgramId)
         state.linkControlId = undefined
       }
     },

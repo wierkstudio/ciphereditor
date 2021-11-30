@@ -6,6 +6,7 @@ import {
 } from 'types/blueprint'
 import { VariableNode } from 'types/variable'
 import { getNode } from './blueprint'
+import { getControlNode } from './control'
 
 /**
  * Find a variable node by the given node id.
@@ -17,3 +18,19 @@ import { getNode } from './blueprint'
  */
 export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) =>
   getNode(state, id, BlueprintNodeType.Variable) as VariableNode
+
+/**
+ * Return the variable attached to the given control within a program.
+ */
+export const getAttachedVariable = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  programId: BlueprintNodeId,
+) => {
+  const control = getControlNode(state, controlId)
+  const variableId =
+    control.parentId === programId
+      ? control.attachedInternVariableId
+      : control.attachedVariableId
+  return variableId ? getVariableNode(state, variableId) : undefined
+}

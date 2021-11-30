@@ -2,6 +2,7 @@
 import { useRef, useEffect, useCallback } from 'react'
 
 type InputTextProps = {
+  id?: string
   value: string
   placeholder?: string
   multiline?: boolean
@@ -57,6 +58,7 @@ export default function InputText(props: InputTextProps) {
     <div className={className}>
       <textarea
         className="input-text__textarea"
+        id={props.id}
         ref={textareaRef}
         value={value}
         placeholder={props.placeholder}

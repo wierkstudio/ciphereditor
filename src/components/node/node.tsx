@@ -29,7 +29,7 @@ function Node(props: NodeProps) {
       onDoubleClick={() =>
         props.node.type === BlueprintNodeType.Program && dispatch(enterProgramAction({ programId: props.node.id }))}
     >
-      <h3>{props.node.type + ' #' + props.node.id}</h3>
+      <h3>{(props.node as any).label ?? `${props.node.type} #${props.node.id}`}</h3>
       {(props.node as any).state ?? null}
       <div className="node__controls">
         {controls.map(node => (

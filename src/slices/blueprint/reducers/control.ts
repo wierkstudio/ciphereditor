@@ -8,6 +8,7 @@ import { getControlNode } from '../selectors/control'
 import { addNode, nextNodeId } from './blueprint'
 import { setOperationState } from './operation'
 import { compareValues, resolveImplicitTypedValue } from './value'
+import { propagateChange } from './variables'
 
 /**
  * Default control node object
@@ -81,6 +82,7 @@ export const addOperationControlNode = (
   controlId: BlueprintNodeId,
   change: ControlChange,
   source: ControlChangeSource,
+  sourceVariableId?: BlueprintNodeId,
 ) => {
   const control = getControlNode(state, controlId)
 
@@ -117,12 +119,22 @@ export const addOperationControlNode = (
         operation.priorityControlIds =
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
       }
+      if (source !== ControlChangeSource.Variable) {
+        propagateChange(state, control.id, parent.parentId)
+      }
       break
 
     case BlueprintNodeType.Program:
-      // TODO: What happens when a program control changes?
+      if (source === ControlChangeSource.Variable) {
+        if (sourceVariableId === control.attachedInternVariableId) {
+          propagateChange(state, control.id, parent.parentId)
+        } else {
+          propagateChange(state, control.id, parent.id)
+        }
+      } else if (source === ControlChangeSource.UserInput) {
+        propagateChange(state, control.id, parent.parentId)
+        propagateChange(state, control.id, parent.id)
+      }
       break
   }
-
-  // TODO: Propagate value through attached variables
 }

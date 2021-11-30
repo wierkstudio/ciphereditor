@@ -19,12 +19,29 @@ function Control(props: ControlProps) {
         {linked ? 'Unlink' : 'Link'}
       </button>
       <div className="control__input">
-        <InputText
-          value={props.control.value.value as string}
-          onChange={value => dispatch(changeControlAction({
-            controlId: props.control.id,
-            change: { value },
-          }))} />
+        {props.control.enum.length > 0 ? (
+          <select
+            id={`node-${props.control.id}`}
+            onChange={evt => dispatch(changeControlAction({
+              controlId: props.control.id,
+              change: { value: props.control.enum[parseInt(evt.target.value)][0] },
+            }))}
+          >
+            {(props.control.enum as any[][]).map((element: any, index: number) =>
+              <option value={index} key={index}>
+                {element[2] ?? element[0].toString()}
+              </option>
+            )}
+          </select>
+        ) : (
+          <InputText
+            id={`node-${props.control.id}`}
+            value={props.control.value.value as string}
+            onChange={value => dispatch(changeControlAction({
+              controlId: props.control.id,
+              change: { value },
+            }))} />
+        )}
       </div>
     </div>
   )
