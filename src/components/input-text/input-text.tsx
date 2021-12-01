@@ -1,5 +1,6 @@
 
 import { useRef, useEffect, useCallback } from 'react'
+import './input-text.scss'
 
 type InputTextProps = {
   id?: string
@@ -8,6 +9,7 @@ type InputTextProps = {
   multiline?: boolean
   monospaceFont?: boolean
   onChange: (value: string, event: React.ChangeEvent<HTMLTextAreaElement>) => void
+  onFocus?: React.FocusEventHandler<HTMLTextAreaElement>
 }
 
 export default function InputText(props: InputTextProps) {
@@ -70,6 +72,8 @@ export default function InputText(props: InputTextProps) {
           }
           props.onChange(value, event)
         }}
+        onClick={evt => evt.stopPropagation()}
+        onFocus={props.onFocus}
         onKeyDown={event => {
           // Disable new line key in non-multiline field
           if (event.key === 'Enter' && !multiline) {

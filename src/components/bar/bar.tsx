@@ -1,9 +1,11 @@
 
 import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
+import { BlueprintNodeType } from 'types/blueprint'
 import { Operation } from 'types/operation'
-import { addEmptyControlAction, addEmptyProgramAction, addOperationAction, leaveProgramAction, removeNodeAction } from '../../slices/blueprint'
+import { addEmptyControlAction, addEmptyProgramAction, addOperationAction, leaveProgramAction, linkControlAction, removeNodeAction } from '../../slices/blueprint'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+import './bar.scss'
 
 const translateOperation: Operation = {
   name: 'cryptii/translate',
@@ -78,6 +80,14 @@ function Bar() {
         disabled={!program || program.parentId === program.id}
       >Up</button>
       <button
+        disabled={selectedNode === undefined}
+        onClick={() => dispatch(removeNodeAction({ nodeId: selectedNode!.id }))}
+      >Remove</button>
+      <button
+        disabled={selectedNode === undefined || selectedNode.type !== BlueprintNodeType.Control}
+        onClick={() => dispatch(linkControlAction({ controlId: selectedNode!.id }))}
+      >Link</button>
+      <button
         onClick={() => dispatch(addEmptyProgramAction({}))}
       >Add program</button>
       <button
@@ -98,10 +108,6 @@ function Bar() {
           operation: rot13Operation,
         }))}
       >Add ROT13</button>
-      <button
-        disabled={selectedNode === undefined}
-        onClick={() => dispatch(removeNodeAction({ nodeId: selectedNode!.id }))}
-      >Remove selected</button>
     </div>
   )
 }

@@ -1,0 +1,31 @@
+
+@import 'styles/shared';
+
+.control {
+  position: relative;
+  border: rem(1) solid $c-line;
+  border-color: $c-line transparent transparent;
+  margin: 0 rem(-1) rem(-1);
+  line-height: 0;
+
+  &--active {
+    border-color: $c-primary;
+    z-index: 1;
+  }
+
+  &__label {
+    display: block;
+    padding: rem(8) rem(16) 0;
+    @extend %t-text;
+    color: $c-meta;
+  }
+
+  &__select {
+    padding: rem(8) rem(16);
+    outline: none;
+  }
+
+  &__input {
+
+  }
+}

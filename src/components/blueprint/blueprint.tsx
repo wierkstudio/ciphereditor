@@ -3,6 +3,7 @@ import Node from '../node/node'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { useAppSelector } from '../../utils/hooks'
+import './blueprint.scss'
 
 type BlueprintProps = {
 }
@@ -12,15 +13,13 @@ function Blueprint(props: BlueprintProps) {
   const nodes = useAppSelector(state => getNodeChildren(state.blueprint, activeProgram.id))
   return (
     <div className="blueprint">
-      Label: {activeProgram.label}<br />
-      Children:
-      <ul>
+      <div className="blueprint__canvas">
         {nodes.map(node => (
-          <li key={node.id}>
+          <div className="blueprint__node" key={node.id}>
             <Node node={node} />
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   )
 }

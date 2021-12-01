@@ -1,0 +1,20 @@
+
+@import 'styles/shared';
+
+.node {
+  width: rem(320);
+  border: rem(1) solid $c-line;
+  border-radius: rem(4);
+  box-shadow: 0 rem(4) rem(16) rgba($c-black, 0.075);
+  background: $c-white;
+  user-select: none;
+
+  &--active {
+    border-color: $c-primary;
+  }
+
+  &__label {
+    padding: rem(16);
+    @extend %t-node-headline;
+  }
+}

@@ -1,0 +1,10 @@
+
+@import 'styles/shared';
+
+.input-text {
+
+  &__textarea {
+    padding: rem(8) rem(16);
+    outline: none;
+  }
+}

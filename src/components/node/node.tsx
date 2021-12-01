@@ -5,6 +5,7 @@ import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blu
 import { BlueprintNode, BlueprintNodeType } from 'types/blueprint'
 import { ControlNode } from 'types/control'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
+import './node.scss'
 
 type NodeProps = {
   node: BlueprintNode
@@ -25,12 +26,15 @@ function Node(props: NodeProps) {
   return (
     <div
       className={classNames.join(' ')}
-      onClick={() => dispatch(selectNodeAction({ nodeId: props.node.id }))}
+      role="region"
+      onClick={evt => {
+        evt.stopPropagation()
+        dispatch(selectNodeAction({ nodeId: props.node.id }))
+      }}
       onDoubleClick={() =>
         props.node.type === BlueprintNodeType.Program && dispatch(enterProgramAction({ programId: props.node.id }))}
     >
-      <h3>{(props.node as any).label ?? `${props.node.type} #${props.node.id}`}</h3>
-      {(props.node as any).state ?? null}
+      <h3 className="node__label">{(props.node as any).label ?? `${props.node.type} #${props.node.id}`}</h3>
       <div className="node__controls">
         {controls.map(node => (
           <Control key={node.id} control={node} />

@@ -1,0 +1,57 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  background: $c-background;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  @extend %t-text;
+  color: $c-text;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type='text'],
+select,
+textarea {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: rem(42);
+  border: none;
+  appearance: none;
+  background: transparent;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+textarea {
+  resize: none;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
