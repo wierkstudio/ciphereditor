@@ -27,10 +27,8 @@ function Node(props: NodeProps) {
     <div
       className={classNames.join(' ')}
       role="region"
-      onClick={evt => {
-        evt.stopPropagation()
-        dispatch(selectNodeAction({ nodeId: props.node.id }))
-      }}
+      tabIndex={0}
+      onFocus={() => dispatch(selectNodeAction({ nodeId: props.node.id }))}
       onDoubleClick={() =>
         props.node.type === BlueprintNodeType.Program && dispatch(enterProgramAction({ programId: props.node.id }))}
     >

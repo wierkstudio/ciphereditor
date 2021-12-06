@@ -1,8 +1,8 @@
 
-import InputText from 'components/input-text/input-text'
+import { ControlText } from 'components/control-text/control-text'
+import { useCallback } from 'react'
 import { changeControlAction, selectNodeAction } from 'slices/blueprint'
 import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { getLinkControl } from 'slices/blueprint/selectors/control'
 import { ControlNode } from 'types/control'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 import './control.scss'
@@ -15,13 +15,23 @@ function Control(props: ControlProps) {
   const dispatch = useAppDispatch()
   const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
 
+  // Choose control view based on type
+  let ControlView
+  switch (props.control.value.type) {
+    case 'text':
+      ControlView = ControlText
+      break
+  }
+
   const classNames = ['control']
   if (selectedNode?.id === props.control.id) {
     classNames.push('control--active')
   }
   return (
     <div
-      className={classNames.join(' ')}>
+      className={classNames.join(' ')}
+      onFocus={() => dispatch(selectNodeAction({ nodeId: props.control.id }))}
+    >
       <label
         className="control__label"
         htmlFor={`node-${props.control.id}`}
@@ -33,13 +43,16 @@ function Control(props: ControlProps) {
           <select
             className="control__select"
             id={`node-${props.control.id}`}
+            tabIndex={0}
             value={props.control.enum.findIndex((element: any) => element[0] === props.control.value.value)}
             onChange={evt => dispatch(changeControlAction({
               controlId: props.control.id,
               change: { value: props.control.enum[parseInt(evt.target.value)][0] },
             }))}
-            onClick={evt => evt.stopPropagation()}
-            onFocus={() => dispatch(selectNodeAction({ nodeId: props.control.id }))}
+            onFocus={event => {
+              event.stopPropagation()
+              dispatch(selectNodeAction({ nodeId: props.control.id }))
+            }}
           >
             {(props.control.enum as any[][]).map((element: any, index: number) =>
               <option value={index} key={index}>
@@ -47,16 +60,7 @@ function Control(props: ControlProps) {
               </option>
             )}
           </select>
-        ) : (
-          <InputText
-            id={`node-${props.control.id}`}
-            value={props.control.value.value as string}
-            onFocus={() => dispatch(selectNodeAction({ nodeId: props.control.id }))}
-            onChange={value => dispatch(changeControlAction({
-              controlId: props.control.id,
-              change: { value },
-            }))} />
-        )}
+        ) : ControlView ? <ControlView control={props.control} /> : null}
       </div>
     </div>
   )

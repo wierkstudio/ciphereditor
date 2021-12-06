@@ -8,6 +8,7 @@
   box-shadow: 0 rem(4) rem(16) rgba($c-black, 0.075);
   background: $c-white;
   user-select: none;
+  outline: none;
 
   &--active {
     border-color: $c-primary;

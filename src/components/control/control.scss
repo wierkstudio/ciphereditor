@@ -7,6 +7,7 @@
   border-color: $c-line transparent transparent;
   margin: 0 rem(-1) rem(-1);
   line-height: 0;
+  outline: none;
 
   &--active {
     border-color: $c-primary;

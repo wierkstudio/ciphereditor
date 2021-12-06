@@ -11,6 +11,7 @@ import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
 import { attachControls } from './reducers/variables'
 import { getNodeNamedControls } from './selectors/control'
+import { BlueprintNodeType } from 'types/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -51,11 +52,14 @@ export const blueprintSlice = createSlice({
      * Change the active program.
      */
     enterProgramAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId,
+      programId?: BlueprintNodeId,
     }>) => {
-      state.activeProgramId = payload.programId
-      state.selectedNodeId = undefined
-      state.linkControlId = undefined
+      const targetNodeId = payload.programId || state.selectedNodeId
+      if (targetNodeId !== undefined) {
+        state.activeProgramId = targetNodeId
+        state.selectedNodeId = undefined
+        state.linkControlId = undefined
+      }
     },
 
     /**
@@ -64,11 +68,9 @@ export const blueprintSlice = createSlice({
     leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
       if (state.activeProgramId && state.activeProgramId !== state.rootProgramId) {
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
-      } else {
-        state.activeProgramId = undefined
+        state.selectedNodeId = undefined
+        state.linkControlId = undefined
       }
-      state.selectedNodeId = undefined
-      state.linkControlId = undefined
     },
 
     /**
@@ -161,6 +163,13 @@ export const blueprintSlice = createSlice({
     }>) => {
       const nodeId = payload.nodeId ?? state.selectedNodeId
       if (nodeId) {
+        // Check wether removal is allowed
+        const node = getNode(state, nodeId)
+        const parent = getNode(state, node.parentId)
+        if (node.type === BlueprintNodeType.Control && parent.type === BlueprintNodeType.Operation) {
+          return
+        }
+
         removeNode(state, nodeId)
       }
     }

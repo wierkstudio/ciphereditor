@@ -64,6 +64,7 @@ export default function InputText(props: InputTextProps) {
         ref={textareaRef}
         value={value}
         placeholder={props.placeholder}
+        tabIndex={0}
         onChange={event => {
           // Remove newline characters
           let value = event.target.value
