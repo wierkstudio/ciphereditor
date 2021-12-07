@@ -9,19 +9,35 @@ const defaultDirectoryState: DirectoryState = {
       label: 'Translate',
       controls: [
         {
-          name: 'language1',
-          initialValue: 'en',
-          types: ['text'],
-        },
-        {
           name: 'text1',
           initialValue: 'Hello, World.',
           types: ['text'],
         },
         {
+          name: 'language1',
+          initialValue: 'en',
+          types: ['text'],
+          options: [
+            { value: '', label: 'Detect' },
+            { value: 'en', label: 'English' },
+            { value: 'de', label: 'German' },
+            { value: 'fr', label: 'French' },
+            { value: 'no', label: 'Norwegian' },
+            { value: 'lb', label: 'Luxembourgish' },
+          ],
+        },
+        {
           name: 'language2',
           initialValue: 'de',
           types: ['text'],
+          options: [
+            { value: '', label: 'Detect' },
+            { value: 'en', label: 'English' },
+            { value: 'de', label: 'German' },
+            { value: 'fr', label: 'French' },
+            { value: 'no', label: 'Norwegian' },
+            { value: 'lb', label: 'Luxembourgish' },
+          ],
         },
         {
           name: 'text2',
@@ -45,11 +61,11 @@ const defaultDirectoryState: DirectoryState = {
           name: 'variant',
           initialValue: 'rot13',
           types: ['text'],
-          enum: [
-            ['rot5', 'text', 'ROT5 (0-9)'],
-            ['rot13', 'text', 'ROT13 (A-Z, a-z)'],
-            ['rot18', 'text', 'ROT18 (0-9, A-Z, a-z)'],
-            ['rot47', 'text', 'ROT47 (!-~)'],
+          options: [
+            { value: 'rot5', label: 'ROT5 (0-9)' },
+            { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
+            { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
+            { value: 'rot47', label: 'ROT47 (!-~)' },
           ],
         },
         {
@@ -74,11 +90,21 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
           types: ['text'],
+          options: [
+            { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', label: 'Base32' },
+            { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', label: 'Base64' },
+          ],
+          enforceOptions: false,
         },
         {
           name: 'paddingSymbol',
           initialValue: '=',
           types: ['text'],
+          options: [
+            { value: '', label: 'None' },
+            { value: '=', label: 'Equals sign (=)' },
+          ],
+          enforceOptions: false,
         },
         {
           name: 'paddingRequired',
@@ -89,11 +115,22 @@ const defaultDirectoryState: DirectoryState = {
           name: 'maxLineLength',
           initialValue: 0,
           types: ['integer'],
+          options: [
+            { value: 0, label: 'None' },
+            { value: 64, label: '64 (RFC 1421)' },
+            { value: 76, label: '76 (RFC 2045)' },
+          ],
+          enforceOptions: false,
         },
         {
           name: 'lineSeparator',
           initialValue: '\r\n',
           types: ['text'],
+          options: [
+            { value: '\r\n', label: 'CR & LF' },
+            { value: '\n', label: 'LF' },
+          ],
+          enforceOptions: false,
         },
         {
           name: 'encodedData',

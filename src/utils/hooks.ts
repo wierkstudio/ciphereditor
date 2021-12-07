@@ -32,3 +32,10 @@ export const useAppShortcuts = (bindings: { [type: string]: string }) => {
     return () => window.removeEventListener('keydown', keyDownListener, true)
   }, [keyDownListener])
 }
+
+export const useAppClassName = (name: string, modifiers: string[] = []) =>
+  [name].concat(
+    modifiers
+      .filter(value => !!value)
+      .map(modifier => name + '--' + modifier)
+  ).join(' ')

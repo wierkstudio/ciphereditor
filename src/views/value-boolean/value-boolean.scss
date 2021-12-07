@@ -1,0 +1,50 @@
+
+@import 'styles/shared';
+
+.value-boolean {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: rem(8) rem(16);
+  cursor: pointer;
+
+  &__input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    visibility: hidden;
+  }
+
+  &__track {
+    width: rem(50);
+    height: rem(26);
+    padding: rem(3);
+    border-radius: rem(16);
+    border: rem(2) solid $c-line;
+    background-color: $c-white;
+    transition-property: background-color, border-color;
+    transition-duration: 0.3s;
+  }
+
+  &__thumb {
+    width: rem(16);
+    height: rem(16);
+    background-color: $c-meta;
+    border-radius: rem(8);
+    transform: none;
+    transition-property: transform, background-color;
+    transition-duration: 0.3s;
+  }
+
+  &__input:checked + &__track {
+    background-color: $c-meta;
+    border-color: $c-meta;
+  }
+
+  &__input:checked + &__track &__thumb {
+    transform: translate(#{rem(24)}, 0);
+    background-color: $c-white;
+  }
+}

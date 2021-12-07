@@ -1,20 +1,17 @@
 
 import { getShortcutBindings } from 'slices/settings/selectors'
 import { useAppSelector, useAppShortcuts } from 'utils/hooks'
-import Bar from '../bar/bar'
-import Blueprint from '../blueprint/blueprint'
+import BarView from '../bar/bar'
+import BlueprintView from '../blueprint/blueprint'
 import './app.css'
 
-function App() {
+export default function AppView() {
   const shortcutBindings = useAppSelector(state => getShortcutBindings(state.settings))
   useAppShortcuts(shortcutBindings)
-
   return (
     <div className="app">
-      <Bar />
-      <Blueprint />
+      <BarView />
+      <BlueprintView />
     </div>
   )
 }
-
-export default App

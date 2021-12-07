@@ -32,9 +32,19 @@ export const resolveImplicitTypedValue = (value: ImplicitTypedValue): TypedValue
  */
 export const compareValues = (a: TypedValue, b: TypedValue): boolean => {
   if (a.type !== b.type) {
+    // A value of different type is always considered to be not equal
     return false
   }
 
-  // TODO: Needs implementation
-  return false
+  switch (a.type) {
+    case 'text':
+    case 'integer':
+    case 'boolean':
+    case 'double':
+      return a.value === b.value
+
+    default:
+      // Equality for values of the given type is not defined
+      return false
+  }
 }

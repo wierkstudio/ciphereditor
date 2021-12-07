@@ -2,6 +2,23 @@
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { ImplicitTypedValue, TypedValue } from './value'
 
+export type ControlOption<ValueType> = {
+  /**
+   * Element value
+   */
+  value: ValueType
+
+  /**
+   * Element label
+   */
+  label: string
+
+  /**
+   * Element description
+   */
+  description?: string
+}
+
 /**
  * Control entity
  * Controls are the building blocks of operation and program interfaces.
@@ -28,17 +45,16 @@ export interface Control {
   initialValue: ImplicitTypedValue
 
   /**
-   * Enumeration of named values. Expects a (value, type, label) tuple where
-   * type and label are optional.
-   * Defaults to empty array (no restriction).
+   * Control value options
+   * Defaults to an empty array
    */
-  enum?: [any][] | [any, string][] | [any, string, string][]
+  options?: ControlOption<ImplicitTypedValue>[]
 
   /**
-   * Wether the value is restricted to the enum values (if not empty)
+   * Wether the value is restricted to the given options (if not empty)
    * Defaults to true
    */
-  enumStrict?: boolean
+  enforceOptions?: boolean
 
   /**
    * Control enabled state
@@ -68,9 +84,9 @@ export interface ControlChange {
   value?: ImplicitTypedValue
 
   /**
-   * New enumeration of named values
+   * New control value options
    */
-  enum?: [any][] | [any, string][] | [any, string, string][]
+  options?: ControlOption<ImplicitTypedValue>[]
 
   /**
    * New enabled state
@@ -133,15 +149,14 @@ export interface ControlNode extends BlueprintNode {
   value: TypedValue
 
   /**
-   * Enumeration of named values. Expects a (value, type, label) tuple where
-   * type and label are optional.
+   * Control value options
    */
-  enum: [any][] | [any, string][] | [any, string, string][]
+  options: ControlOption<TypedValue>[]
 
   /**
-   * Wether the value is restricted to the enum values (if not empty)
+   * Wether the value is restricted to the given options (if not empty)
    */
-  enumStrict: boolean
+  enforceOptions: boolean
 
   /**
    * Control enabled state

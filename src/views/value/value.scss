@@ -1,0 +1,12 @@
+
+@import 'styles/shared';
+
+.value {
+  padding: rem(8) rem(16);
+  outline: none;
+
+  &__meta {
+    @extend %t-text;
+    color: $c-meta;
+  }
+}

@@ -1,7 +1,8 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { Control, ControlChange, ControlChangeSource, ControlNode } from 'types/control'
+import { Control, ControlChange, ControlChangeSource, ControlNode, ControlOption } from 'types/control'
 import { OperationNode, OperationState } from 'types/operation'
+import { ImplicitTypedValue } from 'types/value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { getNode } from '../selectors/blueprint'
 import { getControlNode } from '../selectors/control'
@@ -23,8 +24,8 @@ export const defaultControlNode: ControlNode = {
   types: ['text'],
   initialValue: '',
   value: { value: '', type: 'text' },
-  enum: [],
-  enumStrict: true,
+  options: [],
+  enforceOptions: true,
   enabled: true,
   writable: true,
 }
@@ -70,6 +71,10 @@ export const addOperationControlNode = (
     parentId: operationId,
     label: control.label || control.name,
     value: resolveImplicitTypedValue(control.initialValue),
+    options:
+      control.options !== undefined
+        ? resolveImplicitTypedControlOptions(control.options)
+        : []
   }
   return addNode(state, controlNode)
 }
@@ -88,8 +93,11 @@ export const addOperationControlNode = (
 
   // Apply changes not related to the value
   control.label = change.label || control.label
-  control.enum = change.enum || control.enum
   control.enabled = change.enabled || control.enabled
+
+  if (change.options !== undefined) {
+    control.options = resolveImplicitTypedControlOptions(change.options)
+  }
 
   // Bail out early, if the value is not part of the change
   if (change.value === undefined) {
@@ -137,4 +145,16 @@ export const addOperationControlNode = (
       }
       break
   }
+}
+
+/**
+ * Resolve implicit typed control options
+ */
+ export const resolveImplicitTypedControlOptions = (
+  options: ControlOption<ImplicitTypedValue>[]
+) => {
+  return options.map(option => ({
+    ...option,
+    value: resolveImplicitTypedValue(option.value),
+  }))
 }

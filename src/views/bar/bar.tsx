@@ -7,7 +7,7 @@ import { addEmptyControlAction, addEmptyProgramAction, addOperationAction, leave
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 import './bar.scss'
 
-function Bar() {
+export default function BarView() {
   const dispatch = useAppDispatch()
   const program = useAppSelector(state => getActiveProgram(state.blueprint))
   const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
@@ -47,5 +47,3 @@ function Bar() {
     </div>
   )
 }
-
-export default Bar
