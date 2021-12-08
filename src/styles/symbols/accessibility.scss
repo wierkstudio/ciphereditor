@@ -1,0 +1,10 @@
+
+%a-visually-hidden-but-accessible {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: rem(1);
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: rem(1);
+}

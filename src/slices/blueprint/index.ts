@@ -147,10 +147,10 @@ export const blueprintSlice = createSlice({
     },
 
     /**
-     * Select a node.
+     * Select a node or clear the selection.
      */
     selectNodeAction: (state, { payload }: PayloadAction<{
-      nodeId: BlueprintNodeId,
+      nodeId?: BlueprintNodeId,
     }>) => {
       selectNode(state, payload.nodeId)
     },

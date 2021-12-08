@@ -10,11 +10,7 @@
   cursor: pointer;
 
   &__input {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    visibility: hidden;
+    @extend %a-visually-hidden-but-accessible;
   }
 
   &__track {
