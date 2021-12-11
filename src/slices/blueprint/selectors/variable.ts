@@ -5,8 +5,8 @@ import {
   BlueprintState,
 } from 'types/blueprint'
 import { VariableNode } from 'types/variable'
-import { getNode } from './blueprint'
-import { getControlNode } from './control'
+import { getNode, getNodeChildren } from './blueprint'
+import { getControlNode, isControlInternVariable } from './control'
 
 /**
  * Find a variable node by the given node id.
@@ -20,17 +20,33 @@ export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) =>
   getNode(state, id, BlueprintNodeType.Variable) as VariableNode
 
 /**
- * Return the variable attached to the given control within a program.
+ * Return the variable currently attached to the given control within a program
+ * context. By default, the active program context is used.
  */
-export const getAttachedVariable = (
+export const getControlVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
+  programId?: BlueprintNodeId,
 ) => {
+  const intern = isControlInternVariable(state, controlId, programId)
   const control = getControlNode(state, controlId)
-  const variableId =
-    control.parentId === programId
-      ? control.attachedInternVariableId
-      : control.attachedVariableId
+  const variableId = intern ? control.attachedInternVariableId : control.attachedVariableId
   return variableId ? getVariableNode(state, variableId) : undefined
+}
+
+/**
+ * Return variables from the given program.
+ */
+export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId) =>
+  getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNode[]
+
+/**
+ * Return the current value for the given variable.
+ */
+export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId) => {
+  const variable = getVariableNode(state, variableId)
+  // TODO: Assertion: A variable is always attached to at least one control
+  // Assertion: Variable attachment ids are ordered by when they propagated
+  const lastActiveControl = getControlNode(state, variable.attachmentIds[0]!)
+  return lastActiveControl.value
 }

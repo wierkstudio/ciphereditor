@@ -5,10 +5,12 @@ import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blu
 import { BlueprintNode, BlueprintNodeType } from 'types/blueprint'
 import { ControlNode } from 'types/control'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
+import { ProgramNode } from 'types/program'
 import './node.scss'
 
 export default function Node(props: {
   node: BlueprintNode
+  program: ProgramNode
 }) {
   const dispatch = useAppDispatch()
   const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
@@ -33,7 +35,7 @@ export default function Node(props: {
       <h3 className="node__label">{(props.node as any).label ?? `${props.node.type} #${props.node.id}`}</h3>
       <div className="node__controls">
         {controls.map(node => (
-          <ControlView key={node.id} control={node} />
+          <ControlView key={node.id} control={node} program={props.program} />
         ))}
       </div>
     </div>

@@ -17,7 +17,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'language1',
           initialValue: 'en',
           types: ['text'],
-          options: [
+          choices: [
             { value: '', label: 'Detect' },
             { value: 'en', label: 'English' },
             { value: 'de', label: 'German' },
@@ -30,7 +30,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'language2',
           initialValue: 'de',
           types: ['text'],
-          options: [
+          choices: [
             { value: '', label: 'Detect' },
             { value: 'en', label: 'English' },
             { value: 'de', label: 'German' },
@@ -61,7 +61,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'variant',
           initialValue: 'rot13',
           types: ['text'],
-          options: [
+          choices: [
             { value: 'rot5', label: 'ROT5 (0-9)' },
             { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
             { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
@@ -90,21 +90,21 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
           types: ['text'],
-          options: [
+          choices: [
             { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', label: 'Base32' },
             { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', label: 'Base64' },
           ],
-          enforceOptions: false,
+          enforceChoices: false,
         },
         {
           name: 'paddingSymbol',
           initialValue: '=',
           types: ['text'],
-          options: [
+          choices: [
             { value: '', label: 'None' },
             { value: '=', label: 'Equals sign (=)' },
           ],
-          enforceOptions: false,
+          enforceChoices: false,
         },
         {
           name: 'paddingRequired',
@@ -113,24 +113,24 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'maxLineLength',
-          initialValue: 0,
+          initialValue: { value: 0, type: 'integer' },
           types: ['integer'],
-          options: [
-            { value: 0, label: 'None' },
-            { value: 64, label: '64 (RFC 1421)' },
-            { value: 76, label: '76 (RFC 2045)' },
+          choices: [
+            { value: { value: 0, type: 'integer' }, label: 'None' },
+            { value: { value: 64, type: 'integer' }, label: '64 (RFC 1421)' },
+            { value: { value: 76, type: 'integer' }, label: '76 (RFC 2045)' },
           ],
-          enforceOptions: false,
+          enforceChoices: false,
         },
         {
           name: 'lineSeparator',
           initialValue: '\r\n',
           types: ['text'],
-          options: [
+          choices: [
             { value: '\r\n', label: 'CR & LF' },
             { value: '\n', label: 'LF' },
           ],
-          enforceOptions: false,
+          enforceChoices: false,
         },
         {
           name: 'encodedData',

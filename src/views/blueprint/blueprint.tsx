@@ -18,7 +18,7 @@ export default function BlueprintView() {
       <div className="blueprint__canvas">
         {nodes.map(node => (
           <div className="blueprint__node" key={node.id}>
-            <NodeView node={node} />
+            <NodeView node={node} program={activeProgram} />
           </div>
         ))}
       </div>

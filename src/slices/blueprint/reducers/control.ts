@@ -1,15 +1,15 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { Control, ControlChange, ControlChangeSource, ControlNode, ControlOption } from 'types/control'
+import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueChoice } from 'types/control'
 import { OperationNode, OperationState } from 'types/operation'
 import { ImplicitTypedValue } from 'types/value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { getNode } from '../selectors/blueprint'
-import { getControlNode } from '../selectors/control'
+import { getControlNode, isControlInternVariable } from '../selectors/control'
 import { addNode, nextNodeId } from './blueprint'
 import { setOperationState } from './operation'
-import { compareValues, resolveImplicitTypedValue } from './value'
-import { propagateChange } from './variables'
+import { compareValues, createEmptyTypedValue, performImplicitTypeConversion, resolveImplicitTypedValue } from './value'
+import { addVariable, attachControlToVariable, propagateChange } from './variable'
 
 /**
  * Default control node object
@@ -21,11 +21,11 @@ export const defaultControlNode: ControlNode = {
   childIds: [],
   name: '',
   label: '',
-  types: ['text'],
+  types: ['boolean', 'integer', 'float', 'text'],
   initialValue: '',
   value: { value: '', type: 'text' },
-  options: [],
-  enforceOptions: true,
+  choices: [],
+  enforceChoices: true,
   enabled: true,
   writable: true,
 }
@@ -64,25 +64,27 @@ export const addOperationControlNode = (
   operationId: BlueprintNodeId,
   control: Control
 ) => {
+  const value = resolveImplicitTypedValue(control.initialValue)
+  const choices = resolveImplicitTypedControlValueChoices(control.choices)
+  const index = choices.findIndex(x => compareValues(x.value, value))
+  const selectedChoiceIndex = index !== -1 ? index : undefined
   const controlNode: ControlNode = {
     ...defaultControlNode,
     ...control,
     id: nextNodeId(state),
     parentId: operationId,
     label: control.label || control.name,
-    value: resolveImplicitTypedValue(control.initialValue),
-    options:
-      control.options !== undefined
-        ? resolveImplicitTypedControlOptions(control.options)
-        : []
+    value,
+    selectedChoiceIndex,
+    choices,
   }
   return addNode(state, controlNode)
 }
 
 /**
- * Apply operation control changes.
+ * Apply control changes originating from the user, an operation or a variable.
  */
- export const changeControl = (
+export const changeControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
   change: ControlChange,
@@ -95,19 +97,22 @@ export const addOperationControlNode = (
   control.label = change.label || control.label
   control.enabled = change.enabled || control.enabled
 
-  if (change.options !== undefined) {
-    control.options = resolveImplicitTypedControlOptions(change.options)
+  if (change.choices !== undefined) {
+    control.choices = resolveImplicitTypedControlValueChoices(change.choices)
   }
 
-  // Bail out early, if the value is not part of the change
-  if (change.value === undefined) {
-    return
-  }
-
-  // Bail out early, if the new value is considered equal to the old one
   const oldValue = control.value
-  const newValue = resolveImplicitTypedValue(change.value)
-  if (compareValues(oldValue, newValue)) {
+  const newValue = change.value ? resolveImplicitTypedValue(change.value) : oldValue
+  const equal = compareValues(oldValue, newValue)
+
+  // If a choice is selected, update it when choices or value change
+  if (control.selectedChoiceIndex !== undefined && (change.choices !== undefined || !equal)) {
+    const index = control.choices.findIndex(x => compareValues(x.value, newValue))
+    control.selectedChoiceIndex = index !== -1 ? index : undefined
+  }
+
+  // Bail out early, if the value doesn't change
+  if (equal) {
     return
   }
 
@@ -148,11 +153,83 @@ export const addOperationControlNode = (
 }
 
 /**
+ * Set a control value to the given choice index.
+ */
+export const changeControlValueToChoice = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  choiceIndex: number,
+) => {
+  const control = getControlNode(state, controlId)
+  const value = control.choices[choiceIndex].value
+  changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
+  control.selectedChoiceIndex = choiceIndex
+}
+
+/**
+ * Change the type of a control value.
+ */
+export const changeControlValueToType = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  valueType: string,
+) => {
+  const control = getControlNode(state, controlId)
+  control.selectedChoiceIndex = undefined
+  if (control.value.type !== valueType) {
+    let value = performImplicitTypeConversion(control.value, valueType)
+    if (value === undefined) {
+      value = createEmptyTypedValue(valueType)
+    }
+    changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
+  }
+}
+
+/**
+ * Change the value of a control to a variable.
+ */
+export const changeControlValueToVariable = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  variableId: BlueprintNodeId,
+) => {
+  // TODO: Detach currently attached variable
+  const control = getControlNode(state, controlId)
+  control.selectedChoiceIndex = undefined
+  attachControlToVariable(state, controlId, variableId, true)
+}
+
+/**
+ * Add a new variable from a control.
+ */
+export const addVariableFromControl = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  programId: BlueprintNodeId,
+) => {
+  // TODO: Detach currently attached variable
+  const control = getControlNode(state, controlId)
+  control.selectedChoiceIndex = undefined
+
+  // Create new variable
+  if (!isControlInternVariable(state, controlId, programId)) {
+    const variable = addVariable(state, programId, controlId)
+    const programControl = addProgramControlNode(state, programId)
+    attachControlToVariable(state, programControl.id, variable.id)
+  }
+
+  propagateChange(state, controlId, programId)
+}
+
+/**
  * Resolve implicit typed control options
  */
- export const resolveImplicitTypedControlOptions = (
-  options: ControlOption<ImplicitTypedValue>[]
+export const resolveImplicitTypedControlValueChoices = (
+  options: ControlValueChoice<ImplicitTypedValue>[] | undefined
 ) => {
+  if (options === undefined) {
+    return []
+  }
   return options.map(option => ({
     ...option,
     value: resolveImplicitTypedValue(option.value),

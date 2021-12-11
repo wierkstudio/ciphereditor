@@ -1,15 +1,22 @@
 
+import {
+  addProgramControlNode,
+  addVariableFromControl,
+  changeControl,
+  changeControlValueToChoice,
+  changeControlValueToType,
+  changeControlValueToVariable
+} from './reducers/control'
 import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
 import { ControlChange, ControlChangeSource, NamedControlChange } from 'types/control'
 import { Operation, OperationState } from 'types/operation'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, setOperationState } from './reducers/operation'
-import { addProgramControlNode, changeControl } from './reducers/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { attachControls } from './reducers/variables'
+import { attachControls } from './reducers/variable'
 import { getNodeNamedControls } from './selectors/control'
 import { BlueprintNodeType } from 'types/blueprint'
 
@@ -99,6 +106,34 @@ export const blueprintSlice = createSlice({
       }
     },
 
+    changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      choiceIndex: number,
+    }>) => {
+      changeControlValueToChoice(state, payload.controlId, payload.choiceIndex)
+    },
+
+    changeControlValueToTypeAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      valueType: string,
+    }>) => {
+      changeControlValueToType(state, payload.controlId, payload.valueType)
+    },
+
+    changeControlValueToVariableAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      variableId: BlueprintNodeId,
+    }>) => {
+      changeControlValueToVariable(state, payload.controlId, payload.variableId)
+    },
+
+    addVariableFromControlAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      programId: BlueprintNodeId,
+    }>) => {
+      addVariableFromControl(state, payload.controlId, payload.programId)
+    },
+
     /**
      * Apply control changes to the given parent node.
      */
@@ -184,6 +219,10 @@ export const {
   addEmptyControlAction,
   changeControlAction,
   linkControlAction,
+  changeControlValueToChoiceAction,
+  changeControlValueToTypeAction,
+  changeControlValueToVariableAction,
+  addVariableFromControlAction,
   applyOperationTaskResultAction,
   selectNodeAction,
   removeNodeAction,
