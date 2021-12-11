@@ -4,12 +4,14 @@ import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 import { selectNodeAction } from 'slices/blueprint'
+import { BlueprintNodeType } from 'types/blueprint'
 import './blueprint.scss'
 
 export default function BlueprintView() {
   const dispatch = useAppDispatch()
   const activeProgram = useAppSelector(state => getActiveProgram(state.blueprint))!
   const nodes = useAppSelector(state => getNodeChildren(state.blueprint, activeProgram.id))
+    .filter(node => node.type !== BlueprintNodeType.Variable)
   return (
     <div
       className="blueprint"

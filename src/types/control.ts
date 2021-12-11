@@ -136,7 +136,7 @@ export interface ControlNode extends BlueprintNode {
   /**
    * Initial control value
    */
-  initialValue: ImplicitTypedValue
+  initialValue?: ImplicitTypedValue
 
   /**
    * Current value

@@ -1,11 +1,16 @@
 
-import { getNode } from '../selectors/blueprint'
+import { getNode, hasNode } from '../selectors/blueprint'
 import {
   BlueprintNode,
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
 } from 'types/blueprint'
+import { VariableNode } from 'types/variable'
+import { getControlNode } from '../selectors/control'
+import { ControlNode } from 'types/control'
+import { getVariableNode } from '../selectors/variable'
+import { arrayRemove } from 'utils/array'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -65,8 +70,11 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
  * @param nodeId Id of node to be removed
  */
 export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
-  const node = getNode(state, nodeId)
+  if (!hasNode(state, nodeId)) {
+    return
+  }
 
+  const node = getNode(state, nodeId)
   if (node.id === node.parentId) {
     throw new Error(`The root node can't be removed`)
   }
@@ -74,7 +82,36 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
   // Remove child nodes recursively (bottom-up removal)
   node.childIds.forEach(removeNode.bind(null, state))
 
-  // TODO: Detach from other relationships (e.g. variables)
+  // Clean up relationships between nodes (other than parent-child)
+  switch (node.type) {
+    case BlueprintNodeType.Variable:
+      const variable = node as VariableNode
+      variable.attachmentIds.forEach(attachmentId => {
+        const control = getControlNode(state, attachmentId)
+        if (control.attachedInternVariableId === nodeId) {
+          control.attachedInternVariableId = undefined
+        } else if (control.attachedVariableId === nodeId) {
+          control.attachedVariableId = undefined
+        }
+      })
+      break
+
+    case BlueprintNodeType.Control:
+      const control = node as ControlNode
+      const variableIds: (BlueprintNodeId | undefined)[] =
+        [control.attachedInternVariableId, control.attachedVariableId]
+      for (let i = 0; i < variableIds.length; i++) {
+        const variableId = variableIds[i]
+        if (variableId !== undefined) {
+          const variable = getVariableNode(state, variableId)
+          variable.attachmentIds = arrayRemove(variable.attachmentIds, nodeId)
+          if (variable.attachmentIds.length === 0) {
+            removeNode(state, variable.id)
+          }
+        }
+      }
+      break
+  }
 
   // Remove blueprint references
   if (state.selectedNodeId === nodeId) {

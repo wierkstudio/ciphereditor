@@ -2,7 +2,7 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
 import { ControlChangeSource } from 'types/control'
 import { VariableNode } from 'types/variable'
-import { arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
+import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
 import { getControlNode } from '../selectors/control'
 import { getControlVariable, getVariableNode } from '../selectors/variable'
 import { addNode, nextNodeId, removeNode } from './blueprint'
@@ -93,10 +93,17 @@ export const attachControlToVariable = (
 ) => {
   const control = getControlNode(state, controlId)
   const variable = getVariableNode(state, variableId)
+  const intern = control.parentId === variable.parentId
+  // Break up before entering a new connection
+  if (intern && control.attachedInternVariableId !== undefined) {
+    detachControlFromVariable(state, controlId, control.attachedInternVariableId)
+  } else if (!intern && control.attachedVariableId !== undefined) {
+    detachControlFromVariable(state, controlId, control.attachedVariableId)
+  }
   // Add reference to control to the variable
   variable.attachmentIds = arrayUniquePush(variable.attachmentIds, control.id)
   // Add reference to the variable to the control
-  if (control.parentId === variable.parentId) {
+  if (intern) {
     control.attachedInternVariableId = variable.id
   } else {
     control.attachedVariableId = variable.id
@@ -105,6 +112,29 @@ export const attachControlToVariable = (
   // Propagate if requested
   if (propagate) {
     propagateChange(state, control.id, variable.parentId)
+  }
+}
+
+/**
+ * Detach a control from the given variable.
+ */
+export const detachControlFromVariable = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  variableId: BlueprintNodeId,
+) => {
+  const control = getControlNode(state, controlId)
+  const variable = getVariableNode(state, variableId)
+  // Detach from each other
+  variable.attachmentIds = arrayRemove(variable.attachmentIds, controlId)
+  if (control.attachedInternVariableId === variableId) {
+    control.attachedInternVariableId = undefined
+  } else if (control.attachedVariableId === variableId) {
+    control.attachedVariableId = undefined
+  }
+  // Clean up dangling variable
+  if (variable.attachmentIds.length === 0) {
+    removeNode(state, variableId)
   }
 }
 

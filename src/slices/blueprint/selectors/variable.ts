@@ -41,12 +41,20 @@ export const getProgramVariables = (state: BlueprintState, programId: BlueprintN
   getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNode[]
 
 /**
- * Return the current value for the given variable.
+ * Return the control that last propagated to a given variable.
  */
-export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId) => {
+export const getVariableControl = (
+  state: BlueprintState,
+  variableId: BlueprintNodeId
+) => {
   const variable = getVariableNode(state, variableId)
   // TODO: Assertion: A variable is always attached to at least one control
   // Assertion: Variable attachment ids are ordered by when they propagated
-  const lastActiveControl = getControlNode(state, variable.attachmentIds[0]!)
-  return lastActiveControl.value
+  return getControlNode(state, variable.attachmentIds[0]!)
 }
+
+/**
+ * Return the current value for the given variable.
+ */
+export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId) =>
+  getVariableControl(state, variableId).value

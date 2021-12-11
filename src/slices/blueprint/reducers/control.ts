@@ -6,10 +6,11 @@ import { ImplicitTypedValue } from 'types/value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { getNode } from '../selectors/blueprint'
 import { getControlNode, isControlInternVariable } from '../selectors/control'
+import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 import { addNode, nextNodeId } from './blueprint'
 import { setOperationState } from './operation'
-import { compareValues, createEmptyTypedValue, performImplicitTypeConversion, resolveImplicitTypedValue } from './value'
-import { addVariable, attachControlToVariable, propagateChange } from './variable'
+import { allValueTypes, compareValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
+import { addVariable, attachControlToVariable, detachControlFromVariable, propagateChange } from './variable'
 
 /**
  * Default control node object
@@ -21,9 +22,8 @@ export const defaultControlNode: ControlNode = {
   childIds: [],
   name: '',
   label: '',
-  types: ['boolean', 'integer', 'float', 'text'],
-  initialValue: '',
-  value: { value: '', type: 'text' },
+  types: allValueTypes,
+  value: defaultValue,
   choices: [],
   enforceChoices: true,
   enabled: true,
@@ -102,7 +102,10 @@ export const changeControl = (
   }
 
   const oldValue = control.value
-  const newValue = change.value ? resolveImplicitTypedValue(change.value) : oldValue
+  const newValue =
+    change.value !== undefined
+      ? resolveImplicitTypedValue(change.value)
+      : oldValue
   const equal = compareValues(oldValue, newValue)
 
   // If a choice is selected, update it when choices or value change
@@ -158,9 +161,16 @@ export const changeControl = (
 export const changeControlValueToChoice = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
+  programId: BlueprintNodeId,
   choiceIndex: number,
 ) => {
   const control = getControlNode(state, controlId)
+  // Detach from variable, if any
+  const attachedVariable = getControlVariable(state, controlId, programId)
+  if (attachedVariable !== undefined) {
+    detachControlFromVariable(state, controlId, attachedVariable.id)
+  }
+  // Apply choice
   const value = control.choices[choiceIndex].value
   changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
   control.selectedChoiceIndex = choiceIndex
@@ -172,14 +182,21 @@ export const changeControlValueToChoice = (
 export const changeControlValueToType = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
+  programId: BlueprintNodeId,
   valueType: string,
 ) => {
   const control = getControlNode(state, controlId)
+  // Detach from variable, if any
+  const attachedVariable = getControlVariable(state, controlId, programId)
+  if (attachedVariable !== undefined) {
+    detachControlFromVariable(state, controlId, attachedVariable.id)
+  }
+  // Derive value of desired type from current value
   control.selectedChoiceIndex = undefined
   if (control.value.type !== valueType) {
-    let value = performImplicitTypeConversion(control.value, valueType)
+    let value = castValue(control.value, valueType)
     if (value === undefined) {
-      value = createEmptyTypedValue(valueType)
+      value = createValue(valueType)
     }
     changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
   }
@@ -193,10 +210,14 @@ export const changeControlValueToVariable = (
   controlId: BlueprintNodeId,
   variableId: BlueprintNodeId,
 ) => {
-  // TODO: Detach currently attached variable
   const control = getControlNode(state, controlId)
   control.selectedChoiceIndex = undefined
-  attachControlToVariable(state, controlId, variableId, true)
+  attachControlToVariable(state, controlId, variableId, false)
+  // TODO: Choose propagation direction based on control priority
+  // Propagate from the last active control to this control
+  const variable = getVariableNode(state, variableId)
+  const activeControl = getVariableControl(state, variableId)
+  propagateChange(state, activeControl.id, variable.parentId)
 }
 
 /**
@@ -210,14 +231,14 @@ export const addVariableFromControl = (
   // TODO: Detach currently attached variable
   const control = getControlNode(state, controlId)
   control.selectedChoiceIndex = undefined
-
   // Create new variable
+  const variable = addVariable(state, programId, controlId)
+  // When editing a control from outside also add a program control for
+  // this new variable
   if (!isControlInternVariable(state, controlId, programId)) {
-    const variable = addVariable(state, programId, controlId)
     const programControl = addProgramControlNode(state, programId)
     attachControlToVariable(state, programControl.id, variable.id)
   }
-
   propagateChange(state, controlId, programId)
 }
 

@@ -52,12 +52,12 @@ export default function ControlView(props: {
     switch (type) {
       case 'change_value_to_choice':
         const choiceIndex = payload as number
-        dispatch(changeControlValueToChoiceAction({ controlId, choiceIndex }))
+        dispatch(changeControlValueToChoiceAction({ controlId, programId, choiceIndex }))
         break
 
       case 'change_value_to_type':
         const valueType = payload as string
-        dispatch(changeControlValueToTypeAction({ controlId, valueType }))
+        dispatch(changeControlValueToTypeAction({ controlId, programId, valueType }))
         break
 
       case 'change_value_to_variable':

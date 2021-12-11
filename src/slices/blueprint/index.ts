@@ -108,16 +108,20 @@ export const blueprintSlice = createSlice({
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId,
+      programId: BlueprintNodeId,
       choiceIndex: number,
     }>) => {
-      changeControlValueToChoice(state, payload.controlId, payload.choiceIndex)
+      const { controlId, programId, choiceIndex } = payload
+      changeControlValueToChoice(state, controlId, programId, choiceIndex)
     },
 
     changeControlValueToTypeAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId,
+      programId: BlueprintNodeId,
       valueType: string,
     }>) => {
-      changeControlValueToType(state, payload.controlId, payload.valueType)
+      const { controlId, programId, valueType } = payload
+      changeControlValueToType(state, controlId, programId, valueType)
     },
 
     changeControlValueToVariableAction: (state, { payload }: PayloadAction<{
