@@ -4,7 +4,7 @@ import { enterProgramAction, selectNodeAction } from 'slices/blueprint'
 import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { BlueprintNode, BlueprintNodeType } from 'types/blueprint'
 import { ControlNode } from 'types/control'
-import { useAppDispatch, useAppSelector } from 'utils/hooks'
+import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 import { ProgramNode } from 'types/program'
 import './node.scss'
 
@@ -13,8 +13,8 @@ export default function Node(props: {
   program: ProgramNode
 }) {
   const dispatch = useAppDispatch()
-  const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
-  let controls = useAppSelector(state => getNodeChildren(state.blueprint, props.node.id, BlueprintNodeType.Control)) as ControlNode[]
+  const selectedNode = useBlueprintSelector(state => getSelectedNode(state))
+  let controls = useBlueprintSelector(state => getNodeChildren(state, props.node.id, BlueprintNodeType.Control)) as ControlNode[]
   if (props.node.type === BlueprintNodeType.Control) {
     controls.push(props.node as ControlNode)
   }

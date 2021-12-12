@@ -12,7 +12,7 @@ import {
 import { ControlNode } from 'types/control'
 import { TypedValue } from 'types/value'
 import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { useAppClassName, useAppDispatch, useAppSelector } from 'utils/hooks'
+import { useAppClassName, useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 import { getControlVariable } from 'slices/blueprint/selectors/variable'
 import { getControlVariableOptions, isControlInternVariable } from 'slices/blueprint/selectors/control'
 import { ProgramNode } from 'types/program'
@@ -26,7 +26,7 @@ export default function ControlView(props: {
   const { control, program } = props
 
   const dispatch = useAppDispatch()
-  const selectedNode = useAppSelector(state => getSelectedNode(state.blueprint))
+  const selectedNode = useBlueprintSelector(state => getSelectedNode(state))
   const controlId = control.id
   const programId = program.id
   const htmlId = `control-${controlId}`
@@ -34,8 +34,8 @@ export default function ControlView(props: {
   const { $options: $menuOptions, options: menuOptions, index: menuIndex } =
     useMenuOptions(control, program)
 
-  const intern = useAppSelector(state => isControlInternVariable(state.blueprint, controlId, programId))
-  const attachedVariable = useAppSelector(state => getControlVariable(state.blueprint, controlId, programId))
+  const intern = useBlueprintSelector(state => isControlInternVariable(state, controlId, programId))
+  const attachedVariable = useBlueprintSelector(state => getControlVariable(state, controlId, programId))
   const showValue = intern || (control.selectedChoiceIndex === undefined && attachedVariable === undefined)
 
   const onChange = useCallback((value: TypedValue, event: ChangeEvent) => {
@@ -150,8 +150,8 @@ export const useMenuOptions = (control: ControlNode, program: ProgramNode) => {
     )
   }
 
-  const variables = useAppSelector(state => getControlVariableOptions(state.blueprint, control.id, program.id))
-  const attachedVariable = useAppSelector(state => getControlVariable(state.blueprint, control.id, program.id))
+  const variables = useBlueprintSelector(state => getControlVariableOptions(state, control.id, program.id))
+  const attachedVariable = useBlueprintSelector(state => getControlVariable(state, control.id, program.id))
   $options.push(
     <optgroup key={index} label="Variables">
       {variables.map(variable => {

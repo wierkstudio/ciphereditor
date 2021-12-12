@@ -1,4 +1,5 @@
 
+import undoable, { excludeAction } from 'redux-undo'
 import {
   addProgramControlNode,
   addVariableFromControl,
@@ -10,7 +11,7 @@ import {
 import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
 import { ControlChange, ControlChangeSource, NamedControlChange } from 'types/control'
 import { Operation, OperationState } from 'types/operation'
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, setOperationState } from './reducers/operation'
 import { getNode, hasNode } from './selectors/blueprint'
@@ -232,4 +233,33 @@ export const {
   removeNodeAction,
 } = blueprintSlice.actions
 
-export default blueprintSlice.reducer
+export const undoAction = createAction(`${blueprintSlice.name}/undoAction`)
+export const redoAction = createAction(`${blueprintSlice.name}/redoAction`)
+
+export default undoable(blueprintSlice.reducer, {
+  limit: 50,
+  undoType: undoAction.type,
+  redoType: redoAction.type,
+  filter: excludeAction([
+    // Szenario: The user wants to copy something from the undo past
+    // The undo history must stay intact when navigating or selecting
+    selectNodeAction.type,
+    enterProgramAction.type,
+    leaveProgramAction.type,
+  ]),
+  groupBy: (action, currentState, previousHistory) => {
+    const currentGroup = previousHistory.group
+    if (action.type === applyOperationTaskResultAction.type) {
+      // Group incoming operation results with the previous state as they are
+      // automatic and should not be performed again when doing undo/redo
+      return currentGroup
+    } else if (action.type === changeControlAction.type) {
+      // User initiated changes to controls should be grouped together when they
+      // refer to the same control and happen after small time intervals (30s)
+      const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
+      return `control-${action.payload.controlId}-${timeUnit}`
+    }
+    // Put this action into a separate group
+    return Number.isInteger(currentGroup) ? currentGroup + 1 : 1
+  }
+})

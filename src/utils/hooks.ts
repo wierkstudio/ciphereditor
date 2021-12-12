@@ -3,10 +3,21 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch } from '../store'
 import type { RootState } from 'slices'
 import { useCallback, useEffect } from 'react'
+import { BlueprintState } from 'types/blueprint'
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch = () => useDispatch<AppDispatch>()
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+
+/**
+ * A hook to access the present blueprint state. This hook takes a blueprint
+ * selector function as an argument.
+ */
+export const useBlueprintSelector: TypedUseSelectorHook<BlueprintState> = <TSelected = unknown>(
+  selector: (state: BlueprintState) => TSelected,
+  equalityFn?: (left: TSelected, right: TSelected) => boolean
+) =>
+  useAppSelector(state => selector(state.blueprint.present), equalityFn)
 
 /**
  * Hook registering the given shortcut bindings

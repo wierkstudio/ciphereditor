@@ -13,9 +13,9 @@ import { hasNode } from 'slices/blueprint/selectors/blueprint'
 let processor = new Processor('/processor.html')
 
 export const processorMiddleware: Middleware<{}, RootState> = store => next => (action: AnyAction) => {
-  const preBusyOperationIds = getBusyOperationIds(store.getState().blueprint)
+  const preBusyOperationIds = getBusyOperationIds(store.getState().blueprint.present)
   const result = next(action)
-  const postBusyOperationIds = getBusyOperationIds(store.getState().blueprint)
+  const postBusyOperationIds = getBusyOperationIds(store.getState().blueprint.present)
 
   // Trigger operation tasks for operations that were marked busy
   postBusyOperationIds
@@ -32,7 +32,7 @@ export const processorMiddleware: Middleware<{}, RootState> = store => next => (
 const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
   // Retrieve fresh operation task data
   const state: RootState = store.getState()
-  const task = getOperationTask(state.blueprint, operationId)
+  const task = getOperationTask(state.blueprint.present, operationId)
   if (task === undefined) {
     // Operation is no longer busy or has been removed
     return
@@ -64,8 +64,8 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
   // If the operation stays busy after dispatching the task result, we need to
   // repeat the process as control values seem to have changed in the meantime
   const postState: RootState = store.getState()
-  if (hasNode(postState.blueprint, operationId)) {
-    const postOperation = getOperationNode(postState.blueprint, operationId)
+  if (hasNode(postState.blueprint.present, operationId)) {
+    const postOperation = getOperationNode(postState.blueprint.present, operationId)
     if (postOperation.state === OperationState.Busy) {
       // Controls changed in the meantime, repeat the computation
       runOperationTask(store, operationId)
