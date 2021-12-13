@@ -34,9 +34,18 @@
     transition-duration: 0.3s;
   }
 
+  &__input:disabled + &__track &__thumb {
+    background-color: $c-line;
+  }
+
   &__input:checked + &__track {
     background-color: $c-meta;
     border-color: $c-meta;
+  }
+
+  &__input:disabled:checked + &__track {
+    background-color: $c-line;
+    border-color: $c-line;
   }
 
   &__input:checked + &__track &__thumb {

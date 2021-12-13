@@ -140,7 +140,73 @@ const defaultDirectoryState: DirectoryState = {
       ],
       bundleUrl: 'https://localhost:3000/bundle-essentials.js',
       moduleId: 'basen',
-    }
+    },
+    {
+      name: 'cryptii/logical-not',
+      label: 'Logical NOT',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean'],
+        },
+        {
+          name: 'notA',
+          initialValue: true,
+          types: ['boolean'],
+        },
+      ],
+      bundleUrl: 'https://localhost:3000/bundle-essentials.js',
+      moduleId: 'logical-not',
+    },
+    {
+      name: 'cryptii/logical-and',
+      label: 'Logical AND',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean'],
+        },
+        {
+          name: 'b',
+          initialValue: false,
+          types: ['boolean'],
+        },
+        {
+          name: 'aAndB',
+          initialValue: false,
+          types: ['boolean'],
+          writable: false,
+        },
+      ],
+      bundleUrl: 'https://localhost:3000/bundle-essentials.js',
+      moduleId: 'logical-and',
+    },
+    {
+      name: 'cryptii/logical-or',
+      label: 'Logical OR',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean'],
+        },
+        {
+          name: 'b',
+          initialValue: false,
+          types: ['boolean'],
+        },
+        {
+          name: 'aOrB',
+          initialValue: false,
+          types: ['boolean'],
+          writable: false,
+        },
+      ],
+      bundleUrl: 'https://localhost:3000/bundle-essentials.js',
+      moduleId: 'logical-or',
+    },
   ]
 }
 

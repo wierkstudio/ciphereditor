@@ -10,6 +10,7 @@ export default function ValueBooleanView(props: ValueViewProps) {
         id={props.id}
         type="checkbox"
         checked={props.value.value}
+        disabled={props.disabled}
         onChange={event => props.onChange({ value: event.target.checked, type: 'boolean' }, event)}
       />
       <div className="value-boolean__track">
