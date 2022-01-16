@@ -6,7 +6,9 @@ import {
 } from 'types/blueprint'
 import { ControlNode } from 'types/control'
 import { TypedValue } from 'types/value'
+import { VariableNode } from 'types/variable'
 import { mapNamedObjects } from 'utils/map'
+import { isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'
 import { getProgramVariables, getVariableValue } from './variable'
 
@@ -69,8 +71,39 @@ export const getControlVariableOptions = (
   programId: BlueprintNodeId,
 ) => {
   const control = getControlNode(state, controlId)
-  return getProgramVariables(state, programId).filter(variable => {
-    const value = getVariableValue(state, variable.id)
-    return control.types.indexOf(value.type) !== -1
-  })
+  const variables = getProgramVariables(state, programId)
+
+  const pushOptions: VariableNode[] = []
+  const pullOptions: VariableNode[] = []
+
+  for (let i = 0; i < variables.length; i++) {
+    const variable = variables[i]
+    const variableValue = getVariableValue(state, variable.id)
+
+    // For the user to be able to pull from a variable, the variable's value
+    // type needs to be among the control types
+    if (isTypeWithinTypes(variableValue.type, control.types)) {
+      pullOptions.push(variable)
+    }
+
+    // A user may always push to a variable
+    // TODO: Make sure the variable is not already connected with the operation
+    pushOptions.push(variable)
+  }
+
+  return { pushOptions, pullOptions }
+}
+
+/**
+ * Compose a value preview string for the given control.
+ */
+export const getControlPreview = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId
+): string|undefined => {
+  const control = getControlNode(state, controlId)
+  if (control.selectedChoiceIndex !== undefined) {
+    return control.choices[control.selectedChoiceIndex].label
+  }
+  return previewValue(control.value)
 }

@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: rem(8) rem(16);
+  padding: rem(4) rem(16);
   cursor: pointer;
 
   &__input {
@@ -18,8 +18,8 @@
     height: rem(26);
     padding: rem(3);
     border-radius: rem(16);
-    border: rem(2) solid $c-line;
-    background-color: $c-white;
+    border: rem(2) solid $c-meta;
+    background-color: $c-background;
     transition-property: background-color, border-color;
     transition-duration: 0.3s;
   }
@@ -35,7 +35,7 @@
   }
 
   &__input:disabled + &__track &__thumb {
-    background-color: $c-line;
+    background-color: $c-meta;
   }
 
   &__input:checked + &__track {
@@ -44,12 +44,12 @@
   }
 
   &__input:disabled:checked + &__track {
-    background-color: $c-line;
-    border-color: $c-line;
+    background-color: $c-meta;
+    border-color: $c-meta;
   }
 
   &__input:checked + &__track &__thumb {
     transform: translate(#{rem(24)}, 0);
-    background-color: $c-white;
+    background-color: $c-background;
   }
 }

@@ -1,0 +1,26 @@
+
+@import 'styles/shared';
+
+.control-drawer {
+
+  &__value {
+
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: rem(48);
+  }
+
+  &__copy {
+    padding: rem(12) rem(16) rem(12) rem(16);
+    color: $c-meta;
+    line-height: 0;
+
+    svg {
+      fill: currentColor;
+    }
+  }
+}

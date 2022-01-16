@@ -1,0 +1,40 @@
+
+@import 'styles/shared';
+
+.operation {
+  width: 100%;
+  background: $c-background;
+  color: $c-text;
+  border-radius: rem(8);
+  user-select: none;
+  outline: none;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    line-height: 0;
+    background: $c-primary;
+    color: $c-background;
+    border-radius: rem(8) rem(8) 0 0;
+  }
+
+  &__icon {
+    padding-left: rem(16);
+
+    svg {
+      margin: 0 rem(-4);
+      fill: currentColor;
+    }
+  }
+
+  &__label {
+    flex-grow: 1;
+    flex-basis: 0;
+    @extend %t-h3;
+    padding: rem(16) rem(40) rem(16) rem(8);
+  }
+
+  &__control {
+    border-top: rem(2) solid $c-muted;
+  }
+}

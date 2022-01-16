@@ -1,6 +1,7 @@
 
 import { ImplicitTypedValue, TypedValue } from 'types/value'
 import { arrayEqual } from 'utils/array'
+import { capitalCase } from 'change-case'
 
 /**
  * Complete set of all available value types.
@@ -15,9 +16,30 @@ export const allValueTypes = [
 ]
 
 /**
+ * Return the label for the given type.
+ */
+export const labelType = (type: string) => {
+  return capitalCase(type)
+}
+
+/**
  * Default value used e.g. as initial value in user-defined controls.
  */
 export const defaultValue = { value: '', type: 'text' }
+
+/**
+ * Return wether a type is within the given types.
+ */
+export const isTypeWithinTypes = (type: string, withinTypes: string[]) => {
+  return undefined !== withinTypes.find(isTypeWithinType.bind(null, type))
+}
+
+/**
+ * Return wether a type is within the given type.
+ */
+export const isTypeWithinType = (type: string, withinType: string) => {
+  return type === withinType
+}
 
 /**
  * Resolve an implicitly typed value to a typed value following set rules.
@@ -113,4 +135,28 @@ export const castValue = (
   }
   // TODO: Needs implementation
   return undefined
+}
+
+/**
+ * Compose a preview string for the given value.
+ * Return undefined, if no preview is available.
+ */
+export const previewValue = (value: TypedValue): string|undefined => {
+  switch (value.type) {
+    case 'boolean':
+      return (value.value as boolean) ? 'True' : 'False'
+    case 'integer':
+      return (value.value as number).toString()
+    case 'number':
+      return (value.value as number).toString()
+    case 'bigint':
+      return (value.value as bigint).toString()
+    case 'text':
+      return (value.value as string).substring(0, 40)
+    case 'bytes':
+      // TODO: Needs implementation
+      return undefined
+    default:
+      return undefined
+  }
 }

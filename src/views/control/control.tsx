@@ -1,174 +1,55 @@
 
-import React, { ChangeEvent, useCallback } from 'react'
-import ValueView from 'views/value/value'
-import {
-  addVariableFromControlAction,
-  changeControlAction,
-  changeControlValueToChoiceAction,
-  changeControlValueToTypeAction,
-  changeControlValueToVariableAction,
-  selectNodeAction
-} from 'slices/blueprint'
-import { ControlNode } from 'types/control'
-import { TypedValue } from 'types/value'
-import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { useAppClassName, useAppDispatch, useBlueprintSelector } from 'utils/hooks'
-import { getControlVariable } from 'slices/blueprint/selectors/variable'
-import { getControlVariableOptions, isControlInternVariable } from 'slices/blueprint/selectors/control'
-import { ProgramNode } from 'types/program'
-import { BlueprintNodeId } from 'types/blueprint'
 import './control.scss'
+import ControlDrawerView from 'views/control-drawer/control-drawer'
+import OutletView from 'views/outlet/outlet'
+import { ControlNode, ControlViewState } from 'types/control'
+import { ProgramNode } from 'types/program'
+import { ReactComponent as ChevronDownIcon } from 'icons/chevron-down.svg'
+import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
+import { toggleControlViewState } from 'slices/blueprint'
+import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
+import { getControlPreview } from 'slices/blueprint/selectors/control'
 
 export default function ControlView(props: {
   control: ControlNode
   program: ProgramNode
 }) {
   const { control, program } = props
-
   const dispatch = useAppDispatch()
-  const selectedNode = useBlueprintSelector(state => getSelectedNode(state))
-  const controlId = control.id
-  const programId = program.id
-  const htmlId = `control-${controlId}`
-
-  const { $options: $menuOptions, options: menuOptions, index: menuIndex } =
-    useMenuOptions(control, program)
-
-  const intern = useBlueprintSelector(state => isControlInternVariable(state, controlId, programId))
-  const attachedVariable = useBlueprintSelector(state => getControlVariable(state, controlId, programId))
-  const showValue = intern || (control.selectedChoiceIndex === undefined && attachedVariable === undefined)
-
-  const onChange = useCallback((value: TypedValue, event: ChangeEvent) => {
-    dispatch(changeControlAction({ controlId, change: { value } }))
-  }, [dispatch, controlId])
-
-  const onOptionChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const menuOption = menuOptions[parseInt(event.target.value)]
-    if (menuOption === undefined) {
-      return
-    }
-
-    const [type, payload] = menuOption
-    switch (type) {
-      case 'change_value_to_choice':
-        const choiceIndex = payload as number
-        dispatch(changeControlValueToChoiceAction({ controlId, programId, choiceIndex }))
-        break
-
-      case 'change_value_to_type':
-        const valueType = payload as string
-        dispatch(changeControlValueToTypeAction({ controlId, programId, valueType }))
-        break
-
-      case 'change_value_to_variable':
-        const variableId = payload as BlueprintNodeId
-        dispatch(changeControlValueToVariableAction({ controlId, variableId }))
-        break
-
-      case 'add_variable':
-        dispatch(addVariableFromControlAction({ controlId, programId }))
-        break
-    }
-  }, [dispatch, menuOptions, controlId, programId])
-
-  const onFocus = useCallback(event => {
-    event.stopPropagation()
-    dispatch(selectNodeAction({ nodeId: controlId }))
-  }, [dispatch, controlId])
-
-  const modifiers = []
-  if (selectedNode?.id === controlId) {
-    modifiers.push('active')
-  }
+  const toggleHandler = () =>
+    dispatch(toggleControlViewState({ controlId: control.id }))
+  const valuePreview = useBlueprintSelector(state =>
+    getControlPreview(state, control.id))
 
   return (
-    <div className={useAppClassName('control', modifiers)} onFocus={onFocus}>
-      <label className="control__label" htmlFor={htmlId}>{control.label}</label>
-      <div className="control__menu">
-        <select
-          className="control__menu-select"
-          id={htmlId}
-          tabIndex={0}
-          value={menuIndex.toString()}
-          onChange={onOptionChange}
-          onFocus={onFocus}
-        >
-          {$menuOptions}
-        </select>
+    <div className="control">
+      <div className="control__header">
+        <OutletView
+          control={control}
+          program={program}
+          expanded={control.viewState === ControlViewState.Expanded}
+        />
+        <button className="control__header-toggle" onClick={toggleHandler}>
+          <div className="control__header-content">
+            <h4 className="control__header-name">
+              {control.label}
+            </h4>
+            {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
+              <span className="control__header-preview">
+                {valuePreview}
+              </span>
+            )}
+          </div>
+          <div className="control__header-chevron">
+            {control.viewState === ControlViewState.Expanded
+              ? <ChevronUpIcon />
+              : <ChevronDownIcon />}
+          </div>
+        </button>
       </div>
-      {showValue && (
-        <div className="control__value">
-          <ValueView
-            id={htmlId}
-            value={control.value}
-            disabled={!control.writable}
-            onChange={onChange}
-            onFocus={onFocus}
-          />
-        </div>
+      {control.viewState === ControlViewState.Expanded && (
+        <ControlDrawerView control={props.control} program={props.program} />
       )}
     </div>
   )
-}
-
-/**
- * Get an array of menu options for the given control and program context.
- */
-export const useMenuOptions = (control: ControlNode, program: ProgramNode) => {
-  const $options = []
-  const options: [string, any][] = []
-  let selectedOptionIndex = -1
-  let index = -1
-
-  if (control.choices.length > 0) {
-    $options.push(
-      <optgroup key={index} label="Known value">
-        {control.choices.map((choice, choiceIndex) => {
-          index++
-          options.push(['change_value_to_choice', choiceIndex])
-          if (control.selectedChoiceIndex === choiceIndex) {
-            selectedOptionIndex = index
-          }
-          return <option key={index} value={index}>{choice.label}</option>
-        })}
-      </optgroup>
-    )
-  }
-
-  if (!control.enforceChoices || control.choices.length === 0) {
-    $options.push(
-      <optgroup key={index} label="Custom value">
-        {control.types.map(type => {
-          index++
-          options.push(['change_value_to_type', type])
-          if (selectedOptionIndex === -1 && control.value.type === type) {
-            selectedOptionIndex = index
-          }
-          return <option key={index} value={index}>Use {type} value</option>
-        })}
-      </optgroup>
-    )
-  }
-
-  const variables = useBlueprintSelector(state => getControlVariableOptions(state, control.id, program.id))
-  const attachedVariable = useBlueprintSelector(state => getControlVariable(state, control.id, program.id))
-  $options.push(
-    <optgroup key={index} label="Variables">
-      {variables.map(variable => {
-        index++
-        options.push(['change_value_to_variable', variable.id])
-        if (variable.id === attachedVariable?.id) {
-          selectedOptionIndex = index
-        }
-        return <option key={index} value={index}>Use variable {variable.id}</option>
-      })}
-      {(() => {
-        index++
-        options.push(['add_variable', undefined])
-        return <option key={index} value={index}>Create new variable…</option>
-      })()}
-    </optgroup>
-  )
-
-  return { $options, options, index: selectedOptionIndex }
 }

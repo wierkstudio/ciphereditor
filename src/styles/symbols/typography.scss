@@ -6,9 +6,23 @@
   line-height: 1.4;
 }
 
-%t-node-headline {
+%t-label {
   font-family: 'Lexend Deca', sans-serif;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 1.4;
+  font-weight: 400;
+  font-size: rem(16);
+  line-height: rem(24);
+}
+
+%t-h3 {
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: bold;
+  font-size: rem(16);
+  line-height: rem(24);
+}
+
+%t-value {
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 400;
+  font-size: rem(16);
+  line-height: rem(24);
 }

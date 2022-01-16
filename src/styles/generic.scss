@@ -1,6 +1,19 @@
 
 * {
   box-sizing: border-box;
+  outline: 0;
+}
+
+:focus {
+  outline: 1px solid $c-primary;
+}
+
+:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+:focus-visible {
+  outline: 1px solid $c-primary;
 }
 
 html,
@@ -8,13 +21,12 @@ body {
   min-height: 100%;
   margin: 0;
   padding: 0;
-  background: $c-background;
+  background: $c-muted;
 }
 
 body,
 button,
 input,
-select,
 textarea {
   @extend %t-text;
   color: $c-text;
@@ -28,10 +40,22 @@ textarea {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: rem(42);
   border: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background: none;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: none;
+  text-align: inherit;
+  appearance: none;
+  cursor: pointer;
 }
 
 input[type='number'] {

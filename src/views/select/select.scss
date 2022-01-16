@@ -1,0 +1,59 @@
+
+@import 'styles/shared';
+
+.select {
+  display: flex;
+  align-items: center;
+  position: relative;
+  color: $c-text;
+
+  &--meta {
+    color: $c-meta;
+  }
+
+  &--primary {
+    color: $c-primary;
+  }
+
+  &--height-6 {
+    height: rem(48);
+  }
+
+  &--control-footer {
+    padding: rem(12) rem(16);
+  }
+
+  &__control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    @extend %t-label;
+    cursor: pointer;
+
+    // Make select invisible
+    text-indent: -1000px;
+  }
+
+  &__value {
+    @extend %t-label;
+    pointer-events: none;
+  }
+
+  &__chevron {
+    padding-left: rem(2);
+    pointer-events: none;
+
+    svg {
+      fill: currentColor;
+      margin: 0 rem(-4);
+    }
+  }
+
+  &--control-footer &__chevron {
+    right: rem(16);
+  }
+}

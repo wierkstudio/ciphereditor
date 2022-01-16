@@ -3,26 +3,55 @@
 
 .control {
   position: relative;
-  border: rem(1) solid $c-line;
-  border-color: $c-line transparent transparent;
-  margin: 0 rem(-1) rem(-1);
+  width: 100%;
+  background: $c-background;
+  border-radius: rem(8);
   line-height: 0;
   outline: none;
 
-  &--active {
-    border-color: $c-primary;
-    z-index: 1;
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
   }
 
-  &__label {
-    display: block;
-    padding: rem(8) rem(16) 0;
-    @extend %t-text;
+  &__header-toggle {
+    display: flex;
+    padding: rem(12) rem(16) rem(12) rem(8);
+    flex-grow: 1;
+    flex-basis: 0;
+    line-height: 0;
+    width: rem(288);
+  }
+
+  &__header-content {
+    flex-grow: 1;
+    flex-basis: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     color: $c-meta;
   }
 
-  &__menu-select {
-    padding: rem(8) rem(16);
-    outline: none;
+  &__header-name {
+    display: inline;
+    padding-right: rem(8);
+    @extend %t-label;
+    color: $c-text;
+  }
+
+  &__header-preview {
+    display: inline;
+    @extend %t-value;
+  }
+
+  &__header-chevron {
+    padding-left: rem(8);
+
+    svg {
+      fill: $c-meta;
+      margin: 0 rem(-4);
+    }
   }
 }

@@ -109,6 +109,15 @@ export enum ControlChangeSource {
 }
 
 /**
+ * Control view state
+ */
+export enum ControlViewState {
+  Collapsed,
+  Expanded,
+  Hidden,
+}
+
+/**
  * Control node
  * Controls are the building blocks of operation and program interfaces.
  */
@@ -157,6 +166,11 @@ export interface ControlNode extends BlueprintNode {
    * Wether the value is restricted to control choices (if not empty)
    */
   enforceChoices: boolean
+
+  /**
+   * Control view state
+   */
+  viewState: ControlViewState
 
   /**
    * Control enabled state

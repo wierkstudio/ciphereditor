@@ -1,15 +1,14 @@
 
-import { useRef, useEffect, useCallback } from 'react'
+import React, { useRef, useCallback, useLayoutEffect } from 'react'
+import { useWindowResizeListener } from 'utils/hooks'
 import { ValueViewProps } from 'views/value/value'
 import './value-text.scss'
 
 export default function ValueTextView(props: ValueViewProps) {
-  // Reference to the textarea element
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const value = props.value
+  const textareaRef = useRef<HTMLTextAreaElement|null>(null)
 
-  // Function defining how to autoresize the textarea
-  const autoresizeTextarea = useCallback(() => {
+  // Auto resize textarea
+  const resizeTextarea = useCallback(() => {
     if (textareaRef.current !== null) {
       // Autoresize textarea
       const $textarea = textareaRef.current
@@ -18,17 +17,22 @@ export default function ValueTextView(props: ValueViewProps) {
     }
   }, [textareaRef])
 
-  // Autoresize if value changes
-  useEffect(autoresizeTextarea, [value, autoresizeTextarea])
-
-  // Autoresize on window resize (the field dimensions might change)
-  useEffect(() => {
-    window.addEventListener('resize', autoresizeTextarea)
-    return () => {
-      // TODO: Test if this works
-      window.removeEventListener('resize', autoresizeTextarea)
+  // Handle changes
+  const onChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (props.value !== undefined) {
+      resizeTextarea()
     }
-  }, [autoresizeTextarea])
+    if (props.onChange) {
+      props.onChange({
+        type: props.value.type,
+        value: event.target.value
+      }, event)
+    }
+  }
+
+  // Resize textarea on window resize and synchronously after all DOM mutations
+  useLayoutEffect(resizeTextarea)
+  useWindowResizeListener(resizeTextarea)
 
   return (
     <div className="value-text">
@@ -36,15 +40,10 @@ export default function ValueTextView(props: ValueViewProps) {
         className="value-text__textarea"
         id={props.id}
         ref={textareaRef}
-        value={value.value as string}
+        value={props.value.value as string}
         disabled={props.disabled}
         tabIndex={0}
-        onChange={event => {
-          props.onChange({
-            type: value.type,
-            value: event.target.value,
-          }, event)
-        }}
+        onChange={onChange}
         onFocus={props.onFocus}
         spellCheck={false}
         rows={1}

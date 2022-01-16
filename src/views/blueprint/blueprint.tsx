@@ -1,11 +1,15 @@
 
-import NodeView from '../node/node'
+import './blueprint.scss'
+import ControlView from 'views/control/control'
+import OperationView from '../operation/operation'
+import { BlueprintNodeType } from 'types/blueprint'
+import { ControlNode } from 'types/control'
+import { OperationNode } from 'types/operation'
+import { ProgramNode } from 'types/program'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
-import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 import { selectNodeAction } from 'slices/blueprint'
-import { BlueprintNodeType } from 'types/blueprint'
-import './blueprint.scss'
+import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 
 export default function BlueprintView() {
   const dispatch = useAppDispatch()
@@ -20,7 +24,18 @@ export default function BlueprintView() {
       <div className="blueprint__canvas">
         {nodes.map(node => (
           <div className="blueprint__node" key={node.id}>
-            <NodeView node={node} program={activeProgram} />
+            {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
+              <OperationView
+                operation={node as OperationNode|ProgramNode}
+                program={activeProgram}
+              />
+            )}
+            {node.type === BlueprintNodeType.Control && (
+              <ControlView
+                control={node as ControlNode}
+                program={activeProgram}
+              />
+            )}
           </div>
         ))}
       </div>

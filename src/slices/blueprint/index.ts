@@ -6,10 +6,9 @@ import {
   changeControl,
   changeControlValueToChoice,
   changeControlValueToType,
-  changeControlValueToVariable
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
-import { ControlChange, ControlChangeSource, NamedControlChange } from 'types/control'
+import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from 'types/control'
 import { Operation, OperationState } from 'types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
@@ -17,8 +16,8 @@ import { addOperationNode, setOperationState } from './reducers/operation'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { attachControls } from './reducers/variable'
-import { getNodeNamedControls } from './selectors/control'
+import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
+import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { BlueprintNodeType } from 'types/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
@@ -109,27 +108,43 @@ export const blueprintSlice = createSlice({
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId,
-      programId: BlueprintNodeId,
       choiceIndex: number,
     }>) => {
-      const { controlId, programId, choiceIndex } = payload
-      changeControlValueToChoice(state, controlId, programId, choiceIndex)
+      changeControlValueToChoice(state, payload.controlId, payload.choiceIndex)
     },
 
     changeControlValueToTypeAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId,
-      programId: BlueprintNodeId,
       valueType: string,
     }>) => {
-      const { controlId, programId, valueType } = payload
-      changeControlValueToType(state, controlId, programId, valueType)
+      changeControlValueToType(state, payload.controlId, payload.valueType)
     },
 
-    changeControlValueToVariableAction: (state, { payload }: PayloadAction<{
+    attachControlToVariableAction: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+      variableId: BlueprintNodeId,
+      push: boolean,
+    }>) => {
+      const { controlId, variableId, push } = payload
+      attachControlToVariable(state, controlId, variableId, true, push)
+    },
+
+    detachControlFromVariableAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId,
       variableId: BlueprintNodeId,
     }>) => {
-      changeControlValueToVariable(state, payload.controlId, payload.variableId)
+      detachControlFromVariable(state, payload.controlId, payload.variableId)
+    },
+
+    toggleControlViewState:  (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId,
+    }>) => {
+      const control = getControlNode(state, payload.controlId)
+      if (control.viewState === ControlViewState.Collapsed) {
+        control.viewState = ControlViewState.Expanded
+      } else if (control.viewState === ControlViewState.Expanded) {
+        control.viewState = ControlViewState.Collapsed
+      }
     },
 
     addVariableFromControlAction: (state, { payload }: PayloadAction<{
@@ -226,7 +241,9 @@ export const {
   linkControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction,
-  changeControlValueToVariableAction,
+  attachControlToVariableAction,
+  detachControlFromVariableAction,
+  toggleControlViewState,
   addVariableFromControlAction,
   applyOperationTaskResultAction,
   selectNodeAction,

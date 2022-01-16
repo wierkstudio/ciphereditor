@@ -1,16 +1,17 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueChoice } from 'types/control'
-import { OperationNode, OperationState } from 'types/operation'
+import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueChoice, ControlViewState } from 'types/control'
 import { ImplicitTypedValue } from 'types/value'
+import { OperationNode, OperationState } from 'types/operation'
+import { addNode, nextNodeId } from './blueprint'
+import { addVariable, attachControlToVariable, detachControlFromVariable, propagateChange } from './variable'
+import { allValueTypes, compareValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from 'utils/array'
-import { getNode } from '../selectors/blueprint'
+import { capitalCase } from 'change-case'
 import { getControlNode, isControlInternVariable } from '../selectors/control'
 import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
-import { addNode, nextNodeId } from './blueprint'
+import { getNode } from '../selectors/blueprint'
 import { setOperationState } from './operation'
-import { allValueTypes, compareValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
-import { addVariable, attachControlToVariable, detachControlFromVariable, propagateChange } from './variable'
 
 /**
  * Default control node object
@@ -26,6 +27,7 @@ export const defaultControlNode: ControlNode = {
   value: defaultValue,
   choices: [],
   enforceChoices: true,
+  viewState: ControlViewState.Collapsed,
   enabled: true,
   writable: true,
 }
@@ -73,7 +75,7 @@ export const addOperationControlNode = (
     ...control,
     id: nextNodeId(state),
     parentId: operationId,
-    label: control.label || control.name,
+    label: control.label || capitalCase(control.name),
     value,
     selectedChoiceIndex,
     choices,
@@ -143,8 +145,12 @@ export const changeControl = (
     case BlueprintNodeType.Program:
       if (source === ControlChangeSource.Variable) {
         if (sourceVariableId === control.attachedInternVariableId) {
-          propagateChange(state, control.id, parent.parentId)
+          // Propagate change outside the program (if not root)
+          if (state.rootProgramId !== parent.id) {
+            propagateChange(state, control.id, parent.parentId)
+          }
         } else {
+          // Propagate change inside the program
           propagateChange(state, control.id, parent.id)
         }
       } else if (source === ControlChangeSource.UserInput) {
@@ -161,16 +167,9 @@ export const changeControl = (
 export const changeControlValueToChoice = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
   choiceIndex: number,
 ) => {
   const control = getControlNode(state, controlId)
-  // Detach from variable, if any
-  const attachedVariable = getControlVariable(state, controlId, programId)
-  if (attachedVariable !== undefined) {
-    detachControlFromVariable(state, controlId, attachedVariable.id)
-  }
-  // Apply choice
   const value = control.choices[choiceIndex].value
   changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
   control.selectedChoiceIndex = choiceIndex
@@ -182,15 +181,9 @@ export const changeControlValueToChoice = (
 export const changeControlValueToType = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
   valueType: string,
 ) => {
   const control = getControlNode(state, controlId)
-  // Detach from variable, if any
-  const attachedVariable = getControlVariable(state, controlId, programId)
-  if (attachedVariable !== undefined) {
-    detachControlFromVariable(state, controlId, attachedVariable.id)
-  }
   // Derive value of desired type from current value
   control.selectedChoiceIndex = undefined
   if (control.value.type !== valueType) {
@@ -203,24 +196,6 @@ export const changeControlValueToType = (
 }
 
 /**
- * Change the value of a control to a variable.
- */
-export const changeControlValueToVariable = (
-  state: BlueprintState,
-  controlId: BlueprintNodeId,
-  variableId: BlueprintNodeId,
-) => {
-  const control = getControlNode(state, controlId)
-  control.selectedChoiceIndex = undefined
-  attachControlToVariable(state, controlId, variableId, false)
-  // TODO: Choose propagation direction based on control priority
-  // Propagate from the last active control to this control
-  const variable = getVariableNode(state, variableId)
-  const activeControl = getVariableControl(state, variableId)
-  propagateChange(state, activeControl.id, variable.parentId)
-}
-
-/**
  * Add a new variable from a control.
  */
 export const addVariableFromControl = (
@@ -229,8 +204,6 @@ export const addVariableFromControl = (
   programId: BlueprintNodeId,
 ) => {
   // TODO: Detach currently attached variable
-  const control = getControlNode(state, controlId)
-  control.selectedChoiceIndex = undefined
   // Create new variable
   const variable = addVariable(state, programId, controlId)
   // When editing a control from outside also add a program control for

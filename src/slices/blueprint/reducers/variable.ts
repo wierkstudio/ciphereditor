@@ -4,7 +4,7 @@ import { ControlChangeSource } from 'types/control'
 import { VariableNode } from 'types/variable'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
 import { getControlNode } from '../selectors/control'
-import { getControlVariable, getVariableNode } from '../selectors/variable'
+import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 import { addNode, nextNodeId, removeNode } from './blueprint'
 import { changeControl } from './control'
 
@@ -84,12 +84,14 @@ export const attachControls = (
 
 /**
  * Attach the given control to a variable.
+ * @param push Wether to push the value from the control to the variable
  */
 export const attachControlToVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
   variableId: BlueprintNodeId,
   propagate: boolean = false,
+  push: boolean = true
 ) => {
   const control = getControlNode(state, controlId)
   const variable = getVariableNode(state, variableId)
@@ -111,7 +113,15 @@ export const attachControlToVariable = (
   // TODO: Prevent circular links
   // Propagate if requested
   if (propagate) {
-    propagateChange(state, control.id, variable.parentId)
+    if (push) {
+      // Propagate the value from this control
+      propagateChange(state, control.id, variable.parentId)
+    } else {
+      // Propagate from the current variable source control (pulling the value
+      // into this control)
+      const sourceControl = getVariableControl(state, variableId)
+      propagateChange(state, sourceControl.id, variable.parentId)
+    }
   }
 }
 

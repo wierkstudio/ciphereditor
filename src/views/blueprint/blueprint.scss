@@ -14,7 +14,9 @@
   }
 
   &__node {
+    position: relative;
     display: inline-flex;
-    padding: rem(24) 0 0 rem(24);
+    width: rem(320);
+    margin: rem(24) 0 0 rem(24);
   }
 }

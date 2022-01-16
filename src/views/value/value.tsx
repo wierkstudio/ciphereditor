@@ -9,8 +9,8 @@ export type ValueViewProps = {
   id?: string
   value: TypedValue
   disabled?: boolean
-  onFocus: React.FocusEventHandler
-  onChange: (value: TypedValue, event: ChangeEvent) => void
+  onFocus?: React.FocusEventHandler
+  onChange?: (value: TypedValue, event: ChangeEvent) => void
 }
 
 export default function ValueView(props: ValueViewProps) {

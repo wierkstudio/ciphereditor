@@ -2,7 +2,7 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch } from '../store'
 import type { RootState } from 'slices'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
 import { BlueprintState } from 'types/blueprint'
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
@@ -50,3 +50,19 @@ export const useAppClassName = (name: string, modifiers: string[] = []) =>
       .filter(value => !!value)
       .map(modifier => name + '--' + modifier)
   ).join(' ')
+
+export const useWindowResizeListener = (listener: (event: UIEvent) => any) => {
+  const latestListener = useRef(listener)
+  useLayoutEffect(() => {
+    latestListener.current = listener
+  })
+  useLayoutEffect(() => {
+    const handler: typeof listener = (event) => {
+      latestListener.current(event)
+    };
+    window.addEventListener('resize', handler)
+    return () => {
+      window.removeEventListener('resize', handler)
+    }
+  }, [])
+};
