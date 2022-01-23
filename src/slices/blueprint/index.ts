@@ -16,7 +16,7 @@ import { addOperationNode, setOperationState } from './reducers/operation'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
+import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { BlueprintNodeType } from 'types/blueprint'
 
@@ -87,23 +87,6 @@ export const blueprintSlice = createSlice({
       programId: BlueprintNodeId,
     }>) => {
       addProgramControlNode(state, payload.programId)
-    },
-
-    /**
-     * Mark a control as to be linked. If two controls are marked, link them.
-     */
-    linkControlAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-    }>) => {
-      const controlId = payload.controlId
-      if (state.linkControlId === undefined) {
-        state.linkControlId = controlId
-      } else if (state.linkControlId === controlId) {
-        state.linkControlId = undefined
-      } else if (state.activeProgramId !== undefined) {
-        attachControls(state, state.linkControlId, controlId, state.activeProgramId)
-        state.linkControlId = undefined
-      }
     },
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{
@@ -238,7 +221,6 @@ export const {
   leaveProgramAction,
   addEmptyControlAction,
   changeControlAction,
-  linkControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction,
   attachControlToVariableAction,
@@ -260,9 +242,10 @@ export default undoable(blueprintSlice.reducer, {
   filter: excludeAction([
     // Szenario: The user wants to copy something from the undo past
     // The undo history must stay intact when navigating or selecting
-    selectNodeAction.type,
     enterProgramAction.type,
     leaveProgramAction.type,
+    selectNodeAction.type,
+    toggleControlViewState.type,
   ]),
   groupBy: (action, currentState, previousHistory) => {
     const currentGroup = previousHistory.group

@@ -1,0 +1,27 @@
+
+@import 'styles/shared';
+
+.toolbar-button {
+  display: inline-flex;
+  min-width: rem(40);
+  height: rem(40);
+  padding: rem(8);
+  align-items: center;
+  justify-content: center;
+  background: $c-background;
+  border-radius: rem(8);
+
+  svg {
+    fill: currentColor;
+  }
+
+  &:not(:disabled):hover {
+    background: $c-primary;
+    color: $c-background;
+  }
+
+  &:disabled {
+    color: $c-meta;
+    cursor: default;
+  }
+}

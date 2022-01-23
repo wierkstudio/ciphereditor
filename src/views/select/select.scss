@@ -53,6 +53,12 @@
     }
   }
 
+  &--chevron-first &__chevron {
+    padding-left: 0;
+    padding-right: rem(2);
+    order: -1;
+  }
+
   &--control-footer &__chevron {
     right: rem(16);
   }

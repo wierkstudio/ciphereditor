@@ -18,20 +18,34 @@
 
   &__header-toggle {
     display: flex;
-    padding: rem(12) rem(16) rem(12) rem(8);
+    position: relative;
+    padding: rem(12) 0 rem(12) rem(12);
     flex-grow: 1;
     flex-basis: 0;
     line-height: 0;
     width: rem(288);
-  }
-
-  &__header-content {
-    flex-grow: 1;
-    flex-basis: 0;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
     color: $c-meta;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: rem(4);
+      right: 0;
+      bottom: rem(4);
+      width: rem(8);
+      background: linear-gradient(to right, transparent, $c-background);
+    }
+  }
+
+  &__header-chevron {
+    padding-right: rem(4);
+
+    svg {
+      fill: $c-text;
+      margin: 0 rem(-4);
+    }
   }
 
   &__header-name {
@@ -44,14 +58,5 @@
   &__header-preview {
     display: inline;
     @extend %t-value;
-  }
-
-  &__header-chevron {
-    padding-left: rem(8);
-
-    svg {
-      fill: $c-meta;
-      margin: 0 rem(-4);
-    }
   }
 }

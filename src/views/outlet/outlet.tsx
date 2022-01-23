@@ -14,12 +14,13 @@ import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
 import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
-import { useCallback } from 'react'
+import { MouseEventHandler, useCallback } from 'react'
 
 export default function OutletView(props: {
   control: ControlNode
   program: ProgramNode
   expanded: boolean
+  onIndicatorClick?: MouseEventHandler<HTMLButtonElement>
 }) {
   const dispatch = useAppDispatch()
   const { control, program } = props
@@ -140,7 +141,22 @@ export default function OutletView(props: {
 
   return (
     <div className={`outlet outlet--${variant}` + (props.expanded ? ' outlet--expanded' : '')}>
-      <button className="outlet__indicator">
+      {props.expanded && (
+        <div className="outlet__select">
+          <SelectView
+            elements={selectElements}
+            value={selectValue}
+            valueLabel={selectLabel}
+            onChange={onSelectChange}
+            modifiers={['height-6', 'chevron-first'].concat(isUnused ? ['meta'] : ['primary'])}
+          />
+        </div>
+      )}
+      <button
+        className="outlet__indicator"
+        tabIndex={-1}
+        onClick={props.onIndicatorClick}
+      >
         {(variant === 'unused') && (
           <OutletUnusedIcon />
         )}
@@ -151,17 +167,6 @@ export default function OutletView(props: {
           <OutletPullIcon />
         )}
       </button>
-      {props.expanded && (
-        <div className="outlet__select">
-          <SelectView
-            elements={selectElements}
-            value={selectValue}
-            valueLabel={selectLabel}
-            onChange={onSelectChange}
-            modifiers={['height-6'].concat(isUnused ? ['meta'] : ['primary'])}
-          />
-        </div>
-      )}
     </div>
   )
 }

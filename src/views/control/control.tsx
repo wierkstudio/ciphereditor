@@ -24,28 +24,27 @@ export default function ControlView(props: {
   return (
     <div className="control">
       <div className="control__header">
-        <OutletView
-          control={control}
-          program={program}
-          expanded={control.viewState === ControlViewState.Expanded}
-        />
         <button className="control__header-toggle" onClick={toggleHandler}>
-          <div className="control__header-content">
-            <h4 className="control__header-name">
-              {control.label}
-            </h4>
-            {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
-              <span className="control__header-preview">
-                {valuePreview}
-              </span>
-            )}
-          </div>
           <div className="control__header-chevron">
             {control.viewState === ControlViewState.Expanded
               ? <ChevronUpIcon />
               : <ChevronDownIcon />}
           </div>
+          <h4 className="control__header-name">
+            {control.label}
+          </h4>
+          {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
+            <span className="control__header-preview">
+              {valuePreview}
+            </span>
+          )}
         </button>
+        <OutletView
+          control={control}
+          program={program}
+          expanded={control.viewState === ControlViewState.Expanded}
+          onIndicatorClick={toggleHandler}
+        />
       </div>
       {control.viewState === ControlViewState.Expanded && (
         <ControlDrawerView control={props.control} program={props.program} />

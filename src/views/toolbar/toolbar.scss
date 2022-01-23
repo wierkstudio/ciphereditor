@@ -1,0 +1,22 @@
+
+@import 'styles/shared';
+
+.toolbar {
+  $block: &;
+  display: flex;
+  margin: 0 rem(-4);
+
+  &__button,
+  &__group {
+    padding: 0 rem(4);
+  }
+
+  &__group {
+    display: flex;
+    margin: 0 rem(-1);
+
+    #{$block}__button {
+      padding: 0 rem(1);
+    }
+  }
+}
