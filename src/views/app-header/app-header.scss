@@ -2,5 +2,12 @@
 @import 'styles/shared';
 
 .app-header {
+  display: flex;
+  align-items: center;
   padding: rem(24) rem(24) 0;
+  line-height: 0;
+
+  &__brand {
+    padding-right: rem(24);
+  }
 }

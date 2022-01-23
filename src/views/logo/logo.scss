@@ -1,0 +1,19 @@
+
+@import 'styles/shared';
+
+.logo {
+  color: $c-text;
+  line-height: 0;
+
+  &__canvas {
+    margin: rem(-3);
+  }
+
+  &__svg {
+    fill: $c-primary;
+  }
+
+  &__svg-wordmark {
+    fill: currentColor;
+  }
+}

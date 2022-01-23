@@ -1,5 +1,6 @@
 
 import './app-header.scss'
+import LogoView from 'views/logo/logo'
 import ToolbarButtonView from 'views/toolbar-button/toolbar-button'
 import ToolbarView from 'views/toolbar/toolbar'
 import { ReactComponent as ArrowUpIcon } from 'icons/arrow-up.svg'
@@ -20,6 +21,9 @@ export default function AppHeaderView() {
 
   return (
     <header className="app-header">
+      <div className="app-header__brand">
+        <LogoView />
+      </div>
       <div className="app-header__toolbar">
         <ToolbarView items={[
           <ToolbarButtonView
