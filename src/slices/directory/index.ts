@@ -142,6 +142,37 @@ const defaultDirectoryState: DirectoryState = {
       moduleId: 'basen',
     },
     {
+      name: 'cryptii/word-counter',
+      label: 'Word Counter',
+      controls: [
+        {
+          name: 'text',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text'],
+        },
+        {
+          name: 'characterCount',
+          initialValue: 44,
+          types: ['integer'],
+          writable: false,
+        },
+        {
+          name: 'wordCount',
+          initialValue: 9,
+          types: ['integer'],
+          writable: false,
+        },
+        {
+          name: 'lineCount',
+          initialValue: 1,
+          types: ['integer'],
+          writable: false,
+        },
+      ],
+      bundleUrl: 'https://localhost:3000/bundle-essentials.js',
+      moduleId: 'word-counter',
+    },
+    {
       name: 'cryptii/logical-not',
       label: 'Logical NOT',
       controls: [

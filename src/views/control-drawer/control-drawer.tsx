@@ -1,6 +1,6 @@
 
 import './control-drawer.scss'
-import React, { ChangeEvent, useCallback } from 'react'
+import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'
 import {
@@ -12,7 +12,7 @@ import { ControlNode } from 'types/control'
 import { ProgramNode } from 'types/program'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { TypedValue } from 'types/value'
-import { labelType } from 'slices/blueprint/reducers/value'
+import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { useAppDispatch } from 'utils/hooks'
 
 export default function ControlDrawerView(props: {
@@ -23,10 +23,16 @@ export default function ControlDrawerView(props: {
   const { control, program } = props
   const controlId = control.id
   const programId = program.id
+  const value = control.value
 
   const onValueChange = useCallback((value: TypedValue, event: ChangeEvent) => {
     dispatch(changeControlAction({ controlId, change: { value } }))
   }, [dispatch, controlId])
+
+  const onValueCopy = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
+    // TODO: Make it visible to the user that they just copied the value
+    navigator.clipboard.writeText(stringifyValue(value))
+  }, [value])
 
   const onSelectChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value
@@ -113,7 +119,7 @@ export default function ControlDrawerView(props: {
             modifiers={['control-footer'].concat(showValue ? ['meta'] : [])}
           />
         </div>
-        <button className="control-drawer__copy">
+        <button className="control-drawer__copy" onClick={onValueCopy}>
           <CopyIcon title="Copy" />
         </button>
       </div>

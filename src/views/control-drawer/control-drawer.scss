@@ -3,10 +3,6 @@
 
 .control-drawer {
 
-  &__value {
-
-  }
-
   &__footer {
     display: flex;
     align-items: center;
@@ -21,6 +17,10 @@
 
     svg {
       fill: currentColor;
+    }
+
+    &:hover {
+      color: $c-primary;
     }
   }
 }

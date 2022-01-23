@@ -138,10 +138,9 @@ export const castValue = (
 }
 
 /**
- * Compose a preview string for the given value.
- * Return undefined, if no preview is available.
+ * Convert the given value to a string (e.g. for preview, coping to clipboard).
  */
-export const previewValue = (value: TypedValue): string|undefined => {
+export const stringifyValue = (value: TypedValue): string => {
   switch (value.type) {
     case 'boolean':
       return (value.value as boolean) ? 'True' : 'False'
@@ -152,11 +151,19 @@ export const previewValue = (value: TypedValue): string|undefined => {
     case 'bigint':
       return (value.value as bigint).toString()
     case 'text':
-      return (value.value as string).substring(0, 40)
+      return (value.value as string)
     case 'bytes':
       // TODO: Needs implementation
-      return undefined
+      return ''
     default:
-      return undefined
+      return ''
   }
+}
+
+/**
+ * Compose a preview string for the given value.
+ * Return undefined, if no preview is available.
+ */
+export const previewValue = (value: TypedValue): string => {
+  return stringifyValue(value).substring(0, 40)
 }

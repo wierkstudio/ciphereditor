@@ -24,6 +24,11 @@ export default function OperationView(props: {
       dispatch(enterProgramAction({ programId: operation.id }))
   }
 
+  // TODO: Right now, we assume that the last control conveys the 'result' of
+  // the operation. Therefore we show the operation header above it. From a
+  // semantic perspective the header contains the headline for the entire
+  // operation and thus, it appears first in the DOM.
+
   return (
     <div
       className="operation"
@@ -32,7 +37,7 @@ export default function OperationView(props: {
       onFocus={() => dispatch(selectNodeAction({ nodeId: operation.id }))}
       onDoubleClick={doubleClickHandler}
     >
-      <header className="operation__header">
+      <header className="operation__header" style={{ order: controls.length - 1 }}>
         <span className="operation__icon">
           <SwitchIcon />
         </span>
@@ -40,8 +45,8 @@ export default function OperationView(props: {
           {operation.label}
         </h3>
       </header>
-      {controls.map(node => (
-        <div key={node.id} className="operation__control">
+      {controls.map((node, index) => (
+        <div key={node.id} className="operation__control" style={{ order: index }}>
           <ControlView control={node} program={props.program} />
         </div>
       ))}
