@@ -1,5 +1,5 @@
 
-import { DirectoryState } from 'types/directory'
+import { DirectoryState } from './types'
 
 export const getOperations = (state: DirectoryState) =>
   state.operations

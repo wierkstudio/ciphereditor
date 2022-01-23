@@ -1,5 +1,5 @@
 
-import { Operation } from './operation'
+import { Operation } from 'slices/blueprint/types/operation'
 
 /**
  * Directory state

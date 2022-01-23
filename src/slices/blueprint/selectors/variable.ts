@@ -3,8 +3,8 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
-import { VariableNode } from 'types/variable'
+} from '../types/blueprint'
+import { VariableNode } from '../types/variable'
 import { getNode, getNodeChildren } from './blueprint'
 import { getControlNode, isControlInternVariable } from './control'
 

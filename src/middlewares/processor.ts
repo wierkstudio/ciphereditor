@@ -1,9 +1,9 @@
 
 import Processor from 'app/Processor'
 import { AnyAction, Middleware } from 'redux'
-import { BlueprintNodeId } from 'types/blueprint'
-import { NamedControlChange } from 'types/control'
-import { OperationState } from 'types/operation'
+import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { NamedControlChange } from 'slices/blueprint/types/control'
+import { OperationState } from 'slices/blueprint/types/operation'
 import { RootState } from 'slices'
 import { applyOperationTaskResultAction } from 'slices/blueprint'
 import { getBusyOperationIds, getOperationNode, getOperationTask } from 'slices/blueprint/selectors/operation'

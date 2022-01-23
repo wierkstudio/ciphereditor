@@ -3,8 +3,8 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
-import { OperationNode, OperationState } from 'types/operation'
+} from '../types/blueprint'
+import { OperationNode, OperationState } from '../types/operation'
 import { getNode, hasNode } from './blueprint'
 import { getControlNode, getNodeControlValues } from './control'
 

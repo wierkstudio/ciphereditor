@@ -1,6 +1,6 @@
 
 import { ChangeEvent } from 'react'
-import { TypedValue } from 'types/value'
+import { TypedValue } from 'slices/blueprint/types/value'
 import ValueBooleanView from 'views/value-boolean/value-boolean'
 import ValueTextView from 'views/value-text/value-text'
 import './value.scss'

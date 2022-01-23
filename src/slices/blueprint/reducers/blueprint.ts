@@ -5,10 +5,10 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
-import { VariableNode } from 'types/variable'
+} from '../types/blueprint'
+import { VariableNode } from '../types/variable'
 import { getControlNode } from '../selectors/control'
-import { ControlNode } from 'types/control'
+import { ControlNode } from '../types/control'
 import { getVariableNode } from '../selectors/variable'
 import { arrayRemove } from 'utils/array'
 

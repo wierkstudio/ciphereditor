@@ -2,7 +2,7 @@
 import './select.scss'
 import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
 import { useAppClassName } from 'utils/hooks'
-import { ChangeEventHandler, TextareaHTMLAttributes } from 'react'
+import { ChangeEventHandler } from 'react'
 
 export type SelectViewOptionElement = {
   type: 'option'

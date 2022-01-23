@@ -1,7 +1,7 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { ControlChangeSource } from 'types/control'
-import { VariableNode } from 'types/variable'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import { ControlChangeSource } from '../types/control'
+import { VariableNode } from '../types/variable'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
 import { getControlNode } from '../selectors/control'
 import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'

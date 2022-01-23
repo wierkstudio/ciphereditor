@@ -1,6 +1,6 @@
 
 import { createSlice } from '@reduxjs/toolkit'
-import { DirectoryState } from 'types/directory'
+import { DirectoryState } from './types'
 
 const defaultDirectoryState: DirectoryState = {
   operations: [

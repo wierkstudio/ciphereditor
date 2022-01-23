@@ -1,5 +1,5 @@
 
-import { ImplicitTypedValue, TypedValue } from 'types/value'
+import { ImplicitTypedValue, TypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
 import { capitalCase } from 'change-case'
 

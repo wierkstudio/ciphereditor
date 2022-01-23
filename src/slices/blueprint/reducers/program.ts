@@ -1,6 +1,6 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { ProgramNode } from 'types/program'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import { ProgramNode } from '../types/program'
 import { addNode, nextNodeId } from './blueprint'
 
 /**

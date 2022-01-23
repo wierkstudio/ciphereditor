@@ -3,7 +3,7 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
+} from '../types/blueprint'
 
 /**
  * Find a node by the given node id.

@@ -3,7 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { AppDispatch } from '../store'
 import type { RootState } from 'slices'
 import { useCallback, useEffect, useLayoutEffect, useRef } from 'react'
-import { BlueprintState } from 'types/blueprint'
+import { BlueprintState } from 'slices/blueprint/types/blueprint'
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch = () => useDispatch<AppDispatch>()

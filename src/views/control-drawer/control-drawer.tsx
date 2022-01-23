@@ -8,10 +8,10 @@ import {
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction,
 } from 'slices/blueprint'
-import { ControlNode } from 'types/control'
-import { ProgramNode } from 'types/program'
+import { ControlNode } from 'slices/blueprint/types/control'
+import { ProgramNode } from 'slices/blueprint/types/program'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
-import { TypedValue } from 'types/value'
+import { TypedValue } from 'slices/blueprint/types/value'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { useAppDispatch } from 'utils/hooks'
 

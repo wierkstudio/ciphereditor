@@ -3,10 +3,10 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
-import { ControlNode } from 'types/control'
-import { TypedValue } from 'types/value'
-import { VariableNode } from 'types/variable'
+} from '../types/blueprint'
+import { ControlNode } from '../types/control'
+import { TypedValue } from '../types/value'
+import { VariableNode } from '../types/variable'
 import { mapNamedObjects } from 'utils/map'
 import { isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'

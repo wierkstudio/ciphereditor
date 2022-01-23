@@ -1,6 +1,6 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from 'types/blueprint'
-import { Operation, OperationNode, OperationState } from 'types/operation'
+import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import { Operation, OperationNode, OperationState } from '../types/operation'
 import { arrayRemove, arrayUniquePush } from 'utils/array'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'

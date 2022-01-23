@@ -7,7 +7,7 @@ import {
   removeNodeAction,
   undoAction,
 } from 'slices/blueprint'
-import { SettingsState } from 'types/settings'
+import { SettingsState } from './types'
 
 const defaultSettingsState: SettingsState = {
   shortcutBindings: {

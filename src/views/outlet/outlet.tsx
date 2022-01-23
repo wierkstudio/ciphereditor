@@ -6,8 +6,8 @@ import {
   attachControlToVariableAction,
   detachControlFromVariableAction
 } from 'slices/blueprint'
-import { ControlNode } from 'types/control'
-import { ProgramNode } from 'types/program'
+import { ControlNode } from 'slices/blueprint/types/control'
+import { ProgramNode } from 'slices/blueprint/types/program'
 import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
 import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'

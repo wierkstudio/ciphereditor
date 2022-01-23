@@ -7,9 +7,9 @@ import {
   changeControlValueToChoice,
   changeControlValueToType,
 } from './reducers/control'
-import { BlueprintNodeId, BlueprintState } from 'types/blueprint'
-import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from 'types/control'
-import { Operation, OperationState } from 'types/operation'
+import { BlueprintNodeId, BlueprintState } from './types/blueprint'
+import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from './types/control'
+import { Operation, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, setOperationState } from './reducers/operation'
@@ -18,7 +18,7 @@ import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
 import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { getControlNode, getNodeNamedControls } from './selectors/control'
-import { BlueprintNodeType } from 'types/blueprint'
+import { BlueprintNodeType } from './types/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',

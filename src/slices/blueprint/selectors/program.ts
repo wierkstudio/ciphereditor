@@ -3,8 +3,8 @@ import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState,
-} from 'types/blueprint'
-import { ProgramNode } from 'types/program'
+} from '../types/blueprint'
+import { ProgramNode } from '../types/program'
 import { getNode } from './blueprint'
 
 /**
