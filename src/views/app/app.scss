@@ -2,6 +2,13 @@
 @import 'styles/shared';
 
 .app {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  filter: blur(0rem);
+  transition-property: filter;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 
   &__header {
     padding: rem(24);

@@ -66,6 +66,9 @@ textarea {
   resize: none;
 }
 
+ul,
+ol,
+li,
 p,
 h1,
 h2,
@@ -78,4 +81,9 @@ h6 {
   font-size: inherit;
   font-weight: inherit;
   line-height: inherit;
+}
+
+ul,
+li {
+  list-style-type: none;
 }

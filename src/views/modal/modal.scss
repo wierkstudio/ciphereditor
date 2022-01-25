@@ -1,0 +1,45 @@
+
+@import 'styles/shared';
+
+.modal {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: rem(64) auto;
+  max-width: rem(440);
+  border-radius: rem(16);
+  background: $c-background;
+  pointer-events: initial;
+  box-shadow: 0 0 rem(48) rem(8) $c-muted;
+
+  &__header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: rem(24) rem(64) rem(16) rem(24);
+    border-bottom: rem(2) solid $c-muted;
+  }
+
+  &__title {
+    @extend %t-h2;
+  }
+
+  &__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: rem(28) rem(24) 0 0;
+
+    &:hover {
+      color: $c-primary;
+    }
+
+    svg {
+      fill: currentColor;
+    }
+  }
+
+  &__content {
+    padding: rem(16) rem(24) rem(24);
+  }
+}

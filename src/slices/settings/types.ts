@@ -2,7 +2,7 @@
 /**
  * Settings state
  */
- export interface SettingsState {
+export interface SettingsState {
   /**
    * Object mapping key combination strings to action types
    */

@@ -7,6 +7,7 @@ import {
   removeNodeAction,
   undoAction,
 } from 'slices/blueprint'
+import { cancelTopModalAction } from 'slices/ui'
 import { SettingsState } from './types'
 
 const defaultSettingsState: SettingsState = {
@@ -18,6 +19,7 @@ const defaultSettingsState: SettingsState = {
     'arrowup+meta': leaveProgramAction.type,
     'z+meta': undoAction.type,
     'z+meta+shift': redoAction.type,
+    'escape': cancelTopModalAction.type,
   }
 }
 

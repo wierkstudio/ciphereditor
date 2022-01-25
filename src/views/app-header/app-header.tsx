@@ -7,15 +7,14 @@ import { ReactComponent as ArrowUpIcon } from 'icons/arrow-up.svg'
 import { ReactComponent as PlusIcon } from 'icons/plus.svg'
 import { ReactComponent as RedoIcon } from 'icons/redo.svg'
 import { ReactComponent as UndoIcon } from 'icons/undo.svg'
-import { addEmptyProgramAction, addOperationAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
+import { addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
-import { getOperations } from 'slices/directory/selectors'
+import { pushAddModalAction } from 'slices/ui'
 import { useAppDispatch, useAppSelector, useBlueprintSelector } from '../../utils/hooks'
 
 export default function AppHeaderView() {
   const dispatch = useAppDispatch()
   const program = useBlueprintSelector(state => getActiveProgram(state))
-  const directoryOperations = useAppSelector(state => getOperations(state.directory))
 
   // TODO: How to add a control?
 
@@ -29,7 +28,8 @@ export default function AppHeaderView() {
           <ToolbarButtonView
             icon={<PlusIcon />}
             disabled={program === undefined}
-            onClick={() => dispatch(addEmptyProgramAction({ programId: program!.id }))}
+            title="Add"
+            onClick={() => dispatch(pushAddModalAction({}))}
           />,
           <ToolbarButtonView
             icon={<ArrowUpIcon />}
@@ -48,17 +48,12 @@ export default function AppHeaderView() {
               disabled={useAppSelector(state => state.blueprint.future.length) === 0}
             />,
           ],
-          directoryOperations.map(operation => (
-            <ToolbarButtonView
-              icon={<PlusIcon />}
-              disabled={program === undefined}
-              title={operation.label}
-              onClick={() => dispatch(addOperationAction({
-                programId: program!.id,
-                operation: operation,
-              }))}
-            />
-          )),
+          <ToolbarButtonView
+            icon={<PlusIcon />}
+            disabled={program === undefined}
+            title="Add a program"
+            onClick={() => dispatch(addEmptyProgramAction({ programId: program!.id }))}
+          />,
         ]} />
       </div>
     </header>

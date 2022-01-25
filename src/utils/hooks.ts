@@ -65,4 +65,4 @@ export const useWindowResizeListener = (listener: (event: UIEvent) => any) => {
       window.removeEventListener('resize', handler)
     }
   }, [])
-};
+}
