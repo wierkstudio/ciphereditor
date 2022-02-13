@@ -8,7 +8,7 @@ type DragMoveState = {
   startViewportY: number
 }
 
-export const gridSize = 32.0
+export const gridSize = 16.0
 
 export default function useDragMove(
   x: number,
@@ -19,10 +19,12 @@ export default function useDragMove(
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
 
   const onMouseDown = useCallback((event: ReactMouseEvent) => {
-    event.stopPropagation()
-    const startViewportX = event.clientX
-    const startViewportY = event.clientY
-    setState({ startX: x, startY: y, startViewportX, startViewportY })
+    if (event.button === 0) {
+      event.stopPropagation()
+      const startViewportX = event.clientX
+      const startViewportY = event.clientY
+      setState({ startX: x, startY: y, startViewportX, startViewportY })
+    }
   }, [setState, x, y])
 
   useEffect(() => {
