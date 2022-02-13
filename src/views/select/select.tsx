@@ -1,8 +1,8 @@
 
 import './select.scss'
-import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
-import { useAppClassName } from 'utils/hooks'
 import { ChangeEventHandler } from 'react'
+import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
+import { useClassNames } from 'hooks/useClassNames'
 
 export type SelectViewOptionElement = {
   type: 'option'
@@ -32,7 +32,7 @@ export default function SelectView(props: {
 }) {
   return (
     <div
-      className={useAppClassName('select', props.modifiers)}
+      className={useClassNames('select', props.modifiers)}
       onMouseDown={(event) => event.stopPropagation()}
     >
       <select

@@ -4,7 +4,7 @@ import ControlView from 'views/control/control'
 import OperationView from 'views/operation/operation'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { getNode } from 'slices/blueprint/selectors/blueprint'
-import { useBlueprintSelector } from 'utils/hooks'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function NodeView(props: {
   nodeId: BlueprintNodeId,

@@ -12,8 +12,8 @@ import { ControlNode } from 'slices/blueprint/types/control'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
-import { useAppDispatch } from 'utils/hooks'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export default function ControlDrawerView(props: {
   control: ControlNode
@@ -52,7 +52,7 @@ export default function ControlDrawerView(props: {
         }))
         break
     }
-  }, [dispatch, controlId, contextProgramId])
+  }, [dispatch, controlId, contextProgramId, control.types])
 
   const selectElements: SelectViewElement[] = []
   let selectValue = undefined

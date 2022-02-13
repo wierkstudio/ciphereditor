@@ -4,8 +4,10 @@ import AppHeaderView from 'views/app-header/app-header'
 import CanvasView from '../canvas/canvas'
 import ModalStackView from 'views/modal-stack/modal-stack'
 import { getShortcutBindings } from 'slices/settings/selectors'
-import { useAppClassName, useAppSelector, useAppShortcuts } from 'utils/hooks'
 import { isModalStackEmpty } from 'slices/ui/selectors'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useAppShortcuts } from 'hooks/useAppShortcuts'
+import { useClassNames } from 'hooks/useClassNames'
 
 export default function AppView() {
   const shortcutBindings = useAppSelector(state => getShortcutBindings(state.settings))
@@ -13,7 +15,7 @@ export default function AppView() {
 
   const hasModals = !useAppSelector(state => isModalStackEmpty(state.ui))
   return (
-    <div className={useAppClassName('app', hasModals ? ['modals'] : [])}>
+    <div className={useClassNames('app', hasModals ? ['modals'] : [])}>
       <div className="app__content">
         <AppHeaderView />
         <CanvasView />

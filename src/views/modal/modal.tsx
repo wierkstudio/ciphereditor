@@ -1,10 +1,10 @@
 
 import './modal.scss'
 import { ModalState } from 'slices/ui/types'
-import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { MouseEvent, ReactNode, useCallback } from 'react'
-import { useAppDispatch } from 'utils/hooks'
+import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { cancelTopModalAction } from 'slices/ui'
+import { useAppDispatch } from 'hooks/useAppDispatch'
 
 export default function ModalView(props: {
   modal: ModalState,

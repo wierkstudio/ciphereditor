@@ -7,7 +7,9 @@ import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
 import { getOperations } from 'slices/directory/selectors'
 import { popModalAction } from 'slices/ui'
-import { useAppDispatch, useAppSelector, useBlueprintSelector } from 'utils/hooks'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function AddModalView(props: {
   modal: ModalState

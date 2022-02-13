@@ -8,7 +8,8 @@ import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
 import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
-import { useAppClassName, useBlueprintSelector } from 'utils/hooks'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
+import { useClassNames } from 'hooks/useClassNames'
 
 export default function OutletView(props: {
   control: ControlNode
@@ -28,7 +29,7 @@ export default function OutletView(props: {
   const variant = isUnused ? 'unused' : (isPushing ? 'push' : 'pull')
 
   return (
-    <div className={useAppClassName('outlet', [variant].concat(props.expanded ? ['expanded'] : ''))}>
+    <div className={useClassNames('outlet', [variant].concat(props.expanded ? ['expanded'] : ''))}>
       {props.expanded && (
         <div className="outlet__select">
           <OutletSelectView control={control} contextProgramId={contextProgramId} />

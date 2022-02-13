@@ -7,7 +7,8 @@ import { ProgramNode } from 'slices/blueprint/types/program'
 import { ReactComponent as SwitchIcon } from 'icons/switch.svg'
 import { enterProgramAction, selectNodeAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
-import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function OperationView(props: {
   /**

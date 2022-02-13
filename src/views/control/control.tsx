@@ -1,16 +1,17 @@
 
 import './control.scss'
 import ControlDrawerView from 'views/control-drawer/control-drawer'
+import MovableButtonView from 'views/movable-button/movable-button'
 import OutletView from 'views/outlet/outlet'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
-import { MouseEvent, useCallback, useState } from 'react'
+import { MouseEvent } from 'react'
 import { ReactComponent as ChevronDownIcon } from 'icons/chevron-down.svg'
 import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { toggleControlViewState } from 'slices/blueprint'
-import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
-import MovableButtonView from 'views/movable-button/movable-button'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function ControlView(props: {
   controlId: BlueprintNodeId

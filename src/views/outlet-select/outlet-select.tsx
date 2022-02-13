@@ -8,9 +8,10 @@ import {
 import { ControlNode } from 'slices/blueprint/types/control'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
-import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 import { useCallback } from 'react'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function OutletSelectView(props: {
   control: ControlNode
@@ -79,10 +80,8 @@ export default function OutletSelectView(props: {
   const isUnused = attachedVariable === undefined
   const isPushing = attachedVariableSourceControl && attachedVariableSourceControl.id === control.id
 
-  let variant = 'unused'
   let selectLabel = 'Use'
   if (!isUnused) {
-    variant = isPushing ? 'push' : 'pull'
     selectLabel = isPushing ? 'Push' : 'Pull'
   }
 

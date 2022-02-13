@@ -1,6 +1,6 @@
 
+import { useWindowResizeListener } from 'hooks/useWindowResizeListener'
 import React, { useRef, useCallback, useLayoutEffect } from 'react'
-import { useWindowResizeListener } from 'utils/hooks'
 import { ValueViewProps } from 'views/value/value'
 import './value-text.scss'
 

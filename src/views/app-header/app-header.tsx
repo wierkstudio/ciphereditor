@@ -9,9 +9,11 @@ import { ReactComponent as RedoIcon } from 'icons/redo.svg'
 import { ReactComponent as UndoIcon } from 'icons/undo.svg'
 import { addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
-import { pushAddModalAction } from 'slices/ui'
-import { useAppDispatch, useAppSelector, useBlueprintSelector } from '../../utils/hooks'
 import { getCanvasPosition } from 'slices/ui/selectors'
+import { pushAddModalAction } from 'slices/ui'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function AppHeaderView() {
   const dispatch = useAppDispatch()

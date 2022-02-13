@@ -7,7 +7,9 @@ import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
 import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { moveCanvasAction } from 'slices/ui'
-import { useAppDispatch, useAppSelector, useBlueprintSelector } from 'utils/hooks'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function CanvasView() {
   const dispatch = useAppDispatch()

@@ -1,6 +1,5 @@
 
 import { MouseEvent as ReactMouseEvent, useCallback, useEffect, useState } from 'react'
-import { useAppDispatch } from 'utils/hooks'
 
 type DragMoveState = {
   startX: number
@@ -18,8 +17,6 @@ export default function useDragMove(
   inverse: boolean = false
 ) {
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
-
-  const dispatch = useAppDispatch()
 
   const onMouseDown = useCallback((event: ReactMouseEvent) => {
     event.stopPropagation()
@@ -60,7 +57,7 @@ export default function useDragMove(
       window.removeEventListener('mousemove', onMouseMove, listenerOptions)
       window.removeEventListener('mouseup', onMouseUp)
     }
-  }, [dispatch, x, y, onMove, state, setState])
+  }, [x, y, onMove, inverse, state, setState])
 
   return { onMouseDown }
 }

@@ -2,10 +2,11 @@
 import './modal-stack.scss'
 import AddModalView from 'views/modal-add/modal-add'
 import { ModalType } from 'slices/ui/types'
-import { getModalStack } from 'slices/ui/selectors'
-import { useAppDispatch, useAppSelector } from 'utils/hooks'
 import { MouseEvent, useCallback } from 'react'
 import { cancelTopModalAction } from 'slices/ui'
+import { getModalStack } from 'slices/ui/selectors'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useAppSelector } from 'hooks/useAppSelector'
 
 const modalViewMap = {
   [ModalType.Add]: AddModalView,

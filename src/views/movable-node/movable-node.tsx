@@ -5,7 +5,8 @@ import useDragMove, { gridSize } from 'hooks/useDragMove'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { getNodePosition } from 'slices/blueprint/selectors/blueprint'
 import { moveNodeAction } from 'slices/blueprint'
-import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
+import { useAppDispatch } from 'hooks/useAppDispatch'
+import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function MovableNodeView(props: {
   nodeId: BlueprintNodeId,
