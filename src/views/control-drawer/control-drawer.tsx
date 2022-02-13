@@ -20,7 +20,7 @@ export default function ControlDrawerView(props: {
   contextProgramId: BlueprintNodeId
 }) {
   const dispatch = useAppDispatch()
-  const { control, contextProgramId } = props
+  const { control } = props
   const controlId = control.id
   const value = control.value
 
@@ -52,7 +52,7 @@ export default function ControlDrawerView(props: {
         }))
         break
     }
-  }, [dispatch, controlId, contextProgramId, control.types])
+  }, [dispatch, controlId, control.types])
 
   const selectElements: SelectViewElement[] = []
   let selectValue = undefined

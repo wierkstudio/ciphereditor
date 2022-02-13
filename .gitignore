@@ -14,9 +14,7 @@
 # misc
 /assets/localhost.crt
 /assets/localhost.key
-/public/bundle-essentials.js
-/public/bundle-essentials.js.map
-/public/processor.html
+/public/processor/
 .DS_Store
 .env.local
 .env.development.local

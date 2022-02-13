@@ -29,7 +29,6 @@ export const settingsSlice = createSlice({
   reducers: {}
 })
 
-export const {
-} = settingsSlice.actions
+// export const {} = settingsSlice.actions
 
 export default settingsSlice.reducer

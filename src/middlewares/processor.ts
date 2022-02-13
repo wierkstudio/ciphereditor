@@ -10,7 +10,7 @@ import { getBusyOperationIds, getOperationNode, getOperationTask } from 'slices/
 import { hasNode } from 'slices/blueprint/selectors/blueprint'
 
 // TODO: Move this to a better place where it can be configured properly
-let processor = new Processor('/processor.html')
+let processor = new Processor(process.env.PUBLIC_URL + '/processor/processor.html')
 
 export const processorMiddleware: Middleware<{}, RootState> = store => next => (action: AnyAction) => {
   const preBusyOperationIds = getBusyOperationIds(store.getState().blueprint.present)
