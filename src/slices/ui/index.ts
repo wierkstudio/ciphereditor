@@ -1,16 +1,26 @@
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushAddModal } from './reducers'
-import { UIState } from './types'
+import { UICanvasState, UIState } from './types'
 
 const defaultUIState: UIState = {
-  modalStack: []
+  canvasState: UICanvasState.Idle,
+  canvasX: 0,
+  canvasY: 0,
+  modalStack: [],
 }
 
 export const settingsSlice = createSlice({
   name: 'ui',
   initialState: defaultUIState,
   reducers: {
+    moveCanvasAction: (state, { payload }: PayloadAction<{
+      x: number,
+      y: number,
+    }>) => {
+      state.canvasX = payload.x
+      state.canvasY = payload.y
+    },
     pushAddModalAction: (state, { payload }: PayloadAction<{}>) => {
       pushAddModal(state)
     },
@@ -29,6 +39,7 @@ export const settingsSlice = createSlice({
 })
 
 export const {
+  moveCanvasAction,
   pushAddModalAction,
   cancelTopModalAction,
   popModalAction,

@@ -43,3 +43,11 @@ export const getNodeChildren = (
     .childIds
     .map(id => getNode(state, id))
     .filter(node => !type || node.type === type)
+
+export const getNodePosition = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+) => {
+  const node = getNode(state, nodeId)
+  return { x: node.x, y: node.y }
+}

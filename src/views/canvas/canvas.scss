@@ -1,0 +1,23 @@
+
+@import 'styles/shared';
+
+.canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  cursor: grab;
+  z-index: $z-index-canvas;
+
+  &__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(0px, 0px);
+    transition-property: transform;
+    transition-duration: 0.05s;
+    transition-timing-function: ease-in;
+  }
+}

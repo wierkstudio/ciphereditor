@@ -6,26 +6,25 @@ import {
   detachControlFromVariableAction
 } from 'slices/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
-import { ProgramNode } from 'slices/blueprint/types/program'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
 import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 import { useCallback } from 'react'
+import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 
 export default function OutletSelectView(props: {
   control: ControlNode
-  program: ProgramNode
+  contextProgramId: BlueprintNodeId
 }) {
   const dispatch = useAppDispatch()
-  const { control, program } = props
+  const { control, contextProgramId } = props
   const controlId = control.id
-  const programId = program.id
 
   const { pushOptions, pullOptions } = useBlueprintSelector(state =>
-    getControlVariableOptions(state, props.control.id, props.program.id))
+    getControlVariableOptions(state, props.control.id, contextProgramId))
 
   const attachedVariable = useBlueprintSelector(state =>
-    getControlVariable(state, props.control.id, props.program.id))
+    getControlVariable(state, props.control.id, contextProgramId))
   const attachedVariableSourceControl = useBlueprintSelector(state =>
     attachedVariable ? getVariableControl(state, attachedVariable.id) : undefined)
   const attachedVariableId = attachedVariable?.id
@@ -60,7 +59,7 @@ export default function OutletSelectView(props: {
         // Push to a new variable
         dispatch(addVariableFromControlAction({
           controlId,
-          programId,
+          programId: contextProgramId,
         }))
         break
       case 'l':
@@ -75,7 +74,7 @@ export default function OutletSelectView(props: {
         }
         break
     }
-  }, [dispatch, pullOptions, pushOptions, controlId, attachedVariableId, programId])
+  }, [dispatch, pullOptions, pushOptions, controlId, attachedVariableId, contextProgramId])
 
   const isUnused = attachedVariable === undefined
   const isPushing = attachedVariableSourceControl && attachedVariableSourceControl.id === control.id

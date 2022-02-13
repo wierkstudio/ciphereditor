@@ -32,6 +32,16 @@ export interface BlueprintNode {
    * Array of child node ids
    */
   childIds: BlueprintNodeId[]
+
+  /**
+   * Node position on x-axis
+   */
+  x: number
+
+  /**
+   * Node position on y-axis
+   */
+  y: number
 }
 
 /**

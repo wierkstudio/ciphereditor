@@ -15,7 +15,9 @@ import { addOperationControlNode } from './control'
 export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  operation: Operation
+  operation: Operation,
+  x: number,
+  y: number,
 ) => {
   // TODO: Where to put the operation entity name
   const operationNode: OperationNode = {
@@ -28,6 +30,8 @@ export const addOperationNode = (
     priorityControlIds: [],
     bundleUrl: operation.bundleUrl,
     moduleId: operation.moduleId,
+    x,
+    y,
   }
 
   addNode(state, operationNode)

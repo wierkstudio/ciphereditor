@@ -3,11 +3,25 @@
 
 .app-header {
   display: flex;
-  align-items: center;
-  padding: rem(24) rem(24) 0;
-  line-height: 0;
+  justify-content: flex-start;
+  position: absolute;
+  top: rem(16);
+  left: rem(16);
+  right: rem(16);
+  z-index: $z-index-app-header;
+  pointer-events: none;
+
+  &__inner {
+    display: flex;
+    padding: rem(8);
+    border-radius: rem(16);
+    align-items: center;
+    line-height: 0;
+    background: $c-muted;
+    pointer-events: initial;
+  }
 
   &__brand {
-    padding-right: rem(24);
+    padding: 0 rem(24) 0 rem(8);
   }
 }

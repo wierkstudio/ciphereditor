@@ -24,6 +24,10 @@ body {
   background: $c-muted;
 }
 
+body.body-grabbing * {
+  cursor: grabbing !important;
+}
+
 body,
 button,
 input,

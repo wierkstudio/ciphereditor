@@ -1,7 +1,7 @@
 
 import './app.scss'
 import AppHeaderView from 'views/app-header/app-header'
-import BlueprintView from '../blueprint/blueprint'
+import CanvasView from '../canvas/canvas'
 import ModalStackView from 'views/modal-stack/modal-stack'
 import { getShortcutBindings } from 'slices/settings/selectors'
 import { useAppClassName, useAppSelector, useAppShortcuts } from 'utils/hooks'
@@ -16,7 +16,7 @@ export default function AppView() {
     <div className={useAppClassName('app', hasModals ? ['modals'] : [])}>
       <div className="app__content">
         <AppHeaderView />
-        <BlueprintView />
+        <CanvasView />
       </div>
       <div className="app__modals">
         <ModalStackView />

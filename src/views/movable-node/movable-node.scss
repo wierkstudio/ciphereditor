@@ -1,0 +1,12 @@
+
+@import 'styles/shared';
+
+.movable-node {
+  position: absolute;
+  top: rem(-160);
+  left: rem(-160);
+  transform: translate(0px, 0px);
+  transition-property: transform;
+  transition-duration: 0.05s;
+  transition-timing-function: ease-in;
+}

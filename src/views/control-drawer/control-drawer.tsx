@@ -9,27 +9,26 @@ import {
   changeControlValueToTypeAction,
 } from 'slices/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
-import { ProgramNode } from 'slices/blueprint/types/program'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { useAppDispatch } from 'utils/hooks'
+import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 
 export default function ControlDrawerView(props: {
   control: ControlNode
-  program: ProgramNode
+  contextProgramId: BlueprintNodeId
 }) {
   const dispatch = useAppDispatch()
-  const { control, program } = props
+  const { control, contextProgramId } = props
   const controlId = control.id
-  const programId = program.id
   const value = control.value
 
   const onValueChange = useCallback((value: TypedValue, event: ChangeEvent) => {
     dispatch(changeControlAction({ controlId, change: { value } }))
   }, [dispatch, controlId])
 
-  const onValueCopy = useCallback((evt: MouseEvent<HTMLButtonElement>) => {
+  const onValueCopy = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     // TODO: Make it visible to the user that they just copied the value
     navigator.clipboard.writeText(stringifyValue(value))
   }, [value])
@@ -53,7 +52,7 @@ export default function ControlDrawerView(props: {
         }))
         break
     }
-  }, [dispatch, controlId, programId])
+  }, [dispatch, controlId, contextProgramId])
 
   const selectElements: SelectViewElement[] = []
   let selectValue = undefined
@@ -99,7 +98,10 @@ export default function ControlDrawerView(props: {
     control.choices.length === 0
 
   return (
-    <div className="control-drawer">
+    <div
+      className="control-drawer"
+      onMouseDown={(event) => event.stopPropagation()}
+    >
       {showValue && (
         <div className="control-drawer__value">
           <ValueView

@@ -1,27 +1,36 @@
 
 import './operation.scss'
 import ControlView from 'views/control/control'
-import { BlueprintNodeType } from 'slices/blueprint/types/blueprint'
-import { ControlNode } from 'slices/blueprint/types/control'
+import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { OperationNode } from 'slices/blueprint/types/operation'
 import { ProgramNode } from 'slices/blueprint/types/program'
 import { ReactComponent as SwitchIcon } from 'icons/switch.svg'
 import { enterProgramAction, selectNodeAction } from 'slices/blueprint'
-import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
+import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { useAppDispatch, useBlueprintSelector } from 'utils/hooks'
 
 export default function OperationView(props: {
-  operation: OperationNode|ProgramNode
-  program: ProgramNode
+  /**
+   * Operation or control node id
+   */
+  nodeId: BlueprintNodeId
+  contextProgramId: BlueprintNodeId
 }) {
-  const { operation } = props
+  const { nodeId, contextProgramId } = props
+
+  const node = useBlueprintSelector(state =>
+    getNode(state, nodeId) as ProgramNode | OperationNode)
+  const controlIds = useBlueprintSelector(state =>
+    getNodeChildren(state, nodeId, BlueprintNodeType.Control)
+      .map(node => node.id) as BlueprintNodeId[])
+
   const dispatch = useAppDispatch()
-  let controls = useBlueprintSelector(state => getNodeChildren(state, operation.id, BlueprintNodeType.Control)) as ControlNode[]
 
   let doubleClickHandler = undefined
-  if (operation.type === BlueprintNodeType.Program) {
-    doubleClickHandler = () =>
-      dispatch(enterProgramAction({ programId: operation.id }))
+  if (node.type === BlueprintNodeType.Program) {
+    doubleClickHandler = () => {
+      dispatch(enterProgramAction({ programId: nodeId }))
+    }
   }
 
   // TODO: Right now, we assume that the last control conveys the 'result' of
@@ -34,20 +43,30 @@ export default function OperationView(props: {
       className="operation"
       role="region"
       tabIndex={0}
-      onFocus={() => dispatch(selectNodeAction({ nodeId: operation.id }))}
+      onFocus={() => dispatch(selectNodeAction({ nodeId }))}
       onDoubleClick={doubleClickHandler}
     >
-      <header className="operation__header" style={{ order: controls.length - 1 }}>
+      <header
+        className="operation__header"
+        style={{ order: controlIds.length - 1 }}
+      >
         <span className="operation__icon">
           <SwitchIcon />
         </span>
         <h3 className="operation__label">
-          {operation.label}
+          {node.label}
         </h3>
       </header>
-      {controls.map((node, index) => (
-        <div key={node.id} className="operation__control" style={{ order: index }}>
-          <ControlView control={node} program={props.program} />
+      {controlIds.map((controlId, index) => (
+        <div
+          key={controlId}
+          className="operation__control"
+          style={{ order: index }}
+        >
+          <ControlView
+            controlId={controlId}
+            contextProgramId={contextProgramId}
+          />
         </div>
       ))}
     </div>

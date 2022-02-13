@@ -1,0 +1,11 @@
+
+@import 'styles/shared';
+
+.node {
+  padding: rem(8);
+  border-radius: rem(16);
+  width: rem(320);
+  box-sizing: content-box;
+  background: $c-muted;
+  cursor: default;
+}

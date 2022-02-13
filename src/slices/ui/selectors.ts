@@ -1,6 +1,9 @@
 
 import { UIState } from './types'
 
+export const getCanvasPosition = (state: UIState) =>
+  ({ x: state.canvasX, y: state.canvasY })
+
 export const getModalStack = (state: UIState) =>
   state.modalStack
 

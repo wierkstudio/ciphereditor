@@ -40,8 +40,11 @@ export const blueprintSlice = createSlice({
     addOperationAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId,
       operation: Operation,
+      x: number,
+      y: number,
     }>) => {
-      addOperationNode(state, payload.programId, payload.operation)
+      const { programId, operation, x, y } = payload
+      addOperationNode(state, programId, operation, x, y)
     },
 
     /**
@@ -50,9 +53,12 @@ export const blueprintSlice = createSlice({
      */
     addEmptyProgramAction: (state, { payload }: PayloadAction<{
       programId?: BlueprintNodeId,
+      x: number,
+      y: number,
     }>) => {
       // TODO: Handle no active program
-      addEmptyProgramNode(state, payload.programId ?? state.activeProgramId)
+      const { programId, x, y } = payload
+      addEmptyProgramNode(state, programId ?? state.activeProgramId, x, y)
     },
 
     /**
@@ -210,7 +216,17 @@ export const blueprintSlice = createSlice({
 
         removeNode(state, nodeId)
       }
-    }
+    },
+
+    moveNodeAction: (state, { payload }: PayloadAction<{
+      nodeId: BlueprintNodeId,
+      x: number,
+      y: number,
+    }>) => {
+      const node = getNode(state, payload.nodeId)
+      node.x = payload.x
+      node.y = payload.y
+    },
   }
 })
 
@@ -230,6 +246,7 @@ export const {
   applyOperationTaskResultAction,
   selectNodeAction,
   removeNodeAction,
+  moveNodeAction,
 } = blueprintSlice.actions
 
 export const undoAction = createAction(`${blueprintSlice.name}/undoAction`)
@@ -258,6 +275,10 @@ export default undoable(blueprintSlice.reducer, {
       // refer to the same control and happen after small time intervals (30s)
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
       return `control-${action.payload.controlId}-${timeUnit}`
+    } else if (action.type === moveNodeAction.type) {
+      // See case above
+      const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
+      return `move-node-${action.payload.nodeId}-${timeUnit}`
     }
     // Put this action into a separate group
     return Number.isInteger(currentGroup) ? currentGroup + 1 : 1

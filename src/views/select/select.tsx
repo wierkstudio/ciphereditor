@@ -31,7 +31,10 @@ export default function SelectView(props: {
   modifiers?: string[]
 }) {
   return (
-    <div className={useAppClassName('select', props.modifiers)}>
+    <div
+      className={useAppClassName('select', props.modifiers)}
+      onMouseDown={(event) => event.stopPropagation()}
+    >
       <select
         className="select__control"
         value={props.value !== undefined ? props.value : ''}

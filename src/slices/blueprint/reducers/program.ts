@@ -12,6 +12,8 @@ export const defaultProgramNode: ProgramNode = {
   parentId: 1,
   childIds: [],
   label: 'Program 1',
+  x: 0,
+  y: 0,
 }
 
 /**
@@ -22,7 +24,9 @@ export const defaultProgramNode: ProgramNode = {
  */
 export const addEmptyProgramNode = (
   state: BlueprintState,
-  parentId?: BlueprintNodeId
+  parentId: BlueprintNodeId | undefined,
+  x: number,
+  y: number,
 ) => {
   const id = nextNodeId(state)
   const programNode = {
@@ -30,6 +34,8 @@ export const addEmptyProgramNode = (
     id,
     parentId: parentId || id,
     label: `Program ${id}`,
+    x,
+    y,
   }
   return addNode(state, programNode)
 }
