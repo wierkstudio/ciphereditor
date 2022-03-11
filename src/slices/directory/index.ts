@@ -45,7 +45,7 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text'],
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'translate',
     },
     {
@@ -74,7 +74,7 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text'],
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'rot13',
     },
     {
@@ -138,7 +138,7 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text'],
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'basen',
     },
     {
@@ -169,7 +169,7 @@ const defaultDirectoryState: DirectoryState = {
           writable: false,
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'word-counter',
     },
     {
@@ -187,7 +187,7 @@ const defaultDirectoryState: DirectoryState = {
           types: ['boolean'],
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'logical-not',
     },
     {
@@ -211,7 +211,7 @@ const defaultDirectoryState: DirectoryState = {
           writable: false,
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'logical-and',
     },
     {
@@ -235,7 +235,7 @@ const defaultDirectoryState: DirectoryState = {
           writable: false,
         },
       ],
-      bundleUrl: process.env.PUBLIC_URL + '/processor/bundle-essentials.js',
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'logical-or',
     },
   ]
