@@ -1,5 +1,6 @@
 
 import './control-drawer.scss'
+import IconView from 'views/icon/icon'
 import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'
@@ -9,7 +10,6 @@ import {
   changeControlValueToTypeAction,
 } from 'slices/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
-import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
@@ -123,7 +123,7 @@ export default function ControlDrawerView(props: {
           />
         </div>
         <button className="control-drawer__copy" onClick={onValueCopy}>
-          <CopyIcon title="Copy" />
+          <IconView icon="copy" />
         </button>
       </div>
     </div>

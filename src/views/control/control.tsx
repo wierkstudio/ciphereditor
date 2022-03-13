@@ -1,13 +1,12 @@
 
 import './control.scss'
 import ControlDrawerView from 'views/control-drawer/control-drawer'
+import IconView from 'views/icon/icon'
 import MovableButtonView from 'views/movable-button/movable-button'
 import OutletView from 'views/outlet/outlet'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
 import { MouseEvent } from 'react'
-import { ReactComponent as ChevronDownIcon } from 'icons/chevron-down.svg'
-import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { toggleControlViewState } from 'slices/blueprint'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -35,7 +34,7 @@ export default function ControlView(props: {
         <MovableButtonView className="control__header-toggle" onClick={onToggleClick}>
           <div className="control__header-pill">
             <div className="control__header-chevron">
-              <ChevronDownIcon />
+              <IconView icon="chevronDown" />
             </div>
             <h4 className="control__header-name">
               {control.label}

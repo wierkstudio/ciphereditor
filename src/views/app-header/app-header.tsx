@@ -1,12 +1,9 @@
 
 import './app-header.scss'
+import IconView from 'views/icon/icon'
 import LogoView from 'views/logo/logo'
 import ToolbarButtonView from 'views/toolbar-button/toolbar-button'
 import ToolbarView from 'views/toolbar/toolbar'
-import { ReactComponent as ArrowUpIcon } from 'icons/arrow-up.svg'
-import { ReactComponent as PlusIcon } from 'icons/plus.svg'
-import { ReactComponent as RedoIcon } from 'icons/redo.svg'
-import { ReactComponent as UndoIcon } from 'icons/undo.svg'
 import { addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
@@ -31,30 +28,30 @@ export default function AppHeaderView() {
         <div className="app-header__toolbar">
           <ToolbarView items={[
             <ToolbarButtonView
-              icon={<PlusIcon />}
+              icon={<IconView icon="plus" />}
               disabled={program === undefined}
               title="Add"
               onClick={() => dispatch(pushAddModalAction({}))}
             />,
             <ToolbarButtonView
-              icon={<ArrowUpIcon />}
+              icon={<IconView icon="arrowUp" />}
               onClick={() => dispatch(leaveProgramAction({}))}
               disabled={!program || program.parentId === program.id}
             />,
             [
               <ToolbarButtonView
-              icon={<UndoIcon />}
+              icon={<IconView icon="undo" />}
                 onClick={() => dispatch(undoAction())}
                 disabled={useAppSelector(state => state.blueprint.past.length) === 0}
               />,
               <ToolbarButtonView
-                icon={<RedoIcon />}
+                icon={<IconView icon="redo" />}
                 onClick={() => dispatch(redoAction())}
                 disabled={useAppSelector(state => state.blueprint.future.length) === 0}
               />,
             ],
             <ToolbarButtonView
-              icon={<PlusIcon />}
+              icon={<IconView icon="plus" />}
               disabled={program === undefined}
               title="Add a program"
               onClick={() => dispatch(addEmptyProgramAction({

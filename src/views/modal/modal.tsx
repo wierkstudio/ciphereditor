@@ -1,8 +1,8 @@
 
 import './modal.scss'
+import IconView from 'views/icon/icon'
 import { ModalState } from 'slices/ui/types'
 import { MouseEvent, ReactNode, useCallback } from 'react'
-import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { cancelTopModalAction } from 'slices/ui'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 
@@ -23,7 +23,7 @@ export default function ModalView(props: {
         <header className="modal__header">
           <h2 className="modal__title">{props.title}</h2>
           <button className="modal__close" onClick={onCloseClick}>
-            <CloseIcon />
+            <IconView icon="close" />
           </button>
         </header>
       )}

@@ -1,10 +1,10 @@
 
 import './operation.scss'
 import ControlView from 'views/control/control'
+import IconView from 'views/icon/icon'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { OperationNode } from 'slices/blueprint/types/operation'
 import { ProgramNode } from 'slices/blueprint/types/program'
-import { ReactComponent as SwitchIcon } from 'icons/switch.svg'
 import { enterProgramAction, selectNodeAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { useAppDispatch } from 'hooks/useAppDispatch'
@@ -52,7 +52,7 @@ export default function OperationView(props: {
         style={{ order: controlIds.length - 1 }}
       >
         <span className="operation__icon">
-          <SwitchIcon />
+          <IconView icon="switch" />
         </span>
         <h3 className="operation__label">
           {node.label}

@@ -1,7 +1,7 @@
 
 import './select.scss'
+import IconView from 'views/icon/icon'
 import { ChangeEventHandler } from 'react'
-import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
 import { useClassNames } from 'hooks/useClassNames'
 
 export type SelectViewOptionElement = {
@@ -49,7 +49,7 @@ export default function SelectView(props: {
         {props.valueLabel || 'Select'}
       </div>
       <div className="select__chevron">
-        <DoubleChevronIcon />
+        <IconView icon="doubleChevron" />
       </div>
     </div>
   )

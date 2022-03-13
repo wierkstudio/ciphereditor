@@ -1,12 +1,10 @@
 
 import './outlet.scss'
+import IconView from 'views/icon/icon'
 import OutletSelectView from 'views/outlet-select/outlet-select'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
 import { MouseEventHandler } from 'react'
-import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
-import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
-import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 import { useClassNames } from 'hooks/useClassNames'
@@ -42,13 +40,13 @@ export default function OutletView(props: {
         onClick={props.onIndicatorClick}
       >
         {(variant === 'unused') && (
-          <OutletUnusedIcon />
+          <IconView icon="outletUnused" />
         )}
         {(variant === 'push') && (
-          <OutletPushIcon />
+          <IconView icon="outletPush" />
         )}
         {(variant === 'pull') && (
-          <OutletPullIcon />
+          <IconView icon="outletPull" />
         )}
       </button>
     </div>

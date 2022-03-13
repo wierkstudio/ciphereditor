@@ -54,22 +54,13 @@
     background: $c-line;
   }
 
-  &__header-chevron {
-    padding-right: rem(4);
-
-    svg {
-      fill: $c-text;
-      margin: 0 rem(-4) 0 0;
-    }
-  }
-
   &--expanded &__header-chevron {
     transform: rotate(180deg);
   }
 
   &__header-name {
     display: inline;
-    padding-right: rem(8);
+    padding: 0 rem(8) 0 rem(4);
     @extend %t-label;
     color: $c-text;
   }
