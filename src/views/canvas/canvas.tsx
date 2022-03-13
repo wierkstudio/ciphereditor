@@ -1,16 +1,16 @@
 
 import './canvas.scss'
 import MovableNodeView from 'views/movable-node/movable-node'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useDragMove, { gridSize } from 'hooks/useDragMove'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
+import { DragEvent, useCallback } from 'react'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { moveCanvasAction } from 'slices/ui'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { useAppSelector } from 'hooks/useAppSelector'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
-import { DragEvent, useCallback } from 'react'
 import { selectNodeAction } from 'slices/blueprint'
 
 export default function CanvasView() {

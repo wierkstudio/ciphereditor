@@ -14,17 +14,11 @@
     padding: 0 rem(8);
   }
 
+  &__select {
+    padding: rem(8);
+  }
+
   &__copy {
-    padding: rem(12) rem(16) rem(12) rem(16);
-    color: $c-meta;
-    line-height: 0;
-
-    svg {
-      fill: currentColor;
-    }
-
-    &:hover {
-      color: $c-primary;
-    }
+    padding: rem(8);
   }
 }

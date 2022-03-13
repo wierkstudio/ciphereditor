@@ -1,0 +1,65 @@
+
+@import 'styles/shared';
+
+.button {
+  display: inline-flex;
+  flex-direction: row;
+  min-width: rem(32);
+  height: rem(32);
+  align-items: stretch;
+  justify-content: center;
+  border-radius: rem(4);
+  line-height: 0;
+  color: $c-text;
+  background: $c-background;
+  outline: none;
+
+  &:not(:disabled):hover,
+  &:not(:disabled):focus-visible {
+    background: $c-line;
+  }
+
+  &:not(:disabled):active {
+    color: $c-background;
+    background: $c-text;
+  }
+
+  &:disabled {
+    color: $c-meta;
+    cursor: default;
+  }
+
+  &--large {
+    height: rem(40);
+    min-width: rem(40);
+    border-radius: rem(8);
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    padding: 0 rem(4);
+  }
+
+  &--large &__icon {
+    padding: 0 rem(8);
+  }
+
+  &__label {
+    display: flex;
+    align-items: center;
+    padding-right: rem(4);
+  }
+
+  &__icon + &__label {
+    margin-left: rem(-4);
+  }
+
+  &--large &__label {
+    padding-right: rem(16);
+  }
+
+  &__icon + &--large &__label {
+    margin-left: rem(-8);
+  }
+}

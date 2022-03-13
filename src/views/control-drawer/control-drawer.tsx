@@ -4,6 +4,7 @@ import IconView from 'views/icon/icon'
 import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {
   changeControlAction,
   changeControlValueToChoiceAction,
@@ -13,7 +14,7 @@ import { ControlNode } from 'slices/blueprint/types/control'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
-import { useAppDispatch } from 'hooks/useAppDispatch'
+import ButtonView from 'views/button/button'
 
 export default function ControlDrawerView(props: {
   control: ControlNode
@@ -119,12 +120,11 @@ export default function ControlDrawerView(props: {
             value={selectValue}
             valueLabel={selectLabel}
             onChange={onSelectChange}
-            modifiers={['control-footer'].concat(showValue ? ['meta'] : [])}
           />
         </div>
-        <button className="control-drawer__copy" onClick={onValueCopy}>
-          <IconView icon="copy" />
-        </button>
+        <div className="control-drawer__copy">
+          <ButtonView icon="copy" onClick={onValueCopy} />
+        </div>
       </div>
     </div>
   )

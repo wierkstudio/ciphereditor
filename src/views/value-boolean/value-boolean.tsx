@@ -1,6 +1,6 @@
 
-import { ValueViewProps } from 'views/value/value'
 import './value-boolean.scss'
+import { ValueViewProps } from 'views/value/value'
 
 export default function ValueBooleanView(props: ValueViewProps) {
   return (

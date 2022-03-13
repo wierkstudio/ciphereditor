@@ -2,25 +2,36 @@
 @import 'styles/shared';
 
 .select {
-  display: flex;
-  align-items: center;
   position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: rem(32);
+  padding: 0 0 0 rem(8);
+  border-radius: rem(4);
   color: $c-text;
+  outline: none;
 
-  &--meta {
+  &:not(:disabled):hover,
+  &:not(:disabled):focus-within {
+    background: $c-line;
+  }
+
+  &:disabled {
+    color: $c-meta;
+    cursor: default;
+  }
+
+  &--meta:not(:disabled) {
     color: $c-meta;
   }
 
-  &--primary {
+  &--primary:not(:disabled) {
     color: $c-primary;
   }
 
-  &--height-6 {
-    height: rem(48);
-  }
-
-  &--control-footer {
-    padding: rem(12) rem(16);
+  &--chevron-first {
+    padding: 0 rem(8) 0 0;
   }
 
   &__control {
@@ -33,6 +44,7 @@
     height: 100%;
     @extend %t-label;
     cursor: pointer;
+    outline: none;
 
     // Make select invisible
     text-indent: -1000px;
@@ -45,18 +57,10 @@
   }
 
   &__chevron {
-    padding-left: rem(2);
     pointer-events: none;
-
-    svg {
-      fill: currentColor;
-      margin: 0 rem(-4);
-    }
   }
 
   &--chevron-first &__chevron {
-    padding-left: 0;
-    padding-right: rem(2);
     order: -1;
   }
 

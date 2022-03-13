@@ -4,14 +4,14 @@ import ControlDrawerView from 'views/control-drawer/control-drawer'
 import IconView from 'views/icon/icon'
 import MovableButtonView from 'views/movable-button/movable-button'
 import OutletView from 'views/outlet/outlet'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
+import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
 import { MouseEvent } from 'react'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { toggleControlViewState } from 'slices/blueprint'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
-import { useClassNames } from 'hooks/useClassNames'
 
 export default function ControlView(props: {
   controlId: BlueprintNodeId
@@ -29,7 +29,7 @@ export default function ControlView(props: {
   }
 
   return (
-    <div className={useClassNames('control', control.viewState === ControlViewState.Expanded ? ['expanded']: [])}>
+    <div className={useClassName('control', control.viewState === ControlViewState.Expanded ? ['expanded']: [])}>
       <div className="control__header">
         <MovableButtonView className="control__header-toggle" onClick={onToggleClick}>
           <div className="control__header-pill">

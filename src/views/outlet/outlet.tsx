@@ -2,12 +2,12 @@
 import './outlet.scss'
 import IconView from 'views/icon/icon'
 import OutletSelectView from 'views/outlet-select/outlet-select'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
+import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
 import { MouseEventHandler } from 'react'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
-import { useClassNames } from 'hooks/useClassNames'
 
 export default function OutletView(props: {
   control: ControlNode
@@ -27,7 +27,7 @@ export default function OutletView(props: {
   const variant = isUnused ? 'unused' : (isPushing ? 'push' : 'pull')
 
   return (
-    <div className={useClassNames('outlet', [variant].concat(props.expanded ? ['expanded'] : ''))}>
+    <div className={useClassName('outlet', [variant].concat(props.expanded ? ['expanded'] : ''))}>
       {props.expanded && (
         <div className="outlet__select">
           <OutletSelectView control={control} contextProgramId={contextProgramId} />

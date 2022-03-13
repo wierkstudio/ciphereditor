@@ -6,15 +6,14 @@
   align-items: center;
   color: $c-white;
 
+  &__select {
+    margin-right: rem(-2);
+  }
+
   &__indicator {
-    padding: rem(12) rem(16) rem(12) rem(8);
+    padding: rem(12) rem(16) rem(12) 0;
     line-height: 0;
     cursor: grab;
-
-    svg {
-      fill: currentColor;
-      margin: 0 rem(-4);
-    }
   }
 
   &--push,

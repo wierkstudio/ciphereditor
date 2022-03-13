@@ -1,5 +1,7 @@
 
 import SelectView, { SelectViewElement, SelectViewGroupElement } from 'views/select/select'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import {
   addVariableFromControlAction,
   attachControlToVariableAction,
@@ -10,8 +12,6 @@ import { getControlVariable, getVariableControl } from 'slices/blueprint/selecto
 import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
 import { useCallback } from 'react'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function OutletSelectView(props: {
   control: ControlNode

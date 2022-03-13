@@ -1,11 +1,11 @@
 
 import { useCallback, useEffect } from 'react'
-import { useAppDispatch } from './useAppDispatch'
+import useAppDispatch from './useAppDispatch'
 
 /**
  * Hook registering the given shortcut bindings
  */
- export const useAppShortcuts = (bindings: { [type: string]: string }) => {
+ export default function useAppShortcuts(bindings: { [type: string]: string }) {
   const dispatch = useAppDispatch()
   const keyDownListener = useCallback(event => {
     const pressedKeys = ['Meta', 'Control', 'Shift', 'Alt']

@@ -2,7 +2,7 @@
 import './select.scss'
 import IconView from 'views/icon/icon'
 import { ChangeEventHandler } from 'react'
-import { useClassNames } from 'hooks/useClassNames'
+import useClassName, { ViewModifiers } from 'hooks/useClassName'
 
 export type SelectViewOptionElement = {
   type: 'option'
@@ -28,11 +28,11 @@ export default function SelectView(props: {
   value?: string|number
   valueLabel?: string
   onChange?: ChangeEventHandler<HTMLSelectElement>
-  modifiers?: string[]
+  modifiers?: ViewModifiers
 }) {
   return (
     <div
-      className={useClassNames('select', props.modifiers)}
+      className={useClassName('select', props.modifiers)}
       onMouseDown={(event) => event.stopPropagation()}
     >
       <select

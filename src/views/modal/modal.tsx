@@ -1,10 +1,11 @@
 
 import './modal.scss'
 import IconView from 'views/icon/icon'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { ModalState } from 'slices/ui/types'
 import { MouseEvent, ReactNode, useCallback } from 'react'
 import { cancelTopModalAction } from 'slices/ui'
-import { useAppDispatch } from 'hooks/useAppDispatch'
+import ButtonView from 'views/button/button'
 
 export default function ModalView(props: {
   modal: ModalState,
@@ -22,9 +23,9 @@ export default function ModalView(props: {
       {props.title && (
         <header className="modal__header">
           <h2 className="modal__title">{props.title}</h2>
-          <button className="modal__close" onClick={onCloseClick}>
-            <IconView icon="close" />
-          </button>
+          <div className="modal__btn-close">
+            <ButtonView icon="close" modifiers="large" onClick={onCloseClick} />
+          </div>
         </header>
       )}
       <div className="modal__content">

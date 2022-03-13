@@ -24,19 +24,11 @@
     @extend %t-h2;
   }
 
-  &__close {
+  &__btn-close {
     position: absolute;
     top: 0;
     right: 0;
-    padding: rem(28) rem(24) 0 0;
-
-    &:hover {
-      color: $c-primary;
-    }
-
-    svg {
-      fill: currentColor;
-    }
+    padding: rem(20) rem(20) 0 0;
   }
 
   &__content {

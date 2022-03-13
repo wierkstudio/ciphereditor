@@ -1,11 +1,11 @@
 
 import {
   MouseEvent as ReactMouseMove,
-  MouseEventHandler,
-  ReactNode,
   useEffect,
   useState,
 } from 'react'
+
+type MovableButtonViewProps = React.ComponentPropsWithoutRef<'button'>
 
 enum MovableButtonState {
   MouseUp,
@@ -13,24 +13,31 @@ enum MovableButtonState {
   MouseMove,
 }
 
-export default function MovableButtonView(props: {
-  children?: ReactNode
-  className?: string
-  onClick?: MouseEventHandler<Element>
-  onMouseUp?: MouseEventHandler<Element>
-}) {
-  const { onClick, onMouseUp, ...buttonProps } = props
+/**
+ * Native HTMLButtonElement that can both be clicked and dragged.
+ */
+export default function MovableButtonView(props: MovableButtonViewProps) {
+  const { onClick, onMouseUp, onMouseDown, ...buttonProps } = props
 
   const [state, setState] = useState(MovableButtonState.MouseUp)
 
-  const onInternMouseDown = (event: ReactMouseMove) => {
-    setState(MovableButtonState.MouseDown)
+  const onInternMouseDown = (event: ReactMouseMove<HTMLButtonElement>) => {
+    if (onMouseDown) {
+      onMouseDown(event)
+    }
+    if (!event.isPropagationStopped()) {
+      setState(MovableButtonState.MouseDown)
+    }
   }
 
-  const onInternClick = (event: ReactMouseMove) => {
+  const onInternClick = (event: ReactMouseMove<HTMLButtonElement>) => {
     if (state !== MovableButtonState.MouseMove) {
-      onMouseUp && onMouseUp(event)
-      onClick && onClick(event)
+      if (onMouseUp) {
+        onMouseUp(event)
+      }
+      if (onClick) {
+        onClick(event)
+      }
     }
     setState(MovableButtonState.MouseUp)
   }
@@ -57,6 +64,7 @@ export default function MovableButtonView(props: {
   return <button
     onMouseDown={onInternMouseDown}
     onClick={onInternClick}
+    onMouseUp={onMouseUp}
     {...buttonProps}
   />
 }

@@ -1,6 +1,6 @@
 
-import { ReactNode } from 'react'
 import './toolbar.scss'
+import { ReactNode } from 'react'
 
 export default function ToolbarView(props: {
   items: (ReactNode|ReactNode[])[]

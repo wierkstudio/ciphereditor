@@ -1,9 +1,9 @@
 
-import { useClassNames } from 'hooks/useClassNames'
-import { useWindowResizeListener } from 'hooks/useWindowResizeListener'
-import React, { useRef, useCallback, useLayoutEffect } from 'react'
-import { ValueViewProps } from 'views/value/value'
 import './value-text.scss'
+import React, { useRef, useCallback, useLayoutEffect } from 'react'
+import useClassName from 'hooks/useClassName'
+import useWindowResizeListener from 'hooks/useWindowResizeListener'
+import { ValueViewProps } from 'views/value/value'
 
 export default function ValueTextView(props: ValueViewProps) {
   const textareaRef = useRef<HTMLTextAreaElement|null>(null)
@@ -36,7 +36,7 @@ export default function ValueTextView(props: ValueViewProps) {
   useWindowResizeListener(resizeTextarea)
 
   return (
-    <div className={useClassNames('value-text', props.modifiers)}>
+    <div className={useClassName('value-text', props.modifiers)}>
       <textarea
         className="value-text__textarea"
         id={props.id}

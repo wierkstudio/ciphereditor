@@ -2,10 +2,10 @@
 import './node.scss'
 import ControlView from 'views/control/control'
 import OperationView from 'views/operation/operation'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
+import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { getNode, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
-import { useClassNames } from 'hooks/useClassNames'
 
 export default function NodeView(props: {
   nodeId: BlueprintNodeId,
@@ -19,7 +19,7 @@ export default function NodeView(props: {
   const isSelected = node.id === selectedNode?.id
 
   return (
-    <div className={useClassNames('node', isSelected ? ['selected'] : [])}>
+    <div className={useClassName('node', isSelected ? ['selected'] : [])}>
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
         <OperationView
           nodeId={nodeId}

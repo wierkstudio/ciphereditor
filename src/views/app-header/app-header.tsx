@@ -1,16 +1,15 @@
 
 import './app-header.scss'
-import IconView from 'views/icon/icon'
+import ButtonView from 'views/button/button'
 import LogoView from 'views/logo/logo'
-import ToolbarButtonView from 'views/toolbar-button/toolbar-button'
 import ToolbarView from 'views/toolbar/toolbar'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import { addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
 import { pushAddModalAction } from 'slices/ui'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { useAppSelector } from 'hooks/useAppSelector'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function AppHeaderView() {
   const dispatch = useAppDispatch()
@@ -27,39 +26,42 @@ export default function AppHeaderView() {
         </div>
         <div className="app-header__toolbar">
           <ToolbarView items={[
-            <ToolbarButtonView
-              icon={<IconView icon="plus" />}
+            <ButtonView
+              icon="plus"
+              modifiers={['large']}
               disabled={program === undefined}
-              title="Add"
               onClick={() => dispatch(pushAddModalAction({}))}
             />,
-            <ToolbarButtonView
-              icon={<IconView icon="arrowUp" />}
+            <ButtonView
+              icon="arrowUp"
+              modifiers={['large']}
               onClick={() => dispatch(leaveProgramAction({}))}
               disabled={!program || program.parentId === program.id}
             />,
             [
-              <ToolbarButtonView
-              icon={<IconView icon="undo" />}
+              <ButtonView
+                icon="undo"
+                modifiers={['large']}
                 onClick={() => dispatch(undoAction())}
                 disabled={useAppSelector(state => state.blueprint.past.length) === 0}
               />,
-              <ToolbarButtonView
-                icon={<IconView icon="redo" />}
+              <ButtonView
+                icon="redo"
+                modifiers={['large']}
                 onClick={() => dispatch(redoAction())}
                 disabled={useAppSelector(state => state.blueprint.future.length) === 0}
               />,
             ],
-            <ToolbarButtonView
-              icon={<IconView icon="plus" />}
+            <ButtonView
+              icon="plus"
+              modifiers={['large']}
               disabled={program === undefined}
-              title="Add a program"
               onClick={() => dispatch(addEmptyProgramAction({
                 programId: program!.id,
                 x: canvasPosition.x,
                 y: canvasPosition.y,
               }))}
-            />,
+            >Program</ButtonView>,
           ]} />
         </div>
       </div>

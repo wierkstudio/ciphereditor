@@ -2,13 +2,13 @@
 import './operation.scss'
 import ControlView from 'views/control/control'
 import IconView from 'views/icon/icon'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { OperationNode } from 'slices/blueprint/types/operation'
 import { ProgramNode } from 'slices/blueprint/types/program'
 import { enterProgramAction, selectNodeAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
-import { useAppDispatch } from 'hooks/useAppDispatch'
-import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
 
 export default function OperationView(props: {
   /**

@@ -60,7 +60,7 @@
 
   &__header-name {
     display: inline;
-    padding: 0 rem(8) 0 rem(4);
+    padding: 0 rem(8) 0 0;
     @extend %t-label;
     color: $c-text;
   }

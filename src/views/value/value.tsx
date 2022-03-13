@@ -4,6 +4,7 @@ import ValueBooleanView from 'views/value-boolean/value-boolean'
 import ValueTextView from 'views/value-text/value-text'
 import { ChangeEvent } from 'react'
 import { TypedValue } from 'slices/blueprint/types/value'
+import { ViewModifiers } from 'hooks/useClassName'
 
 export type ValueViewProps = {
   id?: string
@@ -12,7 +13,7 @@ export type ValueViewProps = {
   onFocus?: React.FocusEventHandler
   onBlur?: React.FocusEventHandler
   onChange?: (value: TypedValue, event: ChangeEvent) => void
-  modifiers?: string[]
+  modifiers?: ViewModifiers
 }
 
 export default function ValueView(props: ValueViewProps) {
