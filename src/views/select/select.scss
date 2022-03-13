@@ -41,6 +41,7 @@
   &__value {
     @extend %t-label;
     pointer-events: none;
+    white-space: nowrap;
   }
 
   &__chevron {

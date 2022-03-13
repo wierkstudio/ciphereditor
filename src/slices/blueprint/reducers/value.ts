@@ -59,7 +59,7 @@ export const resolveImplicitTypedValue = (
     case 'boolean':
       return { value, type: 'boolean' }
     case 'number':
-      return { value, type: 'number' }
+      return { value, type: Number.isInteger(value) ? 'integer' : 'number' }
     case 'bigint':
       return { value, type: 'bigint' }
     case 'string':

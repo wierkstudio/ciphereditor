@@ -1,4 +1,5 @@
 
+import { useClassNames } from 'hooks/useClassNames'
 import { useWindowResizeListener } from 'hooks/useWindowResizeListener'
 import React, { useRef, useCallback, useLayoutEffect } from 'react'
 import { ValueViewProps } from 'views/value/value'
@@ -35,7 +36,7 @@ export default function ValueTextView(props: ValueViewProps) {
   useWindowResizeListener(resizeTextarea)
 
   return (
-    <div className="value-text">
+    <div className={useClassNames('value-text', props.modifiers)}>
       <textarea
         className="value-text__textarea"
         id={props.id}
@@ -45,6 +46,7 @@ export default function ValueTextView(props: ValueViewProps) {
         tabIndex={0}
         onChange={onChange}
         onFocus={props.onFocus}
+        onBlur={props.onBlur}
         spellCheck={false}
         rows={1}
       />

@@ -5,15 +5,18 @@ import useDragMove, { gridSize } from 'hooks/useDragMove'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
-import { getNodeChildren } from 'slices/blueprint/selectors/blueprint'
+import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { moveCanvasAction } from 'slices/ui'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useAppSelector } from 'hooks/useAppSelector'
 import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
+import { DragEvent, useCallback } from 'react'
+import { selectNodeAction } from 'slices/blueprint'
 
 export default function CanvasView() {
   const dispatch = useAppDispatch()
 
+  const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
   const contextProgramId = useBlueprintSelector(state => getActiveProgram(state)!.id)
   const childNodeIds = useBlueprintSelector(state =>
     getNodeChildren(state, contextProgramId)
@@ -26,7 +29,14 @@ export default function CanvasView() {
     dispatch(moveCanvasAction({ x: newX, y: newY }))
   }
 
-  const { onMouseDown } = useDragMove(x, y, onDragMove, true)
+  const { onMouseDown: onDragMouseDown } = useDragMove(x, y, onDragMove, true)
+
+  const onMouseDown = useCallback((event: DragEvent<HTMLDivElement>) => {
+    if (hasSelectedNode) {
+      dispatch(selectNodeAction({ nodeId: undefined }))
+    }
+    onDragMouseDown(event)
+  }, [hasSelectedNode])
 
   // TODO: Make off-canvas nodes 'virtual' by not rendering them
 

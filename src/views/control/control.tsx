@@ -12,6 +12,7 @@ import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/co
 import { toggleControlViewState } from 'slices/blueprint'
 import { useAppDispatch } from 'hooks/useAppDispatch'
 import { useBlueprintSelector } from 'hooks/useBlueprintSelector'
+import { useClassNames } from 'hooks/useClassNames'
 
 export default function ControlView(props: {
   controlId: BlueprintNodeId
@@ -29,17 +30,17 @@ export default function ControlView(props: {
   }
 
   return (
-    <div className="control">
+    <div className={useClassNames('control', control.viewState === ControlViewState.Expanded ? ['expanded']: [])}>
       <div className="control__header">
         <MovableButtonView className="control__header-toggle" onClick={onToggleClick}>
-          <div className="control__header-chevron">
-            {control.viewState === ControlViewState.Expanded
-              ? <ChevronUpIcon />
-              : <ChevronDownIcon />}
+          <div className="control__header-pill">
+            <div className="control__header-chevron">
+              <ChevronDownIcon />
+            </div>
+            <h4 className="control__header-name">
+              {control.label}
+            </h4>
           </div>
-          <h4 className="control__header-name">
-            {control.label}
-          </h4>
           {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
             <span className="control__header-preview">
               {valuePreview}

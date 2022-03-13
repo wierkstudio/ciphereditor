@@ -1,16 +1,18 @@
 
-import { ChangeEvent } from 'react'
-import { TypedValue } from 'slices/blueprint/types/value'
+import './value.scss'
 import ValueBooleanView from 'views/value-boolean/value-boolean'
 import ValueTextView from 'views/value-text/value-text'
-import './value.scss'
+import { ChangeEvent } from 'react'
+import { TypedValue } from 'slices/blueprint/types/value'
 
 export type ValueViewProps = {
   id?: string
   value: TypedValue
   disabled?: boolean
   onFocus?: React.FocusEventHandler
+  onBlur?: React.FocusEventHandler
   onChange?: (value: TypedValue, event: ChangeEvent) => void
+  modifiers?: string[]
 }
 
 export default function ValueView(props: ValueViewProps) {

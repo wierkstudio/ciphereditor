@@ -8,4 +8,8 @@
   box-sizing: content-box;
   background: $c-muted;
   cursor: default;
+
+  &--selected {
+    outline: rem(2) solid $c-line;
+  }
 }

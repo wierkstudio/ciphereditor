@@ -10,6 +10,10 @@
     height: rem(48);
   }
 
+  &__value {
+    padding: 0 rem(8);
+  }
+
   &__copy {
     padding: rem(12) rem(16) rem(12) rem(16);
     color: $c-meta;

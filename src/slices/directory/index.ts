@@ -9,12 +9,12 @@ const defaultDirectoryState: DirectoryState = {
       label: 'Translate',
       controls: [
         {
-          name: 'text1',
+          name: 'source',
           initialValue: 'Hello, World.',
           types: ['text'],
         },
         {
-          name: 'language1',
+          name: 'sourceLanguage',
           initialValue: 'en',
           types: ['text'],
           choices: [
@@ -27,7 +27,7 @@ const defaultDirectoryState: DirectoryState = {
           ],
         },
         {
-          name: 'language2',
+          name: 'targetLanguage',
           initialValue: 'de',
           types: ['text'],
           choices: [
@@ -40,7 +40,7 @@ const defaultDirectoryState: DirectoryState = {
           ],
         },
         {
-          name: 'text2',
+          name: 'target',
           initialValue: 'Hallo Welt.',
           types: ['text'],
         },
@@ -76,6 +76,53 @@ const defaultDirectoryState: DirectoryState = {
       ],
       bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
       moduleId: 'rot13',
+    },
+    {
+      name: 'cryptii/caesar-cipher',
+      label: 'Caesar cipher',
+      controls: [
+        {
+          name: 'plaintext',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text'],
+        },
+        {
+          name: 'shift',
+          initialValue: 7,
+          types: ['integer'],
+        },
+        {
+          name: 'alphabet',
+          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+        },
+        {
+          name: 'caseStrategy',
+          initialValue: 'maintain',
+          types: ['text'],
+          choices: [
+            { value: 'maintain', label: 'Maintain case' },
+            { value: 'ignore', label: 'Ignore case' },
+            { value: 'strict', label: 'Strict (A ≠ a)' },
+          ],
+        },
+        {
+          name: 'foreignStrategy',
+          initialValue: 'maintain',
+          types: ['text'],
+          choices: [
+            { value: 'maintain', label: 'Maintain foreign chars' },
+            { value: 'ignore', label: 'Ignore foreign chars' },
+          ],
+        },
+        {
+          name: 'ciphertext',
+          initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+          types: ['text'],
+        },
+      ],
+      bundleUrl: process.env.REACT_APP_PROCESSOR_URL + 'bundle-essentials.js',
+      moduleId: 'caesar-cipher',
     },
     {
       name: 'cryptii/basen',

@@ -19,7 +19,7 @@
   &__header-toggle {
     display: flex;
     position: relative;
-    padding: rem(12) 0 rem(12) rem(12);
+    padding: rem(8) 0 rem(8) rem(12);
     flex-grow: 1;
     flex-basis: 0;
     line-height: 0;
@@ -27,6 +27,7 @@
     white-space: nowrap;
     overflow: hidden;
     color: $c-meta;
+    outline: none;
 
     &::after {
       content: '';
@@ -34,10 +35,23 @@
       top: rem(4);
       right: 0;
       bottom: rem(4);
-      width: rem(8);
+      width: rem(12);
       // TODO: Add transparent background color property
       background: linear-gradient(to right, rgba(#13182C, 0.0), $c-background);
     }
+  }
+
+  &__header-pill {
+    display: flex;
+    flex-direction: row;
+    padding: rem(4) 0;
+    margin: 0 rem(8) 0 rem(-4);
+    border-radius: rem(4);
+  }
+
+  &__header-toggle:hover &__header-pill,
+  &__header-toggle:focus-visible &__header-pill {
+    background: $c-line;
   }
 
   &__header-chevron {
@@ -45,8 +59,12 @@
 
     svg {
       fill: $c-text;
-      margin: 0 rem(-4);
+      margin: 0 rem(-4) 0 0;
     }
+  }
+
+  &--expanded &__header-chevron {
+    transform: rotate(180deg);
   }
 
   &__header-name {
@@ -59,5 +77,6 @@
   &__header-preview {
     display: inline;
     @extend %t-value;
+    line-height: rem(32);
   }
 }

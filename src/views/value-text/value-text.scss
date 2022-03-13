@@ -5,7 +5,18 @@
 
   &__textarea {
     height: rem(32);
-    padding: rem(4) rem(16);
+    padding: rem(8) rem(12);
+    border-radius: rem(4);
     @extend %t-value;
+    outline: none;
+
+    &:hover,
+    &:focus {
+      background: $c-line;
+    }
+  }
+
+  &--drawer &__textarea {
+    padding: rem(4) rem(8);
   }
 }

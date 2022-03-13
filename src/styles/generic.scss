@@ -16,6 +16,11 @@
   outline: 1px solid $c-primary;
 }
 
+::selection {
+  background: $c-primary;
+  color: $c-background;
+}
+
 html,
 body {
   min-height: 100%;

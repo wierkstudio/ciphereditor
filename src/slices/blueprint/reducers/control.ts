@@ -205,15 +205,7 @@ export const addVariableFromControl = (
   programId: BlueprintNodeId,
 ) => {
   // TODO: Detach currently attached variable
-  // Create new variable
-  const variable = addVariable(state, programId, controlId)
-  // When editing a control from outside also add a program control for
-  // this new variable
-  if (!isControlInternVariable(state, controlId, programId)) {
-    const programControl = addProgramControlNode(state, programId)
-    attachControlToVariable(state, programControl.id, variable.id)
-  }
-  propagateChange(state, controlId, programId)
+  addVariable(state, programId, controlId)
 }
 
 /**
