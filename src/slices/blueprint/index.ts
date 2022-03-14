@@ -91,8 +91,10 @@ export const blueprintSlice = createSlice({
      */
     addEmptyControlAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId,
+      x: number,
+      y: number,
     }>) => {
-      addProgramControlNode(state, payload.programId)
+      addProgramControlNode(state, payload.programId, payload.x, payload.y)
     },
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{

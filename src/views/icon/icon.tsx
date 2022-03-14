@@ -7,6 +7,7 @@ import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
 import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
+import { ReactComponent as MinusIcon } from 'icons/minus.svg'
 import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
 import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
@@ -22,6 +23,7 @@ const iconSVGMap = {
   close: CloseIcon,
   copy: CopyIcon,
   doubleChevron: DoubleChevronIcon,
+  minus: MinusIcon,
   outletPull: OutletPullIcon,
   outletPush: OutletPushIcon,
   outletUnused: OutletUnusedIcon,

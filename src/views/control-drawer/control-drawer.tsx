@@ -1,6 +1,6 @@
 
 import './control-drawer.scss'
-import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
+import React, { BaseSyntheticEvent, ChangeEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -24,7 +24,7 @@ export default function ControlDrawerView(props: {
   const controlId = control.id
   const value = control.value
 
-  const onValueChange = useCallback((value: TypedValue, event: ChangeEvent) => {
+  const onValueChange = useCallback((value: TypedValue, event?: BaseSyntheticEvent) => {
     dispatch(changeControlAction({ controlId, change: { value } }))
   }, [dispatch, controlId])
 

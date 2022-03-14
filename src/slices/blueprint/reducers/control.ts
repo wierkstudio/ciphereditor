@@ -42,7 +42,9 @@ export const defaultControlNode: ControlNode = {
  */
 export const addProgramControlNode = (
    state: BlueprintState,
-   programId: BlueprintNodeId
+   programId: BlueprintNodeId,
+   x: number,
+   y: number,
 ) => {
   const id = nextNodeId(state)
   const controlNode: ControlNode = {
@@ -51,6 +53,8 @@ export const addProgramControlNode = (
     id,
     name: `control${id}`,
     label: `Control ${id}`,
+    x,
+    y,
   }
   return addNode(state, controlNode)
 }

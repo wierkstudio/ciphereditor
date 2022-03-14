@@ -1,0 +1,11 @@
+
+@import 'styles/shared';
+
+.value-number {
+  display: flex;
+
+  &__input {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+}

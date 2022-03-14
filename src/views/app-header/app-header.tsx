@@ -6,7 +6,7 @@ import ToolbarView from 'views/toolbar/toolbar'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import { addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
+import { addEmptyControlAction, addEmptyProgramAction, leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
 import { pushAddModalAction } from 'slices/ui'
@@ -62,6 +62,16 @@ export default function AppHeaderView() {
                 y: canvasPosition.y,
               }))}
             >Program</ButtonView>,
+            <ButtonView
+              icon="plus"
+              modifiers={['large']}
+              disabled={program === undefined}
+              onClick={() => dispatch(addEmptyControlAction({
+                programId: program!.id,
+                x: canvasPosition.x,
+                y: canvasPosition.y,
+              }))}
+            >Control</ButtonView>,
           ]} />
         </div>
       </div>

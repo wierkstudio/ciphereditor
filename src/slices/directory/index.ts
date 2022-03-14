@@ -117,7 +117,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'ciphertext',
-          initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+          initialValue: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
           types: ['text'],
         },
       ],

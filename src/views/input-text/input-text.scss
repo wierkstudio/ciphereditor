@@ -1,11 +1,11 @@
 
 @import 'styles/shared';
 
-.value-text {
+.input-text {
 
   &__textarea {
     height: rem(32);
-    padding: rem(8) rem(12);
+    padding: rem(4) rem(8);
     border-radius: rem(4);
     @extend %t-value;
     outline: none;
@@ -14,9 +14,5 @@
     &:focus {
       background: $c-line;
     }
-  }
-
-  &--drawer &__textarea {
-    padding: rem(4) rem(8);
   }
 }

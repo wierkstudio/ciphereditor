@@ -1,10 +1,11 @@
 
 import './value.scss'
 import ValueBooleanView from 'views/value-boolean/value-boolean'
+import ValueNumberView from 'views/value-number/value-number'
 import ValueTextView from 'views/value-text/value-text'
-import { ChangeEvent } from 'react'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { ViewModifiers } from 'hooks/useClassName'
+import { BaseSyntheticEvent } from 'react'
 
 export type ValueViewProps = {
   id?: string
@@ -12,7 +13,7 @@ export type ValueViewProps = {
   disabled?: boolean
   onFocus?: React.FocusEventHandler
   onBlur?: React.FocusEventHandler
-  onChange?: (value: TypedValue, event: ChangeEvent) => void
+  onChange?: (value: TypedValue, event?: BaseSyntheticEvent) => void
   modifiers?: ViewModifiers
 }
 
@@ -20,11 +21,15 @@ export default function ValueView(props: ValueViewProps) {
   // Choose underlying view based on type
   let TypedValueView = undefined
   switch (props.value.type) {
-    case 'text':
-      TypedValueView = ValueTextView
-      break
     case 'boolean':
       TypedValueView = ValueBooleanView
+      break
+    case 'integer':
+    case 'number':
+      TypedValueView = ValueNumberView
+      break
+    case 'text':
+      TypedValueView = ValueTextView
       break
   }
 
