@@ -36,7 +36,7 @@ export default function CanvasView() {
       dispatch(selectNodeAction({ nodeId: undefined }))
     }
     onDragMouseDown(event)
-  }, [hasSelectedNode])
+  }, [hasSelectedNode, dispatch, onDragMouseDown])
 
   // TODO: Make off-canvas nodes 'virtual' by not rendering them
 

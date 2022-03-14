@@ -1,6 +1,5 @@
 
 import './control-drawer.scss'
-import IconView from 'views/icon/icon'
 import React, { ChangeEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'

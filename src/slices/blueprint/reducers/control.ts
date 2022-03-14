@@ -4,11 +4,11 @@ import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueC
 import { ImplicitTypedValue } from '../types/value'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
-import { addVariable, attachControlToVariable, propagateChange } from './variable'
+import { addVariable, propagateChange } from './variable'
 import { allValueTypes, compareValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { capitalCase } from 'change-case'
-import { getControlNode, isControlInternVariable } from '../selectors/control'
+import { getControlNode } from '../selectors/control'
 import { getNode } from '../selectors/blueprint'
 import { setOperationState } from './operation'
 

@@ -1,6 +1,5 @@
 
 import './modal.scss'
-import IconView from 'views/icon/icon'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { ModalState } from 'slices/ui/types'
 import { MouseEvent, ReactNode, useCallback } from 'react'
