@@ -1,5 +1,6 @@
 
 import './control.scss'
+import AnimatedTextView from 'views/animated-text/animated-text'
 import ControlDrawerView from 'views/control-drawer/control-drawer'
 import IconView from 'views/icon/icon'
 import MovableButtonView from 'views/movable-button/movable-button'
@@ -41,9 +42,11 @@ export default function ControlView(props: {
             </h4>
           </div>
           {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
-            <span className="control__header-preview">
-              {valuePreview}
-            </span>
+            <div className="control__header-preview">
+              <AnimatedTextView>
+                {valuePreview}
+              </AnimatedTextView>
+            </div>
           )}
         </MovableButtonView>
         <OutletView
