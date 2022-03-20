@@ -14,17 +14,21 @@
   background: $c-background;
   outline: none;
 
-  &:not(:disabled):hover,
-  &:not(:disabled):focus-visible {
+  &:hover {
     background: $c-line;
   }
 
-  &:not(:disabled):active {
+  &:focus-visible {
+    background: $c-line;
+  }
+
+  &:active {
     color: $c-background;
     background: $c-text;
   }
 
   &:disabled {
+    background: $c-background;
     color: $c-meta;
     cursor: default;
   }

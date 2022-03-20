@@ -49,7 +49,10 @@
     border-radius: rem(4);
   }
 
-  &__header-toggle:hover &__header-pill,
+  &__header-toggle:hover &__header-pill {
+    background: $c-line;
+  }
+
   &__header-toggle:focus-visible &__header-pill {
     background: $c-line;
   }

@@ -4,12 +4,13 @@
 .node {
   padding: rem(8);
   border-radius: rem(16);
+  border: rem(2) solid $c-muted;
   width: rem(320);
   box-sizing: content-box;
   background: $c-muted;
   cursor: default;
 
   &--selected {
-    outline: rem(2) solid $c-line;
+    border-color: $c-line;
   }
 }
