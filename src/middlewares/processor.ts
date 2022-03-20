@@ -42,13 +42,20 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
   let controlChanges: NamedControlChange[] = []
   let error: string | undefined = undefined
   try {
-    // TODO: Validate untrusted module response
-    controlChanges = await processor.callModuleFunction(
+    const result: any = await processor.callModuleFunction(
       task.bundleUrl,
       task.moduleId,
       'onControlChange',
       [task.priorityControlNames, task.namedControlValues],
-    ) as NamedControlChange[]
+    )
+
+    // Handle error result
+    if (typeof result.error !== 'undefined') {
+      throw result.error
+    }
+
+    // TODO: Validate untrusted module response
+    controlChanges = result as NamedControlChange[]
   } catch (err: any) {
     error = err.toString()
   }
