@@ -5,7 +5,7 @@ import OperationView from 'views/operation/operation'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
-import { getNode, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
+import { getNode, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 
 export default function NodeView(props: {
   nodeId: BlueprintNodeId,
@@ -14,9 +14,7 @@ export default function NodeView(props: {
   const { nodeId, contextProgramId } = props
 
   const node = useBlueprintSelector(state => getNode(state, nodeId))
-  const selectedNode = useBlueprintSelector(getSelectedNode)
-
-  const isSelected = node.id === selectedNode?.id
+  const isSelected = useBlueprintSelector(state => isSelectedNode(state, nodeId))
 
   return (
     <div className={useClassName('node', isSelected ? ['selected'] : [])}>

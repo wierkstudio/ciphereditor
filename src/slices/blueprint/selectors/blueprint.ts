@@ -34,6 +34,9 @@ export const hasNode = (state: BlueprintState, id: BlueprintNodeId) =>
 export const getSelectedNode = (state: BlueprintState) =>
   state.selectedNodeId ? getNode(state, state.selectedNodeId) : undefined
 
+export const isSelectedNode = (state: BlueprintState, nodeId: BlueprintNodeId) =>
+  state.selectedNodeId === nodeId
+
 export const getNodeChildren = (
   state: BlueprintState,
   parentId: BlueprintNodeId,
