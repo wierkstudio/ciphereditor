@@ -54,8 +54,12 @@
     background: $c-line;
   }
 
+  &__header-chevron {
+    transform: rotate(-90deg);
+  }
+
   &--expanded &__header-chevron {
-    transform: rotate(180deg);
+    transform: none;
   }
 
   &__header-name {

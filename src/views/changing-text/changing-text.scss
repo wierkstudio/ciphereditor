@@ -1,0 +1,42 @@
+
+@import 'styles/shared';
+
+.changing-text {
+  display: inline-block;
+  position: relative;
+
+  &__last,
+  &__current {
+    display: inline-block;
+    height: 100%;
+    transform: none;
+    visibility: visible;
+    transition-property: transform, visibility;
+    transition-duration: 0.3s;
+  }
+
+  &__last {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, -120%);
+    visibility: hidden;
+  }
+
+  &--will-transition &__last {
+    transform: translate(0, 0);
+    transition-duration: 0s;
+    visibility: visible;
+  }
+
+  &__current {
+    transform: none;
+    visibility: visible;
+  }
+
+  &--will-transition &__current {
+    transform: translate(0, 120%);
+    transition-duration: 0s;
+    visibility: hidden;
+  }
+}

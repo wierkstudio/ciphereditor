@@ -1,6 +1,6 @@
 
 import './control.scss'
-import AnimatedTextView from 'views/animated-text/animated-text'
+import ChangingTextView from 'views/changing-text/changing-text'
 import ControlDrawerView from 'views/control-drawer/control-drawer'
 import IconView from 'views/icon/icon'
 import MovableButtonView from 'views/movable-button/movable-button'
@@ -29,8 +29,10 @@ export default function ControlView(props: {
     dispatch(toggleControlViewState({ controlId }))
   }
 
+  const modifiers = control.viewState === ControlViewState.Expanded ? ['expanded']: []
+
   return (
-    <div className={useClassName('control', control.viewState === ControlViewState.Expanded ? ['expanded']: [])}>
+    <div className={useClassName('control', modifiers)}>
       <div className="control__header">
         <MovableButtonView className="control__header-toggle" onClick={onToggleClick}>
           <div className="control__header-pill">
@@ -43,9 +45,7 @@ export default function ControlView(props: {
           </div>
           {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
             <div className="control__header-preview">
-              <AnimatedTextView>
-                {valuePreview}
-              </AnimatedTextView>
+              <ChangingTextView>{valuePreview}</ChangingTextView>
             </div>
           )}
         </MovableButtonView>

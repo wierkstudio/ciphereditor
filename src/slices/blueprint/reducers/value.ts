@@ -165,5 +165,5 @@ export const stringifyValue = (value: TypedValue): string => {
  * Return undefined, if no preview is available.
  */
 export const previewValue = (value: TypedValue): string => {
-  return stringifyValue(value).substring(0, 40)
+  return stringifyValue(value).substring(0, 30)
 }
