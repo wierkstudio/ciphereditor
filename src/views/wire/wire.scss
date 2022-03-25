@@ -1,0 +1,45 @@
+
+@import 'styles/shared';
+
+.wire {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(0px, 0px);
+  overflow: visible;
+  outline: none;
+  cursor: pointer;
+  pointer-events: none;
+
+  &__shadow,
+  &__line {
+    pointer-events: all;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  &__caps {
+    pointer-events: all;
+    fill: $c-primary;
+  }
+
+  &__shadow {
+    stroke: $c-muted;
+    stroke-width: rem(16);
+  }
+
+  &__line {
+    stroke: $c-primary;
+    stroke-width: rem(4);
+  }
+
+  &--selected &__shadow,
+  &:hover &__shadow {
+    stroke: $c-line;
+  }
+
+  &:focus &__shadow {
+    stroke: $c-line;
+  }
+}

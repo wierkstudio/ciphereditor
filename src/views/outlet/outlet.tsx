@@ -14,8 +14,9 @@ export default function OutletView(props: {
   contextProgramId: BlueprintNodeId
   expanded: boolean
   onIndicatorClick?: MouseEventHandler<HTMLButtonElement>
+  indicatorRef?: (element: HTMLButtonElement) => void
 }) {
-  const { control, contextProgramId } = props
+  const { control, contextProgramId, indicatorRef } = props
 
   const attachedVariable = useBlueprintSelector(state =>
     getControlVariable(state, props.control.id, contextProgramId))
@@ -26,8 +27,12 @@ export default function OutletView(props: {
   const isPushing = attachedVariableSourceControl && attachedVariableSourceControl.id === control.id
   const variant = isUnused ? 'unused' : (isPushing ? 'push' : 'pull')
 
+  const modifiers = [variant].concat(props.expanded ? ['expanded'] : '')
+
   return (
-    <div className={useClassName('outlet', [variant].concat(props.expanded ? ['expanded'] : ''))}>
+    <div
+      className={useClassName('outlet', modifiers)}
+    >
       {props.expanded && (
         <div className="outlet__select">
           <OutletSelectView control={control} contextProgramId={contextProgramId} />
@@ -38,6 +43,7 @@ export default function OutletView(props: {
         tabIndex={-1}
         onMouseDown={event => event.stopPropagation()}
         onClick={props.onIndicatorClick}
+        ref={indicatorRef}
       >
         {(variant === 'unused') && (
           <IconView icon="outletUnused" />

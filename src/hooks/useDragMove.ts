@@ -30,8 +30,8 @@ export default function useDragMove(
   useEffect(() => {
     const onMouseMove = (event: MouseEvent) => {
       if (state !== undefined) {
-        const newX = state.startX + (inverse ? -1 : 1) * Math.round((event.clientX - state.startViewportX) / gridSize)
-        const newY = state.startY + (inverse ? -1 : 1) * Math.round((event.clientY - state.startViewportY) / gridSize)
+        const newX = state.startX + (inverse ? -1 : 1) * Math.round((event.clientX - state.startViewportX) / gridSize) * gridSize
+        const newY = state.startY + (inverse ? -1 : 1) * Math.round((event.clientY - state.startViewportY) / gridSize) * gridSize
         if (newX !== x || newY !== y) {
           onMove(newX, newY)
           // TODO: Optimize this call

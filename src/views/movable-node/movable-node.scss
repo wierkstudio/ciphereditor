@@ -3,8 +3,8 @@
 
 .movable-node {
   position: absolute;
-  top: rem(-160);
-  left: rem(-160);
+  top: 0;
+  left: 0;
   transform: translate(0px, 0px);
 
   &--selected {

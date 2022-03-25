@@ -191,4 +191,14 @@ export interface ControlNode extends BlueprintNode {
    * Name of program intern variable node attached to this program control
    */
   attachedInternVariableId?: BlueprintNodeId
+
+  /**
+   * Number of pixels between the left side of the operation and the outlet
+   */
+  operationOutletX?: number
+
+  /**
+   * Number of pixels between the top side of the operation and the outlet
+   */
+  operationOutletY?: number
 }

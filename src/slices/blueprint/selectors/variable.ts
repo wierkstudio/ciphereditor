@@ -45,7 +45,7 @@ export const getProgramVariables = (state: BlueprintState, programId: BlueprintN
  */
 export const getVariableControl = (
   state: BlueprintState,
-  variableId: BlueprintNodeId
+  variableId: BlueprintNodeId,
 ) => {
   const variable = getVariableNode(state, variableId)
   // TODO: Assertion: A variable is always attached to at least one control
@@ -54,7 +54,81 @@ export const getVariableControl = (
 }
 
 /**
+ * Return all control nodes attached to a given variable.
+ */
+export const getVariableAttachedControls = (
+  state: BlueprintState,
+  variableId: BlueprintNodeId,
+) =>
+  getVariableNode(state, variableId)
+    .attachmentIds
+    .map(controlId => getControlNode(state, controlId))
+
+/**
  * Return the current value for the given variable.
  */
 export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId) =>
   getVariableControl(state, variableId).value
+
+/**
+ * Return wire waypoints and their respective node rects for the given variable.
+ */
+export const getVariableWireWaypoints = (state: BlueprintState, variableId: BlueprintNodeId) => {
+  const variable = getVariableNode(state, variableId)
+  const contextProgramId = variable.parentId
+  const waypoints: {
+    push: boolean,
+    x: number,
+    y: number,
+    nodeX: number,
+    nodeY: number,
+    nodeWidth: number,
+    nodeHeight: number,
+  }[] = []
+
+  for (let i = 0; i < variable.attachmentIds.length; i++) {
+    const control = getControlNode(state, variable.attachmentIds[i])
+    if (control.parentId === contextProgramId) {
+      // Stand-alone program control node
+      if (
+        control.x !== undefined &&
+        control.y !== undefined &&
+        control.width !== undefined &&
+        control.height !== undefined
+      ) {
+        waypoints.push({
+          push: i === 0,
+          x: control.x + control.width * 0.5,
+          y: control.y + control.height + 0.5,
+          nodeX: control.x,
+          nodeY: control.y,
+          nodeWidth: control.width,
+          nodeHeight: control.height,
+        })
+      }
+    } else {
+      // Control node embedded in an operation or program node
+      const node = getNode(state, control.parentId)
+      if (
+        node.x !== undefined &&
+        node.y !== undefined &&
+        node.width !== undefined &&
+        node.height !== undefined &&
+        control.operationOutletX !== undefined &&
+        control.operationOutletY !== undefined
+      ) {
+        waypoints.push({
+          push: i === 0,
+          x: node.x + control.operationOutletX,
+          y: node.y + control.operationOutletY,
+          nodeX: node.x,
+          nodeY: node.y,
+          nodeWidth: node.width,
+          nodeHeight: node.height,
+        })
+      }
+    }
+  }
+
+  return waypoints
+}

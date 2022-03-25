@@ -26,11 +26,12 @@ export default function AddModalView(props: {
           <li key={operation.name}>
             <button
               onClick={() => {
+                // TODO: Remove magic numbers
                 dispatch(addOperationAction({
                   programId: activeProgram!.id,
                   operation: operation,
-                  x: canvasPosition.x,
-                  y: canvasPosition.y,
+                  x: canvasPosition.x - 320 * 0.5,
+                  y: canvasPosition.y - 80,
                 }))
                 dispatch(popModalAction({}))
               }}

@@ -229,6 +229,33 @@ export const blueprintSlice = createSlice({
       node.x = payload.x
       node.y = payload.y
     },
+
+    layoutNodeAction: (state, { payload }: PayloadAction<{
+      nodeId: number,
+      width: number | undefined,
+      height: number | undefined,
+      outletPositions?: {
+        controlId: BlueprintNodeId,
+        x: number | undefined,
+        y: number | undefined,
+      }[],
+    }>) => {
+      const { nodeId, width, height, outletPositions } = payload
+
+      const node = getNode(state, nodeId)
+      node.width = width
+      node.height = height
+
+      if (outletPositions !== undefined) {
+        outletPositions.forEach(position => {
+          const control = getControlNode(state, position.controlId)
+          if (control.parentId === nodeId) {
+            control.operationOutletX = position.x
+            control.operationOutletY = position.y
+          }
+        })
+      }
+    },
   }
 })
 
@@ -249,6 +276,7 @@ export const {
   selectNodeAction,
   removeNodeAction,
   moveNodeAction,
+  layoutNodeAction,
 } = blueprintSlice.actions
 
 export const undoAction = createAction(`${blueprintSlice.name}/undoAction`)
@@ -265,6 +293,7 @@ export default undoable(blueprintSlice.reducer, {
     leaveProgramAction.type,
     selectNodeAction.type,
     toggleControlViewState.type,
+    layoutNodeAction.type,
   ]),
   groupBy: (action, currentState, previousHistory) => {
     const currentGroup = previousHistory.group

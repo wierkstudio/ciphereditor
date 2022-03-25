@@ -52,5 +52,8 @@ export const getNodePosition = (
   nodeId: BlueprintNodeId
 ) => {
   const node = getNode(state, nodeId)
+  if (node.x === undefined || node.y === undefined) {
+    throw new Error('Trying to access the position of a node that has none set')
+  }
   return { x: node.x, y: node.y }
 }

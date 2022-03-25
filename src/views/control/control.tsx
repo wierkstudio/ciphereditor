@@ -10,24 +10,25 @@ import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
-import { MouseEvent } from 'react'
+import { MouseEvent, useCallback } from 'react'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { toggleControlViewState } from 'slices/blueprint'
 
 export default function ControlView(props: {
   controlId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
+  outletRef?: (element: HTMLButtonElement) => void
 }) {
-  const { controlId, contextProgramId } = props
+  const { controlId, contextProgramId, outletRef } = props
 
   const control = useBlueprintSelector(state => getControlNode(state, controlId))
   const valuePreview = useBlueprintSelector(state =>
     getControlPreview(state, controlId))
 
   const dispatch = useAppDispatch()
-  const onToggleClick = (event: MouseEvent) => {
+  const onToggleClick = useCallback((event: MouseEvent) => {
     dispatch(toggleControlViewState({ controlId }))
-  }
+  }, [dispatch, controlId])
 
   const modifiers = control.viewState === ControlViewState.Expanded ? ['expanded']: []
 
@@ -54,6 +55,7 @@ export default function ControlView(props: {
           contextProgramId={contextProgramId}
           expanded={control.viewState === ControlViewState.Expanded}
           onIndicatorClick={onToggleClick}
+          indicatorRef={outletRef}
         />
       </div>
       {control.viewState === ControlViewState.Expanded && (

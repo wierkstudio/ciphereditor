@@ -29,8 +29,6 @@ export const defaultControlNode: ControlNode = {
   viewState: ControlViewState.Collapsed,
   enabled: true,
   writable: true,
-  x: 0,
-  y: 0,
 }
 
 /**

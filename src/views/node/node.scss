@@ -8,6 +8,7 @@
   width: rem(320);
   box-sizing: content-box;
   background: $c-muted;
+  transform: translate(#{rem(-10)}, #{rem(-10)});
   cursor: default;
 
   &--selected {
