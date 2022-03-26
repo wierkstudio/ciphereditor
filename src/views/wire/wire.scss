@@ -2,44 +2,53 @@
 @import 'styles/shared';
 
 .wire {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translate(0px, 0px);
-  overflow: visible;
   outline: none;
   cursor: pointer;
   pointer-events: none;
+  color: $c-primary;
 
-  &__shadow,
-  &__line {
-    pointer-events: all;
+  &__svg-wire,
+  &__svg-caps {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0px, 0px);
+    pointer-events: none;
+    overflow: visible;
+    stroke: currentColor;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
-  &__caps {
+  &__svg-caps {
+    stroke: none;
+    fill: currentColor;
+    z-index: $z-index-canvas-wire-caps;
+  }
+
+  &__path-shadow,
+  &__path-wire,
+  &__path-caps {
     pointer-events: all;
-    fill: $c-primary;
   }
 
-  &__shadow {
+  &__path-shadow {
     stroke: $c-muted;
-    stroke-width: rem(16);
+    stroke-width: rem(10);
   }
 
-  &__line {
-    stroke: $c-primary;
-    stroke-width: rem(4);
+  &__path-wire {
+    stroke: currentColor;
+    stroke-width: rem(2);
   }
 
-  &--selected &__shadow,
-  &:hover &__shadow {
-    stroke: $c-line;
+  &--selected,
+  &:hover {
+    color: $c-text;
   }
 
-  &:focus &__shadow {
-    stroke: $c-line;
+  &:focus {
+    color: $c-text;
   }
 }

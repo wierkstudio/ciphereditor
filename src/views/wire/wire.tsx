@@ -8,19 +8,21 @@ import { getVariableWireWaypoints } from 'slices/blueprint/selectors/variable'
 import { isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { selectNodeAction } from 'slices/blueprint'
 
-const minimumGap = 80
-const pullD = ''
-const pushD = ''
+const minNodeGap = 80
+
+const capIcons = {
+  trailingPull: 'm-6,1c-0.667,-0.385,-0.667,-1.347,0,-1.732l9.75,-5.629c0.667,-0.385,1.5,0.096,1.5,0.866v11.258c0,0.77,-0.833,1.251,-1.5,0.866l-9.75,-5.629z',
+  leadingPull: 'm6,-1c0.667,0.385,0.667,1.347,0,1.732l-9.75,5.629c-0.667,0.385,-1.5,-0.096,-1.5,-0.866l0,-11.258c0,-0.77,0.833,-1.251,1.5,-0.866l9.75,5.629z',
+  trailingPush: 'm-6,0c0,-3.314,2.686,-6,6,-6c3.314,0,6,2.686,6,6c0,3.314,-2.686,6,-6,6c-3.314,0,-6,-2.686,-6,-6z',
+  leadingPush: 'm-6,0c0,-3.314,2.686,-6,6,-6c3.314,0,6,2.686,6,6c0,3.314,-2.686,6,-6,6c-3.314,0,-6,-2.686,-6,-6z',
+}
 
 export default function WireView(props: {
   variableId: BlueprintNodeId,
 }) {
   const { variableId } = props
 
-  // const variable = useBlueprintSelector(state => getVariableNode(state, variableId))
   const waypoints = useBlueprintSelector(state => getVariableWireWaypoints(state, variableId))
-  // const contextProgramId = variable.parentId
-
   const isSelected = useBlueprintSelector(state => isSelectedNode(state, variableId))
   const dispatch = useAppDispatch()
 
@@ -41,19 +43,19 @@ export default function WireView(props: {
   const verticalSortedWaypoints =
     waypoints.slice().sort((a, b) => a.y - b.y)
 
-  // Find vertical gaps between nodes
+  // Detemine SVG canvas size
   const leading = leadSortedWaypoints[0]
   const trailing = trailSortedWaypoints[count - 1]
+  const x = leading.nodeX + leading.nodeWidth + 1
+  const width = Math.max((trailing.nodeX + trailing.nodeWidth + 1 + minNodeGap) - x, 10)
+
   const top = verticalSortedWaypoints[0]
   const bottom = verticalSortedWaypoints[count - 1]
-
-  const x = leading.nodeX + leading.nodeWidth + 1
-  const width = Math.max((trailing.nodeX + trailing.nodeWidth + 1 + minimumGap) - x, 10)
   const y = top.y
   const height = Math.max(bottom.y - y, 10)
 
+  // Find vertical gaps between nodes
   const gaps: [number, number][] = []
-
   let currentX = x
   for (let i = 1; i < count; i++) {
     const { nodeX, nodeWidth } = leadSortedWaypoints[i]
@@ -62,21 +64,30 @@ export default function WireView(props: {
     }
     currentX = nodeX + nodeWidth + 1
   }
+  gaps.push([currentX, currentX + minNodeGap])
 
-  gaps.push([currentX, currentX + minimumGap])
-
-  // TODO: Choose the best gap
-  const gap = gaps.find(([fromX, toX]) => toX - fromX >= minimumGap)!
+  // TODO: Choose the best gap (initial strategy: choose the first one)
+  const gap = gaps.find(([fromX, toX]) => toX - fromX >= minNodeGap)!
 
   const verticalX = Math.round((gap[1] + gap[0]) * 0.5)
 
+  // Layout connection points
   const points = verticalSortedWaypoints.map(waypoint =>
     verticalX >= waypoint.nodeX + waypoint.nodeWidth * 0.5
-      ? { push: waypoint.push, x: waypoint.nodeX + waypoint.nodeWidth, y: waypoint.y }
-      : { push: waypoint.push, x: waypoint.nodeX, y: waypoint.y }
+      ? {
+          icon: waypoint.push ? capIcons.trailingPush : capIcons.trailingPull,
+          x: waypoint.nodeX + waypoint.nodeWidth + 9,
+          y: waypoint.y,
+        }
+      : {
+          icon: waypoint.push ? capIcons.leadingPush : capIcons.leadingPull,
+          x: waypoint.nodeX - 9,
+          y: waypoint.y,
+        }
   )
 
   // Paint outside line first
+  // TODO: Add rounded corners
   let wireD =
     `M ${points[0].x - x},${points[0].y - y} ` +
     `L ${verticalX - x},${points[0].y - y} ` +
@@ -95,22 +106,37 @@ export default function WireView(props: {
   for (let i = 0; i < count; i++) {
     capsD +=
       `M ${points[i].x - x},${points[i].y - y} ` +
-      `${points[i].push ? pushD : pullD} `
+      points[i].icon
   }
 
+  // TODO: Optimize the number of elements used here
+  // Currently we need two separate SVG elements to create a separate stacking
+  // context on top of the nodes for the cap icons only.
   return (
-    <svg
+    <div
       className={className}
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
-      style={{ transform: `translate(${x}px, ${y}px)` }}
       tabIndex={0}
       onFocus={() => dispatch(selectNodeAction({ nodeId: variableId }))}
     >
-      <path className="wire__shadow" d={wireD} />
-      <path className="wire__line" d={wireD} />
-      <path className="wire__caps" d={capsD} />
-    </svg>
+      <svg
+        className={"wire__svg-wire"}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        style={{ transform: `translate(${x}px, ${y}px)` }}
+      >
+        <path className="wire__path-shadow" d={wireD} />
+        <path className="wire__path-wire" d={wireD} />
+      </svg>
+      <svg
+        className={"wire__svg-caps"}
+        width={width}
+        height={height}
+        viewBox={`0 0 ${width} ${height}`}
+        style={{ transform: `translate(${x}px, ${y}px)` }}
+      >
+        <path className="wire__path-caps" d={capsD} />
+      </svg>
+    </div>
   )
 }
