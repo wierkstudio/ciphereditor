@@ -3,6 +3,20 @@ import './input-text.scss'
 import React, { useRef, useCallback, useLayoutEffect, ChangeEvent, FocusEventHandler } from 'react'
 import useClassName, { ViewModifiers } from 'hooks/useClassName'
 import useWindowResizeListener from 'hooks/useWindowResizeListener'
+import useShortcutHandler from 'hooks/useShortcutHandler'
+
+/**
+ * List of shortcuts that should not further propagate from the text input
+ * (i.e. triggering for both the text input and the application)
+ */
+const stopPropagationForShortcuts = [
+  'backspace',
+  'control+shift+z',
+  'control+z',
+  'delete',
+  'meta+z',
+  'shift+meta+z',
+]
 
 /**
  * Component for single and multiline text.
@@ -29,6 +43,13 @@ export default function InputTextView(props: {
       $textarea.style.height = `${$textarea.scrollHeight}px`
     }
   }, [textareaRef])
+
+  // Shortcuts
+  useShortcutHandler(textareaRef.current, (shortcut, event) => {
+    if (stopPropagationForShortcuts.indexOf(shortcut) !== -1) {
+      event.stopPropagation()
+    }
+  })
 
   // Handle changes
   const onInternalChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {

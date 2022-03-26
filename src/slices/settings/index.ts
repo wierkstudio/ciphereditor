@@ -12,13 +12,16 @@ import { SettingsState } from './types'
 
 const defaultSettingsState: SettingsState = {
   shortcutBindings: {
-    // Order: key+meta+control+shift+alt
-    'delete+meta': removeNodeAction.type,
-    'backspace+meta': removeNodeAction.type,
-    'enter+meta': enterProgramAction.type,
-    'arrowup+meta': leaveProgramAction.type,
-    'z+meta': undoAction.type,
-    'z+meta+shift': redoAction.type,
+    // Order: alt+control+shift+meta+key
+    // Make sure shortcuts don't trigger for both input-text and app views
+    'delete': removeNodeAction.type,
+    'backspace': removeNodeAction.type,
+    'meta+enter': enterProgramAction.type,
+    'meta+arrowup': leaveProgramAction.type,
+    'meta+z': undoAction.type,
+    'control+z': undoAction.type,
+    'shift+meta+z': redoAction.type,
+    'control+shift+z': redoAction.type,
     'escape': cancelTopModalAction.type,
   }
 }
