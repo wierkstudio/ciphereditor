@@ -14,12 +14,13 @@
     flex-direction: row;
     align-items: center;
     width: 100%;
+    height: rem(48 - 2);
   }
 
   &__header-toggle {
     display: flex;
     position: relative;
-    padding: rem(8) 0 rem(8) rem(12);
+    padding: rem(8 - 1) 0 rem(8 - 1) rem(12);
     flex-grow: 1;
     flex-basis: 0;
     line-height: 0;

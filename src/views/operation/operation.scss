@@ -33,7 +33,7 @@
     flex-grow: 1;
     flex-basis: 0;
     @extend %t-h3;
-    padding: rem(16) rem(40) rem(16) rem(8);
+    padding: rem(16 - 1) rem(40) rem(16 - 1) rem(8);
   }
 
   &__control,
