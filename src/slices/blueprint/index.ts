@@ -43,8 +43,9 @@ export const blueprintSlice = createSlice({
       x: number,
       y: number,
     }>) => {
-      const { programId, operation, x, y } = payload
-      addOperationNode(state, programId, operation, x, y)
+      const { programId, operation: operationEntity, x, y } = payload
+      const operation = addOperationNode(state, programId, operationEntity, x, y)
+      state.selectedNodeId = operation.id
     },
 
     /**
@@ -58,7 +59,20 @@ export const blueprintSlice = createSlice({
     }>) => {
       // TODO: Handle no active program
       const { programId, x, y } = payload
-      addEmptyProgramNode(state, programId ?? state.activeProgramId, x, y)
+      const program = addEmptyProgramNode(state, programId ?? state.activeProgramId, x, y)
+      state.selectedNodeId = program.id
+    },
+
+    /**
+     * Add an empty control node to the given program.
+     */
+    addEmptyControlAction: (state, { payload }: PayloadAction<{
+      programId: BlueprintNodeId,
+      x: number,
+      y: number,
+    }>) => {
+      const control = addProgramControlNode(state, payload.programId, payload.x, payload.y)
+      state.selectedNodeId = control.id
     },
 
     /**
@@ -84,17 +98,6 @@ export const blueprintSlice = createSlice({
         state.selectedNodeId = undefined
         state.linkControlId = undefined
       }
-    },
-
-    /**
-     * Add an empty control node to the given program.
-     */
-    addEmptyControlAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId,
-      x: number,
-      y: number,
-    }>) => {
-      addProgramControlNode(state, payload.programId, payload.x, payload.y)
     },
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{

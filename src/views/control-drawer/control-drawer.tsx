@@ -1,6 +1,6 @@
 
 import './control-drawer.scss'
-import React, { BaseSyntheticEvent, ChangeEvent, MouseEvent, useCallback } from 'react'
+import React, { BaseSyntheticEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from 'views/select/select'
 import ValueView from 'views/value/value'
 import useAppDispatch from 'hooks/useAppDispatch'
