@@ -8,7 +8,7 @@ import { isNumericString } from 'utils/string'
 import { TypedValue } from 'slices/blueprint/types/value'
 
 export default function ValueNumberView(props: ValueViewProps) {
-  const { onChange, onBlur, value } = props
+  const { onChange, onBlur, value, readOnly } = props
 
   const [stringValue, setStringValue] = useState(value.value.toString())
 
@@ -48,18 +48,22 @@ export default function ValueNumberView(props: ValueViewProps) {
 
   return (
     <div className="value-number">
-      <ButtonView icon="minus" onClick={onMinusClick} />
+      {!readOnly && (
+        <ButtonView icon="minus" onClick={onMinusClick} />
+      )}
       <div className="value-number__input">
         <InputTextView
           id={props.id}
           value={stringValue}
-          disabled={props.disabled}
+          readOnly={props.readOnly}
           onFocus={props.onFocus}
           onBlur={onInputBlur}
           onChange={onInputChange}
         />
       </div>
-      <ButtonView icon="plus" onClick={onPlusClick} />
+      {!readOnly && (
+        <ButtonView icon="plus" onClick={onPlusClick} />
+      )}
     </div>
   )
 }

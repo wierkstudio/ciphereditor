@@ -10,7 +10,7 @@ import { BaseSyntheticEvent } from 'react'
 export type ValueViewProps = {
   id?: string
   value: TypedValue
-  disabled?: boolean
+  readOnly?: boolean
   onFocus?: React.FocusEventHandler
   onBlur?: React.FocusEventHandler
   onChange?: (value: TypedValue, event?: BaseSyntheticEvent) => void

@@ -25,7 +25,7 @@ export default function InputTextView(props: {
   id?: string
   value?: string
   disabled?: boolean
-  readonly?: boolean
+  readOnly?: boolean
   modifiers?: ViewModifiers
   onChange?: (value: string, event: ChangeEvent) => void
   onFocus?: FocusEventHandler

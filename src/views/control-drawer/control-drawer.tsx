@@ -106,7 +106,7 @@ export default function ControlDrawerView(props: {
         <div className="control-drawer__value">
           <ValueView
             value={control.value}
-            disabled={!control.writable}
+            readOnly={!control.writable}
             onChange={onValueChange}
             modifiers={['drawer']}
           />

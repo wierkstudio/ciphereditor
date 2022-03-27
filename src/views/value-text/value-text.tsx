@@ -8,7 +8,7 @@ export default function ValueTextView(props: ValueViewProps) {
       <InputTextView
         id={props.id}
         value={props.value.value}
-        disabled={props.disabled}
+        readOnly={props.readOnly}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         onChange={(value, event) => {
