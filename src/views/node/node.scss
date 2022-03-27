@@ -2,16 +2,26 @@
 @import 'styles/shared';
 
 .node {
-  padding: rem(8);
-  border-radius: rem(16);
-  border: rem(2) solid $c-muted;
+  position: relative;
   width: rem(320);
-  box-sizing: content-box;
-  background: $c-muted;
-  transform: translate(#{rem(-10)}, #{rem(-10)});
   cursor: default;
 
-  &--selected {
+  // Selected frame
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: rem(-10);
+    right: rem(-10);
+    bottom: rem(-10);
+    left: rem(-10);
+    z-index: -1;
+    border-radius: rem(16);
+    border: rem(2) solid $c-muted;
+    background: $c-muted;
+  }
+
+  &--selected::before {
     border-color: $c-line;
   }
 }

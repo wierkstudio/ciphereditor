@@ -8,7 +8,7 @@ import { getVariableWireWaypoints } from 'slices/blueprint/selectors/variable'
 import { isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { selectNodeAction } from 'slices/blueprint'
 
-const minNodeGap = 80
+const minNodeGap = 64
 
 const capIcons = {
   trailingPull: 'm-6,1c-0.667,-0.385,-0.667,-1.347,0,-1.732l9.75,-5.629c0.667,-0.385,1.5,0.096,1.5,0.866v11.258c0,0.77,-0.833,1.251,-1.5,0.866l-9.75,-5.629z',

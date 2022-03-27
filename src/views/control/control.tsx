@@ -17,9 +17,9 @@ import { toggleControlViewState } from 'slices/blueprint'
 export default function ControlView(props: {
   controlId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
-  outletRef?: (element: HTMLButtonElement) => void
+  onOutletRef?: (controlId: number, element: HTMLButtonElement | null) => void
 }) {
-  const { controlId, contextProgramId, outletRef } = props
+  const { controlId, contextProgramId, onOutletRef } = props
 
   const control = useBlueprintSelector(state => getControlNode(state, controlId))
   const valuePreview = useBlueprintSelector(state =>
@@ -55,7 +55,7 @@ export default function ControlView(props: {
           contextProgramId={contextProgramId}
           expanded={control.viewState === ControlViewState.Expanded}
           onIndicatorClick={onToggleClick}
-          indicatorRef={outletRef}
+          indicatorRef={onOutletRef?.bind(null, controlId)}
         />
       </div>
       {control.viewState === ControlViewState.Expanded && (

@@ -68,8 +68,8 @@ export default function AppHeaderView() {
               disabled={program === undefined}
               onClick={() => dispatch(addEmptyControlAction({
                 programId: program!.id,
-                x: canvasPosition.x,
-                y: canvasPosition.y,
+                x: canvasPosition.x - 320 * 0.5,
+                y: canvasPosition.y - 64 * 0.5,
               }))}
             >Control</ButtonView>,
           ]} />

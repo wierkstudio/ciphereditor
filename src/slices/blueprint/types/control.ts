@@ -193,12 +193,12 @@ export interface ControlNode extends BlueprintNode {
   attachedInternVariableId?: BlueprintNodeId
 
   /**
-   * Number of pixels between the left side of the operation and the outlet
+   * Number of pixels between the left side of the node and the outlet
    */
-  operationOutletX?: number
+  nodeOutletX?: number
 
   /**
-   * Number of pixels between the top side of the operation and the outlet
+   * Number of pixels between the top side of the node and the outlet
    */
-  operationOutletY?: number
+  nodeOutletY?: number
 }

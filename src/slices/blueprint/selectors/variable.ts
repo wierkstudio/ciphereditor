@@ -88,45 +88,28 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
 
   for (let i = 0; i < variable.attachmentIds.length; i++) {
     const control = getControlNode(state, variable.attachmentIds[i])
-    if (control.parentId === contextProgramId) {
-      // Stand-alone program control node
-      if (
-        control.x !== undefined &&
-        control.y !== undefined &&
-        control.width !== undefined &&
-        control.height !== undefined
-      ) {
-        waypoints.push({
-          push: i === 0,
-          x: control.x + control.width * 0.5,
-          y: control.y + control.height + 0.5,
-          nodeX: control.x,
-          nodeY: control.y,
-          nodeWidth: control.width,
-          nodeHeight: control.height,
-        })
-      }
-    } else {
-      // Control node embedded in an operation or program node
-      const node = getNode(state, control.parentId)
-      if (
-        node.x !== undefined &&
-        node.y !== undefined &&
-        node.width !== undefined &&
-        node.height !== undefined &&
-        control.operationOutletX !== undefined &&
-        control.operationOutletY !== undefined
-      ) {
-        waypoints.push({
-          push: i === 0,
-          x: node.x + control.operationOutletX,
-          y: node.y + control.operationOutletY,
-          nodeX: node.x,
-          nodeY: node.y,
-          nodeWidth: node.width,
-          nodeHeight: node.height,
-        })
-      }
+    const node =
+      control.parentId === contextProgramId
+        ? control
+        : getNode(state, control.parentId)
+
+    if (
+      node.x !== undefined &&
+      node.y !== undefined &&
+      node.width !== undefined &&
+      node.height !== undefined &&
+      control.nodeOutletX !== undefined &&
+      control.nodeOutletY !== undefined
+    ) {
+      waypoints.push({
+        push: i === 0,
+        x: node.x + control.nodeOutletX,
+        y: node.y + control.nodeOutletY,
+        nodeX: node.x,
+        nodeY: node.y,
+        nodeWidth: node.width,
+        nodeHeight: node.height,
+      })
     }
   }
 

@@ -8,17 +8,17 @@ import {
   changeControlValueToType,
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState } from './types/blueprint'
+import { BlueprintNodeType } from './types/blueprint'
 import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from './types/control'
 import { Operation, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, setOperationState } from './reducers/operation'
+import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
+import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
-import { getControlNode, getNodeNamedControls } from './selectors/control'
-import { BlueprintNodeType } from './types/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -249,10 +249,8 @@ export const blueprintSlice = createSlice({
       if (outletPositions !== undefined) {
         outletPositions.forEach(position => {
           const control = getControlNode(state, position.controlId)
-          if (control.parentId === nodeId) {
-            control.operationOutletX = position.x
-            control.operationOutletY = position.y
-          }
+          control.nodeOutletX = position.x
+          control.nodeOutletY = position.y
         })
       }
     },
