@@ -17,8 +17,8 @@ export const addOperationNode = (
   programId: BlueprintNodeId,
   operation: Operation,
   x: number,
-  y: number,
-) => {
+  y: number
+): OperationNode => {
   // TODO: Where to put the operation entity name
   const operationNode: OperationNode = {
     id: nextNodeId(state),
@@ -31,7 +31,7 @@ export const addOperationNode = (
     bundleUrl: operation.bundleUrl,
     moduleId: operation.moduleId,
     x,
-    y,
+    y
   }
 
   addNode(state, operationNode)
@@ -52,7 +52,7 @@ export const setOperationState = (
   state: BlueprintState,
   operation: OperationNode,
   newState: OperationState
-) => {
+): void => {
   if (operation.state === newState) {
     return
   }

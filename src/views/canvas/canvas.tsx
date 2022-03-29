@@ -5,7 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useDragMove from 'hooks/useDragMove'
-import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
+import { BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { DragEvent, useCallback } from 'react'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasPosition } from 'slices/ui/selectors'
@@ -14,23 +14,28 @@ import { moveCanvasAction } from 'slices/ui'
 import { selectNodeAction } from 'slices/blueprint'
 import WireView from 'views/wire/wire'
 
-export default function CanvasView() {
+export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
 
   const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
-  const contextProgramId = useBlueprintSelector(state => getActiveProgram(state)!.id)
+  const contextProgramId = useBlueprintSelector(state => getActiveProgram(state)?.id)
+  if (contextProgramId === undefined) {
+    throw new Error('Assertion error: Active program needs to be set')
+  }
+
   const variableIds = useBlueprintSelector(state =>
     getNodeChildren(state, contextProgramId)
       .filter(node => node.type === BlueprintNodeType.Variable)
-      .map(node => node.id) as BlueprintNodeId[])
+      .map(node => node.id))
+
   const childNodeIds = useBlueprintSelector(state =>
     getNodeChildren(state, contextProgramId)
       .filter(node => node.type !== BlueprintNodeType.Variable)
-      .map(node => node.id) as BlueprintNodeId[])
+      .map(node => node.id))
 
   const { x, y } = useAppSelector(state => getCanvasPosition(state.ui))
 
-  const onDragMove = (newX: number, newY: number) => {
+  const onDragMove = (newX: number, newY: number): void => {
     dispatch(moveCanvasAction({ x: newX, y: newY }))
   }
 
@@ -47,11 +52,11 @@ export default function CanvasView() {
 
   return (
     <div
-      className="canvas"
+      className='canvas'
       onMouseDown={onMouseDown}
     >
       <div
-        className="canvas__content"
+        className='canvas__content'
         style={{ transform: `translate(${-x}px, ${-y}px)` }}
       >
         {variableIds.map(variableId => (

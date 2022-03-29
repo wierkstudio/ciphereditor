@@ -1,7 +1,7 @@
 
 import { useLayoutEffect, useRef } from 'react'
 
-export default function useWindowResizeListener (listener: (event: UIEvent) => any) {
+const useWindowResizeListener = (listener: (event: UIEvent) => any): void => {
   const latestListener = useRef(listener)
   useLayoutEffect(() => {
     latestListener.current = listener
@@ -9,10 +9,12 @@ export default function useWindowResizeListener (listener: (event: UIEvent) => a
   useLayoutEffect(() => {
     const handler: typeof listener = (event) => {
       latestListener.current(event)
-    };
+    }
     window.addEventListener('resize', handler)
     return () => {
       window.removeEventListener('resize', handler)
     }
   }, [])
 }
+
+export default useWindowResizeListener

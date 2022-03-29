@@ -1,7 +1,7 @@
 
 import { MouseEvent as ReactMouseEvent, useCallback, useEffect, useState } from 'react'
 
-type DragMoveState = {
+interface DragMoveState {
   startX: number
   startY: number
   startViewportX: number
@@ -10,12 +10,12 @@ type DragMoveState = {
 
 export const gridSize = 16.0
 
-export default function useDragMove(
+const useDragMove = (
   x: number,
   y: number,
   onMove: (newX: number, newY: number) => void,
   inverse: boolean = false
-) {
+): { onMouseDown: (event: ReactMouseEvent) => void } => {
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
 
   const onMouseDown = useCallback((event: ReactMouseEvent) => {
@@ -28,7 +28,7 @@ export default function useDragMove(
   }, [setState, x, y])
 
   useEffect(() => {
-    const onMouseMove = (event: MouseEvent) => {
+    const onMouseMove = (event: MouseEvent): void => {
       if (state !== undefined) {
         const newX = state.startX + (inverse ? -1 : 1) * Math.round((event.clientX - state.startViewportX) / gridSize) * gridSize
         const newY = state.startY + (inverse ? -1 : 1) * Math.round((event.clientY - state.startViewportY) / gridSize) * gridSize
@@ -39,7 +39,7 @@ export default function useDragMove(
         }
       }
     }
-    const onMouseUp = (event: MouseEvent) => {
+    const onMouseUp = (event: MouseEvent): void => {
       if (state !== undefined) {
         event.preventDefault()
         setState(undefined)
@@ -63,3 +63,5 @@ export default function useDragMove(
 
   return { onMouseDown }
 }
+
+export default useDragMove

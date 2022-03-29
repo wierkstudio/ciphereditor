@@ -1,6 +1,6 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { Control } from './control';
+import { Control } from './control'
 
 /**
  * Operation entity

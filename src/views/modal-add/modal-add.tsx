@@ -11,27 +11,27 @@ import { getCanvasPosition } from 'slices/ui/selectors'
 import { getOperations } from 'slices/directory/selectors'
 import { popModalAction } from 'slices/ui'
 
-export default function AddModalView(props: {
+export default function AddModalView (props: {
   modal: ModalState
-}) {
+}): JSX.Element {
   const dispatch = useAppDispatch()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
   const directoryOperations = useAppSelector(state => getOperations(state.directory))
   const canvasPosition = useAppSelector(state => getCanvasPosition(state.ui))
 
   return (
-    <ModalView modal={props.modal} title="Add operation">
+    <ModalView modal={props.modal} title='Add operation'>
       <ul>
         {directoryOperations.map(operation => (
           <li key={operation.name}>
             <button
               onClick={() => {
                 // TODO: Remove magic numbers
-                dispatch(addOperationAction({
-                  programId: activeProgram!.id,
+                activeProgram !== undefined && dispatch(addOperationAction({
+                  programId: activeProgram.id,
                   operation: operation,
                   x: canvasPosition.x - 320 * 0.5,
-                  y: canvasPosition.y - 80,
+                  y: canvasPosition.y - 80
                 }))
                 dispatch(popModalAction({}))
               }}

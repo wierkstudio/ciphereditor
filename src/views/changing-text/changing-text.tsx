@@ -3,7 +3,7 @@ import './changing-text.scss'
 import React, { useEffect, useState } from 'react'
 import useClassName from 'hooks/useClassName'
 
-type ChangingTextViewState = {
+interface ChangingTextViewState {
   lastText: string
   currentText: string
   transitioned: boolean
@@ -16,7 +16,7 @@ type ChangingTextViewState = {
  */
 const transitionCooldown = 5000
 
-export default React.memo(function ChangingTextView(props: {
+export default React.memo(function ChangingTextView (props: {
   children: string
 }) {
   const text = props.children
@@ -25,7 +25,7 @@ export default React.memo(function ChangingTextView(props: {
     lastText: '',
     currentText: text,
     transitioned: true,
-    lastChangeTime: null,
+    lastChangeTime: null
   })
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default React.memo(function ChangingTextView(props: {
         setState({
           ...state,
           currentText: text,
-          lastChangeTime: time,
+          lastChangeTime: time
         })
       } else {
         // Schedule full change transition
@@ -48,7 +48,7 @@ export default React.memo(function ChangingTextView(props: {
           lastText: state.currentText,
           currentText: text,
           transitioned: false,
-          lastChangeTime: time,
+          lastChangeTime: time
         })
       }
     } else if (!state.transitioned) {
@@ -67,8 +67,8 @@ export default React.memo(function ChangingTextView(props: {
 
   return (
     <span className={useClassName('changing-text', modifiers)}>
-      <span className="changing-text__last">{state.lastText}</span>
-      <span className="changing-text__current">{state.currentText}</span>
+      <span className='changing-text__last'>{state.lastText}</span>
+      <span className='changing-text__current'>{state.currentText}</span>
     </span>
   )
 })

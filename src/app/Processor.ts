@@ -4,7 +4,7 @@ const processorFramePingInterval = 10 * 1000
 const enum ProcessorFrameState {
   Uninitialized,
   Initializing,
-  Initialized,
+  Initialized
 }
 
 const enum ProcessorMessageType {
@@ -13,15 +13,15 @@ const enum ProcessorMessageType {
   GetModuleValue = 'get_module_value',
   CallModuleFunction = 'call_module_function',
   Touch = 'touch',
-  Terminate = 'terminate',
+  Terminate = 'terminate'
 }
 
-type ProcessorMessage = {
+interface ProcessorMessage {
   type: ProcessorMessageType
   [name: string]: unknown
 }
 
-type QueuedProcessorMessage = {
+interface QueuedProcessorMessage {
   message: ProcessorMessage
   resolve: (value: unknown) => void
   reject: (reason?: any) => void
@@ -59,10 +59,10 @@ export default class Processor {
   /**
    * Processor frame configuration
    */
-  private frameConfig = {
+  private readonly frameConfig = {
     basePath: '',
     messageTimeout: 10 * 1000,
-    idleTimeout: 15 * 60 * 1000,
+    idleTimeout: 15 * 60 * 1000
   }
 
   /**
@@ -73,12 +73,12 @@ export default class Processor {
   /**
    * Queue of pending messages
    */
-  private queuedMessages = new Map<number, QueuedProcessorMessage>()
+  private readonly queuedMessages = new Map<number, QueuedProcessorMessage>()
 
   /**
    * Default message timeout
    */
-  private messageTimeout: number = 30 * 1000
+  private readonly messageTimeout: number = 30 * 1000
 
   private readonly frameMessageHandler = this.handleFrameMessage.bind(this)
   private readonly framePingHandler = this.handleFramePing.bind(this)
@@ -102,18 +102,18 @@ export default class Processor {
    * @param timeout Timeout after which processing is canceled
    * @returns Promise resolving to the exported value
    */
-  getModuleValue (
+  async getModuleValue (
     bundleSrc: string,
     moduleId: string,
     exportName: string,
     timeout?: number
   ): Promise<unknown> {
-    return this.postMessage({
+    return await this.postMessage({
       type: ProcessorMessageType.GetModuleValue,
       worker: bundleSrc,
       moduleId,
       exportName,
-      timeout: timeout || this.messageTimeout,
+      timeout: timeout ?? this.messageTimeout
     })
   }
 
@@ -126,20 +126,20 @@ export default class Processor {
    * @param timeout Timeout after which processing is canceled
    * @returns Promise resolving to the return value
    */
-  callModuleFunction (
+  async callModuleFunction (
     bundleSrc: string,
     moduleId: string,
     exportName: string,
     args: unknown[],
     timeout?: number
   ): Promise<unknown> {
-    return this.postMessage({
+    return await this.postMessage({
       type: ProcessorMessageType.CallModuleFunction,
       worker: bundleSrc,
       moduleId,
       exportName,
       args,
-      timeout: timeout || this.messageTimeout,
+      timeout: timeout ?? this.messageTimeout
     })
   }
 
@@ -149,11 +149,11 @@ export default class Processor {
    * @param timeout Timeout after which processing is canceled
    * @returns Promise resolving when the bundle is loaded
    */
-  preloadBundle (bundleSrc: string, timeout?: number): Promise<void> {
-    return this.postMessage({
+  async preloadBundle (bundleSrc: string, timeout?: number): Promise<void> {
+    return await this.postMessage({
       type: ProcessorMessageType.Touch,
       worker: bundleSrc,
-      timeout: timeout || this.messageTimeout,
+      timeout: timeout ?? this.messageTimeout
     })
   }
 
@@ -162,10 +162,10 @@ export default class Processor {
    * @param bundleSrc Bundle source file url
    * @returns Promise resolving when the bundle is removed
    */
-  terminateBundle (bundleSrc: string): Promise<void> {
-    return this.postMessage({
+  async terminateBundle (bundleSrc: string): Promise<void> {
+    return await this.postMessage({
       type: ProcessorMessageType.Terminate,
-      worker: bundleSrc,
+      worker: bundleSrc
     })
   }
 
@@ -176,8 +176,8 @@ export default class Processor {
    * be initialized (e.g. to send the initial `configure` message).
    * @returns Promise resolving to the response message value
    */
-  private postMessage (message: ProcessorMessage, force = false): Promise<any> {
-    return new Promise((resolve, reject) => {
+  private async postMessage (message: ProcessorMessage, force = false): Promise<any> {
+    return await new Promise((resolve, reject) => {
       // Attach a unique message id and add it to the queue
       const messageId = this.getNextRequestId()
       const messageWithId = { ...message, id: messageId }
@@ -189,8 +189,10 @@ export default class Processor {
 
       // Trigger lazy frame initialization or post message, if already done
       if (this.frameState === ProcessorFrameState.Initialized || force) {
-        const queuedMessage = this.queuedMessages.get(messageId)!
-        this.frame!.contentWindow!.postMessage(queuedMessage.message, '*')
+        const queuedMessage = this.queuedMessages.get(messageId)
+        if (queuedMessage !== undefined) {
+          this.frame?.contentWindow?.postMessage(queuedMessage.message, '*')
+        }
       } else if (this.frameState === ProcessorFrameState.Uninitialized) {
         this.initializeFrame()
       }
@@ -238,7 +240,7 @@ export default class Processor {
     try {
       await this.postMessage({
         type: ProcessorMessageType.Configure,
-        config: this.frameConfig,
+        config: this.frameConfig
       }, true)
     } catch (err: any) {
       this.destroyFrame(err)
@@ -248,8 +250,8 @@ export default class Processor {
     this.frameState = ProcessorFrameState.Initialized
 
     // Post queued messages
-    for (let [, queuedMessage] of this.queuedMessages) {
-      this.frame!.contentWindow!.postMessage(queuedMessage.message, '*')
+    for (const [, queuedMessage] of this.queuedMessages) {
+      this.frame?.contentWindow?.postMessage(queuedMessage.message, '*')
     }
   }
 
@@ -257,9 +259,9 @@ export default class Processor {
    * Handle a message originating from the managed frame element.
    * @param evt Message event
    */
-   private handleFrameMessage (evt: MessageEvent): void {
+  private handleFrameMessage (evt: MessageEvent): void {
     // Ignore messages not originating from the frame we manage
-    if (!this.frame || evt.source !== this.frame.contentWindow) {
+    if (this.frame === undefined || evt.source !== this.frame.contentWindow) {
       return
     }
 
@@ -275,7 +277,7 @@ export default class Processor {
     this.queuedMessages.delete(messageId)
 
     const messageError = message.error
-    if (!messageError) {
+    if (messageError === undefined || messageError === null) {
       queuedMessage.resolve(message.value)
     } else {
       queuedMessage.reject(messageError)
@@ -292,7 +294,7 @@ export default class Processor {
       if (this.framePongReceived) {
         this.framePongReceived = false
         this.postMessage({ type: ProcessorMessageType.Ping })
-          .then(this.framePongHandler)
+          .then(this.framePongHandler, () => {})
       } else {
         this.destroyFrame(new Error('Processor frame has become unresponsive'))
       }
@@ -318,17 +320,21 @@ export default class Processor {
       window.removeEventListener('message', this.frameMessageHandler)
 
       // Clear ping timer
-      clearInterval(this.framePingTimer!)
-      this.framePingTimer = undefined
+      if (this.framePingTimer !== undefined) {
+        clearInterval(this.framePingTimer)
+        this.framePingTimer = undefined
+      }
 
       // Let go frame element
-      document.body.removeChild(this.frame!)
-      this.frame = undefined
+      if (this.frame !== undefined) {
+        document.body.removeChild(this.frame)
+        this.frame = undefined
+      }
 
       // Reject pending messages
       const pendingRequestHandlings = Array.from(this.queuedMessages.values())
       this.queuedMessages.clear()
-      for (let handling of pendingRequestHandlings) {
+      for (const handling of pendingRequestHandlings) {
         handling.reject(rejectReason)
       }
     }

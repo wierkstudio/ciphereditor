@@ -2,8 +2,10 @@
 import {
   BlueprintNodeId,
   BlueprintNodeType,
-  BlueprintState,
+  BlueprintState
 } from '../types/blueprint'
+import { ControlNode } from '../types/control'
+import { TypedValue } from '../types/value'
 import { VariableNode } from '../types/variable'
 import { getNode, getNodeChildren } from './blueprint'
 import { getControlNode, isControlInternVariable } from './control'
@@ -16,7 +18,7 @@ import { getControlNode, isControlInternVariable } from './control'
  * @throws If the node type does not match the expected type
  * @returns Variable node
  */
-export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) =>
+export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId): VariableNode =>
   getNode(state, id, BlueprintNodeType.Variable) as VariableNode
 
 /**
@@ -26,18 +28,18 @@ export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId) =>
 export const getControlVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId?: BlueprintNodeId,
-) => {
+  programId?: BlueprintNodeId
+): VariableNode | undefined => {
   const intern = isControlInternVariable(state, controlId, programId)
   const control = getControlNode(state, controlId)
   const variableId = intern ? control.attachedInternVariableId : control.attachedVariableId
-  return variableId ? getVariableNode(state, variableId) : undefined
+  return variableId !== undefined ? getVariableNode(state, variableId) : undefined
 }
 
 /**
  * Return variables from the given program.
  */
-export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId) =>
+export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId): VariableNode[] =>
   getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNode[]
 
 /**
@@ -45,12 +47,14 @@ export const getProgramVariables = (state: BlueprintState, programId: BlueprintN
  */
 export const getVariableControl = (
   state: BlueprintState,
-  variableId: BlueprintNodeId,
-) => {
+  variableId: BlueprintNodeId
+): ControlNode => {
   const variable = getVariableNode(state, variableId)
-  // TODO: Assertion: A variable is always attached to at least one control
   // Assertion: Variable attachment ids are ordered by when they propagated
-  return getControlNode(state, variable.attachmentIds[0]!)
+  if (variable.attachmentIds.length === 0) {
+    throw new Error('Assertion failed: A variable is always attached to at least one control')
+  }
+  return getControlNode(state, variable.attachmentIds[0])
 }
 
 /**
@@ -58,8 +62,8 @@ export const getVariableControl = (
  */
 export const getVariableAttachedControls = (
   state: BlueprintState,
-  variableId: BlueprintNodeId,
-) =>
+  variableId: BlueprintNodeId
+): ControlNode[] =>
   getVariableNode(state, variableId)
     .attachmentIds
     .map(controlId => getControlNode(state, controlId))
@@ -67,24 +71,32 @@ export const getVariableAttachedControls = (
 /**
  * Return the current value for the given variable.
  */
-export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId) =>
+export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId): TypedValue =>
   getVariableControl(state, variableId).value
 
 /**
  * Return wire waypoints and their respective node rects for the given variable.
  */
-export const getVariableWireWaypoints = (state: BlueprintState, variableId: BlueprintNodeId) => {
+export const getVariableWireWaypoints = (state: BlueprintState, variableId: BlueprintNodeId): Array<{
+  push: boolean
+  x: number
+  y: number
+  nodeX: number
+  nodeY: number
+  nodeWidth: number
+  nodeHeight: number
+}> => {
   const variable = getVariableNode(state, variableId)
   const contextProgramId = variable.parentId
-  const waypoints: {
-    push: boolean,
-    x: number,
-    y: number,
-    nodeX: number,
-    nodeY: number,
-    nodeWidth: number,
-    nodeHeight: number,
-  }[] = []
+  const waypoints: Array<{
+    push: boolean
+    x: number
+    y: number
+    nodeX: number
+    nodeY: number
+    nodeWidth: number
+    nodeHeight: number
+  }> = []
 
   for (let i = 0; i < variable.attachmentIds.length; i++) {
     const control = getControlNode(state, variable.attachmentIds[i])
@@ -108,7 +120,7 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
         nodeX: node.x,
         nodeY: node.y,
         nodeWidth: node.width,
-        nodeHeight: node.height,
+        nodeHeight: node.height
       })
     }
   }

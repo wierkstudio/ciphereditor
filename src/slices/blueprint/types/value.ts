@@ -2,7 +2,7 @@
 /**
  * Typed value object
  */
- export type TypedValue = {
+export interface TypedValue {
   /**
    * Raw value
    */

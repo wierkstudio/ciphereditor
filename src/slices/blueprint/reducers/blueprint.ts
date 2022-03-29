@@ -4,7 +4,7 @@ import {
   BlueprintNode,
   BlueprintNodeId,
   BlueprintNodeType,
-  BlueprintState,
+  BlueprintState
 } from '../types/blueprint'
 import { VariableNode } from '../types/variable'
 import { getControlNode } from '../selectors/control'
@@ -17,7 +17,7 @@ import { arrayRemove } from 'utils/array'
  * @param state Blueprint state
  * @returns New node id
  */
-export const nextNodeId = (state: BlueprintState) => {
+export const nextNodeId = (state: BlueprintState): number => {
   do {
     state.lastInsertNodeId = (state.lastInsertNodeId + 1) % Number.MAX_SAFE_INTEGER
   } while (state.nodes[state.lastInsertNodeId] !== undefined)
@@ -60,7 +60,7 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
     parentNode.childIds.push(childId)
     return childNode
   } else {
-    throw new Error(`Node type '${childNode}' can't be added to '${parentNode}'`)
+    throw new Error(`Node type '${childType}' can't be added to '${parentType}'`)
   }
 }
 
@@ -69,23 +69,25 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
  * @param state Blueprint state
  * @param nodeId Id of node to be removed
  */
-export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
+export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void => {
   if (!hasNode(state, nodeId)) {
     return
   }
 
   const node = getNode(state, nodeId)
   if (node.id === node.parentId) {
-    throw new Error(`The root node can't be removed`)
+    throw new Error('The root node can\'t be removed')
   }
 
   // Remove child nodes recursively (bottom-up removal)
   node.childIds.forEach(removeNode.bind(null, state))
 
   // Clean up relationships between nodes (other than parent-child)
+  let variable, control
+  let variableIds: Array<BlueprintNodeId | undefined>
   switch (node.type) {
     case BlueprintNodeType.Variable:
-      const variable = node as VariableNode
+      variable = node as VariableNode
       variable.attachmentIds.forEach(attachmentId => {
         const control = getControlNode(state, attachmentId)
         if (control.attachedInternVariableId === nodeId) {
@@ -97,9 +99,8 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
       break
 
     case BlueprintNodeType.Control:
-      const control = node as ControlNode
-      const variableIds: (BlueprintNodeId | undefined)[] =
-        [control.attachedInternVariableId, control.attachedVariableId]
+      control = node as ControlNode
+      variableIds = [control.attachedInternVariableId, control.attachedVariableId]
       for (let i = 0; i < variableIds.length; i++) {
         const variableId = variableIds[i]
         if (variableId !== undefined) {
@@ -129,12 +130,12 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId) => {
   parentNode.childIds = parentNode.childIds.filter(id => id !== nodeId)
 
   // Remove self from blueprint
-  delete state.nodes[node.id]
+  delete state.nodes[node.id] // eslint-disable-line @typescript-eslint/no-dynamic-delete
 }
 
 /**
  * Select a node or clear the selection.
  */
-export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | undefined) => {
+export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | undefined): void => {
   state.selectedNodeId = nodeId
 }

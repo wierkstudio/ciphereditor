@@ -2,7 +2,7 @@
 /**
  * Return wether the given string is numeric or not.
  */
-export const isNumericString = (string: string) => {
+export const isNumericString = (string: string): boolean => {
   if (typeof string !== 'string') {
     return false
   }

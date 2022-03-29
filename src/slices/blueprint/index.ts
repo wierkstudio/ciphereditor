@@ -5,10 +5,9 @@ import {
   addVariableFromControl,
   changeControl,
   changeControlValueToChoice,
-  changeControlValueToType,
+  changeControlValueToType
 } from './reducers/control'
-import { BlueprintNodeId, BlueprintState } from './types/blueprint'
-import { BlueprintNodeType } from './types/blueprint'
+import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from './types/control'
 import { Operation, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
@@ -27,7 +26,7 @@ const defaultBlueprintState: BlueprintState = {
   selectedNodeId: undefined,
   rootProgramId: 1,
   activeProgramId: 1,
-  busyOperationIds: [],
+  busyOperationIds: []
 }
 
 export const blueprintSlice = createSlice({
@@ -38,10 +37,10 @@ export const blueprintSlice = createSlice({
      * Instantiate a operation and add it to the target program
      */
     addOperationAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId,
-      operation: Operation,
-      x: number,
-      y: number,
+      programId: BlueprintNodeId
+      operation: Operation
+      x: number
+      y: number
     }>) => {
       const { programId, operation: operationEntity, x, y } = payload
       const operation = addOperationNode(state, programId, operationEntity, x, y)
@@ -53,9 +52,9 @@ export const blueprintSlice = createSlice({
      * If no program is given, it will be added to the active program
      */
     addEmptyProgramAction: (state, { payload }: PayloadAction<{
-      programId?: BlueprintNodeId,
-      x: number,
-      y: number,
+      programId?: BlueprintNodeId
+      x: number
+      y: number
     }>) => {
       // TODO: Handle no active program
       const { programId, x, y } = payload
@@ -67,9 +66,9 @@ export const blueprintSlice = createSlice({
      * Add an empty control node to the given program.
      */
     addEmptyControlAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId,
-      x: number,
-      y: number,
+      programId: BlueprintNodeId
+      x: number
+      y: number
     }>) => {
       const control = addProgramControlNode(state, payload.programId, payload.x, payload.y)
       state.selectedNodeId = control.id
@@ -79,9 +78,9 @@ export const blueprintSlice = createSlice({
      * Change the active program.
      */
     enterProgramAction: (state, { payload }: PayloadAction<{
-      programId?: BlueprintNodeId,
+      programId?: BlueprintNodeId
     }>) => {
-      const targetNodeId = payload.programId || state.selectedNodeId
+      const targetNodeId = payload.programId ?? state.selectedNodeId
       if (targetNodeId !== undefined) {
         state.activeProgramId = targetNodeId
         state.selectedNodeId = undefined
@@ -93,7 +92,7 @@ export const blueprintSlice = createSlice({
      * Move a level up, changing the active program to its parent program.
      */
     leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.activeProgramId && state.activeProgramId !== state.rootProgramId) {
+      if (state.activeProgramId !== undefined && state.activeProgramId !== state.rootProgramId) {
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
         state.selectedNodeId = undefined
         state.linkControlId = undefined
@@ -101,37 +100,37 @@ export const blueprintSlice = createSlice({
     },
 
     changeControlValueToChoiceAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      choiceIndex: number,
+      controlId: BlueprintNodeId
+      choiceIndex: number
     }>) => {
       changeControlValueToChoice(state, payload.controlId, payload.choiceIndex)
     },
 
     changeControlValueToTypeAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      valueType: string,
+      controlId: BlueprintNodeId
+      valueType: string
     }>) => {
       changeControlValueToType(state, payload.controlId, payload.valueType)
     },
 
     attachControlToVariableAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      variableId: BlueprintNodeId,
-      push: boolean,
+      controlId: BlueprintNodeId
+      variableId: BlueprintNodeId
+      push: boolean
     }>) => {
       const { controlId, variableId, push } = payload
       attachControlToVariable(state, controlId, variableId, true, push)
     },
 
     detachControlFromVariableAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      variableId: BlueprintNodeId,
+      controlId: BlueprintNodeId
+      variableId: BlueprintNodeId
     }>) => {
       detachControlFromVariable(state, payload.controlId, payload.variableId)
     },
 
-    toggleControlViewState:  (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
+    toggleControlViewState: (state, { payload }: PayloadAction<{
+      controlId: BlueprintNodeId
     }>) => {
       const control = getControlNode(state, payload.controlId)
       if (control.viewState === ControlViewState.Collapsed) {
@@ -142,8 +141,8 @@ export const blueprintSlice = createSlice({
     },
 
     addVariableFromControlAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      programId: BlueprintNodeId,
+      controlId: BlueprintNodeId
+      programId: BlueprintNodeId
     }>) => {
       addVariableFromControl(state, payload.controlId, payload.programId)
     },
@@ -152,8 +151,8 @@ export const blueprintSlice = createSlice({
      * Apply control changes to the given parent node.
      */
     changeControlAction: (state, { payload }: PayloadAction<{
-      controlId: BlueprintNodeId,
-      change: ControlChange,
+      controlId: BlueprintNodeId
+      change: ControlChange
     }>) => {
       changeControl(state, payload.controlId, payload.change, ControlChangeSource.UserInput)
     },
@@ -162,10 +161,10 @@ export const blueprintSlice = createSlice({
      * Apply an operation task result to the blueprint.
      */
     applyOperationTaskResultAction: (state, { payload }: PayloadAction<{
-      operationId: BlueprintNodeId,
-      taskVersion: number,
-      controlChanges: NamedControlChange[],
-      error?: string,
+      operationId: BlueprintNodeId
+      taskVersion: number
+      controlChanges: NamedControlChange[]
+      error?: string
     }>) => {
       const { operationId, taskVersion, controlChanges, error } = payload
       if (!hasNode(state, operationId)) {
@@ -179,7 +178,7 @@ export const blueprintSlice = createSlice({
         console.log('Operation task needs to be redone')
         return
       }
-      if (!error) {
+      if (error === undefined || error === null) {
         console.log('Operation task completed', controlChanges)
         const namedControls = getNodeNamedControls(state, operationId)
         controlChanges.forEach(change => {
@@ -199,7 +198,7 @@ export const blueprintSlice = createSlice({
      * Select a node or clear the selection.
      */
     selectNodeAction: (state, { payload }: PayloadAction<{
-      nodeId?: BlueprintNodeId,
+      nodeId?: BlueprintNodeId
     }>) => {
       selectNode(state, payload.nodeId)
     },
@@ -208,10 +207,10 @@ export const blueprintSlice = createSlice({
      * Remove a node.
      */
     removeNodeAction: (state, { payload }: PayloadAction<{
-      nodeId?: BlueprintNodeId,
+      nodeId?: BlueprintNodeId
     }>) => {
       const nodeId = payload.nodeId ?? state.selectedNodeId
-      if (nodeId) {
+      if (nodeId !== undefined) {
         // Check wether removal is allowed
         const node = getNode(state, nodeId)
         const parent = getNode(state, node.parentId)
@@ -224,9 +223,9 @@ export const blueprintSlice = createSlice({
     },
 
     moveNodeAction: (state, { payload }: PayloadAction<{
-      nodeId: BlueprintNodeId,
-      x: number,
-      y: number,
+      nodeId: BlueprintNodeId
+      x: number
+      y: number
     }>) => {
       const node = getNode(state, payload.nodeId)
       node.x = payload.x
@@ -234,14 +233,14 @@ export const blueprintSlice = createSlice({
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{
-      nodeId: number,
-      width: number | undefined,
-      height: number | undefined,
-      outletPositions?: {
-        controlId: BlueprintNodeId,
-        x: number | undefined,
-        y: number | undefined,
-      }[],
+      nodeId: number
+      width: number | undefined
+      height: number | undefined
+      outletPositions?: Array<{
+        controlId: BlueprintNodeId
+        x: number | undefined
+        y: number | undefined
+      }>
     }>) => {
       const { nodeId, width, height, outletPositions } = payload
 
@@ -256,7 +255,7 @@ export const blueprintSlice = createSlice({
           control.nodeOutletY = position.y
         })
       }
-    },
+    }
   }
 })
 
@@ -277,7 +276,7 @@ export const {
   selectNodeAction,
   removeNodeAction,
   moveNodeAction,
-  layoutNodeAction,
+  layoutNodeAction
 } = blueprintSlice.actions
 
 export const undoAction = createAction(`${blueprintSlice.name}/undoAction`)
@@ -294,10 +293,10 @@ export default undoable(blueprintSlice.reducer, {
     leaveProgramAction.type,
     selectNodeAction.type,
     toggleControlViewState.type,
-    layoutNodeAction.type,
+    layoutNodeAction.type
   ]),
   groupBy: (action, currentState, previousHistory) => {
-    const currentGroup = previousHistory.group
+    const currentGroup = previousHistory.group as number | string
     if (action.type === applyOperationTaskResultAction.type) {
       // Group incoming operation results with the previous state as they are
       // automatic and should not be performed again when doing undo/redo
@@ -306,13 +305,13 @@ export default undoable(blueprintSlice.reducer, {
       // User initiated changes to controls should be grouped together when they
       // refer to the same control and happen after small time intervals (30s)
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
-      return `control-${action.payload.controlId}-${timeUnit}`
+      return `control-${action.payload.controlId as number}-${timeUnit}`
     } else if (action.type === moveNodeAction.type) {
       // See case above
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
-      return `move-node-${action.payload.nodeId}-${timeUnit}`
+      return `move-node-${action.payload.nodeId as number}-${timeUnit}`
     }
     // Put this action into a separate group
-    return Number.isInteger(currentGroup) ? currentGroup + 1 : 1
+    return typeof currentGroup === 'number' ? currentGroup + 1 : 1
   }
 })

@@ -1,5 +1,5 @@
 
-import SelectView, { SelectViewElement, SelectViewGroupElement } from 'views/select/select'
+import SelectView, { SelectViewElement, SelectViewOptionElement } from 'views/select/select'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import {
@@ -13,10 +13,10 @@ import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
 import { useCallback } from 'react'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 
-export default function OutletSelectView(props: {
+export default function OutletSelectView (props: {
   control: ControlNode
   contextProgramId: BlueprintNodeId
-}) {
+}): JSX.Element {
   const dispatch = useAppDispatch()
   const { control, contextProgramId } = props
   const controlId = control.id
@@ -27,7 +27,7 @@ export default function OutletSelectView(props: {
   const attachedVariable = useBlueprintSelector(state =>
     getControlVariable(state, props.control.id, contextProgramId))
   const attachedVariableSourceControl = useBlueprintSelector(state =>
-    attachedVariable ? getVariableControl(state, attachedVariable.id) : undefined)
+    attachedVariable !== undefined ? getVariableControl(state, attachedVariable.id) : undefined)
   const attachedVariableId = attachedVariable?.id
 
   const onSelectChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -41,18 +41,18 @@ export default function OutletSelectView(props: {
           // Detach variable
           dispatch(detachControlFromVariableAction({
             controlId,
-            variableId: attachedVariableId,
+            variableId: attachedVariableId
           }))
         }
         break
       case 's':
         // Push to a variable
         variable = pushOptions[choiceIndex]
-        if (variable) {
+        if (variable !== undefined) {
           dispatch(attachControlToVariableAction({
             controlId,
             variableId: variable.id,
-            push: true,
+            push: true
           }))
         }
         break
@@ -60,17 +60,17 @@ export default function OutletSelectView(props: {
         // Push to a new variable
         dispatch(addVariableFromControlAction({
           controlId,
-          programId: contextProgramId,
+          programId: contextProgramId
         }))
         break
       case 'l':
         // Pull from a variable
         variable = pullOptions[choiceIndex]
-        if (variable) {
+        if (variable !== undefined) {
           dispatch(attachControlToVariableAction({
             controlId,
             variableId: variable.id,
-            push: false,
+            push: false
           }))
         }
         break
@@ -78,7 +78,7 @@ export default function OutletSelectView(props: {
   }, [dispatch, pullOptions, pushOptions, controlId, attachedVariableId, contextProgramId])
 
   const isUnused = attachedVariable === undefined
-  const isPushing = attachedVariableSourceControl && attachedVariableSourceControl.id === control.id
+  const isPushing = attachedVariableSourceControl !== undefined && attachedVariableSourceControl.id === control.id
 
   let selectLabel = 'Use'
   if (!isUnused) {
@@ -89,22 +89,23 @@ export default function OutletSelectView(props: {
   const selectElements: SelectViewElement[] = [{
     type: 'option',
     label: 'Unused',
-    value: 'u',
+    value: 'u'
   }]
 
   selectElements.push({
     type: 'group',
     label: 'Push to',
-    elements: pushOptions.map((variable, index) => ({
-      type: 'option',
-      value: `s${index}`,
-      label: `Variable ${variable.id}`,
-    })).concat([{
-      type: 'option',
-      value: 'n',
-      label: 'New variable',
-    }]),
-  } as SelectViewGroupElement)
+    elements:
+      pushOptions.map((variable, index): SelectViewOptionElement => ({
+        type: 'option',
+        value: `s${index}`,
+        label: `Variable ${variable.id}`
+      })).concat([{
+        type: 'option',
+        value: 'n',
+        label: 'New variable'
+      }])
+  })
 
   if (attachedVariable !== undefined && isPushing) {
     const variableIndex = pushOptions.findIndex(v => v.id === attachedVariable.id)
@@ -120,8 +121,8 @@ export default function OutletSelectView(props: {
       elements: pullOptions.map((variable, index) => ({
         type: 'option',
         value: `l${index}`,
-        label: `Variable ${variable.id}`,
-      })),
+        label: `Variable ${variable.id}`
+      }))
     })
     if (attachedVariable !== undefined && !isPushing) {
       const variableIndex = pullOptions.findIndex(v => v.id === attachedVariable.id)

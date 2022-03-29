@@ -6,11 +6,11 @@ import { MouseEvent, ReactNode, useCallback } from 'react'
 import { cancelTopModalAction } from 'slices/ui'
 import ButtonView from 'views/button/button'
 
-export default function ModalView(props: {
-  modal: ModalState,
-  title?: string,
+export default function ModalView (props: {
+  modal: ModalState
+  title?: string
   children: ReactNode
-}) {
+}): JSX.Element {
   const dispatch = useAppDispatch()
 
   const onCloseClick = useCallback((event: MouseEvent) => {
@@ -18,16 +18,16 @@ export default function ModalView(props: {
   }, [dispatch])
 
   return (
-    <div className="modal">
-      {props.title && (
-        <header className="modal__header">
-          <h2 className="modal__title">{props.title}</h2>
-          <div className="modal__btn-close">
-            <ButtonView icon="close" modifiers="large" onClick={onCloseClick} />
+    <div className='modal'>
+      {props.title !== undefined && (
+        <header className='modal__header'>
+          <h2 className='modal__title'>{props.title}</h2>
+          <div className='modal__btn-close'>
+            <ButtonView icon='close' modifiers='large' onClick={onCloseClick} />
           </div>
         </header>
       )}
-      <div className="modal__content">
+      <div className='modal__content'>
         {props.children}
       </div>
     </div>

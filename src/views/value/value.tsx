@@ -7,7 +7,7 @@ import { TypedValue } from 'slices/blueprint/types/value'
 import { ViewModifiers } from 'hooks/useClassName'
 import { BaseSyntheticEvent } from 'react'
 
-export type ValueViewProps = {
+export interface ValueViewProps {
   id?: string
   value: TypedValue
   readOnly?: boolean
@@ -17,9 +17,9 @@ export type ValueViewProps = {
   modifiers?: ViewModifiers
 }
 
-export default function ValueView(props: ValueViewProps) {
+export default function ValueView (props: ValueViewProps): JSX.Element {
   // Choose underlying view based on type
-  let TypedValueView = undefined
+  let TypedValueView
   switch (props.value.type) {
     case 'boolean':
       TypedValueView = ValueBooleanView
@@ -40,11 +40,11 @@ export default function ValueView(props: ValueViewProps) {
   return (
     <div
       id={props.id}
-      className="value"
+      className='value'
       tabIndex={0}
       onFocus={props.onFocus}
     >
-      <p className="value__meta">Value type not viewable.</p>
+      <p className='value__meta'>Value type not viewable.</p>
     </div>
   )
 }

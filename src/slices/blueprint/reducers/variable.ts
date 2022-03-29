@@ -14,8 +14,8 @@ import { changeControl } from './control'
 export const addVariable = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  controlId: BlueprintNodeId,
-) => {
+  controlId: BlueprintNodeId
+): VariableNode => {
   const variable: VariableNode = {
     type: BlueprintNodeType.Variable,
     id: nextNodeId(state),
@@ -23,7 +23,7 @@ export const addVariable = (
     childIds: [],
     attachmentIds: [controlId],
     x: 0,
-    y: 0,
+    y: 0
   }
   addNode(state, variable)
   attachControlToVariable(state, controlId, variable.id, false)
@@ -37,8 +37,8 @@ export const attachControls = (
   state: BlueprintState,
   sourceControlId: BlueprintNodeId,
   targetControlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
-) => {
+  programId: BlueprintNodeId
+): void => {
   const sourceControl = getControlNode(state, sourceControlId)
   const targetControl = getControlNode(state, targetControlId)
 
@@ -68,16 +68,17 @@ export const attachControls = (
     // Remove the target variable and move controls over to the source variable
     const mergeControlIds = targetVariable.attachmentIds
     removeNode(state, targetVariable.id)
-    mergeControlIds.forEach(id =>
-      attachControlToVariable(state, id, sourceVariable!.id))
+    for (const mergeControlId of mergeControlIds) {
+      attachControlToVariable(state, mergeControlId, sourceVariable.id)
+    }
     targetVariable = undefined
   } else if (sourceVariable !== undefined) {
     // 3. The source control is attached to a variable but the target is not
     attachControlToVariable(state, targetControl.id, sourceVariable.id)
-  } else {
+  } else if (targetVariable !== undefined) {
     // 4. The target control is attached to a variable but the source is not
-    attachControlToVariable(state, targetControl.id, targetVariable!.id)
-    sourceVariable = targetVariable!
+    attachControlToVariable(state, targetControl.id, targetVariable.id)
+    sourceVariable = targetVariable
   }
 
   // Propagate change from source within the program scope
@@ -94,7 +95,7 @@ export const attachControlToVariable = (
   variableId: BlueprintNodeId,
   propagate: boolean = false,
   push: boolean = true
-) => {
+): void => {
   const control = getControlNode(state, controlId)
   const variable = getVariableNode(state, variableId)
   const intern = control.parentId === variable.parentId
@@ -133,8 +134,8 @@ export const attachControlToVariable = (
 export const detachControlFromVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  variableId: BlueprintNodeId,
-) => {
+  variableId: BlueprintNodeId
+): void => {
   const control = getControlNode(state, controlId)
   const variable = getVariableNode(state, variableId)
   // Detach from each other
@@ -156,8 +157,8 @@ export const detachControlFromVariable = (
 export const propagateChange = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
-) => {
+  programId: BlueprintNodeId
+): void => {
   // Retrieve attached variable, if any
   const control = getControlNode(state, controlId)
   const variable = getControlVariable(state, controlId, programId)
@@ -171,7 +172,7 @@ export const propagateChange = (
         variable.attachmentIds[i],
         { value: control.value },
         ControlChangeSource.Variable,
-        variable.id,
+        variable.id
       )
     }
   }

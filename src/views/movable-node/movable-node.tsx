@@ -9,17 +9,17 @@ import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { getNodePosition, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { moveNodeAction } from 'slices/blueprint'
 
-export default function MovableNodeView(props: {
-  nodeId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId,
-}) {
+export default function MovableNodeView (props: {
+  nodeId: BlueprintNodeId
+  contextProgramId: BlueprintNodeId
+}): JSX.Element {
   const { nodeId, contextProgramId } = props
   const { x, y } = useBlueprintSelector(state => getNodePosition(state, nodeId))
   const isSelected = useBlueprintSelector(state => isSelectedNode(state, nodeId))
 
   const dispatch = useAppDispatch()
 
-  const onDragMove = (newX: number, newY: number) => {
+  const onDragMove = (newX: number, newY: number): void => {
     dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
   }
 

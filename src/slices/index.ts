@@ -9,7 +9,7 @@ export const rootReducer = combineReducers({
   blueprint: blueprintReducer,
   directory: directoryReducer,
   settings: settingsReducer,
-  ui: uiReducer,
+  ui: uiReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>

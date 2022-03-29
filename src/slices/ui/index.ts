@@ -7,7 +7,7 @@ const defaultUIState: UIState = {
   canvasState: UICanvasState.Idle,
   canvasX: 0,
   canvasY: 0,
-  modalStack: [],
+  modalStack: []
 }
 
 export const settingsSlice = createSlice({
@@ -15,8 +15,8 @@ export const settingsSlice = createSlice({
   initialState: defaultUIState,
   reducers: {
     moveCanvasAction: (state, { payload }: PayloadAction<{
-      x: number,
-      y: number,
+      x: number
+      y: number
     }>) => {
       state.canvasX = payload.x
       state.canvasY = payload.y
@@ -34,7 +34,7 @@ export const settingsSlice = createSlice({
     },
     popModalAction: (state, { payload }: PayloadAction<{}>) => {
       popModal(state)
-    },
+    }
   }
 })
 
@@ -42,7 +42,7 @@ export const {
   moveCanvasAction,
   pushAddModalAction,
   cancelTopModalAction,
-  popModalAction,
+  popModalAction
 } = settingsSlice.actions
 
 export default settingsSlice.reducer

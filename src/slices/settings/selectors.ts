@@ -1,5 +1,6 @@
 
 import { SettingsState } from './types'
 
-export const getShortcutBindings = (state: SettingsState) =>
-  state.shortcutBindings
+export const getShortcutBindings = (state: SettingsState): {
+  [name: string]: string
+} => state.shortcutBindings

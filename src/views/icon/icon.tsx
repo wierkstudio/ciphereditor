@@ -30,21 +30,23 @@ const iconSVGMap = {
   plus: PlusIcon,
   redo: RedoIcon,
   switch: SwitchIcon,
-  undo: UndoIcon,
+  undo: UndoIcon
 }
 
 export type Icon = keyof (typeof iconSVGMap)
 
 type IconViewProps = Omit<React.ComponentPropsWithoutRef<'svg'>, 'className'> & {
-  icon: Icon,
-  modifiers?: ViewModifiers,
+  icon: Icon
+  modifiers?: ViewModifiers
 }
 
-export default function IconView(props: IconViewProps) {
+export default function IconView (props: IconViewProps): JSX.Element {
   const { icon, modifiers, ...viewProps } = props
   const IconSVG = iconSVGMap[icon]
-  return <IconSVG
-    className={useClassName('icon', modifiers)}
-    {...viewProps}
-  />
+  return (
+    <IconSVG
+      className={useClassName('icon', modifiers)}
+      {...viewProps}
+    />
+  )
 }

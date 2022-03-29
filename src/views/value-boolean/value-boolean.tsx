@@ -2,19 +2,23 @@
 import './value-boolean.scss'
 import { ValueViewProps } from 'views/value/value'
 
-export default function ValueBooleanView(props: ValueViewProps) {
+export default function ValueBooleanView (props: ValueViewProps): JSX.Element {
   return (
-    <label className="value-boolean">
+    <label className='value-boolean'>
       <input
-        className="value-boolean__input"
+        className='value-boolean__input'
         id={props.id}
-        type="checkbox"
+        type='checkbox'
         checked={props.value.value}
         readOnly={props.readOnly}
-        onChange={event => props.onChange && props.onChange({ value: event.target.checked, type: 'boolean' }, event)}
+        onChange={event => {
+          if (props.onChange !== undefined) {
+            props.onChange({ value: event.target.checked, type: 'boolean' }, event)
+          }
+        }}
       />
-      <div className="value-boolean__track">
-        <div className="value-boolean__thumb"></div>
+      <div className='value-boolean__track'>
+        <div className='value-boolean__thumb' />
       </div>
     </label>
   )

@@ -10,14 +10,14 @@ import { ProgramNode } from 'slices/blueprint/types/program'
 import { enterProgramAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 
-export default function OperationView(props: {
+export default function OperationView (props: {
   /**
    * Operation or program node id
    */
   nodeId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
   onOutletRef?: (controlId: number, element: HTMLButtonElement | null) => void
-}) {
+}): JSX.Element {
   const { nodeId, contextProgramId, onOutletRef } = props
 
   const dispatch = useAppDispatch()
@@ -27,7 +27,7 @@ export default function OperationView(props: {
     getNodeChildren(state, nodeId, BlueprintNodeType.Control)
       .map((control) => control.id))
 
-  let doubleClickHandler = undefined
+  let doubleClickHandler
   if (node.type === BlueprintNodeType.Program) {
     doubleClickHandler = () => {
       dispatch(enterProgramAction({ programId: nodeId }))
@@ -41,24 +41,24 @@ export default function OperationView(props: {
 
   return (
     <div
-      className="operation"
+      className='operation'
       onDoubleClick={doubleClickHandler}
     >
       <header
-        className="operation__header"
+        className='operation__header'
         style={{ order: controlIds.length - 1 }}
       >
-        <span className="operation__icon">
-          <IconView icon="switch" />
+        <span className='operation__icon'>
+          <IconView icon='switch' />
         </span>
-        <h3 className="operation__label">
+        <h3 className='operation__label'>
           {node.label}
         </h3>
       </header>
       {controlIds.map((id, index) => (
         <div
           key={id}
-          className="operation__control"
+          className='operation__control'
           style={{ order: index }}
         >
           <ControlView

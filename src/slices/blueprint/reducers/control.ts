@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueChoice, ControlViewState } from '../types/control'
-import { ImplicitTypedValue } from '../types/value'
+import { ImplicitTypedValue, TypedValue } from '../types/value'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
@@ -28,7 +28,7 @@ export const defaultControlNode: ControlNode = {
   enforceChoices: true,
   viewState: ControlViewState.Collapsed,
   enabled: true,
-  writable: true,
+  writable: true
 }
 
 /**
@@ -39,11 +39,11 @@ export const defaultControlNode: ControlNode = {
  * @returns New control node
  */
 export const addProgramControlNode = (
-   state: BlueprintState,
-   programId: BlueprintNodeId,
-   x: number,
-   y: number,
-) => {
+  state: BlueprintState,
+  programId: BlueprintNodeId,
+  x: number,
+  y: number
+): ControlNode => {
   const id = nextNodeId(state)
   const controlNode: ControlNode = {
     ...defaultControlNode,
@@ -52,7 +52,7 @@ export const addProgramControlNode = (
     name: `control${id}`,
     label: `Control ${id}`,
     x,
-    y,
+    y
   }
   return addNode(state, controlNode)
 }
@@ -68,7 +68,7 @@ export const addOperationControlNode = (
   state: BlueprintState,
   operationId: BlueprintNodeId,
   control: Control
-) => {
+): ControlNode => {
   const value = resolveImplicitTypedValue(control.initialValue)
   const choices = resolveImplicitTypedControlValueChoices(control.choices)
   const index = choices.findIndex(x => compareValues(x.value, value))
@@ -78,10 +78,10 @@ export const addOperationControlNode = (
     ...control,
     id: nextNodeId(state),
     parentId: operationId,
-    label: control.label || capitalCase(control.name),
+    label: control.label ?? capitalCase(control.name),
     value,
     selectedChoiceIndex,
-    choices,
+    choices
   }
   return addNode(state, controlNode)
 }
@@ -94,13 +94,13 @@ export const changeControl = (
   controlId: BlueprintNodeId,
   change: ControlChange,
   source: ControlChangeSource,
-  sourceVariableId?: BlueprintNodeId,
-) => {
+  sourceVariableId?: BlueprintNodeId
+): void => {
   const control = getControlNode(state, controlId)
 
   // Apply changes not related to the value
-  control.label = change.label || control.label
-  control.enabled = change.enabled || control.enabled
+  control.label = change.label ?? control.label
+  control.enabled = change.enabled ?? control.enabled
 
   if (change.choices !== undefined) {
     control.choices = resolveImplicitTypedControlValueChoices(change.choices)
@@ -127,15 +127,18 @@ export const changeControl = (
   // Update value
   control.value = newValue
 
+  let operation: OperationNode
   const parent = getNode(state, control.parentId)
   switch (parent.type) {
     case BlueprintNodeType.Operation:
-      const operation = parent as OperationNode
+      operation = parent as OperationNode
       if (source !== ControlChangeSource.Parent) {
         // Change is not originating from the operation, so mark it busy
         setOperationState(state, operation, OperationState.Busy)
         // Increment the task version every time a control changes
-        operation.taskVersion! += 1
+        if (operation.taskVersion !== undefined) {
+          operation.taskVersion += 1
+        }
         // Move the control id that was changed last to the head
         operation.priorityControlIds =
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
@@ -170,8 +173,8 @@ export const changeControl = (
 export const changeControlValueToChoice = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  choiceIndex: number,
-) => {
+  choiceIndex: number
+): void => {
   const control = getControlNode(state, controlId)
   const value = control.choices[choiceIndex].value
   changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
@@ -184,8 +187,8 @@ export const changeControlValueToChoice = (
 export const changeControlValueToType = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  valueType: string,
-) => {
+  valueType: string
+): void => {
   const control = getControlNode(state, controlId)
   // Derive value of desired type from current value
   control.selectedChoiceIndex = undefined
@@ -204,8 +207,8 @@ export const changeControlValueToType = (
 export const addVariableFromControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
-) => {
+  programId: BlueprintNodeId
+): void => {
   // TODO: Detach currently attached variable
   addVariable(state, programId, controlId)
 }
@@ -214,13 +217,13 @@ export const addVariableFromControl = (
  * Resolve implicit typed control options
  */
 export const resolveImplicitTypedControlValueChoices = (
-  options: ControlValueChoice<ImplicitTypedValue>[] | undefined
-) => {
+  options: Array<ControlValueChoice<ImplicitTypedValue>> | undefined
+): Array<ControlValueChoice<TypedValue>> => {
   if (options === undefined) {
     return []
   }
   return options.map(option => ({
     ...option,
-    value: resolveImplicitTypedValue(option.value),
+    value: resolveImplicitTypedValue(option.value)
   }))
 }

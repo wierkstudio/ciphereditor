@@ -15,13 +15,13 @@ const stopPropagationForShortcuts = [
   'control+z',
   'delete',
   'meta+z',
-  'shift+meta+z',
+  'shift+meta+z'
 ]
 
 /**
  * Component for single and multiline text.
  */
-export default function InputTextView(props: {
+export default function InputTextView (props: {
   id?: string
   value?: string
   disabled?: boolean
@@ -30,7 +30,7 @@ export default function InputTextView(props: {
   onChange?: (value: string, event: ChangeEvent) => void
   onFocus?: FocusEventHandler
   onBlur?: FocusEventHandler
-}) {
+}): JSX.Element {
   const { onChange, modifiers, ...textareaProps } = props
   const textareaRef = useRef<HTMLTextAreaElement|null>(null)
 
@@ -46,17 +46,17 @@ export default function InputTextView(props: {
 
   // Shortcuts
   useShortcutHandler(textareaRef.current, (shortcut, event) => {
-    if (stopPropagationForShortcuts.indexOf(shortcut) !== -1) {
+    if (stopPropagationForShortcuts.includes(shortcut)) {
       event.stopPropagation()
     }
   })
 
   // Handle changes
-  const onInternalChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const onInternalChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     if (event.currentTarget.value !== undefined) {
       resizeTextarea()
     }
-    if (onChange) {
+    if (onChange !== undefined) {
       onChange(event.currentTarget.value, event)
     }
   }
@@ -68,7 +68,7 @@ export default function InputTextView(props: {
   return (
     <div className={useClassName('input-text', modifiers)}>
       <textarea
-        className="input-text__textarea"
+        className='input-text__textarea'
         ref={textareaRef}
         tabIndex={0}
         onChange={onInternalChange}

@@ -10,7 +10,7 @@ import { getBusyOperationIds, getOperationNode, getOperationTask } from 'slices/
 import { hasNode } from 'slices/blueprint/selectors/blueprint'
 
 // TODO: Move this to a better place where it can be configured properly
-let processor = new Processor(process.env.REACT_APP_PROCESSOR_URL || './processor/')
+const processor = new Processor(process.env.REACT_APP_PROCESSOR_URL ?? './processor/')
 
 export const processorMiddleware: Middleware<{}, RootState> = store => next => (action: AnyAction) => {
   const preBusyOperationIds = getBusyOperationIds(store.getState().blueprint.present)
@@ -19,8 +19,10 @@ export const processorMiddleware: Middleware<{}, RootState> = store => next => (
 
   // Trigger operation tasks for operations that were marked busy
   postBusyOperationIds
-    .filter(id => preBusyOperationIds.indexOf(id) === -1)
-    .forEach(runOperationTask.bind(null, store))
+    .filter(id => !preBusyOperationIds.includes(id))
+    .forEach(id => {
+      void runOperationTask(store, id)
+    })
 
   return result
 }
@@ -29,7 +31,7 @@ export const processorMiddleware: Middleware<{}, RootState> = store => next => (
  * Run the current task of the given operation asynchronously in the processor
  * and dispatch an action once a result is available.
  */
-const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
+const runOperationTask = async (store: any, operationId: BlueprintNodeId): Promise<void> => {
   // Retrieve fresh operation task data
   const state: RootState = store.getState()
   const task = getOperationTask(state.blueprint.present, operationId)
@@ -40,13 +42,13 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
 
   // Try to execute the computations in the processor and await its response
   let controlChanges: NamedControlChange[] = []
-  let error: string | undefined = undefined
+  let error: string | undefined
   try {
     const result: any = await processor.callModuleFunction(
       task.bundleUrl,
       task.moduleId,
       'onControlChange',
-      [task.priorityControlNames, task.namedControlValues],
+      [task.priorityControlNames, task.namedControlValues]
     )
 
     // Handle error result
@@ -65,7 +67,7 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
     operationId: task.operation.id,
     taskVersion: task.version,
     controlChanges,
-    error,
+    error
   }))
 
   // If the operation stays busy after dispatching the task result, we need to
@@ -75,7 +77,7 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId) => {
     const postOperation = getOperationNode(postState.blueprint.present, operationId)
     if (postOperation.state === OperationState.Busy) {
       // Controls changed in the meantime, repeat the computation
-      runOperationTask(store, operationId)
+      void runOperationTask(store, operationId)
     }
   }
 }

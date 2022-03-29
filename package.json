@@ -22,8 +22,12 @@
     "sass": "^1.44.0",
     "typescript": "~4.1.5"
   },
+  "devDependencies": {
+    "ts-standard": "^11.0.0"
+  },
   "scripts": {
     "start": "REACT_APP_PROCESSOR_URL=https://localhost:3000/processor/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start",
+    "lint": "ts-standard",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

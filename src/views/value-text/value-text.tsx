@@ -2,9 +2,9 @@
 import { ValueViewProps } from 'views/value/value'
 import InputTextView from 'views/input-text/input-text'
 
-export default function ValueTextView(props: ValueViewProps) {
+export default function ValueTextView (props: ValueViewProps): JSX.Element {
   return (
-    <div className="value-text">
+    <div className='value-text'>
       <InputTextView
         id={props.id}
         value={props.value.value}
@@ -12,7 +12,7 @@ export default function ValueTextView(props: ValueViewProps) {
         onFocus={props.onFocus}
         onBlur={props.onBlur}
         onChange={(value, event) => {
-          if (props.onChange) {
+          if (props.onChange !== undefined) {
             props.onChange({ value, type: 'text' }, event)
           }
         }}

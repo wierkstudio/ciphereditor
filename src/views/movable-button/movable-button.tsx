@@ -2,7 +2,7 @@
 import {
   MouseEvent as ReactMouseMove,
   useEffect,
-  useState,
+  useState
 } from 'react'
 
 type MovableButtonViewProps = React.ComponentPropsWithoutRef<'button'>
@@ -16,13 +16,13 @@ enum MovableButtonState {
 /**
  * Native HTMLButtonElement that can both be clicked and dragged.
  */
-export default function MovableButtonView(props: MovableButtonViewProps) {
+export default function MovableButtonView (props: MovableButtonViewProps): JSX.Element {
   const { onClick, onMouseUp, onMouseDown, ...buttonProps } = props
 
   const [state, setState] = useState(MovableButtonState.MouseUp)
 
-  const onInternMouseDown = (event: ReactMouseMove<HTMLButtonElement>) => {
-    if (onMouseDown) {
+  const onInternMouseDown = (event: ReactMouseMove<HTMLButtonElement>): void => {
+    if (onMouseDown !== undefined) {
       onMouseDown(event)
     }
     if (!event.isPropagationStopped()) {
@@ -30,12 +30,12 @@ export default function MovableButtonView(props: MovableButtonViewProps) {
     }
   }
 
-  const onInternClick = (event: ReactMouseMove<HTMLButtonElement>) => {
+  const onInternClick = (event: ReactMouseMove<HTMLButtonElement>): void => {
     if (state !== MovableButtonState.MouseMove) {
-      if (onMouseUp) {
+      if (onMouseUp !== undefined) {
         onMouseUp(event)
       }
-      if (onClick) {
+      if (onClick !== undefined) {
         onClick(event)
       }
     }
@@ -44,7 +44,7 @@ export default function MovableButtonView(props: MovableButtonViewProps) {
 
   // TODO: Allow moving by less than grid size (to make clicking easier)
   useEffect(() => {
-    const onMouseMove = (event: MouseEvent) => {
+    const onMouseMove = (event: MouseEvent): void => {
       if (state === MovableButtonState.MouseDown) {
         setState(MovableButtonState.MouseMove)
       }
@@ -61,10 +61,12 @@ export default function MovableButtonView(props: MovableButtonViewProps) {
     }
   }, [state])
 
-  return <button
-    onMouseDown={onInternMouseDown}
-    onClick={onInternClick}
-    onMouseUp={onMouseUp}
-    {...buttonProps}
-  />
+  return (
+    <button
+      onMouseDown={onInternMouseDown}
+      onClick={onInternClick}
+      onMouseUp={onMouseUp}
+      {...buttonProps}
+    />
+  )
 }

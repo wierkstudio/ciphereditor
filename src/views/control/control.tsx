@@ -14,11 +14,11 @@ import { MouseEvent, useCallback } from 'react'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { toggleControlViewState } from 'slices/blueprint'
 
-export default function ControlView(props: {
+export default function ControlView (props: {
   controlId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
   onOutletRef?: (controlId: number, element: HTMLButtonElement | null) => void
-}) {
+}): JSX.Element {
   const { controlId, contextProgramId, onOutletRef } = props
 
   const control = useBlueprintSelector(state => getControlNode(state, controlId))
@@ -30,22 +30,22 @@ export default function ControlView(props: {
     dispatch(toggleControlViewState({ controlId }))
   }, [dispatch, controlId])
 
-  const modifiers = control.viewState === ControlViewState.Expanded ? ['expanded']: []
+  const modifiers = control.viewState === ControlViewState.Expanded ? ['expanded'] : []
 
   return (
     <div className={useClassName('control', modifiers)}>
-      <div className="control__header">
-        <MovableButtonView className="control__header-toggle" onClick={onToggleClick}>
-          <div className="control__header-pill">
-            <div className="control__header-chevron">
-              <IconView icon="chevronDown" />
+      <div className='control__header'>
+        <MovableButtonView className='control__header-toggle' onClick={onToggleClick}>
+          <div className='control__header-pill'>
+            <div className='control__header-chevron'>
+              <IconView icon='chevronDown' />
             </div>
-            <h4 className="control__header-name">
+            <h4 className='control__header-name'>
               {control.label}
             </h4>
           </div>
           {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
-            <div className="control__header-preview">
+            <div className='control__header-preview'>
               <ChangingTextView>{valuePreview}</ChangingTextView>
             </div>
           )}

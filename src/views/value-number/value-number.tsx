@@ -7,18 +7,18 @@ import { ValueViewProps } from 'views/value/value'
 import { isNumericString } from 'utils/string'
 import { TypedValue } from 'slices/blueprint/types/value'
 
-export default function ValueNumberView(props: ValueViewProps) {
-  const { onChange, onBlur, value, readOnly } = props
+export default function ValueNumberView (props: ValueViewProps): JSX.Element {
+  const { onChange, onBlur, value, readOnly = false } = props
 
   const [stringValue, setStringValue] = useState(value.value.toString())
 
-  const onValueChange = (value: TypedValue, event: BaseSyntheticEvent) => {
-    if (onChange) {
+  const onValueChange = (value: TypedValue, event: BaseSyntheticEvent): void => {
+    if (onChange !== undefined) {
       onChange(value, event)
     }
   }
 
-  const onInputChange = (value: string, event: ChangeEvent) => {
+  const onInputChange = (value: string, event: ChangeEvent): void => {
     setStringValue(value)
     if (isNumericString(value)) {
       const valueNumber = parseFloat(value)
@@ -29,17 +29,17 @@ export default function ValueNumberView(props: ValueViewProps) {
 
   const onInputBlur = useCallback((event: FocusEvent) => {
     setStringValue(value.value.toString())
-    if (onBlur) {
+    if (onBlur !== undefined) {
       onBlur(event)
     }
   }, [value, setStringValue, onBlur])
 
-  const onMinusClick = (event: MouseEvent) => {
-    onValueChange({ value: value.value - 1, type: value.type }, event)
+  const onMinusClick = (event: MouseEvent): void => {
+    onValueChange({ value: (value.value as number) - 1, type: value.type }, event)
   }
 
-  const onPlusClick = (event: MouseEvent) => {
-    onValueChange({ value: value.value + 1, type: value.type }, event)
+  const onPlusClick = (event: MouseEvent): void => {
+    onValueChange({ value: (value.value as number) + 1, type: value.type }, event)
   }
 
   useEffect(() => {
@@ -47,11 +47,11 @@ export default function ValueNumberView(props: ValueViewProps) {
   }, [value])
 
   return (
-    <div className="value-number">
+    <div className='value-number'>
       {!readOnly && (
-        <ButtonView icon="minus" onClick={onMinusClick} />
+        <ButtonView icon='minus' onClick={onMinusClick} />
       )}
-      <div className="value-number__input">
+      <div className='value-number__input'>
         <InputTextView
           id={props.id}
           value={stringValue}
@@ -62,7 +62,7 @@ export default function ValueNumberView(props: ValueViewProps) {
         />
       </div>
       {!readOnly && (
-        <ButtonView icon="plus" onClick={onPlusClick} />
+        <ButtonView icon='plus' onClick={onPlusClick} />
       )}
     </div>
   )

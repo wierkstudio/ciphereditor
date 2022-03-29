@@ -2,7 +2,7 @@
 import {
   BlueprintNodeId,
   BlueprintNodeType,
-  BlueprintState,
+  BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
 import { TypedValue } from '../types/value'
@@ -20,20 +20,24 @@ import { getProgramVariables, getVariableValue } from './variable'
  * @throws If the node type does not match the expected type
  * @returns Control node
  */
-export const getControlNode = (state: BlueprintState, id: BlueprintNodeId) =>
+export const getControlNode = (state: BlueprintState, id: BlueprintNodeId): ControlNode =>
   getNode(state, id, BlueprintNodeType.Control) as ControlNode
 
 /**
  * Get an object mapping control names to control nodes.
  */
-export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNodeId) =>
+export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNodeId): {
+  [name: string]: ControlNode
+} =>
   mapNamedObjects(getNodeChildren(
     state, nodeId, BlueprintNodeType.Control) as ControlNode[])
 
 /**
  * Return an object mapping control names to values, embedded in the given node.
  */
-export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNodeId) => {
+export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNodeId): {
+  [name: string]: TypedValue
+} => {
   const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[]
   const namedValues: { [name: string]: TypedValue } = {}
   for (let i = 0; i < controls.length; i++) {
@@ -45,8 +49,8 @@ export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNod
 /**
  * Get the control node currently marked as linked.
  */
-export const getLinkControl = (state: BlueprintState) =>
-  state.linkControlId ? getControlNode(state, state.linkControlId) : undefined
+export const getLinkControl = (state: BlueprintState): ControlNode | undefined =>
+  state.linkControlId !== undefined ? getControlNode(state, state.linkControlId) : undefined
 
 /**
  * For the given control and program context decide wether the intern control
@@ -55,8 +59,8 @@ export const getLinkControl = (state: BlueprintState) =>
 export const isControlInternVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId?: BlueprintNodeId,
-) => {
+  programId?: BlueprintNodeId
+): boolean => {
   const control = getControlNode(state, controlId)
   return (programId ?? state.activeProgramId) === control.parentId
 }
@@ -68,8 +72,11 @@ export const isControlInternVariable = (
 export const getControlVariableOptions = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId,
-) => {
+  programId: BlueprintNodeId
+): {
+  pushOptions: VariableNode[]
+  pullOptions: VariableNode[]
+} => {
   const control = getControlNode(state, controlId)
   const variables = getProgramVariables(state, programId)
 

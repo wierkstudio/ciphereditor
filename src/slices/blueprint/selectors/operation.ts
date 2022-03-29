@@ -2,9 +2,10 @@
 import {
   BlueprintNodeId,
   BlueprintNodeType,
-  BlueprintState,
+  BlueprintState
 } from '../types/blueprint'
 import { OperationNode, OperationState } from '../types/operation'
+import { TypedValue } from '../types/value'
 import { getNode, hasNode } from './blueprint'
 import { getControlNode, getNodeControlValues } from './control'
 
@@ -16,13 +17,13 @@ import { getControlNode, getNodeControlValues } from './control'
  * @throws If the node type does not match the expected type
  * @returns Operation node
  */
-export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId) =>
+export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId): OperationNode =>
   getNode(state, id, BlueprintNodeType.Operation) as OperationNode
 
 /**
  * Return node ids of operations that are currently busy.
  */
-export const getBusyOperationIds = (state: BlueprintState) =>
+export const getBusyOperationIds = (state: BlueprintState): number[] =>
   state.busyOperationIds
 
 /**
@@ -30,7 +31,16 @@ export const getBusyOperationIds = (state: BlueprintState) =>
  * @returns A task object or undefined if the specified node does not exist or
  * if there is no task available for it
  */
-export const getOperationTask = (state: BlueprintState, operationId: BlueprintNodeId) => {
+export const getOperationTask = (state: BlueprintState, operationId: BlueprintNodeId): {
+  operation: OperationNode
+  version: number
+  bundleUrl: string
+  moduleId: string
+  priorityControlNames: string[]
+  namedControlValues: {
+    [name: string]: TypedValue
+  }
+} | undefined => {
   if (!hasNode(state, operationId)) {
     return undefined
   }
@@ -40,11 +50,11 @@ export const getOperationTask = (state: BlueprintState, operationId: BlueprintNo
   }
   return {
     operation,
-    version: operation.taskVersion!,
+    version: operation.taskVersion ?? 0,
     bundleUrl: operation.bundleUrl,
     moduleId: operation.moduleId,
     priorityControlNames:
       operation.priorityControlIds.map(id => getControlNode(state, id).name),
-    namedControlValues: getNodeControlValues(state, operation.id),
+    namedControlValues: getNodeControlValues(state, operation.id)
   }
 }

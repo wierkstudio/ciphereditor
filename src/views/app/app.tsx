@@ -11,7 +11,7 @@ import { getShortcutBindings } from 'slices/settings/selectors'
 import { isModalStackEmpty } from 'slices/ui/selectors'
 import { useCallback } from 'react'
 
-export default function AppView() {
+export default function AppView (): JSX.Element {
   const dispatch = useAppDispatch()
 
   const shortcutBindings = useAppSelector(state => getShortcutBindings(state.settings))
@@ -29,11 +29,11 @@ export default function AppView() {
   const hasModals = !useAppSelector(state => isModalStackEmpty(state.ui))
   return (
     <div className={useClassName('app', hasModals ? ['modals'] : [])}>
-      <div className="app__content">
+      <div className='app__content'>
         <AppHeaderView />
         <CanvasView />
       </div>
-      <div className="app__modals">
+      <div className='app__modals'>
         <ModalStackView />
       </div>
     </div>

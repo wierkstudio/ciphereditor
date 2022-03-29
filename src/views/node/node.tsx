@@ -11,10 +11,10 @@ import { getNode, getNodeChildren, isSelectedNode } from 'slices/blueprint/selec
 import { layoutNodeAction, selectNodeAction } from 'slices/blueprint'
 import { useCallback, useLayoutEffect, useRef } from 'react'
 
-export default function NodeView(props: {
-  nodeId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId,
-}) {
+export default function NodeView (props: {
+  nodeId: BlueprintNodeId
+  contextProgramId: BlueprintNodeId
+}): JSX.Element {
   const { nodeId, contextProgramId } = props
 
   const dispatch = useAppDispatch()
@@ -30,7 +30,7 @@ export default function NodeView(props: {
     return controlNodes.map(control => ({
       id: control.id,
       nodeOutletX: control.nodeOutletX,
-      nodeOutletY: control.nodeOutletY,
+      nodeOutletY: control.nodeOutletY
     }))
   })
 
@@ -40,7 +40,7 @@ export default function NodeView(props: {
     if (element !== null) {
       outletRefs.current[controlId] = element
     } else {
-      delete outletRefs.current[controlId]
+      outletRefs.current[controlId] = null
     }
   }, [outletRefs])
 
@@ -49,12 +49,12 @@ export default function NodeView(props: {
     // run when actual changes are applied to the DOM
     // TODO: Optimization: This should NOT be called when the node gets moved
     const nodeElement = nodeRef.current
-    if (nodeElement) {
-      const outletPositions: {
-        controlId: BlueprintNodeId,
-        x: number | undefined,
-        y: number | undefined,
-      }[] = []
+    if (nodeElement !== null) {
+      const outletPositions: Array<{
+        controlId: BlueprintNodeId
+        x: number | undefined
+        y: number | undefined
+      }> = []
 
       const nodeRect = nodeElement.getBoundingClientRect()
       const width = nodeRect.width
@@ -62,12 +62,12 @@ export default function NodeView(props: {
 
       for (let i = 0; i < controls.length; i++) {
         const control = controls[i]
-        let x: number | undefined = undefined
-        let y: number | undefined = undefined
+        let x: number | undefined
+        let y: number | undefined
 
         // Retrieve indicator element for this control
         const indicatorElement = outletRefs.current[control.id.toString()]
-        if (indicatorElement) {
+        if (indicatorElement !== null) {
           // Measure indicator rect and calculate its relative position within
           // the operation node component
           const rect = indicatorElement.getBoundingClientRect()
@@ -92,7 +92,7 @@ export default function NodeView(props: {
   return (
     <div
       className={useClassName('node', modifiers)}
-      role="region"
+      role='region'
       ref={nodeRef}
       tabIndex={0}
       onFocus={() => dispatch(selectNodeAction({ nodeId }))}

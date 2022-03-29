@@ -10,7 +10,6 @@ import useAppSelector from './useAppSelector'
 const useBlueprintSelector: TypedUseSelectorHook<BlueprintState> = <TSelected = unknown>(
   selector: (state: BlueprintState) => TSelected,
   equalityFn?: (left: TSelected, right: TSelected) => boolean
-) =>
-  useAppSelector(state => selector(state.blueprint.present), equalityFn)
+) => useAppSelector(state => selector(state.blueprint.present), equalityFn)
 
 export default useBlueprintSelector

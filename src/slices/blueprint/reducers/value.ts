@@ -12,13 +12,13 @@ export const allValueTypes = [
   'number',
   'bigint',
   'text',
-  'bytes',
+  'bytes'
 ]
 
 /**
  * Return the label for the given type.
  */
-export const labelType = (type: string) => {
+export const labelType = (type: string): string => {
   return capitalCase(type)
 }
 
@@ -30,14 +30,14 @@ export const defaultValue = { value: '', type: 'text' }
 /**
  * Return wether a type is within the given types.
  */
-export const isTypeWithinTypes = (type: string, withinTypes: string[]) => {
+export const isTypeWithinTypes = (type: string, withinTypes: string[]): boolean => {
   return undefined !== withinTypes.find(isTypeWithinType.bind(null, type))
 }
 
 /**
  * Return wether a type is within the given type.
  */
-export const isTypeWithinType = (type: string, withinType: string) => {
+export const isTypeWithinType = (type: string, withinType: string): boolean => {
   return type === withinType
 }
 
@@ -55,7 +55,7 @@ export const resolveImplicitTypedValue = (
   }
   switch (typeof value) {
     case 'object':
-      return value as TypedValue
+      return value
     case 'boolean':
       return { value, type: 'boolean' }
     case 'number':
@@ -128,7 +128,7 @@ export const compareValues = (a: TypedValue, b: TypedValue): boolean => {
  */
 export const castValue = (
   value: TypedValue,
-  type: string,
+  type: string
 ): TypedValue | undefined => {
   if (value.type === type) {
     return value

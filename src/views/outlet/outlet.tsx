@@ -9,22 +9,22 @@ import { ControlNode } from 'slices/blueprint/types/control'
 import { MouseEventHandler } from 'react'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 
-export default function OutletView(props: {
+export default function OutletView (props: {
   control: ControlNode
   contextProgramId: BlueprintNodeId
   expanded: boolean
   onIndicatorClick?: MouseEventHandler<HTMLButtonElement>
   indicatorRef?: (element: HTMLButtonElement) => void
-}) {
+}): JSX.Element {
   const { control, contextProgramId, indicatorRef } = props
 
   const attachedVariable = useBlueprintSelector(state =>
     getControlVariable(state, props.control.id, contextProgramId))
   const attachedVariableSourceControl = useBlueprintSelector(state =>
-    attachedVariable ? getVariableControl(state, attachedVariable.id) : undefined)
+    attachedVariable !== undefined ? getVariableControl(state, attachedVariable.id) : undefined)
 
   const isUnused = attachedVariable === undefined
-  const isPushing = attachedVariableSourceControl && attachedVariableSourceControl.id === control.id
+  const isPushing = attachedVariableSourceControl !== undefined && attachedVariableSourceControl.id === control.id
   const variant = isUnused ? 'unused' : (isPushing ? 'push' : 'pull')
 
   const modifiers = [variant].concat(props.expanded ? ['expanded'] : '')
@@ -34,25 +34,25 @@ export default function OutletView(props: {
       className={useClassName('outlet', modifiers)}
     >
       {props.expanded && (
-        <div className="outlet__select">
+        <div className='outlet__select'>
           <OutletSelectView control={control} contextProgramId={contextProgramId} />
         </div>
       )}
       <button
-        className="outlet__indicator"
+        className='outlet__indicator'
         tabIndex={-1}
         onMouseDown={event => event.stopPropagation()}
         onClick={props.onIndicatorClick}
         ref={indicatorRef}
       >
         {(variant === 'unused') && (
-          <IconView icon="outletUnused" />
+          <IconView icon='outletUnused' />
         )}
         {(variant === 'push') && (
-          <IconView icon="outletPush" />
+          <IconView icon='outletPush' />
         )}
         {(variant === 'pull') && (
-          <IconView icon="outletPull" />
+          <IconView icon='outletPull' />
         )}
       </button>
     </div>

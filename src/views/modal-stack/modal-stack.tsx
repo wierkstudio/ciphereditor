@@ -9,10 +9,10 @@ import { cancelTopModalAction } from 'slices/ui'
 import { getModalStack } from 'slices/ui/selectors'
 
 const modalViewMap = {
-  [ModalType.Add]: AddModalView,
+  [ModalType.Add]: AddModalView
 }
 
-export default function ModalStackView() {
+export default function ModalStackView (): JSX.Element {
   const dispatch = useAppDispatch()
   const modals = useAppSelector(state => getModalStack(state.ui))
 
@@ -21,23 +21,23 @@ export default function ModalStackView() {
   }, [dispatch])
 
   if (modals.length === 0) {
-    return null
+    return <></>
   }
 
   return (
-    <div className="modal-stack">
+    <div className='modal-stack'>
       {modals.map((modal, index) => {
         const ModalView = modalViewMap[modal.type]
         return (
           <div
-            className="modal-stack__layer"
-            role="dialog"
-            aria-modal={true}
+            className='modal-stack__layer'
+            role='dialog'
+            aria-modal
             tabIndex={-1}
             key={index}
           >
-            <div className="modal-stack__backdrop" onClick={onBackdropClick}></div>
-            <div className="modal-stack__scrollarea">
+            <div className='modal-stack__backdrop' onClick={onBackdropClick} />
+            <div className='modal-stack__scrollarea'>
               <ModalView modal={modal} />
             </div>
           </div>

@@ -2,7 +2,7 @@
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { ImplicitTypedValue, TypedValue } from './value'
 
-export type ControlValueChoice<ValueType> = {
+export interface ControlValueChoice<ValueType> {
   /**
    * Value
    */
@@ -43,7 +43,7 @@ export interface Control {
    * Control value choices
    * Defaults to an empty array
    */
-  choices?: ControlValueChoice<ImplicitTypedValue>[]
+  choices?: Array<ControlValueChoice<ImplicitTypedValue>>
 
   /**
    * Wether the value is restricted to the given options (if not empty)
@@ -81,7 +81,7 @@ export interface ControlChange {
   /**
    * New control value choices
    */
-  choices?: ControlValueChoice<ImplicitTypedValue>[]
+  choices?: Array<ControlValueChoice<ImplicitTypedValue>>
 
   /**
    * New enabled state
@@ -160,7 +160,7 @@ export interface ControlNode extends BlueprintNode {
   /**
    * Control value choices
    */
-  choices: ControlValueChoice<TypedValue>[]
+  choices: Array<ControlValueChoice<TypedValue>>
 
   /**
    * Wether the value is restricted to control choices (if not empty)
