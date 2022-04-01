@@ -11,3 +11,9 @@ export const isNumericString = (string: string): boolean => {
   }
   return !Number.isNaN(parseFloat(string))
 }
+
+/**
+ * Return wether the given string is a valid hex string.
+ */
+export const isHexString = (string: string): boolean =>
+  string.length % 2 === 0 && /^[0-9A-Fa-f]*$/.test(string)

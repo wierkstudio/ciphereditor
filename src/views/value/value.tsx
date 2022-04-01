@@ -1,11 +1,12 @@
 
 import './value.scss'
 import ValueBooleanView from 'views/value-boolean/value-boolean'
+import ValueBytesView from 'views/value-bytes/value-bytes'
 import ValueNumberView from 'views/value-number/value-number'
 import ValueTextView from 'views/value-text/value-text'
+import { BaseSyntheticEvent } from 'react'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { ViewModifiers } from 'hooks/useClassName'
-import { BaseSyntheticEvent } from 'react'
 
 export interface ValueViewProps {
   id?: string
@@ -30,6 +31,9 @@ export default function ValueView (props: ValueViewProps): JSX.Element {
       break
     case 'text':
       TypedValueView = ValueTextView
+      break
+    case 'bytes':
+      TypedValueView = ValueBytesView
       break
   }
 

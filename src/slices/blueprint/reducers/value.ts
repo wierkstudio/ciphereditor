@@ -2,6 +2,7 @@
 import { ImplicitTypedValue, TypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
 import { capitalCase } from 'change-case'
+import { bytesToHexString } from 'utils/binary'
 
 /**
  * Complete set of all available value types.
@@ -100,7 +101,7 @@ export const createValue = (type: string): TypedValue => {
 /**
  * Check wether two values are considered equal
  */
-export const compareValues = (a: TypedValue, b: TypedValue): boolean => {
+export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
   if (a === b) {
     return true
   }
@@ -153,10 +154,9 @@ export const stringifyValue = (value: TypedValue): string => {
     case 'text':
       return (value.value as string)
     case 'bytes':
-      // TODO: Needs implementation
-      return ''
+      return bytesToHexString(value.value as Uint8Array)
     default:
-      return ''
+      return value.type
   }
 }
 
@@ -165,5 +165,8 @@ export const stringifyValue = (value: TypedValue): string => {
  * Return undefined, if no preview is available.
  */
 export const previewValue = (value: TypedValue): string => {
+  if (value.type === 'bytes') {
+    return bytesToHexString((value.value as Uint8Array).slice(0, 15))
+  }
   return stringifyValue(value).substring(0, 30)
 }

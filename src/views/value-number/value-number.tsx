@@ -55,7 +55,7 @@ export default function ValueNumberView (props: ValueViewProps): JSX.Element {
         <InputTextView
           id={props.id}
           value={stringValue}
-          readOnly={props.readOnly}
+          readOnly={readOnly}
           onFocus={props.onFocus}
           onBlur={onInputBlur}
           onChange={onInputChange}

@@ -89,7 +89,7 @@ export const getControlVariableOptions = (
 
     // For the user to be able to pull from a variable, the variable's value
     // type needs to be among the control types
-    if (isTypeWithinTypes(variableValue.type, control.types)) {
+    if (control.writable && isTypeWithinTypes(variableValue.type, control.types)) {
       pullOptions.push(variable)
     }
 

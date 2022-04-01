@@ -286,6 +286,103 @@ const defaultDirectoryState: DirectoryState = {
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
       moduleId: 'logical-or'
+    },
+    {
+      name: 'cryptii/hash',
+      label: 'Hash function',
+      controls: [
+        {
+          name: 'message',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'algorithm',
+          initialValue: 'sha1',
+          types: ['text'],
+          choices: [
+            { value: 'adler32', label: 'Adler-32' },
+            { value: 'crc32', label: 'CRC32' },
+            { value: 'crc32c', label: 'CRC32C' },
+            { value: 'keccak-224', label: 'Keccak-224' },
+            { value: 'keccak-256', label: 'Keccak-256' },
+            { value: 'keccak-384', label: 'Keccak-384' },
+            { value: 'md4', label: 'MD4' },
+            { value: 'md5', label: 'MD5' },
+            { value: 'ripemd160', label: 'RIPEMD-160' },
+            { value: 'sha1', label: 'SHA-1' },
+            { value: 'sha224', label: 'SHA-224' },
+            { value: 'sha256', label: 'SHA-256' },
+            { value: 'sha384', label: 'SHA-384' },
+            { value: 'sha512', label: 'SHA-512' },
+            { value: 'sha3-224', label: 'SHA3-224' },
+            { value: 'sha3-256', label: 'SHA3-256' },
+            { value: 'sha3-384', label: 'SHA3-384' },
+            { value: 'sha3-512', label: 'SHA3-512' },
+            { value: 'sm3', label: 'SM3' },
+            { value: 'whirlpool', label: 'Whirlpool' }
+          ]
+        },
+        {
+          name: 'hash',
+          initialValue: '408d94384216f890ff7a0c3528e8bed1e0b01621',
+          types: ['text', 'bytes'],
+          writable: false
+        }
+      ],
+      bundleUrl: processorUrl + 'bundle-hash.js',
+      moduleId: 'hash'
+    },
+    {
+      name: 'cryptii/hmac',
+      label: 'HMAC function',
+      controls: [
+        {
+          name: 'message',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'key',
+          initialValue: 'cryptii',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'algorithm',
+          initialValue: 'sha1',
+          types: ['text'],
+          choices: [
+            { value: 'adler32', label: 'Adler-32' },
+            { value: 'crc32', label: 'CRC32' },
+            { value: 'crc32c', label: 'CRC32C' },
+            { value: 'keccak-224', label: 'Keccak-224' },
+            { value: 'keccak-256', label: 'Keccak-256' },
+            { value: 'keccak-384', label: 'Keccak-384' },
+            { value: 'md4', label: 'MD4' },
+            { value: 'md5', label: 'MD5' },
+            { value: 'ripemd160', label: 'RIPEMD-160' },
+            { value: 'sha1', label: 'SHA-1' },
+            { value: 'sha224', label: 'SHA-224' },
+            { value: 'sha256', label: 'SHA-256' },
+            { value: 'sha384', label: 'SHA-384' },
+            { value: 'sha512', label: 'SHA-512' },
+            { value: 'sha3-224', label: 'SHA3-224' },
+            { value: 'sha3-256', label: 'SHA3-256' },
+            { value: 'sha3-384', label: 'SHA3-384' },
+            { value: 'sha3-512', label: 'SHA3-512' },
+            { value: 'sm3', label: 'SM3' },
+            { value: 'whirlpool', label: 'Whirlpool' }
+          ]
+        },
+        {
+          name: 'hash',
+          initialValue: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
+          types: ['text', 'bytes'],
+          writable: false
+        }
+      ],
+      bundleUrl: processorUrl + 'bundle-hash.js',
+      moduleId: 'hmac'
     }
   ]
 }

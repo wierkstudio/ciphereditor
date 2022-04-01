@@ -5,7 +5,7 @@ import { ImplicitTypedValue, TypedValue } from '../types/value'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
-import { allValueTypes, compareValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
+import { allValueTypes, equalValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { capitalCase } from 'change-case'
 import { getControlNode } from '../selectors/control'
@@ -71,7 +71,7 @@ export const addOperationControlNode = (
 ): ControlNode => {
   const value = resolveImplicitTypedValue(control.initialValue)
   const choices = resolveImplicitTypedControlValueChoices(control.choices)
-  const index = choices.findIndex(x => compareValues(x.value, value))
+  const index = choices.findIndex(x => equalValues(x.value, value))
   const selectedChoiceIndex = index !== -1 ? index : undefined
   const controlNode: ControlNode = {
     ...defaultControlNode,
@@ -111,11 +111,11 @@ export const changeControl = (
     change.value !== undefined
       ? resolveImplicitTypedValue(change.value)
       : oldValue
-  const equal = compareValues(oldValue, newValue)
+  const equal = equalValues(oldValue, newValue)
 
   // If a choice is selected, update it when choices or value change
   if (control.selectedChoiceIndex !== undefined && (change.choices !== undefined || !equal)) {
-    const index = control.choices.findIndex(x => compareValues(x.value, newValue))
+    const index = control.choices.findIndex(x => equalValues(x.value, newValue))
     control.selectedChoiceIndex = index !== -1 ? index : undefined
   }
 
