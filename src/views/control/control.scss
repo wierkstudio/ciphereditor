@@ -27,7 +27,7 @@
     width: rem(288);
     white-space: nowrap;
     overflow: hidden;
-    color: $c-meta;
+    color: $c-text;
     outline: none;
 
     &::after {
@@ -48,14 +48,23 @@
     padding: rem(4) 0;
     margin: 0 rem(8) 0 rem(-4);
     border-radius: rem(4);
+    color: $c-control-default-color;
+    background: $c-control-default-background;
   }
 
   &__header-toggle:hover &__header-pill {
-    background: $c-line;
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
   }
 
   &__header-toggle:focus-visible &__header-pill {
-    background: $c-line;
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
+  }
+
+  &__header-toggle:active &__header-pill {
+    color: $c-control-active-color;
+    background: $c-control-active-background;
   }
 
   &__header-chevron {
@@ -70,7 +79,6 @@
     display: inline;
     padding: 0 rem(8) 0 0;
     @extend %t-label;
-    color: $c-text;
   }
 
   &__header-preview {
@@ -78,5 +86,6 @@
     display: inline-block;
     @extend %t-value;
     line-height: rem(32);
+    color: $c-meta;
   }
 }

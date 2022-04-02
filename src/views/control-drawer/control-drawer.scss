@@ -14,11 +14,8 @@
     padding: 0 rem(8);
   }
 
-  &__select {
-    padding: rem(8);
-  }
-
-  &__copy {
+  &__footer-start,
+  &__footer-end {
     padding: rem(8);
   }
 }

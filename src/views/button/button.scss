@@ -8,28 +8,39 @@
   height: rem(32);
   align-items: stretch;
   justify-content: center;
+  padding: 0 rem(8);
   border-radius: rem(4);
   line-height: 0;
-  color: $c-text;
-  background: $c-background;
+  color: $c-control-default-color;
+  background: $c-control-default-background;
   outline: none;
 
+  &--meta {
+    color: $c-meta;
+  }
+
+  &--icon {
+    padding: 0;
+  }
+
   &:hover {
-    background: $c-line;
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
   }
 
   &:focus-visible {
-    background: $c-line;
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
   }
 
   &:active {
-    color: $c-background;
-    background: $c-text;
+    color: $c-control-active-color;
+    background: $c-control-active-background;
   }
 
   &:disabled {
-    background: $c-background;
-    color: $c-meta;
+    color: $c-control-disabled-color;
+    background: $c-control-disabled-background;
     cursor: default;
   }
 
@@ -52,11 +63,11 @@
   &__label {
     display: flex;
     align-items: center;
-    padding-right: rem(4);
   }
 
   &__icon + &__label {
     margin-left: rem(-4);
+    padding-right: rem(4);
   }
 
   &--large &__label {

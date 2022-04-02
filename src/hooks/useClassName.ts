@@ -9,3 +9,9 @@ const useClassName = (name: string, modifiers: ViewModifiers = []): string =>
   ).join(' ')
 
 export default useClassName
+
+export const mergeModifiers = (a: ViewModifiers = [], b: ViewModifiers = []): ViewModifiers => {
+  const normalizedA = typeof a === 'string' ? a.split(/\s+/) : a
+  const normalizedB = typeof b === 'string' ? b.split(/\s+/) : b
+  return normalizedA.concat(normalizedB)
+}

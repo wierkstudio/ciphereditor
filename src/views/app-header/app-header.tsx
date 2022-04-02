@@ -29,6 +29,7 @@ export default function AppHeaderView (): JSX.Element {
             items={[
               <ButtonView
                 key='add-operation'
+                title='Add operation'
                 icon='plus'
                 modifiers={['large']}
                 disabled={program === undefined}
@@ -36,6 +37,7 @@ export default function AppHeaderView (): JSX.Element {
               />,
               <ButtonView
                 key='leave-program'
+                title='Leave program'
                 icon='arrowUp'
                 modifiers={['large']}
                 onClick={() => dispatch(leaveProgramAction({}))}
@@ -44,6 +46,7 @@ export default function AppHeaderView (): JSX.Element {
               [
                 <ButtonView
                   key='undo'
+                  title='Undo'
                   icon='undo'
                   modifiers={['large']}
                   onClick={() => dispatch(undoAction())}
@@ -51,6 +54,7 @@ export default function AppHeaderView (): JSX.Element {
                 />,
                 <ButtonView
                   key='redo'
+                  title='Redo'
                   icon='redo'
                   modifiers={['large']}
                   onClick={() => dispatch(redoAction())}
@@ -59,6 +63,7 @@ export default function AppHeaderView (): JSX.Element {
               ],
               <ButtonView
                 key='add-empty-program'
+                title='Add empty program'
                 icon='plus'
                 modifiers={['large']}
                 disabled={program === undefined}
@@ -72,6 +77,7 @@ export default function AppHeaderView (): JSX.Element {
               </ButtonView>,
               <ButtonView
                 key='add-empty-control'
+                title='Add empty control'
                 icon='plus'
                 modifiers={['large']}
                 disabled={program === undefined}

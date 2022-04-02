@@ -1,7 +1,7 @@
 
 import './button.scss'
 import IconView, { Icon } from 'views/icon/icon'
-import useClassName, { ViewModifiers } from 'hooks/useClassName'
+import useClassName, { mergeModifiers, ViewModifiers } from 'hooks/useClassName'
 
 type ButtonViewProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> & {
   icon?: Icon
@@ -12,9 +12,13 @@ type ButtonViewProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className
  * Button component with an optional icon and label (via children).
  */
 export default function ButtonView (props: ButtonViewProps): JSX.Element {
-  const { icon, modifiers, children, ...buttonProps } = props
+  const { icon, modifiers = [], children, ...buttonProps } = props
+  const buttonModifiers = icon !== undefined ? mergeModifiers(modifiers, ['icon']) : modifiers
   return (
-    <button className={useClassName('button', modifiers)} {...buttonProps}>
+    <button
+      className={useClassName('button', buttonModifiers)}
+      {...buttonProps}
+    >
       {icon !== undefined && (
         <div className='button__icon'>
           <IconView icon={icon} />

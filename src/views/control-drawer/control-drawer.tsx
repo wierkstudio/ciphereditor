@@ -112,16 +112,31 @@ export default function ControlDrawerView (props: {
         </div>
       )}
       <div className='control-drawer__footer'>
-        <div className='control-drawer__select'>
-          <SelectView
-            elements={selectElements}
-            value={selectValue}
-            valueLabel={selectLabel}
-            onChange={onSelectChange}
-          />
+        <div className='control-drawer__footer-start'>
+          {control.writable && (
+            <SelectView
+              elements={selectElements}
+              value={selectValue}
+              valueLabel={selectLabel}
+              onChange={onSelectChange}
+              modifiers={showValue ? ['meta'] : []}
+            />
+          )}
+          {!control.writable && (
+            <ButtonView
+              disabled
+              modifiers={['meta']}
+            >
+              {labelType(control.value.type) + ' (read only)'}
+            </ButtonView>
+          )}
         </div>
-        <div className='control-drawer__copy'>
-          <ButtonView icon='copy' onClick={onValueCopy} />
+        <div className='control-drawer__footer-end'>
+          <ButtonView
+            icon='copy'
+            onClick={onValueCopy}
+            modifiers={['meta']}
+          />
         </div>
       </div>
     </div>

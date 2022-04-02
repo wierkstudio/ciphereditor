@@ -9,3 +9,16 @@ $c-line: var(--c-line);
 $c-text: var(--c-text);
 $c-meta: var(--c-meta);
 $c-background: var(--c-background);
+
+$c-control-default-color: $c-text;
+$c-control-default-background: $c-background;
+
+$c-control-hover-color: $c-text;
+$c-control-hover-background: $c-line;
+
+// TODO: Add magic color value to color scheme
+$c-control-active-color: $c-text;
+$c-control-active-background: darken(#19253C, 2);
+
+$c-control-disabled-color: $c-meta;
+$c-control-disabled-background: $c-background;

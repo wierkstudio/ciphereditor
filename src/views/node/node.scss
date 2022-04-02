@@ -5,6 +5,7 @@
   position: relative;
   width: rem(320);
   cursor: default;
+  outline: none;
 
   // Selected frame
   &::before {
