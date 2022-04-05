@@ -1,6 +1,7 @@
 
 import './modal-stack.scss'
 import AddModalView from 'views/modal-add/modal-add'
+import SettingsModalView from 'views/modal-settings/modal-settings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ModalType } from 'slices/ui/types'
@@ -9,7 +10,8 @@ import { cancelTopModalAction } from 'slices/ui'
 import { getModalStack } from 'slices/ui/selectors'
 
 const modalViewMap = {
-  [ModalType.Add]: AddModalView
+  [ModalType.Add]: AddModalView,
+  [ModalType.Settings]: SettingsModalView
 }
 
 export default function ModalStackView (): JSX.Element {

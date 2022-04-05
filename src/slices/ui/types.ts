@@ -26,6 +26,7 @@ export enum UICanvasState {
  */
 export enum ModalType {
   Add = 'add',
+  Settings = 'settings'
 }
 
 /**

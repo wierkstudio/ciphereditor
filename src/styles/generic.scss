@@ -29,6 +29,18 @@ body {
   background: $c-muted;
 }
 
+html.scaling-normal {
+  font-size: 16px;
+}
+
+html.scaling-large {
+  font-size: 20px;
+}
+
+html.scaling-huge {
+  font-size: 24px
+}
+
 body.body-grabbing * {
   cursor: grabbing !important;
 }

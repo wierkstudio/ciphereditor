@@ -7,12 +7,16 @@ import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
 import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
+import { ReactComponent as HelpIcon } from 'icons/help.svg'
+import { ReactComponent as MaximizeIcon } from 'icons/maximize.svg'
 import { ReactComponent as MinusIcon } from 'icons/minus.svg'
 import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
 import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
 import { ReactComponent as PlusIcon } from 'icons/plus.svg'
 import { ReactComponent as RedoIcon } from 'icons/redo.svg'
+import { ReactComponent as SettingsIcon } from 'icons/settings.svg'
+import { ReactComponent as ShareIcon } from 'icons/share.svg'
 import { ReactComponent as SwitchIcon } from 'icons/switch.svg'
 import { ReactComponent as UndoIcon } from 'icons/undo.svg'
 
@@ -23,12 +27,16 @@ const iconSVGMap = {
   close: CloseIcon,
   copy: CopyIcon,
   doubleChevron: DoubleChevronIcon,
+  help: HelpIcon,
+  maximize: MaximizeIcon,
   minus: MinusIcon,
   outletPull: OutletPullIcon,
   outletPush: OutletPushIcon,
   outletUnused: OutletUnusedIcon,
   plus: PlusIcon,
   redo: RedoIcon,
+  settings: SettingsIcon,
+  share: ShareIcon,
   switch: SwitchIcon,
   undo: UndoIcon
 }

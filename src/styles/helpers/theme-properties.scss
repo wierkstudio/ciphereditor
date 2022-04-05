@@ -1,0 +1,8 @@
+
+@mixin theme-properties($theme-name) {
+  $colors: map-get($map: $themes, $key: $theme-name);
+
+  @each $color-name, $color in $colors {
+    --c-#{$color-name}: #{$color};
+  }
+}

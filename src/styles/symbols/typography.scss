@@ -1,35 +1,37 @@
 
+@use 'sass:math';
+
 %t-text {
   font-family: 'Lexend Deca', sans-serif;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: rem(16);
+  line-height: math.div(24, 16);
 }
 
 %t-label {
   font-family: 'Lexend Deca', sans-serif;
   font-weight: 400;
   font-size: rem(16);
-  line-height: rem(24);
+  line-height: math.div(24, 16);
 }
 
 %t-h2 {
   font-family: 'Lexend Deca', sans-serif;
   font-weight: bold;
   font-size: rem(24);
-  line-height: rem(32);
+  line-height: math.div(32, 24);
 }
 
 %t-h3 {
   font-family: 'Lexend Deca', sans-serif;
   font-weight: bold;
   font-size: rem(16);
-  line-height: rem(24);
+  line-height: math.div(24, 16);
 }
 
 %t-value {
   font-family: 'IBM Plex Mono', monospace;
   font-weight: 400;
   font-size: rem(16);
-  line-height: rem(24);
+  line-height: math.div(24, 16);
 }

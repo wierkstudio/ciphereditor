@@ -8,6 +8,8 @@ interface DragMoveState {
   startViewportY: number
 }
 
+// TODO: Measure initial system font size
+// Example: parseInt(window.getComputedStyle(document.documentElement).fontSize)
 export const gridSize = 16.0
 
 const useDragMove = (

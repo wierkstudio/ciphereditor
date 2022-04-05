@@ -1,5 +1,5 @@
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import {
   enterProgramAction,
   leaveProgramAction,
@@ -8,9 +8,12 @@ import {
   undoAction
 } from 'slices/blueprint'
 import { cancelTopModalAction } from 'slices/ui'
-import { SettingsState } from './types'
+import { ReducedMotionPreferenceOption, ScalingOption, SettingsState, ThemeOption } from './types'
 
 const defaultSettingsState: SettingsState = {
+  theme: ThemeOption.SystemDefault,
+  scaling: ScalingOption.SystemDefault,
+  reducedMotionPreference: ReducedMotionPreferenceOption.SystemDefault,
   shortcutBindings: {
     // Order: alt+control+shift+meta+key
     // Make sure shortcuts don't trigger for both input-text and app views
@@ -31,9 +34,31 @@ const defaultSettingsState: SettingsState = {
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState: defaultSettingsState,
-  reducers: {}
+  reducers: {
+    applyTheme: (state, { payload }: PayloadAction<{
+      theme: ThemeOption
+    }>) => {
+      state.theme = payload.theme
+    },
+
+    applyScaling: (state, { payload }: PayloadAction<{
+      scaling: ScalingOption
+    }>) => {
+      state.scaling = payload.scaling
+    },
+
+    applyReducedMotionPreference: (state, { payload }: PayloadAction<{
+      reducedMotionPreference: ReducedMotionPreferenceOption
+    }>) => {
+      state.reducedMotionPreference = payload.reducedMotionPreference
+    }
+  }
 })
 
-// export const {} = settingsSlice.actions
+export const {
+  applyTheme,
+  applyScaling,
+  applyReducedMotionPreference
+} = settingsSlice.actions
 
 export default settingsSlice.reducer

@@ -30,6 +30,11 @@ export default function SelectView (props: {
   onChange?: ChangeEventHandler<HTMLSelectElement>
   modifiers?: ViewModifiers
 }): JSX.Element {
+  const selectedElement =
+    props.elements.find(element =>
+      element.type === 'option' &&
+      element.value === props.value
+    ) as SelectViewOptionElement | undefined
   return (
     <div
       className={useClassName('select', props.modifiers)}
@@ -46,7 +51,7 @@ export default function SelectView (props: {
         {props.elements.map(renderElement)}
       </select>
       <div className='select__value'>
-        {props.valueLabel ?? 'Select'}
+        {props.valueLabel ?? selectedElement?.label ?? 'Select'}
       </div>
       <div className='select__chevron'>
         <IconView icon='doubleChevron' />

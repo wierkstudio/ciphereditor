@@ -13,6 +13,10 @@
     visibility: visible;
     transition-property: transform, visibility;
     transition-duration: 0.3s;
+
+    @include prefers-reduced-motion {
+      transition-property: none;
+    }
   }
 
   &__last {
@@ -21,6 +25,10 @@
     left: 0;
     transform: translate(0, -120%);
     visibility: hidden;
+
+    @include prefers-reduced-motion {
+      display: none;
+    }
   }
 
   &--will-transition &__last {
@@ -38,5 +46,10 @@
     transform: translate(0, 120%);
     transition-duration: 0s;
     visibility: hidden;
+
+    @include prefers-reduced-motion {
+      transform: none;
+      visibility: visible;
+    }
   }
 }

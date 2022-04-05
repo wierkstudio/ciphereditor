@@ -1,7 +1,27 @@
 
-$c-black: #000000;
-$c-white: #ffffff;
+//  Theme colors
+$themes: (
+  dark: (
+    primary: #169aed,
+    secondary: #014da8,
+    muted: #040d21,
+    line: #19253c,
+    text: #ffffff,
+    meta: #8193b2,
+    background: #13182c
+  ),
+  light: (
+    primary: #169aed,
+    secondary: #014da8,
+    muted: #f2f4f6,
+    line: #cfd9e3,
+    text: #002f6d,
+    meta: #688097,
+    background: #ffffff
+  )
+);
 
+// Theme color variables to be used throughout the code
 $c-primary: var(--c-primary);
 $c-secondary: var(--c-secondary);
 $c-muted: var(--c-muted);

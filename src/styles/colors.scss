@@ -1,10 +1,14 @@
 
-:root {
-  --c-primary: #169aed;
-  --c-secondary: #014da8;
-  --c-muted: #040D21;
-  --c-line: #19253C;
-  --c-text: #ffffff;
-  --c-meta: #8193B2;
-  --c-background: #13182C;
+html {
+  @include theme-properties(light);
+
+  @media (prefers-color-scheme: dark) {
+    @include theme-properties(dark);
+  }
+
+  @each $theme-name, $colors in $themes {
+    &.theme-#{$theme-name} {
+      @include theme-properties($theme-name);
+    }
+  }
 }

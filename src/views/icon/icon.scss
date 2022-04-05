@@ -4,5 +4,16 @@
 .icon {
   width: rem(24);
   height: rem(24);
-  fill: currentColor;
+  fill: none;
+  stroke: none;
+
+  &[stroke]:not([stroke="none"]),
+  [stroke]:not([stroke="none"]) {
+    stroke: currentColor;
+  }
+
+  &[fill]:not([fill="none"]),
+  [fill]:not([fill="none"]) {
+    fill: currentColor;
+  }
 }

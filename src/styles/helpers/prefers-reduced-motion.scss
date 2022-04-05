@@ -1,0 +1,11 @@
+
+@mixin prefers-reduced-motion() {
+
+  html.reduced-motion-reduce & {
+    @content;
+  }
+
+  @media (prefers-reduced-motion) {
+    @content;
+  }
+}
