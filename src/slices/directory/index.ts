@@ -162,12 +162,12 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'maxLineLength',
-          initialValue: { value: 0, type: 'integer' },
+          initialValue: { type: 'integer', data: 0 },
           types: ['integer'],
           choices: [
-            { value: { value: 0, type: 'integer' }, label: 'None' },
-            { value: { value: 64, type: 'integer' }, label: '64 (RFC 1421)' },
-            { value: { value: 76, type: 'integer' }, label: '76 (RFC 2045)' }
+            { value: { type: 'integer', data: 0 }, label: 'None' },
+            { value: { type: 'integer', data: 64 }, label: '64 (RFC 1421)' },
+            { value: { type: 'integer', data: 76 }, label: '76 (RFC 2045)' }
           ],
           enforceChoices: false
         },

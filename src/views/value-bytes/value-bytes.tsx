@@ -1,19 +1,19 @@
 
 import InputTextView from 'views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react'
-import { TypedValue } from 'slices/blueprint/types/value'
+import { BytesValue, TypedValue } from 'slices/blueprint/types/value'
 import { ValueViewProps } from 'views/value/value'
 import { bytesToHexString, hexStringToBytes } from 'utils/binary'
-import { isHexString } from 'utils/string'
 import { equalValues } from 'slices/blueprint/reducers/value'
+import { isHexString } from 'utils/string'
 
 const valueToString = (value: TypedValue): string =>
-  bytesToHexString(value.value as Uint8Array)
+  bytesToHexString(value.data as Uint8Array)
 
 const stringToValue = (string: string): TypedValue =>
-  ({ value: hexStringToBytes(string), type: 'bytes' })
+  ({ type: 'bytes', data: hexStringToBytes(string) })
 
-export default function ValueBytesView (props: ValueViewProps): JSX.Element {
+export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.Element {
   const { onChange, onFocus, onBlur, value, readOnly = false } = props
 
   const [stringValue, setStringValue] = useState(valueToString(value))

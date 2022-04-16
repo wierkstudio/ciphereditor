@@ -8,8 +8,8 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
-import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChange } from './types/control'
-import { Operation, OperationState } from './types/operation'
+import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChanges } from './types/control'
+import { Operation, operationSchema, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, setOperationState } from './reducers/operation'
@@ -38,11 +38,12 @@ export const blueprintSlice = createSlice({
      */
     addOperationAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
-      operation: Operation
+      operation: Operation | any
       x: number
       y: number
     }>) => {
-      const { programId, operation: operationEntity, x, y } = payload
+      const { programId, x, y } = payload
+      const operationEntity = operationSchema.parse(payload.operation)
       const operation = addOperationNode(state, programId, operationEntity, x, y)
       state.selectedNodeId = operation.id
     },
@@ -163,7 +164,7 @@ export const blueprintSlice = createSlice({
     applyOperationTaskResultAction: (state, { payload }: PayloadAction<{
       operationId: BlueprintNodeId
       taskVersion: number
-      controlChanges: NamedControlChange[]
+      controlChanges: NamedControlChanges
       error?: string
     }>) => {
       const { operationId, taskVersion, controlChanges, error } = payload

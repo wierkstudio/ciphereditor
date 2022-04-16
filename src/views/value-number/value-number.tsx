@@ -5,12 +5,12 @@ import InputTextView from 'views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from 'views/value/value'
 import { isNumericString } from 'utils/string'
-import { TypedValue } from 'slices/blueprint/types/value'
+import { IntegerValue, NumberValue, TypedValue } from 'slices/blueprint/types/value'
 
-export default function ValueNumberView (props: ValueViewProps): JSX.Element {
+export default function ValueNumberView (props: ValueViewProps<NumberValue | IntegerValue>): JSX.Element {
   const { onChange, onBlur, value, readOnly = false } = props
 
-  const [stringValue, setStringValue] = useState(value.value.toString())
+  const [stringValue, setStringValue] = useState(value.data.toString())
 
   const onValueChange = (value: TypedValue, event: BaseSyntheticEvent): void => {
     if (onChange !== undefined) {
@@ -23,27 +23,27 @@ export default function ValueNumberView (props: ValueViewProps): JSX.Element {
     if (isNumericString(value)) {
       const valueNumber = parseFloat(value)
       const valueType = Number.isInteger(valueNumber) ? 'integer' : 'number'
-      onValueChange({ value: valueNumber, type: valueType }, event)
+      onValueChange({ type: valueType, data: valueNumber }, event)
     }
   }
 
   const onInputBlur = useCallback((event: FocusEvent) => {
-    setStringValue(value.value.toString())
+    setStringValue(value.data.toString())
     if (onBlur !== undefined) {
       onBlur(event)
     }
   }, [value, setStringValue, onBlur])
 
   const onMinusClick = (event: MouseEvent): void => {
-    onValueChange({ value: (value.value as number) - 1, type: value.type }, event)
+    onValueChange({ type: value.type, data: value.data - 1 }, event)
   }
 
   const onPlusClick = (event: MouseEvent): void => {
-    onValueChange({ value: (value.value as number) + 1, type: value.type }, event)
+    onValueChange({ type: value.type, data: value.data + 1 }, event)
   }
 
   useEffect(() => {
-    setStringValue(value.value.toString())
+    setStringValue(value.data.toString())
   }, [value])
 
   return (

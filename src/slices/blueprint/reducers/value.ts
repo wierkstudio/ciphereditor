@@ -1,8 +1,8 @@
 
-import { ImplicitTypedValue, TypedValue } from '../types/value'
+import { ImplicitTypedValue, LabeledImplicitTypedValue, LabeledTypedValue, TextValue, TypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
-import { capitalCase } from 'change-case'
 import { bytesToHexString } from 'utils/binary'
+import { capitalCase } from 'change-case'
 
 /**
  * Complete set of all available value types.
@@ -11,7 +11,6 @@ export const allValueTypes = [
   'boolean',
   'integer',
   'number',
-  'bigint',
   'text',
   'bytes'
 ]
@@ -26,7 +25,7 @@ export const labelType = (type: string): string => {
 /**
  * Default value used e.g. as initial value in user-defined controls.
  */
-export const defaultValue = { value: '', type: 'text' }
+export const defaultValue: TextValue = { type: 'text', data: '' }
 
 /**
  * Return wether a type is within the given types.
@@ -45,28 +44,42 @@ export const isTypeWithinType = (type: string, withinType: string): boolean => {
 /**
  * Resolve an implicitly typed value to a typed value following set rules.
  * @throws If an unexpected value is encountered.
- * @param value ImplicitTypedValue value
  * @returns TypedValue object representing the same value
  */
 export const resolveImplicitTypedValue = (
-  value: ImplicitTypedValue
+  implicitValue: ImplicitTypedValue
 ): TypedValue => {
-  if (value instanceof Uint8Array) {
-    return { value, type: 'bytes' }
+  if (implicitValue instanceof Uint8Array) {
+    return { type: 'bytes', data: implicitValue }
   }
-  switch (typeof value) {
+  switch (typeof implicitValue) {
     case 'object':
-      return value
+      return implicitValue
     case 'boolean':
-      return { value, type: 'boolean' }
+      return { type: 'boolean', data: implicitValue }
     case 'number':
-      return { value, type: Number.isInteger(value) ? 'integer' : 'number' }
-    case 'bigint':
-      return { value, type: 'bigint' }
+      return {
+        type: Number.isInteger(implicitValue) ? 'integer' : 'number',
+        data: implicitValue
+      }
     case 'string':
-      return { value, type: 'text' }
+      return { type: 'text', data: implicitValue }
     default:
-      throw new Error(`Unable to resolve the implicit value type '${typeof value}'`)
+      throw new Error(`Unable to resolve an implicit value of type '${typeof implicitValue}'`)
+  }
+}
+
+/**
+ * Resolve labeled and implicit typed value
+ * @throws If an unexpected value is encountered.
+ * @returns LabeledTypedValue object representing the same labeled value
+ */
+export const resolveLabeledImplicitTypedValue = (
+  labeledImplicitTypedValue: LabeledImplicitTypedValue
+): LabeledTypedValue => {
+  return {
+    label: labeledImplicitTypedValue.label,
+    value: resolveImplicitTypedValue(labeledImplicitTypedValue.value)
   }
 }
 
@@ -74,28 +87,25 @@ export const resolveImplicitTypedValue = (
  * Create a valid empty value of the given type.
  */
 export const createValue = (type: string): TypedValue => {
-  let value: any
+  let data: any
   switch (type) {
     case 'boolean':
-      value = false
+      data = false
       break
     case 'integer':
     case 'number':
-      value = 0
-      break
-    case 'bigint':
-      value = BigInt(0)
+      data = 0
       break
     case 'text':
-      value = ''
+      data = ''
       break
     case 'bytes':
-      value = new Uint8Array()
+      data = new Uint8Array()
       break
     default:
       throw new Error(`No empty value defined for type '${type}'`)
   }
-  return { value, type }
+  return { type, data }
 }
 
 /**
@@ -112,9 +122,8 @@ export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
     case 'boolean':
     case 'integer':
     case 'number':
-    case 'bigint':
     case 'text':
-      return a.value === b.value
+      return a.data === b.data
     case 'bytes':
       return arrayEqual(a, b)
     default:
@@ -144,19 +153,19 @@ export const castValue = (
 export const stringifyValue = (value: TypedValue): string => {
   switch (value.type) {
     case 'boolean':
-      return (value.value as boolean) ? 'True' : 'False'
+      return value.data ? 'True' : 'False'
     case 'integer':
-      return (value.value as number).toString()
+      return value.data.toString()
     case 'number':
-      return (value.value as number).toString()
-    case 'bigint':
-      return (value.value as bigint).toString()
+      return value.data.toString()
     case 'text':
-      return (value.value as string)
+      return value.data
     case 'bytes':
-      return bytesToHexString(value.value as Uint8Array)
+      return bytesToHexString(value.data)
     default:
-      return value.type
+      // Treat the value not of type never here as we might add additional types
+      // without adding a way to stringify it
+      return labelType((value as TypedValue).type)
   }
 }
 
@@ -166,7 +175,7 @@ export const stringifyValue = (value: TypedValue): string => {
  */
 export const previewValue = (value: TypedValue): string => {
   if (value.type === 'bytes') {
-    return bytesToHexString((value.value as Uint8Array).slice(0, 15))
+    return bytesToHexString(value.data.slice(0, 15))
   }
   return stringifyValue(value).substring(0, 30)
 }

@@ -1,19 +1,20 @@
 
 import { ValueViewProps } from 'views/value/value'
 import InputTextView from 'views/input-text/input-text'
+import { TextValue } from 'slices/blueprint/types/value'
 
-export default function ValueTextView (props: ValueViewProps): JSX.Element {
+export default function ValueTextView (props: ValueViewProps<TextValue>): JSX.Element {
   return (
     <div className='value-text'>
       <InputTextView
         id={props.id}
-        value={props.value.value}
+        value={props.value.data}
         readOnly={props.readOnly}
         onFocus={props.onFocus}
         onBlur={props.onBlur}
-        onChange={(value, event) => {
+        onChange={(string, event) => {
           if (props.onChange !== undefined) {
-            props.onChange({ value, type: 'text' }, event)
+            props.onChange({ type: 'text', data: string }, event)
           }
         }}
       />

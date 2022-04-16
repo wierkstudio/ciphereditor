@@ -1,19 +1,20 @@
 
 import './value-boolean.scss'
 import { ValueViewProps } from 'views/value/value'
+import { BooleanValue } from 'slices/blueprint/types/value'
 
-export default function ValueBooleanView (props: ValueViewProps): JSX.Element {
+export default function ValueBooleanView (props: ValueViewProps<BooleanValue>): JSX.Element {
   return (
     <label className='value-boolean'>
       <input
         className='value-boolean__input'
         id={props.id}
         type='checkbox'
-        checked={props.value.value}
+        checked={props.value.data}
         readOnly={props.readOnly}
         onChange={event => {
           if (props.onChange !== undefined) {
-            props.onChange({ value: event.target.checked, type: 'boolean' }, event)
+            props.onChange({ type: 'boolean', data: event.target.checked }, event)
           }
         }}
       />

@@ -7,10 +7,11 @@ import ValueTextView from 'views/value-text/value-text'
 import { BaseSyntheticEvent } from 'react'
 import { TypedValue } from 'slices/blueprint/types/value'
 import { ViewModifiers } from 'hooks/useClassName'
+import { labelType } from 'slices/blueprint/reducers/value'
 
-export interface ValueViewProps {
+export interface ValueViewProps<ValueType = TypedValue> {
   id?: string
-  value: TypedValue
+  value: ValueType
   readOnly?: boolean
   onFocus?: React.FocusEventHandler
   onBlur?: React.FocusEventHandler
@@ -20,25 +21,17 @@ export interface ValueViewProps {
 
 export default function ValueView (props: ValueViewProps): JSX.Element {
   // Choose underlying view based on type
-  let TypedValueView
-  switch (props.value.type) {
+  const { value, ...remainingProps } = props
+  switch (value.type) {
     case 'boolean':
-      TypedValueView = ValueBooleanView
-      break
+      return <ValueBooleanView value={value} {...remainingProps} />
     case 'integer':
     case 'number':
-      TypedValueView = ValueNumberView
-      break
+      return <ValueNumberView value={value} {...remainingProps} />
     case 'text':
-      TypedValueView = ValueTextView
-      break
+      return <ValueTextView value={value} {...remainingProps} />
     case 'bytes':
-      TypedValueView = ValueBytesView
-      break
-  }
-
-  if (TypedValueView !== undefined) {
-    return <TypedValueView {...props} />
+      return <ValueBytesView value={value} {...remainingProps} />
   }
 
   return (
@@ -48,7 +41,9 @@ export default function ValueView (props: ValueViewProps): JSX.Element {
       tabIndex={0}
       onFocus={props.onFocus}
     >
-      <p className='value__meta'>Value type not viewable.</p>
+      <p className='value__meta'>
+        {`${labelType((value as TypedValue).type)} value is not viewable.`}
+      </p>
     </div>
   )
 }

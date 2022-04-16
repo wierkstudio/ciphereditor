@@ -2,7 +2,7 @@
 import Processor from 'app/Processor'
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
-import { NamedControlChange } from 'slices/blueprint/types/control'
+import { NamedControlChanges, namedControlChangesSchema } from 'slices/blueprint/types/control'
 import { OperationState } from 'slices/blueprint/types/operation'
 import { RootState } from 'slices'
 import { applyOperationTaskResultAction } from 'slices/blueprint'
@@ -41,7 +41,8 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId): Promi
   }
 
   // Try to execute the computations in the processor and await its response
-  let controlChanges: NamedControlChange[] = []
+  // TODO: Improve on error reporting
+  let controlChanges: NamedControlChanges = []
   let error: string | undefined
   try {
     const result: any = await processor.callModuleFunction(
@@ -56,8 +57,8 @@ const runOperationTask = async (store: any, operationId: BlueprintNodeId): Promi
       throw result.error
     }
 
-    // TODO: Validate untrusted module response
-    controlChanges = result as NamedControlChange[]
+    // Validate result against schema
+    controlChanges = namedControlChangesSchema.parse(result)
   } catch (err: any) {
     error = err.toString()
   }

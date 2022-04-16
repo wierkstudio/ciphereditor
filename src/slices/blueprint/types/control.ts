@@ -1,103 +1,82 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { ImplicitTypedValue, TypedValue } from './value'
+import { ImplicitTypedValue, TypedValue, implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
+import { z } from 'zod'
 
-export interface ControlValueChoice<ValueType> {
-  /**
-   * Value
-   */
-  value: ValueType
-
-  /**
-   * Label
-   */
-  label: string
-}
-
-/**
- * Control entity
- * Controls are the building blocks of operation and program interfaces.
- */
-export interface Control {
+export const controlSchema = z.object({
   /**
    * Control name unique within the enclosing operation or program
    */
-  name: string
+  name: z.string(),
 
   /**
    * Control label
    */
-  label?: string
+  label: z.string().optional(),
 
   /**
    * Accepted control value types
    */
-  types: string[]
+  types: z.array(z.string()),
 
   /**
    * Initial control value
    */
-  initialValue: ImplicitTypedValue
+  initialValue: implicitTypedValueSchema,
 
   /**
    * Control value choices
    * Defaults to an empty array
    */
-  choices?: Array<ControlValueChoice<ImplicitTypedValue>>
+  choices: z.array(labeledImplicitTypedValueSchema).optional(),
 
   /**
    * Wether the value is restricted to the given options (if not empty)
    * Defaults to true
    */
-  enforceChoices?: boolean
+  enforceChoices: z.boolean().optional(),
 
   /**
    * Control enabled state
    * Defaults to true
    */
-  enabled?: boolean
+  enabled: z.boolean().optional(),
 
   /**
    * Wether a new value can be set from outside the enclosing operation or program
    * Defaults to true
    */
-  writable?: boolean
-}
+  writable: z.boolean().optional()
+})
+
+/**
+ * Control entity
+ * Controls are the building blocks of operation and program interfaces.
+ */
+export type Control = z.infer<typeof controlSchema>
+
+export const controlChangeSchema = z.object({
+  label: z.string().optional(),
+  value: implicitTypedValueSchema.optional(),
+  choices: z.array(labeledImplicitTypedValueSchema).optional(),
+  enabled: z.boolean().optional()
+})
 
 /**
  * Structured changes targeted to a control node
  */
-export interface ControlChange {
-  /**
-   * New label
-   */
-  label?: string
+export type ControlChange = z.infer<typeof controlChangeSchema>
 
-  /**
-   * New value
-   */
-  value?: ImplicitTypedValue
-
-  /**
-   * New control value choices
-   */
-  choices?: Array<ControlValueChoice<ImplicitTypedValue>>
-
-  /**
-   * New enabled state
-   */
-  enabled?: boolean
-}
+export const namedControlChangesSchema = z.array(
+  controlChangeSchema.extend({
+    name: z.string()
+  })
+)
 
 /**
- * Structured changes targeted to a control node identified by name
+ * Set of structured changes targeted to named control nodes
  */
-export interface NamedControlChange extends ControlChange {
-  /**
-   * Target control name
-   */
-  name: string
-}
+export type NamedControlChanges = z.infer<typeof namedControlChangesSchema>
 
 /**
  * Control change source
@@ -160,7 +139,7 @@ export interface ControlNode extends BlueprintNode {
   /**
    * Control value choices
    */
-  choices: Array<ControlValueChoice<TypedValue>>
+  choices: LabeledTypedValue[]
 
   /**
    * Wether the value is restricted to control choices (if not empty)

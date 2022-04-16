@@ -1,11 +1,10 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { Control, ControlChange, ControlChangeSource, ControlNode, ControlValueChoice, ControlViewState } from '../types/control'
-import { ImplicitTypedValue, TypedValue } from '../types/value'
+import { Control, ControlChange, ControlChangeSource, ControlNode, ControlViewState } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
-import { allValueTypes, equalValues, createValue, defaultValue, castValue, resolveImplicitTypedValue } from './value'
+import { allValueTypes, equalValues, createValue, defaultValue, castValue, resolveImplicitTypedValue, resolveLabeledImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { capitalCase } from 'change-case'
 import { getControlNode } from '../selectors/control'
@@ -70,7 +69,7 @@ export const addOperationControlNode = (
   control: Control
 ): ControlNode => {
   const value = resolveImplicitTypedValue(control.initialValue)
-  const choices = resolveImplicitTypedControlValueChoices(control.choices)
+  const choices = control.choices?.map(resolveLabeledImplicitTypedValue) ?? []
   const index = choices.findIndex(x => equalValues(x.value, value))
   const selectedChoiceIndex = index !== -1 ? index : undefined
   const controlNode: ControlNode = {
@@ -103,7 +102,7 @@ export const changeControl = (
   control.enabled = change.enabled ?? control.enabled
 
   if (change.choices !== undefined) {
-    control.choices = resolveImplicitTypedControlValueChoices(change.choices)
+    control.choices = change.choices?.map(resolveLabeledImplicitTypedValue) ?? []
   }
 
   const oldValue = control.value
@@ -211,19 +210,4 @@ export const addVariableFromControl = (
 ): void => {
   // TODO: Detach currently attached variable
   addVariable(state, programId, controlId)
-}
-
-/**
- * Resolve implicit typed control options
- */
-export const resolveImplicitTypedControlValueChoices = (
-  options: Array<ControlValueChoice<ImplicitTypedValue>> | undefined
-): Array<ControlValueChoice<TypedValue>> => {
-  if (options === undefined) {
-    return []
-  }
-  return options.map(option => ({
-    ...option,
-    value: resolveImplicitTypedValue(option.value)
-  }))
 }

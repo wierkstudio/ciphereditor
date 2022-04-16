@@ -1,36 +1,39 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { Control } from './control'
+import { controlSchema } from './control'
+import { z } from 'zod'
 
-/**
- * Operation entity
- */
-export interface Operation {
+export const operationSchema = z.object({
   /**
    * Unique operation entity name
    */
-  name: string
+  name: z.string(),
 
   /**
    * Operation label
    */
-  label: string
+  label: z.string(),
 
   /**
    * Array of control configurations
    */
-  controls: Control[]
+  controls: z.array(controlSchema),
 
   /**
    * Bundle url
    */
-  bundleUrl: string
+  bundleUrl: z.string(),
 
   /**
    * Bundle module id
    */
-  moduleId: string
-}
+  moduleId: z.string()
+})
+
+/**
+ * Operation entity
+ */
+export type Operation = z.infer<typeof operationSchema>
 
 /**
  * Operation state
@@ -49,7 +52,7 @@ export enum OperationState {
   /**
    * Last computation task failed, await manual retry
    */
-  Failed,
+  Failed
 }
 
 /**
