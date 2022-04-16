@@ -56,6 +56,7 @@ export default function ControlDrawerView (props: {
   const selectElements: SelectViewElement[] = []
   let selectValue
   let selectLabel
+  let choicesCount = 0
 
   if (control.choices.length > 0) {
     selectElements.push({
@@ -67,6 +68,7 @@ export default function ControlDrawerView (props: {
         label: choice.label
       }))
     })
+    choicesCount += control.choices.length
     if (control.selectedChoiceIndex !== undefined) {
       selectValue = `c${control.selectedChoiceIndex}`
       selectLabel = control.choices[control.selectedChoiceIndex].label
@@ -83,6 +85,7 @@ export default function ControlDrawerView (props: {
         label: labelType(type)
       }))
     })
+    choicesCount += control.types.length
     if (selectValue === undefined) {
       const typeIndex = control.types.findIndex(t => control.value.type === t)
       if (typeIndex !== -1) {
@@ -113,23 +116,21 @@ export default function ControlDrawerView (props: {
       )}
       <div className='control-drawer__footer'>
         <div className='control-drawer__footer-start'>
-          {control.writable && (
-            <SelectView
-              elements={selectElements}
-              value={selectValue}
-              valueLabel={selectLabel}
-              onChange={onSelectChange}
-              modifiers={showValue ? ['meta'] : []}
-            />
-          )}
-          {!control.writable && (
-            <ButtonView
-              disabled
-              modifiers={['meta']}
-            >
-              {labelType(control.value.type) + ' (read only)'}
-            </ButtonView>
-          )}
+          {(control.writable && choicesCount > 1)
+            ? (
+              <SelectView
+                elements={selectElements}
+                value={selectValue}
+                valueLabel={selectLabel}
+                onChange={onSelectChange}
+                modifiers={showValue ? ['meta'] : []}
+              />
+              )
+            : (
+              <ButtonView disabled modifiers={['meta']}>
+                {labelType(control.value.type) + (!control.writable ? ' (read only)' : '')}
+              </ButtonView>
+              )}
         </div>
         <div className='control-drawer__footer-end'>
           <ButtonView
