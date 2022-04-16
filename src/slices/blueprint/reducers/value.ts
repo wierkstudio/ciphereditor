@@ -54,7 +54,7 @@ export const resolveImplicitTypedValue = (
   }
   switch (typeof implicitValue) {
     case 'object':
-      return implicitValue
+      return implicitValue as TypedValue
     case 'boolean':
       return { type: 'boolean', data: implicitValue }
     case 'number':
