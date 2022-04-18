@@ -4,8 +4,8 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { OperationNode, OperationState } from '../types/operation'
-import { TypedValue } from '../types/value'
+import { ControlNode } from '../types/control'
+import { OperationIssue, OperationNode, OperationRequest, OperationState } from '../types/operation'
 import { getNode, hasNode } from './blueprint'
 import { getControlNode, getNodeControlValues } from './control'
 
@@ -27,20 +27,14 @@ export const getBusyOperationIds = (state: BlueprintState): number[] =>
   state.busyOperationIds
 
 /**
- * Gather the data required to execute an operation.
- * @returns A task object or undefined if the specified node does not exist or
- * if there is no task available for it
+ * Compose the current open operation request for the given operation node
+ * @returns An operation request or undefined if the specified node does not
+ * exist or if there is no open request available for it
  */
-export const getOperationTask = (state: BlueprintState, operationId: BlueprintNodeId): {
-  operation: OperationNode
-  version: number
-  bundleUrl: string
-  moduleId: string
-  priorityControlNames: string[]
-  namedControlValues: {
-    [name: string]: TypedValue
-  }
-} | undefined => {
+export const getOpenOperationRequest = (
+  state: BlueprintState,
+  operationId: BlueprintNodeId
+): OperationRequest | undefined => {
   if (!hasNode(state, operationId)) {
     return undefined
   }
@@ -48,13 +42,35 @@ export const getOperationTask = (state: BlueprintState, operationId: BlueprintNo
   if (operation.state !== OperationState.Busy) {
     return undefined
   }
-  return {
-    operation,
-    version: operation.taskVersion ?? 0,
-    bundleUrl: operation.bundleUrl,
-    moduleId: operation.moduleId,
-    priorityControlNames:
-      operation.priorityControlIds.map(id => getControlNode(state, id).name),
-    namedControlValues: getNodeControlValues(state, operation.id)
+
+  const values = getNodeControlValues(state, operation.id)
+  const controlPriorities =
+    operation.priorityControlIds
+      .map(id => getControlNode(state, id).name)
+
+  return { values, controlPriorities }
+}
+
+/**
+ * Return operation issues referencing the given node.
+ */
+export const getOperationIssues = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): OperationIssue[] => {
+  const node = getNode(state, nodeId)
+  let control: ControlNode, parentNode
+  switch (node.type) {
+    // TODO: Include programs here
+    case BlueprintNodeType.Operation:
+      return (node as OperationNode).issues
+    case BlueprintNodeType.Control:
+      control = node as ControlNode
+      parentNode = getNode(state, node.parentId)
+      if (parentNode.type === BlueprintNodeType.Operation) {
+        const operationIssues = getOperationIssues(state, parentNode.id)
+        return operationIssues.filter(issue => issue.controlName === control.name)
+      }
   }
+  return []
 }

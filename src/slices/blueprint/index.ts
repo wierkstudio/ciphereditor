@@ -8,11 +8,11 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
-import { ControlChange, ControlChangeSource, ControlViewState, NamedControlChanges } from './types/control'
-import { Operation, operationSchema, OperationState } from './types/operation'
+import { ControlChange, ControlChangeSource, ControlViewState } from './types/control'
+import { Operation, OperationRequest, OperationResult, operationSchema, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
-import { addOperationNode, setOperationState } from './reducers/operation'
+import { addOperationNode, retryOperation, setOperationState } from './reducers/operation'
 import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
@@ -159,40 +159,45 @@ export const blueprintSlice = createSlice({
     },
 
     /**
-     * Apply an operation task result to the blueprint.
+     * Apply an operation result to the blueprint.
      */
-    applyOperationTaskResultAction: (state, { payload }: PayloadAction<{
+    applyOperationResultAction: (state, { payload }: PayloadAction<{
       operationId: BlueprintNodeId
-      taskVersion: number
-      controlChanges: NamedControlChanges
-      error?: string
+      requestVersion: number
+      request: OperationRequest
+      result: OperationResult
     }>) => {
-      const { operationId, taskVersion, controlChanges, error } = payload
+      const { operationId, requestVersion, result } = payload
       if (!hasNode(state, operationId)) {
         // Operation node has been removed while being busy
         return
       }
+
       const operation = getOperationNode(state, operationId)
-      if (operation.taskVersion !== taskVersion) {
-        // A task version mismatch implies that the control values have changed
-        // while completing the operation task; It needs to be redone
-        console.log('Operation task needs to be redone')
+      if (operation.requestVersion !== requestVersion) {
+        // A request version mismatch implies that the control values have
+        // changed while processing the operation request.
+        // The processor middleware will check wether the operation stays busy
+        // and if so, handle the new request from scratch.
         return
       }
-      if (error === undefined || error === null) {
-        console.log('Operation task completed', controlChanges)
+
+      // A result bearing no issues of type 'error' is considered successful
+      const success = result.issues?.find(issue => issue.type === 'error') === undefined
+      if (success) {
         const namedControls = getNodeNamedControls(state, operationId)
-        controlChanges.forEach(change => {
-          const control = namedControls[change.name]
-          // TODO: Validate wether control exists and is enabled and handle it
-          // TODO: Validate change set
-          changeControl(state, control.id, change, ControlChangeSource.Parent)
-        })
-        setOperationState(state, operation, OperationState.Ready)
+        result.changes?.forEach(change => changeControl(
+          state, namedControls[change.name].id, change, ControlChangeSource.Parent))
+        setOperationState(state, operation.id, OperationState.Ready, result.issues)
       } else {
-        console.error('Operation task failed', error)
-        setOperationState(state, operation, OperationState.Failed)
+        setOperationState(state, operation.id, OperationState.Error, result.issues)
       }
+    },
+
+    retryOperationAction: (state, { payload }: PayloadAction<{
+      nodeId: BlueprintNodeId
+    }>) => {
+      retryOperation(state, payload.nodeId)
     },
 
     /**
@@ -273,7 +278,8 @@ export const {
   detachControlFromVariableAction,
   toggleControlViewState,
   addVariableFromControlAction,
-  applyOperationTaskResultAction,
+  applyOperationResultAction,
+  retryOperationAction,
   selectNodeAction,
   removeNodeAction,
   moveNodeAction,
@@ -298,7 +304,7 @@ export default undoable(blueprintSlice.reducer, {
   ]),
   groupBy: (action, currentState, previousHistory) => {
     const currentGroup = previousHistory.group as number | string
-    if (action.type === applyOperationTaskResultAction.type) {
+    if (action.type === applyOperationResultAction.type) {
       // Group incoming operation results with the previous state as they are
       // automatic and should not be performed again when doing undo/redo
       return currentGroup

@@ -133,10 +133,10 @@ export const changeControl = (
       operation = parent as OperationNode
       if (source !== ControlChangeSource.Parent) {
         // Change is not originating from the operation, so mark it busy
-        setOperationState(state, operation, OperationState.Busy)
-        // Increment the task version every time a control changes
-        if (operation.taskVersion !== undefined) {
-          operation.taskVersion += 1
+        setOperationState(state, operation.id, OperationState.Busy)
+        // Increment the request version every time a control changes
+        if (operation.requestVersion !== undefined) {
+          operation.requestVersion += 1
         }
         // Move the control id that was changed last to the head
         operation.priorityControlIds =

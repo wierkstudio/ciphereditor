@@ -13,26 +13,54 @@
   &__header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: rem(12 - 1) rem(8) rem(12 - 1) rem(8);
     line-height: 0;
-    background: $c-primary;
-    color: $c-background;
+    color: $c-primary;
     cursor: grab;
   }
 
-  &__icon {
-    padding-left: rem(16);
+  &__header-start,
+  &__header-end {
+    display: flex;
+    align-items: center;
+  }
 
-    svg {
-      margin: 0 rem(-4);
-      fill: currentColor;
-    }
+  &__pill {
+    display: flex;
+    align-items: center;
+    padding: rem(4);
+    line-height: 0;
+    border-radius: rem(4);
+    color: $c-background;
+    background: $c-primary;
+  }
+
+  &--error &__pill {
+    color: $c-background;
+    background: $c-danger;
+  }
+
+  &__pill:hover {
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
+  }
+
+  &__pill:focus-visible {
+    color: $c-control-hover-color;
+    background: $c-control-hover-background;
+  }
+
+  &__pill:active {
+    color: $c-control-active-color;
+    background: $c-control-active-background;
   }
 
   &__label {
+    padding: 0 rem(4);
     flex-grow: 1;
     flex-basis: 0;
     @extend %t-h3;
-    padding: rem(16 - 1) rem(40) rem(16 - 1) rem(8);
   }
 
   &__control,

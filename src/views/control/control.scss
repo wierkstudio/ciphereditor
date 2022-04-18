@@ -17,10 +17,10 @@
     height: rem(48 - 2);
   }
 
-  &__header-toggle {
+  &__toggle {
     display: flex;
     position: relative;
-    padding: rem(8 - 1) 0 rem(8 - 1) rem(12);
+    padding: rem(8 - 1) 0 rem(8 - 1) rem(8);
     flex-grow: 1;
     flex-basis: 0;
     line-height: 0;
@@ -42,46 +42,53 @@
     }
   }
 
-  &__header-pill {
+  &__pill {
     display: flex;
     flex-direction: row;
-    padding: rem(4) 0;
-    margin: 0 rem(8) 0 rem(-4);
+    padding: rem(4) rem(4) rem(4) 0;
+    margin: 0 rem(8) 0 0;
     border-radius: rem(4);
     color: $c-control-default-color;
     background: $c-control-default-background;
   }
 
-  &__header-toggle:hover &__header-pill {
+  &__toggle:hover &__pill {
     color: $c-control-hover-color;
     background: $c-control-hover-background;
   }
 
-  &__header-toggle:focus-visible &__header-pill {
+  &__toggle:focus-visible &__pill {
     color: $c-control-hover-color;
     background: $c-control-hover-background;
   }
 
-  &__header-toggle:active &__header-pill {
+  &__toggle:active &__pill {
     color: $c-control-active-color;
     background: $c-control-active-background;
   }
 
-  &__header-chevron {
+  &__chevron {
     transform: rotate(-90deg);
   }
 
-  &--expanded &__header-chevron {
+  &--expanded &__chevron {
     transform: none;
   }
 
-  &__header-name {
+  &__name {
     display: inline;
-    padding: 0 rem(8) 0 0;
+    padding-right: rem(4);
     @extend %t-label;
   }
 
-  &__header-preview {
+  &__issue {
+
+    &--error {
+      color: $c-danger;
+    }
+  }
+
+  &__preview {
     position: relative;
     display: inline-block;
     @extend %t-value;

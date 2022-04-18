@@ -8,10 +8,12 @@ import OutletView from 'views/outlet/outlet'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useClassName from 'hooks/useClassName'
+import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
 import { MouseEvent, useCallback } from 'react'
 import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
+import { getOperationIssues } from 'slices/blueprint/selectors/operation'
 import { toggleControlViewState } from 'slices/blueprint'
 
 export default function ControlView (props: {
@@ -25,6 +27,9 @@ export default function ControlView (props: {
   const valuePreview = useBlueprintSelector(state =>
     getControlPreview(state, controlId))
 
+  const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
+  const highestIssueType = useHighestIssueType(issues)
+
   const dispatch = useAppDispatch()
   const onToggleClick = useCallback((event: MouseEvent) => {
     dispatch(toggleControlViewState({ controlId }))
@@ -35,17 +40,30 @@ export default function ControlView (props: {
   return (
     <div className={useClassName('control', modifiers)}>
       <div className='control__header'>
-        <MovableButtonView className='control__header-toggle' onClick={onToggleClick}>
-          <div className='control__header-pill'>
-            <div className='control__header-chevron'>
+        <MovableButtonView
+          className='control__toggle'
+          onClick={onToggleClick}
+          title={issues.map(i =>
+            i.message + (i.description !== undefined ? ': ' + i.description : '')
+          ).join('; ')}
+        >
+          <div className='control__pill'>
+            <div className='control__chevron'>
               <IconView icon='chevronDown' />
             </div>
-            <h4 className='control__header-name'>
+            <h4 className='control__name'>
               {control.label}
             </h4>
+            {highestIssueType !== undefined && (
+              <div className={'control__issue control__issue--' + highestIssueType}>
+                <IconView
+                  icon={highestIssueType}
+                />
+              </div>
+            )}
           </div>
           {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
-            <div className='control__header-preview'>
+            <div className='control__preview'>
               <ChangingTextView>{valuePreview}</ChangingTextView>
             </div>
           )}

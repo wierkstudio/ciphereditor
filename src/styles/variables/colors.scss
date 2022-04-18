@@ -4,6 +4,7 @@ $themes: (
   dark: (
     primary: #169aed,
     secondary: #014da8,
+    danger: #ed3c15,
     muted: #040d21,
     line: #19253c,
     text: #ffffff,
@@ -13,6 +14,7 @@ $themes: (
   light: (
     primary: #169aed,
     secondary: #014da8,
+    danger: #ed3c15,
     muted: #f2f4f6,
     line: #cfd9e3,
     text: #002f6d,
@@ -24,6 +26,7 @@ $themes: (
 // Theme color variables to be used throughout the code
 $c-primary: var(--c-primary);
 $c-secondary: var(--c-secondary);
+$c-danger: var(--c-danger);
 $c-muted: var(--c-muted);
 $c-line: var(--c-line);
 $c-text: var(--c-text);
