@@ -23,12 +23,12 @@ export default function MovableNodeView (props: {
     dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
   }
 
-  const { onMouseDown } = useDragMove(x, y, onDragMove)
+  const { onPointerDown } = useDragMove(x, y, onDragMove)
 
   return (
     <div
       className={useClassName('movable-node', isSelected ? ['selected'] : [])}
-      onMouseDown={onMouseDown}
+      onPointerDown={onPointerDown}
       style={{ transform: `translate(${x}px, ${y}px)` }}
     >
       <NodeView nodeId={nodeId} contextProgramId={contextProgramId} />

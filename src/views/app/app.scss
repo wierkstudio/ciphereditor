@@ -5,10 +5,13 @@
   position: relative;
   width: 100vw;
   height: 100vh;
+  width: 100dvw;
+  height: 100dvh;
   filter: blur(0rem);
   transition-property: filter;
   transition-duration: 0.3s;
   transition-timing-function: ease;
+  user-select: none;
 
   &__header {
     padding: rem(24);

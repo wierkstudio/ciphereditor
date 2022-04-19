@@ -73,6 +73,8 @@ export default function InputTextView (props: {
         tabIndex={0}
         onChange={onInternalChange}
         spellCheck={false}
+        autoComplete='off'
+        autoCorrect='off'
         rows={1}
         {...textareaProps}
       />

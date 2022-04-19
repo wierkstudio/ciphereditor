@@ -9,6 +9,7 @@
     border-radius: rem(4);
     @extend %t-value;
     outline: none;
+    user-select: auto;
 
     &:hover,
     &:focus {

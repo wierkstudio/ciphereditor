@@ -102,7 +102,7 @@ export default function ControlDrawerView (props: {
   return (
     <div
       className='control-drawer'
-      onMouseDown={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
     >
       {showValue && (
         <div className='control-drawer__value'>

@@ -1,71 +1,81 @@
 
-import {
-  MouseEvent as ReactMouseMove,
-  useEffect,
-  useState
-} from 'react'
-
-type MovableButtonViewProps = React.ComponentPropsWithoutRef<'button'>
-
-enum MovableButtonState {
-  MouseUp,
-  MouseDown,
-  MouseMove,
-}
+import { PointerEvent as ReactPointerEvent, useEffect, useState } from 'react'
+import { euclideanDistance } from 'utils/math'
+import { passiveListenerOptions } from 'utils/dom'
 
 /**
- * Native HTMLButtonElement that can both be clicked and dragged.
+ * Internal drag recognition states
+ * - `undefined` for the initial state (pointer is up)
+ * - Object bearing the start pointer coordinates (pointer is down/moving)
+ * - `true` when the 'drag' gesture is assumed
  */
-export default function MovableButtonView (props: MovableButtonViewProps): JSX.Element {
-  const { onClick, onMouseUp, onMouseDown, ...buttonProps } = props
+type DragRecognitionState = undefined | { startX: number, startY: number } | true
 
-  const [state, setState] = useState(MovableButtonState.MouseUp)
+/**
+ * Minimum move distance before a 'drag' gesture is assumed
+ */
+const minDragMoveDistance = 8.0
 
-  const onInternMouseDown = (event: ReactMouseMove<HTMLButtonElement>): void => {
-    if (onMouseDown !== undefined) {
-      onMouseDown(event)
+/**
+ * Native HTMLButtonElement that can be clicked without interfering with a
+ * movable parent element.
+ */
+export default function MovableButtonView (
+  props: React.ComponentPropsWithoutRef<'button'>
+): JSX.Element {
+  const { onClick, onPointerUp, onPointerDown, ...buttonProps } = props
+  const [state, setState] = useState<DragRecognitionState>(undefined)
+
+  const onProxyPointerDown = (event: ReactPointerEvent<HTMLButtonElement>): void => {
+    if (onPointerDown !== undefined) {
+      onPointerDown(event)
     }
     if (!event.isPropagationStopped()) {
-      setState(MovableButtonState.MouseDown)
+      setState({ startX: event.clientX, startY: event.clientY })
     }
   }
 
-  const onInternClick = (event: ReactMouseMove<HTMLButtonElement>): void => {
-    if (state !== MovableButtonState.MouseMove) {
-      if (onMouseUp !== undefined) {
-        onMouseUp(event)
+  const onProxyClick = (event: ReactPointerEvent<HTMLButtonElement>): void => {
+    if (state !== true) {
+      if (onPointerUp !== undefined) {
+        onPointerUp(event)
       }
       if (onClick !== undefined) {
         onClick(event)
       }
     }
-    setState(MovableButtonState.MouseUp)
+    setState(undefined)
   }
 
-  // TODO: Allow moving by less than grid size (to make clicking easier)
   useEffect(() => {
-    const onMouseMove = (event: MouseEvent): void => {
-      if (state === MovableButtonState.MouseDown) {
-        setState(MovableButtonState.MouseMove)
+    const onMove = (event: PointerEvent): void => {
+      if (state !== undefined && state !== true) {
+        const distance = euclideanDistance(
+          state.startX, state.startY, event.clientX, event.clientY)
+        if (distance >= minDragMoveDistance) {
+          setState(true)
+        }
       }
     }
-    const listenerOptions: AddEventListenerOptions & EventListenerOptions =
-      { passive: true, once: true }
-    if (state === MovableButtonState.MouseDown) {
-      window.addEventListener('mousemove', onMouseMove, listenerOptions)
+    const registerFollowUpEvents = (): void => {
+      window.addEventListener('pointermove', onMove, passiveListenerOptions)
+    }
+    const removeFollowUpEvents = (): void => {
+      window.removeEventListener('pointermove', onMove, passiveListenerOptions)
+    }
+    if (state !== undefined && state !== true) {
+      registerFollowUpEvents()
     } else {
-      window.removeEventListener('mousemove', onMouseMove, listenerOptions)
+      removeFollowUpEvents()
     }
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove, listenerOptions)
-    }
+    return removeFollowUpEvents
   }, [state])
 
   return (
     <button
-      onMouseDown={onInternMouseDown}
-      onClick={onInternClick}
-      onMouseUp={onMouseUp}
+      onPointerDown={onProxyPointerDown}
+      onClick={onProxyClick}
+      onPointerUp={onPointerUp}
       {...buttonProps}
     />
   )

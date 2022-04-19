@@ -41,7 +41,7 @@ export default function OutletView (props: {
       <button
         className='outlet__indicator'
         tabIndex={-1}
-        onMouseDown={event => event.stopPropagation()}
+        onPointerDown={event => event.stopPropagation()}
         onClick={props.onIndicatorClick}
         ref={indicatorRef}
       >

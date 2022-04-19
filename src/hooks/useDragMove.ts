@@ -1,7 +1,14 @@
 
-import { MouseEvent as ReactMouseEvent, useCallback, useEffect, useState } from 'react'
+import {
+  PointerEvent as ReactPointerEvent,
+  useCallback,
+  useEffect,
+  useState
+} from 'react'
+import { passiveListenerOptions } from 'utils/dom'
 
 interface DragMoveState {
+  pointerId: number
   startX: number
   startY: number
   startViewportX: number
@@ -15,55 +22,68 @@ export const gridSize = 16.0
 const useDragMove = (
   x: number,
   y: number,
-  onMove: (newX: number, newY: number) => void,
+  onDragMove: (newX: number, newY: number) => void,
   inverse: boolean = false
-): { onMouseDown: (event: ReactMouseEvent) => void } => {
+): {
+    onPointerDown: (event: ReactPointerEvent) => void
+  } => {
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
 
-  const onMouseDown = useCallback((event: ReactMouseEvent) => {
-    if (event.button === 0) {
+  const onPointerDown = useCallback((event: ReactPointerEvent) => {
+    if (event.isPrimary) {
       event.stopPropagation()
       const startViewportX = event.clientX
       const startViewportY = event.clientY
-      setState({ startX: x, startY: y, startViewportX, startViewportY })
+      setState({
+        pointerId: event.pointerId,
+        startX: x,
+        startY: y,
+        startViewportX,
+        startViewportY
+      })
     }
   }, [setState, x, y])
 
   useEffect(() => {
-    const onMouseMove = (event: MouseEvent): void => {
-      if (state !== undefined) {
-        const newX = state.startX + (inverse ? -1 : 1) * Math.round((event.clientX - state.startViewportX) / gridSize) * gridSize
-        const newY = state.startY + (inverse ? -1 : 1) * Math.round((event.clientY - state.startViewportY) / gridSize) * gridSize
+    const onMove = (event: PointerEvent): void => {
+      if (state?.pointerId === event.pointerId) {
+        const clientX: number = event.clientX
+        const clientY: number = event.clientY
+        const newX = state.startX + (inverse ? -1 : 1) * Math.round((clientX - state.startViewportX) / gridSize) * gridSize
+        const newY = state.startY + (inverse ? -1 : 1) * Math.round((clientY - state.startViewportY) / gridSize) * gridSize
         if (newX !== x || newY !== y) {
-          onMove(newX, newY)
+          onDragMove(newX, newY)
           // TODO: Optimize this call
           document.body.classList.add('body-grabbing')
         }
       }
     }
-    const onMouseUp = (event: MouseEvent): void => {
-      if (state !== undefined) {
+    const onEnd = (event: PointerEvent): void => {
+      if (state?.pointerId === event.pointerId) {
         event.preventDefault()
         setState(undefined)
         document.body.classList.remove('body-grabbing')
       }
     }
-    const listenerOptions: AddEventListenerOptions & EventListenerOptions =
-      { passive: true }
+    const registerFollowUpEvents = (): void => {
+      window.addEventListener('pointermove', onMove, passiveListenerOptions)
+      window.addEventListener('pointerup', onEnd)
+      window.addEventListener('pointercancel', onEnd)
+    }
+    const removeFollowUpEvents = (): void => {
+      window.removeEventListener('pointermove', onMove, passiveListenerOptions)
+      window.removeEventListener('pointerup', onEnd)
+      window.removeEventListener('pointercancel', onEnd)
+    }
     if (state !== undefined) {
-      window.addEventListener('mousemove', onMouseMove, listenerOptions)
-      window.addEventListener('mouseup', onMouseUp)
+      registerFollowUpEvents()
     } else {
-      window.removeEventListener('mousemove', onMouseMove, listenerOptions)
-      window.removeEventListener('mouseup', onMouseUp)
+      removeFollowUpEvents()
     }
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove, listenerOptions)
-      window.removeEventListener('mouseup', onMouseUp)
-    }
-  }, [x, y, onMove, inverse, state, setState])
+    return removeFollowUpEvents
+  }, [x, y, onDragMove, inverse, state, setState])
 
-  return { onMouseDown }
+  return { onPointerDown }
 }
 
 export default useDragMove

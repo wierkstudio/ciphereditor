@@ -38,7 +38,7 @@ export default function SelectView (props: {
   return (
     <div
       className={useClassName('select', props.modifiers)}
-      onMouseDown={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
     >
       <select
         className='select__control'
