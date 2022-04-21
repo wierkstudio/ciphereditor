@@ -9,6 +9,16 @@ Your online playground for all things encryption, encoding, conversion and data.
 
 If you consider contributing to this project, [please read this first](CONTRIBUTING.md).
 
+## Acknowledgements
+
+### Use of Iconic Pro icons
+
+We use [Iconic Pro](https://iconic.app) icons in this project.
+
+Copyright (c) Iconic
+
+Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source and binary forms, with or without modification, is allowed if you own an Iconic Pro license.
+
 ---
 
-This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/cryptii-app/cryptii-app/graphs/contributors)
+This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/cryptii-app/cryptii-app/graphs/contributors).

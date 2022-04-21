@@ -3,6 +3,11 @@
 
 First off, thanks for taking the time to contribute!
 
+## Technical Assumptions & Constraints
+
+- Use functional style React components with hooks over React component classes.
+- Use [Pointer events](https://developer.mozilla.org/en-US/docs/web/api/pointer_events) instead of mouse or touch specific events.
+
 ## Styleguides
 
 ### Naming Conventions
@@ -25,6 +30,10 @@ First off, thanks for taking the time to contribute!
 ### JavaScript Styleguide
 
 All JavaScript, JSX and TypeScript must adhere to the [Standard Style](https://standardjs.com/).
+
+## Work amenities
+
+Wearing nice sneakers while coding is not a requirement but it is very much appreciated.
 
 ## License
 
