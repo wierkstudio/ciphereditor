@@ -1,11 +1,18 @@
 
+import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+
 /**
  * UI state
  */
 export interface UIState {
   canvasState: UICanvasState
-  canvasX: number
-  canvasY: number
+  canvasOffsetX: number
+  canvasOffsetY: number
+  canvasWidth: number
+  canvasHeight: number
+
+  wireDraft?: UIWireDraft
+
   modalStack: ModalState[]
 }
 
@@ -19,6 +26,15 @@ export enum UICanvasState {
   Wire,
   Drop,
   Modal,
+}
+
+/**
+ * Wire draft
+ */
+export interface UIWireDraft {
+  sourceControlId: BlueprintNodeId
+  targetViewportPosition?: { x: number, y: number }
+  targetControlId?: BlueprintNodeId
 }
 
 /**

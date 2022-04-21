@@ -13,7 +13,7 @@ import { Operation, OperationRequest, OperationResult, operationSchema, Operatio
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, retryOperation, setOperationState } from './reducers/operation'
-import { attachControlToVariable, detachControlFromVariable } from './reducers/variable'
+import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
@@ -85,7 +85,6 @@ export const blueprintSlice = createSlice({
       if (targetNodeId !== undefined) {
         state.activeProgramId = targetNodeId
         state.selectedNodeId = undefined
-        state.linkControlId = undefined
       }
     },
 
@@ -96,7 +95,6 @@ export const blueprintSlice = createSlice({
       if (state.activeProgramId !== undefined && state.activeProgramId !== state.rootProgramId) {
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
         state.selectedNodeId = undefined
-        state.linkControlId = undefined
       }
     },
 
@@ -146,6 +144,14 @@ export const blueprintSlice = createSlice({
       programId: BlueprintNodeId
     }>) => {
       addVariableFromControl(state, payload.controlId, payload.programId)
+    },
+
+    attachControlsAction: (state, { payload }: PayloadAction<{
+      sourceControlId: BlueprintNodeId
+      targetControlId: BlueprintNodeId
+      contextProgramId: BlueprintNodeId
+    }>) => {
+      attachControls(state, payload.sourceControlId, payload.targetControlId, payload.contextProgramId)
     },
 
     /**
@@ -278,6 +284,7 @@ export const {
   detachControlFromVariableAction,
   toggleControlViewState,
   addVariableFromControlAction,
+  attachControlsAction,
   applyOperationResultAction,
   retryOperationAction,
   selectNodeAction,

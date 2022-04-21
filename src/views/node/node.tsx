@@ -35,8 +35,8 @@ export default function NodeView (props: {
   })
 
   const nodeRef = useRef<HTMLDivElement>(null)
-  const outletRefs = useRef<{ [controlId: string]: HTMLButtonElement | null }>({})
-  const onOutletRef = useCallback((controlId: number, element: HTMLButtonElement | null) => {
+  const outletRefs = useRef<{ [controlId: string]: HTMLDivElement | null }>({})
+  const onOutletRef = useCallback((controlId: number, element: HTMLDivElement | null) => {
     if (element !== null) {
       outletRefs.current[controlId] = element
     } else {

@@ -6,22 +6,27 @@ import IconView from 'views/icon/icon'
 import MovableButtonView from 'views/movable-button/movable-button'
 import OutletView from 'views/outlet/outlet'
 import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
+import useClassName, { mergeModifiers, ViewModifiers } from 'hooks/useClassName'
 import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
-import { MouseEvent, useCallback } from 'react'
-import { getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
+import { MouseEvent, useCallback, useEffect, useRef } from 'react'
+import { canWireBetweenControls, getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { getOperationIssues } from 'slices/blueprint/selectors/operation'
+import { getWireDraft } from 'slices/ui/selectors'
+import { targetWireAction } from 'slices/ui'
 import { toggleControlViewState } from 'slices/blueprint'
 
 export default function ControlView (props: {
   controlId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
-  onOutletRef?: (controlId: number, element: HTMLButtonElement | null) => void
+  onOutletRef?: (controlId: number, element: HTMLDivElement | null) => void
 }): JSX.Element {
   const { controlId, contextProgramId, onOutletRef } = props
+
+  const headerRef = useRef<HTMLDivElement | null>(null)
 
   const control = useBlueprintSelector(state => getControlNode(state, controlId))
   const valuePreview = useBlueprintSelector(state =>
@@ -30,16 +35,59 @@ export default function ControlView (props: {
   const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
   const highestIssueType = useHighestIssueType(issues)
 
+  const isWireTarget = useAppSelector(state => getWireDraft(state.ui)?.targetControlId === controlId)
+  const isPossibleWireTarget = useAppSelector(state => {
+    if (state.ui.wireDraft === undefined) {
+      return false
+    }
+    return canWireBetweenControls(
+      state.blueprint.present,
+      state.ui.wireDraft.sourceControlId,
+      controlId
+    )
+  })
+
   const dispatch = useAppDispatch()
   const onToggleClick = useCallback((event: MouseEvent) => {
     dispatch(toggleControlViewState({ controlId }))
   }, [dispatch, controlId])
 
-  const modifiers = control.viewState === ControlViewState.Expanded ? ['expanded'] : []
+  useEffect(() => {
+    const onEnter = (): void => {
+      dispatch(targetWireAction({ controlId: controlId }))
+    }
+    const onLeave = (): void => {
+      dispatch(targetWireAction({ controlId: undefined }))
+    }
+    const registerWireEvents = (): void => {
+      if (headerRef.current !== null) {
+        headerRef.current.addEventListener('pointerenter', onEnter)
+        headerRef.current.addEventListener('pointerleave', onLeave)
+      }
+    }
+    const removeWireEvents = (): void => {
+      if (headerRef.current !== null) {
+        window.removeEventListener('pointerenter', onEnter)
+        window.removeEventListener('pointerleave', onLeave)
+      }
+    }
+    if (isPossibleWireTarget) {
+      registerWireEvents()
+    } else {
+      removeWireEvents()
+    }
+    return removeWireEvents
+  }, [dispatch, headerRef, isPossibleWireTarget, controlId])
+
+  let modifiers: ViewModifiers = control.viewState === ControlViewState.Expanded ? ['expanded'] : []
+
+  if (isWireTarget) {
+    modifiers = mergeModifiers(modifiers, ['wire-target'])
+  }
 
   return (
     <div className={useClassName('control', modifiers)}>
-      <div className='control__header'>
+      <div className='control__header' ref={headerRef}>
         <MovableButtonView
           className='control__toggle'
           onClick={onToggleClick}

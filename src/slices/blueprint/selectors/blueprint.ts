@@ -27,6 +27,12 @@ export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType
 }
 
 /**
+ * Find a node by the given id or return undefined.
+ */
+export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | undefined): BlueprintNode | undefined =>
+  id !== undefined ? state.nodes[id] : undefined
+
+/**
  * Check for the existence of a node with the given id
  */
 export const hasNode = (state: BlueprintState, id: BlueprintNodeId): boolean =>

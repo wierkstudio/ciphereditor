@@ -10,7 +10,7 @@ import { VariableNode } from '../types/variable'
 import { mapNamedObjects } from 'utils/map'
 import { isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'
-import { getProgramVariables, getVariableValue } from './variable'
+import { getProgramVariables, getVariableControl } from './variable'
 
 /**
  * Find a control node by the given node id.
@@ -47,10 +47,31 @@ export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNod
 }
 
 /**
- * Get the control node currently marked as linked.
+ * Get the given control's outlet position on canvas
  */
-export const getLinkControl = (state: BlueprintState): ControlNode | undefined =>
-  state.linkControlId !== undefined ? getControlNode(state, state.linkControlId) : undefined
+export const getOutletPosition = (
+  state: BlueprintState,
+  controlId: BlueprintNodeId,
+  contextProgramId: BlueprintNodeId | undefined
+): { x: number, y: number } | undefined => {
+  const control = getControlNode(state, controlId)
+  const node =
+    control.parentId === contextProgramId
+      ? control
+      : getNode(state, control.parentId)
+  if (
+    node.x !== undefined &&
+    node.y !== undefined &&
+    control.nodeOutletX !== undefined &&
+    control.nodeOutletY !== undefined
+  ) {
+    return {
+      x: node.x + control.nodeOutletX,
+      y: node.y + control.nodeOutletY
+    }
+  }
+  return undefined
+}
 
 /**
  * For the given control and program context decide wether the intern control
@@ -77,7 +98,6 @@ export const getControlVariableOptions = (
   pushOptions: VariableNode[]
   pullOptions: VariableNode[]
 } => {
-  const control = getControlNode(state, controlId)
   const variables = getProgramVariables(state, programId)
 
   const pushOptions: VariableNode[] = []
@@ -85,20 +105,48 @@ export const getControlVariableOptions = (
 
   for (let i = 0; i < variables.length; i++) {
     const variable = variables[i]
-    const variableValue = getVariableValue(state, variable.id)
+    const targetControl = getVariableControl(state, variable.id)
 
-    // For the user to be able to pull from a variable, the variable's value
-    // type needs to be among the control types
-    if (control.writable && isTypeWithinTypes(variableValue.type, control.types)) {
+    if (canWireBetweenControls(state, controlId, targetControl.id)) {
       pullOptions.push(variable)
     }
 
-    // A user may always push to a variable
-    // TODO: Make sure the variable is not already connected with the operation
-    pushOptions.push(variable)
+    if (!canWireBetweenControls(state, targetControl.id, controlId)) {
+      pushOptions.push(variable)
+    }
   }
 
   return { pushOptions, pullOptions }
+}
+
+/**
+ * Return wether a wire can be placed between a source and a target control.
+ */
+export const canWireBetweenControls = (
+  state: BlueprintState,
+  sourceControlId: BlueprintNodeId,
+  targetControlId: BlueprintNodeId
+): boolean => {
+  const sourceControl = getControlNode(state, sourceControlId)
+  const targetControl = getControlNode(state, targetControlId)
+
+  // TODO: Make sure the variable is not already connected with the operation
+
+  if (sourceControl.id === targetControl.id) {
+    return false
+  }
+
+  // Check if target is writable
+  if (!targetControl.writable) {
+    return false
+  }
+
+  // Check if source value type is within the value types supported by the target
+  if (!isTypeWithinTypes(sourceControl.value.type, targetControl.types)) {
+    return false
+  }
+
+  return true
 }
 
 /**

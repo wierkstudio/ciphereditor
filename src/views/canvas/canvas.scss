@@ -12,8 +12,17 @@
 
   &__content {
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 0;
+    left: 0;
     transform: translate(0px, 0px);
+  }
+
+  &__wire-draft {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
   }
 }

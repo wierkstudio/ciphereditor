@@ -1,0 +1,11 @@
+
+@import 'styles/shared';
+
+.wire-draft {
+  color: $c-primary;
+
+  path {
+    stroke: currentColor;
+    stroke-width: rem(2);
+  }
+}

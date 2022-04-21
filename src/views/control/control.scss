@@ -15,6 +15,11 @@
     align-items: center;
     width: 100%;
     height: rem(48 - 2);
+    border-radius: rem(8);
+  }
+
+  &--wire-target &__header {
+    background: $c-control-hover-background;
   }
 
   &__toggle {
@@ -42,6 +47,11 @@
     }
   }
 
+  &--wire-target &__toggle::after {
+    // TODO: Add transparent background color property
+    background: linear-gradient(to right, rgba(#19253c, 0.0), $c-control-hover-background);
+  }
+
   &__pill {
     display: flex;
     flex-direction: row;
@@ -52,7 +62,8 @@
     background: $c-control-default-background;
   }
 
-  &__toggle:hover &__pill {
+  &__toggle:hover &__pill,
+  &--wire-target &__pill {
     color: $c-control-hover-color;
     background: $c-control-hover-background;
   }

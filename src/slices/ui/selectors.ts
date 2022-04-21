@@ -1,8 +1,14 @@
 
-import { ModalState, UIState } from './types'
+import { ModalState, UIState, UIWireDraft } from './types'
 
-export const getCanvasPosition = (state: UIState): { x: number, y: number } =>
-  ({ x: state.canvasX, y: state.canvasY })
+export const getCanvasOffset = (state: UIState): { x: number, y: number } =>
+  ({ x: state.canvasOffsetX, y: state.canvasOffsetY })
+
+export const getCanvasSize = (state: UIState): { width: number, height: number } =>
+  ({ width: state.canvasWidth, height: state.canvasHeight })
+
+export const getWireDraft = (state: UIState): UIWireDraft | undefined =>
+  state.wireDraft
 
 export const getModalStack = (state: UIState): ModalState[] =>
   state.modalStack

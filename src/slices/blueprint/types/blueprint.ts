@@ -79,11 +79,6 @@ export interface BlueprintState {
   selectedNodeId?: BlueprintNodeId
 
   /**
-   * Control node id that is marked to be linked next
-   */
-  linkControlId?: BlueprintNodeId
-
-  /**
    * Root program node id
    */
   rootProgramId: BlueprintNodeId

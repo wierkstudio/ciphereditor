@@ -118,9 +118,6 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
   if (state.selectedNodeId === nodeId) {
     state.selectedNodeId = undefined
   }
-  if (state.linkControlId === nodeId) {
-    state.linkControlId = undefined
-  }
   if (state.activeProgramId === nodeId) {
     state.activeProgramId = node.parentId
   }

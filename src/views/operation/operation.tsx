@@ -20,7 +20,7 @@ export default function OperationView (props: {
    */
   nodeId: BlueprintNodeId
   contextProgramId: BlueprintNodeId
-  onOutletRef?: (controlId: number, element: HTMLButtonElement | null) => void
+  onOutletRef?: (controlId: number, element: HTMLDivElement | null) => void
 }): JSX.Element {
   const { nodeId, contextProgramId, onOutletRef } = props
 
