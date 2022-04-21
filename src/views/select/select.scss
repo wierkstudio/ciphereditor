@@ -18,6 +18,10 @@
     color: $c-meta;
   }
 
+  &--transparent {
+    background: transparent;
+  }
+
   &:hover {
     color: $c-control-hover-color;
     background: $c-control-hover-background;

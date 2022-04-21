@@ -20,12 +20,9 @@ export interface UIState {
  * Canvas states
  */
 export enum UICanvasState {
-  Idle,
-  Hand,
-  Move,
-  Wire,
-  Drop,
-  Modal,
+  Idle = 'idle',
+  Wire = 'wire',
+  Modal = 'modal',
 }
 
 /**

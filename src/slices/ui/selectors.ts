@@ -1,5 +1,8 @@
 
-import { ModalState, UIState, UIWireDraft } from './types'
+import { ModalState, UICanvasState, UIState, UIWireDraft } from './types'
+
+export const getCanvasState = (state: UIState): UICanvasState =>
+  state.canvasState
 
 export const getCanvasOffset = (state: UIState): { x: number, y: number } =>
   ({ x: state.canvasOffsetX, y: state.canvasOffsetY })

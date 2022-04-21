@@ -3,7 +3,7 @@ import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blu
 import { ControlChangeSource } from '../types/control'
 import { VariableNode } from '../types/variable'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
-import { getControlNode } from '../selectors/control'
+import { canAttachControls, getControlNode } from '../selectors/control'
 import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 import { addNode, nextNodeId, removeNode } from './blueprint'
 import { changeControl } from './control'
@@ -37,19 +37,19 @@ export const attachControls = (
   state: BlueprintState,
   sourceControlId: BlueprintNodeId,
   targetControlId: BlueprintNodeId,
-  programId: BlueprintNodeId
+  contextProgramId: BlueprintNodeId
 ): void => {
   const sourceControl = getControlNode(state, sourceControlId)
   const targetControl = getControlNode(state, targetControlId)
 
-  // Prevent linking controls from the same parent operation or program
-  if (sourceControl.parentId === targetControl.parentId) {
+  // Check if attachment is available
+  if (!canAttachControls(state, sourceControlId, targetControlId, contextProgramId)) {
     return
   }
 
   // Retrieve attached variables
-  let sourceVariable = getControlVariable(state, sourceControl.id, programId)
-  let targetVariable = getControlVariable(state, targetControl.id, programId)
+  let sourceVariable = getControlVariable(state, sourceControl.id, contextProgramId)
+  let targetVariable = getControlVariable(state, targetControl.id, contextProgramId)
 
   // If both controls are already linked up, there's nothing to be done
   if (sourceVariable !== undefined && sourceVariable.id === targetVariable?.id) {
@@ -61,7 +61,7 @@ export const attachControls = (
   if (sourceVariable === undefined && targetVariable === undefined) {
     // 1. Both controls are not attached to any variable
     // Create a new variable and attach both controls to it
-    sourceVariable = addVariable(state, programId, sourceControl.id)
+    sourceVariable = addVariable(state, contextProgramId, sourceControl.id)
     attachControlToVariable(state, targetControl.id, sourceVariable.id)
   } else if (sourceVariable !== undefined && targetVariable !== undefined) {
     // 2. Both controls are already attached to a variable each
@@ -77,12 +77,12 @@ export const attachControls = (
     attachControlToVariable(state, targetControl.id, sourceVariable.id)
   } else if (targetVariable !== undefined) {
     // 4. The target control is attached to a variable but the source is not
-    attachControlToVariable(state, targetControl.id, targetVariable.id)
+    attachControlToVariable(state, sourceControl.id, targetVariable.id)
     sourceVariable = targetVariable
   }
 
   // Propagate change from source within the program scope
-  propagateChange(state, sourceControl.id, programId)
+  propagateChange(state, sourceControl.id, contextProgramId)
 }
 
 /**
@@ -113,7 +113,6 @@ export const attachControlToVariable = (
   } else {
     control.attachedVariableId = variable.id
   }
-  // TODO: Prevent circular links
   // Propagate if requested
   if (propagate) {
     if (push) {

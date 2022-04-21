@@ -22,8 +22,10 @@ export default function WireDraftView (props: {
   const dispatch = useAppDispatch()
 
   // TODO: Handle source control node deletion while wiring
-  const sourceControl = useBlueprintSelector(state => getNode(state, wireDraft.sourceControlId))
-  const sourceOutletPosition = useBlueprintSelector(state => getOutletPosition(state, sourceControl.id, contextProgramId))
+  const sourceControl = useBlueprintSelector(state =>
+    getNode(state, wireDraft.sourceControlId))
+  const sourceOutletPosition = useBlueprintSelector(state =>
+    getOutletPosition(state, sourceControl.id, contextProgramId))
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   const onWireEndRef = useRef<(() => void) | null>(null)
@@ -68,6 +70,8 @@ export default function WireDraftView (props: {
       `M ${sourceOutletPosition.x - canvasOffset.x},${sourceOutletPosition.y - canvasOffset.y} ` +
       `L ${wireDraft.targetViewportPosition.x},${wireDraft.targetViewportPosition.y} `
   }
+
+  // TODO: Draw arrow cap
 
   return (
     <svg

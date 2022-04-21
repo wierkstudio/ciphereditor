@@ -8,7 +8,7 @@ import { ControlNode } from '../types/control'
 import { TypedValue } from '../types/value'
 import { VariableNode } from '../types/variable'
 import { mapNamedObjects } from 'utils/map'
-import { isTypeWithinTypes, previewValue } from '../reducers/value'
+import { equalValues, isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 
@@ -93,25 +93,26 @@ export const isControlInternVariable = (
 export const getControlVariableOptions = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId
+  contextProgramId: BlueprintNodeId
 ): {
   pushOptions: VariableNode[]
   pullOptions: VariableNode[]
 } => {
-  const variables = getProgramVariables(state, programId)
+  const variables = getProgramVariables(state, contextProgramId)
 
   const pushOptions: VariableNode[] = []
   const pullOptions: VariableNode[] = []
 
   for (let i = 0; i < variables.length; i++) {
     const variable = variables[i]
-    const targetControl = getVariableControl(state, variable.id)
+    const variableControl = getVariableControl(state, variable.id)
 
-    if (canWireBetweenControls(state, controlId, targetControl.id)) {
+    if (canAttachControls(state, variableControl.id, controlId, contextProgramId)) {
       pullOptions.push(variable)
     }
 
-    if (!canWireBetweenControls(state, targetControl.id, controlId)) {
+    if (variableControl.id === controlId ||
+        canAttachControls(state, controlId, variableControl.id, contextProgramId)) {
       pushOptions.push(variable)
     }
   }
@@ -120,19 +121,26 @@ export const getControlVariableOptions = (
 }
 
 /**
- * Return wether a wire can be placed between a source and a target control.
+ * Return wether a control can be attached to another control.
  */
-export const canWireBetweenControls = (
+export const canAttachControls = (
   state: BlueprintState,
   sourceControlId: BlueprintNodeId,
-  targetControlId: BlueprintNodeId
+  targetControlId: BlueprintNodeId,
+  contextProgramId: BlueprintNodeId
 ): boolean => {
   const sourceControl = getControlNode(state, sourceControlId)
   const targetControl = getControlNode(state, targetControlId)
 
   // TODO: Make sure the variable is not already connected with the operation
 
+  // A control can't connect to itself
   if (sourceControl.id === targetControl.id) {
+    return false
+  }
+
+  // A control can't connect to a control in the same operation
+  if (sourceControl.parentId === targetControl.parentId && sourceControl.parentId !== contextProgramId) {
     return false
   }
 
@@ -144,6 +152,13 @@ export const canWireBetweenControls = (
   // Check if source value type is within the value types supported by the target
   if (!isTypeWithinTypes(sourceControl.value.type, targetControl.types)) {
     return false
+  }
+
+  // Check if the source value is a valid choice among the target choices
+  if (targetControl.enforceChoices && targetControl.choices.length > 0) {
+    if (targetControl.choices.find(choice => equalValues(choice.value, sourceControl.value)) === undefined) {
+      return false
+    }
   }
 
   return true

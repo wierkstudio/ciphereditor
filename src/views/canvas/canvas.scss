@@ -10,11 +10,20 @@
   overflow: hidden;
   z-index: $z-index-canvas;
 
+  &--wire {
+    cursor: grabbing;
+  }
+
   &__content {
     position: absolute;
     top: 0;
     left: 0;
     transform: translate(0px, 0px);
+  }
+
+  &--wire &__content {
+    // While wiring, only enable pointer events on possible targets
+    pointer-events: none;
   }
 
   &__wire-draft {

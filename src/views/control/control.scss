@@ -18,6 +18,11 @@
     border-radius: rem(8);
   }
 
+  &--wire-targetable &__header {
+    pointer-events: all;
+    cursor: grabbing;
+  }
+
   &--wire-target &__header {
     background: $c-control-hover-background;
   }
@@ -41,10 +46,14 @@
       top: rem(4);
       right: 0;
       bottom: rem(4);
-      width: rem(12);
+      width: rem(16);
       // TODO: Add transparent background color property
       background: linear-gradient(to right, rgba(#13182C, 0.0), $c-background);
     }
+  }
+
+  &--wire-targetable &__toggle {
+    pointer-events: none;
   }
 
   &--wire-target &__toggle::after {

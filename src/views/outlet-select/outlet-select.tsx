@@ -138,7 +138,7 @@ export default function OutletSelectView (props: {
       value={selectValue}
       valueLabel={selectLabel}
       onChange={onSelectChange}
-      modifiers={['height-6', 'chevron-first'].concat(isUnused ? ['meta'] : ['primary'])}
+      modifiers={['height-6', 'chevron-first', 'transparent'].concat(isUnused ? ['meta'] : ['primary'])}
     />
   )
 }

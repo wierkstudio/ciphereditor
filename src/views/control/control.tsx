@@ -8,12 +8,12 @@ import OutletView from 'views/outlet/outlet'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName, { mergeModifiers, ViewModifiers } from 'hooks/useClassName'
+import useClassName from 'hooks/useClassName'
 import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
 import { MouseEvent, useCallback, useEffect, useRef } from 'react'
-import { canWireBetweenControls, getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
+import { canAttachControls, getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { getOperationIssues } from 'slices/blueprint/selectors/operation'
 import { getWireDraft } from 'slices/ui/selectors'
 import { targetWireAction } from 'slices/ui'
@@ -36,14 +36,15 @@ export default function ControlView (props: {
   const highestIssueType = useHighestIssueType(issues)
 
   const isWireTarget = useAppSelector(state => getWireDraft(state.ui)?.targetControlId === controlId)
-  const isPossibleWireTarget = useAppSelector(state => {
+  const isWireTargetable = useAppSelector(state => {
     if (state.ui.wireDraft === undefined) {
       return false
     }
-    return canWireBetweenControls(
+    return canAttachControls(
       state.blueprint.present,
       state.ui.wireDraft.sourceControlId,
-      controlId
+      controlId,
+      contextProgramId
     )
   })
 
@@ -67,22 +68,28 @@ export default function ControlView (props: {
     }
     const removeWireEvents = (): void => {
       if (headerRef.current !== null) {
-        window.removeEventListener('pointerenter', onEnter)
-        window.removeEventListener('pointerleave', onLeave)
+        headerRef.current.removeEventListener('pointerenter', onEnter)
+        headerRef.current.removeEventListener('pointerleave', onLeave)
       }
     }
-    if (isPossibleWireTarget) {
+    if (isWireTargetable) {
       registerWireEvents()
     } else {
       removeWireEvents()
     }
     return removeWireEvents
-  }, [dispatch, headerRef, isPossibleWireTarget, controlId])
+  }, [dispatch, headerRef, isWireTargetable, controlId])
 
-  let modifiers: ViewModifiers = control.viewState === ControlViewState.Expanded ? ['expanded'] : []
-
+  // Compose modifiers
+  const modifiers: string[] = []
+  if (control.viewState === ControlViewState.Expanded) {
+    modifiers.push('expanded')
+  }
   if (isWireTarget) {
-    modifiers = mergeModifiers(modifiers, ['wire-target'])
+    modifiers.push('wire-target')
+  }
+  if (isWireTargetable) {
+    modifiers.push('wire-targetable')
   }
 
   return (
