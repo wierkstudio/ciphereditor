@@ -12,6 +12,7 @@ import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { getWireDraft } from 'slices/ui/selectors'
 import { startWireAction } from 'slices/ui'
+import { releaseOptionalPointerCapture } from 'utils/dom'
 
 export default function OutletView (props: {
   control: ControlNode
@@ -38,13 +39,13 @@ export default function OutletView (props: {
 
   const onPointerDown = (event: ReactPointerEvent): void => {
     event.stopPropagation()
+    event.preventDefault()
+    releaseOptionalPointerCapture(event)
     dispatch(startWireAction({ controlId: control.id }))
   }
 
   return (
-    <div
-      className={useClassName('outlet', modifiers)}
-    >
+    <div className={useClassName('outlet', modifiers)}>
       {props.expanded && (
         <div className='outlet__select'>
           <OutletSelectView control={control} contextProgramId={contextProgramId} />

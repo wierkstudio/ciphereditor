@@ -54,30 +54,26 @@ export default function ControlView (props: {
   }, [dispatch, controlId])
 
   useEffect(() => {
-    const onEnter = (): void => {
-      dispatch(targetWireAction({ controlId: controlId }))
-    }
-    const onLeave = (): void => {
-      dispatch(targetWireAction({ controlId: undefined }))
-    }
-    const registerWireEvents = (): void => {
+    if (isWireTargetable) {
+      const onEnter = (): void => {
+        dispatch(targetWireAction({ controlId: controlId }))
+      }
+      const onLeave = (): void => {
+        dispatch(targetWireAction({ controlId: undefined }))
+      }
+
       if (headerRef.current !== null) {
         headerRef.current.addEventListener('pointerenter', onEnter)
         headerRef.current.addEventListener('pointerleave', onLeave)
       }
-    }
-    const removeWireEvents = (): void => {
-      if (headerRef.current !== null) {
-        headerRef.current.removeEventListener('pointerenter', onEnter)
-        headerRef.current.removeEventListener('pointerleave', onLeave)
+
+      return () => {
+        if (headerRef.current !== null) {
+          headerRef.current.removeEventListener('pointerenter', onEnter)
+          headerRef.current.removeEventListener('pointerleave', onLeave)
+        }
       }
     }
-    if (isWireTargetable) {
-      registerWireEvents()
-    } else {
-      removeWireEvents()
-    }
-    return removeWireEvents
   }, [dispatch, headerRef, isWireTargetable, controlId])
 
   // Compose modifiers

@@ -35,12 +35,12 @@ export default function NodeView (props: {
   })
 
   const nodeRef = useRef<HTMLDivElement>(null)
-  const outletRefs = useRef<{ [controlId: string]: HTMLDivElement | null }>({})
+  const outletRefs = useRef<{ [controlId: string]: HTMLDivElement | undefined }>({})
   const onOutletRef = useCallback((controlId: number, element: HTMLDivElement | null) => {
     if (element !== null) {
       outletRefs.current[controlId] = element
     } else {
-      outletRefs.current[controlId] = null
+      outletRefs.current[controlId] = undefined
     }
   }, [outletRefs])
 
@@ -67,7 +67,7 @@ export default function NodeView (props: {
 
         // Retrieve indicator element for this control
         const indicatorElement = outletRefs.current[control.id.toString()]
-        if (indicatorElement !== null) {
+        if (indicatorElement !== undefined) {
           // Measure indicator rect and calculate its relative position within
           // the operation node component
           const rect = indicatorElement.getBoundingClientRect()

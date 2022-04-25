@@ -10,7 +10,7 @@ import useClassName from 'hooks/useClassName'
 import useDragMove from 'hooks/useDragMove'
 import useWindowResizeListener from 'hooks/useWindowResizeListener'
 import { BlueprintNodeType } from 'slices/blueprint/types/blueprint'
-import { PointerEvent, useCallback } from 'react'
+import { PointerEvent, useCallback, useRef } from 'react'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasState, getWireDraft } from 'slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
@@ -55,9 +55,11 @@ export default function CanvasView (): JSX.Element {
 
   const { onPointerDown: onDragStart } = useDragMove(x, y, onDragMove, true)
 
+  const canvasRef = useRef<HTMLDivElement | null>(null)
   const onPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
+      canvasRef.current?.focus()
     }
     onDragStart(event)
   }, [hasSelectedNode, dispatch, onDragStart])
@@ -68,6 +70,8 @@ export default function CanvasView (): JSX.Element {
     <div
       className={useClassName('canvas', [canvasState])}
       onPointerDown={onPointerDown}
+      tabIndex={0}
+      ref={canvasRef}
     >
       <div
         className='canvas__content'

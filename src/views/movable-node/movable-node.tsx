@@ -7,7 +7,8 @@ import useClassName from 'hooks/useClassName'
 import useDragMove from 'hooks/useDragMove'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { getNodePosition, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { moveNodeAction } from 'slices/blueprint'
+import { moveNodeAction, selectNodeAction } from 'slices/blueprint'
+import { PointerEvent, useCallback, useRef } from 'react'
 
 export default function MovableNodeView (props: {
   nodeId: BlueprintNodeId
@@ -23,7 +24,14 @@ export default function MovableNodeView (props: {
     dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
   }
 
-  const { onPointerDown } = useDragMove(x, y, onDragMove)
+  const { onPointerDown: onDragStart } = useDragMove(x, y, onDragMove)
+
+  const onPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
+    if (!isSelected) {
+      dispatch(selectNodeAction({ nodeId }))
+    }
+    onDragStart(event)
+  }, [isSelected, dispatch, onDragStart])
 
   return (
     <div

@@ -10,6 +10,11 @@
   overflow: hidden;
   z-index: $z-index-canvas;
 
+  // This is generally bad for accessibility but improves the overall touch
+  // experience. We hope to compensate the disabling of the zoom gestures by
+  // providing a scaling option in the app settings.
+  touch-action: none;
+
   &--wire {
     cursor: grabbing;
   }

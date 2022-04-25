@@ -6,6 +6,11 @@
   align-items: center;
   color: $c-meta;
 
+  &--push,
+  &--pull {
+    color: $c-primary;
+  }
+
   &__select {
     margin-right: rem(-2);
   }
@@ -14,10 +19,5 @@
     padding: rem(8) rem(8) rem(8) 0;
     line-height: 0;
     cursor: grab;
-  }
-
-  &--push,
-  &--pull {
-    color: $c-primary;
   }
 }
