@@ -1,5 +1,6 @@
 
 import './modal-add.scss'
+import ButtonView from 'views/button/button'
 import ModalView from 'views/modal/modal'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -10,7 +11,6 @@ import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from 'slices/ui/selectors'
 import { getOperations } from 'slices/directory/selectors'
 import { popModalAction } from 'slices/ui'
-import ButtonView from 'views/button/button'
 
 export default function AddModalView (props: {
   modal: ModalState
@@ -22,7 +22,7 @@ export default function AddModalView (props: {
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   return (
-    <ModalView modal={props.modal} title='Add node'>
+    <ModalView modal={props.modal} title='Operation directory'>
       <ul>
         <li key='empty-operation'>
           <ButtonView
@@ -35,7 +35,7 @@ export default function AddModalView (props: {
               dispatch(popModalAction({}))
             }}
           >
-            Empty program
+            New program
           </ButtonView>
         </li>
         <li key='empty-control'>

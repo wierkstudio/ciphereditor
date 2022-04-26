@@ -15,6 +15,14 @@
   line-height: math.div(24, 16);
 }
 
+%t-h1 {
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: bold;
+  font-size: rem(32);
+  line-height: math.div(40, 32);
+  letter-spacing: rem(-1);
+}
+
 %t-h2 {
   font-family: 'Lexend Deca', sans-serif;
   font-weight: bold;
