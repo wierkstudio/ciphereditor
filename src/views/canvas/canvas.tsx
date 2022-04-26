@@ -1,6 +1,6 @@
 
 import './canvas.scss'
-import MovableNodeView from 'views/movable-node/movable-node'
+import NodeView from 'views/node/node'
 import WireDraftView from 'views/wire-draft/wire-draft'
 import WireView from 'views/wire/wire'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -10,7 +10,7 @@ import useClassName from 'hooks/useClassName'
 import useDragMove from 'hooks/useDragMove'
 import useWindowResizeListener from 'hooks/useWindowResizeListener'
 import { BlueprintNodeType } from 'slices/blueprint/types/blueprint'
-import { PointerEvent, useCallback, useRef } from 'react'
+import { FocusEvent } from 'react'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasState, getWireDraft } from 'slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
@@ -53,25 +53,23 @@ export default function CanvasView (): JSX.Element {
     dispatch(moveCanvasAction({ x: newX, y: newY }))
   }
 
-  const { onPointerDown: onDragStart } = useDragMove(x, y, onDragMove, true)
+  const { onPointerDown } = useDragMove(x, y, onDragMove, true)
 
-  const canvasRef = useRef<HTMLDivElement | null>(null)
-  const onPointerDown = useCallback((event: PointerEvent<HTMLDivElement>) => {
+  const onFocus = (event: FocusEvent) => {
+    event.stopPropagation()
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
-      canvasRef.current?.focus()
     }
-    onDragStart(event)
-  }, [hasSelectedNode, dispatch, onDragStart])
+  }
 
   // TODO: Make off-canvas nodes 'virtual' by not rendering them
 
   return (
     <div
       className={useClassName('canvas', [canvasState])}
-      onPointerDown={onPointerDown}
       tabIndex={0}
-      ref={canvasRef}
+      onPointerDown={onPointerDown}
+      onFocus={onFocus}
     >
       <div
         className='canvas__content'
@@ -84,7 +82,7 @@ export default function CanvasView (): JSX.Element {
           />
         ))}
         {childNodeIds.map(nodeId => (
-          <MovableNodeView
+          <NodeView
             key={nodeId}
             nodeId={nodeId}
             contextProgramId={contextProgramId}

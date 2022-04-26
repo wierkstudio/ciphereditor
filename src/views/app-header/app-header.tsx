@@ -35,14 +35,6 @@ export default function AppHeaderView (): JSX.Element {
               disabled={program === undefined}
               onClick={() => dispatch(pushAddModalAction({}))}
             />,
-            <ButtonView
-              key='leave-program'
-              title='Leave program'
-              icon='arrowUp'
-              modifiers={['large']}
-              onClick={() => dispatch(leaveProgramAction({}))}
-              disabled={program === undefined || program.parentId === program.id}
-            />,
             [
               <ButtonView
                 key='undo'
@@ -67,8 +59,17 @@ export default function AppHeaderView (): JSX.Element {
               icon='share'
               modifiers={['large']}
               onClick={onNeedsImplementation}
+            />,
+          ].concat(program !== undefined && program.parentId !== program.id ? [
+            <ButtonView
+              key='leave-program'
+              title='Leave program'
+              icon='arrowUp'
+              modifiers={['large']}
+              onClick={() => dispatch(leaveProgramAction({}))}
+              disabled={program === undefined || program.parentId === program.id}
             />
-          ]}
+          ] : [])}
         />
       </div>
       <div className='app-header__end'>

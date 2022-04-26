@@ -5,11 +5,12 @@ import OperationView from 'views/operation/operation'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import useClassName from 'hooks/useClassName'
+import useDragMove from 'hooks/useDragMove'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
+import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
 import { getNode, getNodeChildren, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { layoutNodeAction, selectNodeAction } from 'slices/blueprint'
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { layoutNodeAction, moveNodeAction, selectNodeAction } from 'slices/blueprint'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -87,15 +88,30 @@ export default function NodeView (props: {
     }
   })
 
+  const onDragMove = (newX: number, newY: number): void => {
+    dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
+  }
+
+  const { onPointerDown } = useDragMove(node.x ?? 0, node.y ?? 0, onDragMove)
+
+  const onFocus = (event: FocusEvent) => {
+    event.stopPropagation()
+    if (!isSelected) {
+      dispatch(selectNodeAction({ nodeId }))
+    }
+  }
+
   const modifiers = isSelected ? ['selected'] : []
 
   return (
     <div
+      ref={nodeRef}
       className={useClassName('node', modifiers)}
       role='region'
-      ref={nodeRef}
+      style={{ transform: `translate(${node.x ?? 0}px, ${node.y ?? 0}px)` }}
       tabIndex={0}
-      onFocus={() => dispatch(selectNodeAction({ nodeId }))}
+      onPointerDown={onPointerDown}
+      onFocus={onFocus}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
         <OperationView

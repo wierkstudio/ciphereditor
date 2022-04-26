@@ -93,8 +93,8 @@ export const blueprintSlice = createSlice({
      */
     leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
       if (state.activeProgramId !== undefined && state.activeProgramId !== state.rootProgramId) {
+        state.selectedNodeId = state.activeProgramId
         state.activeProgramId = getNode(state, state.activeProgramId).parentId
-        state.selectedNodeId = undefined
       }
     },
 

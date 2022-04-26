@@ -7,6 +7,7 @@ import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { getVariableWireWaypoints } from 'slices/blueprint/selectors/variable'
 import { isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { selectNodeAction } from 'slices/blueprint'
+import { FocusEvent, useCallback } from 'react'
 
 const minNodeGap = 64
 
@@ -112,6 +113,13 @@ export default function WireView (props: {
       points[i].icon
   }
 
+  const onFocus = (event: FocusEvent) => {
+    event.stopPropagation()
+    if (!isSelected) {
+      dispatch(selectNodeAction({ nodeId: variableId }))
+    }
+  }
+
   // TODO: Optimize the number of elements used here
   // Currently we need two separate SVG elements to create a separate stacking
   // context on top of the nodes for the cap icons only.
@@ -119,7 +127,8 @@ export default function WireView (props: {
     <div
       className={className}
       tabIndex={0}
-      onFocus={() => dispatch(selectNodeAction({ nodeId: variableId }))}
+      onPointerDown={event => event.stopPropagation()}
+      onFocus={onFocus}
     >
       <svg
         className='wire__svg-wire'

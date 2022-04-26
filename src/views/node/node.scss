@@ -2,8 +2,11 @@
 @import 'styles/shared';
 
 .node {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: rem(320);
+  transform: translate(0px, 0px);
   cursor: default;
   outline: none;
 
@@ -20,6 +23,10 @@
     border-radius: rem(16);
     border: rem(2) solid $c-muted;
     background: $c-muted;
+  }
+
+  &--selected {
+    z-index: $z-index-canvas-node-selected;
   }
 
   &--selected::before {

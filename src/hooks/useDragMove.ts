@@ -29,8 +29,7 @@ const useDragMove = (
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
 
   const onPointerDown = useCallback((event: ReactPointerEvent) => {
-    if (event.isPrimary) {
-      event.preventDefault()
+    if (event.isPrimary && event.buttons === 1) {
       event.stopPropagation()
       releaseOptionalPointerCapture(event)
       const startViewportX = event.clientX

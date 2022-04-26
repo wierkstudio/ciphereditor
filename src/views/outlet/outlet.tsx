@@ -38,10 +38,12 @@ export default function OutletView (props: {
   const modifiers = [variant].concat(props.expanded ? ['expanded'] : '')
 
   const onPointerDown = (event: ReactPointerEvent): void => {
-    event.stopPropagation()
-    event.preventDefault()
-    releaseOptionalPointerCapture(event)
-    dispatch(startWireAction({ controlId: control.id }))
+    if (event.isPrimary && event.buttons === 1) {
+      event.stopPropagation()
+      event.preventDefault()
+      releaseOptionalPointerCapture(event)
+      dispatch(startWireAction({ controlId: control.id }))
+    }
   }
 
   return (
