@@ -1,7 +1,7 @@
 
 import undoable, { excludeAction } from 'redux-undo'
 import {
-  addProgramControlNode,
+  addControlNode,
   addVariableFromControl,
   changeControl,
   changeControlValueToChoice,
@@ -66,13 +66,27 @@ export const blueprintSlice = createSlice({
     /**
      * Add an empty control node to the given program.
      */
-    addEmptyControlAction: (state, { payload }: PayloadAction<{
+    addControlAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
       x: number
       y: number
+      label?: string
+      sourceControlId?: BlueprintNodeId
     }>) => {
-      const control = addProgramControlNode(state, payload.programId, payload.x, payload.y)
+      const { programId, sourceControlId, x, y } = payload
+
+      let label = payload.label
+      if (label === undefined && sourceControlId !== undefined) {
+        const sourceControl = getControlNode(state, sourceControlId)
+        label = sourceControl.label
+      }
+
+      const control = addControlNode(state, programId, x, y, label)
       state.selectedNodeId = control.id
+
+      if (sourceControlId !== undefined) {
+        attachControls(state, sourceControlId, control.id, programId)
+      }
     },
 
     /**
@@ -276,7 +290,7 @@ export const {
   addEmptyProgramAction,
   enterProgramAction,
   leaveProgramAction,
-  addEmptyControlAction,
+  addControlAction,
   changeControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction,

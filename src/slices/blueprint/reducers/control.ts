@@ -7,8 +7,9 @@ import { addVariable, propagateChange } from './variable'
 import { allValueTypes, equalValues, createValue, defaultValue, castValue, resolveImplicitTypedValue, resolveLabeledImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from 'utils/array'
 import { capitalCase } from 'change-case'
+import { deriveUniqueName } from 'utils/string'
 import { getControlNode } from '../selectors/control'
-import { getNode } from '../selectors/blueprint'
+import { getNode, getNodeChildren } from '../selectors/blueprint'
 import { setOperationState } from './operation'
 
 /**
@@ -20,7 +21,7 @@ export const defaultControlNode: ControlNode = {
   parentId: -1,
   childIds: [],
   name: '',
-  label: '',
+  label: 'Control',
   types: allValueTypes,
   value: defaultValue,
   choices: [],
@@ -37,19 +38,26 @@ export const defaultControlNode: ControlNode = {
  * @param control Control to be added
  * @returns New control node
  */
-export const addProgramControlNode = (
+export const addControlNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
   x: number,
-  y: number
+  y: number,
+  label?: string
 ): ControlNode => {
   const id = nextNodeId(state)
+
+  // Choose unique control label
+  const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNode[]
+  const usedLabels = controls.map(control => control.label)
+  const uniqueLabel = deriveUniqueName(label ?? defaultControlNode.label, usedLabels)
+
   const controlNode: ControlNode = {
     ...defaultControlNode,
     parentId: programId,
     id,
     name: `control${id}`,
-    label: `Control ${id}`,
+    label: uniqueLabel,
     x,
     y
   }

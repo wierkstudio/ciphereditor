@@ -11,5 +11,5 @@ export const getReducedMotionPreference = (state: SettingsState): ReducedMotionP
   state.reducedMotionPreference
 
 export const getShortcutBindings = (state: SettingsState): {
-  [name: string]: string
+  [name: string]: string | string[]
 } => state.shortcutBindings

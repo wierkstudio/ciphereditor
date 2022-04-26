@@ -6,10 +6,11 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import { ModalState } from 'slices/ui/types'
-import { addEmptyControlAction, addEmptyProgramAction, addOperationAction } from 'slices/blueprint'
+import { addControlAction, addEmptyProgramAction, addOperationAction } from 'slices/blueprint'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from 'slices/ui/selectors'
 import { getOperations } from 'slices/directory/selectors'
+import { gridSize } from 'hooks/useDragMove'
 import { popModalAction } from 'slices/ui'
 
 export default function AddModalView (props: {
@@ -29,8 +30,8 @@ export default function AddModalView (props: {
             onClick={() => {
               activeProgram !== undefined && dispatch(addEmptyProgramAction({
                 programId: activeProgram.id,
-                x: canvasOffset.x + canvasSize.width * 0.5,
-                y: canvasOffset.y + canvasSize.height * 0.5
+                x: Math.round((canvasOffset.x + canvasSize.width * 0.5) / gridSize) * gridSize,
+                y: Math.round((canvasOffset.y + canvasSize.height * 0.5) / gridSize) * gridSize
               }))
               dispatch(popModalAction({}))
             }}
@@ -41,10 +42,10 @@ export default function AddModalView (props: {
         <li key='empty-control'>
           <ButtonView
             onClick={() => {
-              activeProgram !== undefined && dispatch(addEmptyControlAction({
+              activeProgram !== undefined && dispatch(addControlAction({
                 programId: activeProgram.id,
-                x: canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5,
-                y: canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5
+                x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
+                y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5) / gridSize) * gridSize
               }))
               dispatch(popModalAction({}))
             }}
@@ -60,8 +61,8 @@ export default function AddModalView (props: {
                 activeProgram !== undefined && dispatch(addOperationAction({
                   programId: activeProgram.id,
                   operation: operation,
-                  x: canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5,
-                  y: canvasOffset.y + canvasSize.height * 0.5 - 80
+                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
+                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
                 }))
                 dispatch(popModalAction({}))
               }}

@@ -30,7 +30,6 @@ export enum UICanvasState {
  */
 export interface UIWireDraft {
   sourceControlId: BlueprintNodeId
-  targetViewportPosition?: { x: number, y: number }
   targetControlId?: BlueprintNodeId
 }
 

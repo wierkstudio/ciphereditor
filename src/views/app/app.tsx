@@ -20,11 +20,15 @@ export default function AppView (): JSX.Element {
   const reducedMotionPreference = useAppSelector(state => getReducedMotionPreference(state.settings))
 
   const onShortcut = useCallback((shortcut: string, event: KeyboardEvent) => {
-    const action = shortcutBindings[shortcut]
-    if (action !== undefined) {
-      dispatch({ type: action, payload: {} })
+    const actions = shortcutBindings[shortcut]
+    if (actions === undefined) {
+      console.log('Unhandled shortcut', shortcut)
+    } else if (typeof actions === 'string') {
+      dispatch({ type: actions, payload: {} })
     } else {
-      console.log('Shortcut', shortcut)
+      for (const action of actions) {
+        dispatch({ type: action, payload: {} })
+      }
     }
   }, [shortcutBindings, dispatch])
 

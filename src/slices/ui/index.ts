@@ -40,17 +40,6 @@ export const settingsSlice = createSlice({
         state.wireDraft = { sourceControlId: payload.controlId }
       }
     },
-    moveWireAction: (state, { payload }: PayloadAction<{
-      x: number
-      y: number
-    }>) => {
-      if (state.canvasState === UICanvasState.Wire && state.wireDraft !== undefined) {
-        state.wireDraft = {
-          ...state.wireDraft,
-          targetViewportPosition: payload
-        }
-      }
-    },
     targetWireAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId | undefined
     }>) => {
@@ -91,7 +80,6 @@ export const {
   moveCanvasAction,
   updateCanvasSizeAction,
   startWireAction,
-  moveWireAction,
   targetWireAction,
   endWireAction,
   pushAddModalAction,

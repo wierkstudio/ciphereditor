@@ -2,6 +2,8 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ProgramNode } from '../types/program'
 import { addNode, nextNodeId } from './blueprint'
+import { deriveUniqueName } from 'utils/string'
+import { getNodeChildren } from '../selectors/blueprint'
 
 /**
  * Default program node object
@@ -11,7 +13,7 @@ export const defaultProgramNode: ProgramNode = {
   type: BlueprintNodeType.Program,
   parentId: 1,
   childIds: [],
-  label: 'Program 1',
+  label: 'Program',
   x: 0,
   y: 0
 }
@@ -26,14 +28,23 @@ export const addEmptyProgramNode = (
   state: BlueprintState,
   parentId: BlueprintNodeId | undefined,
   x: number,
-  y: number
+  y: number,
+  label?: string
 ): ProgramNode => {
   const id = nextNodeId(state)
-  const programNode = {
+
+  // Choose unique program label
+  const programs = parentId !== undefined
+    ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNode[]
+    : []
+  const usedLabels = programs.map(program => program.label)
+  const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
+
+  const programNode: ProgramNode = {
     ...defaultProgramNode,
     id,
     parentId: parentId ?? id,
-    label: `Program ${id}`,
+    label: uniqueLabel,
     x,
     y
   }
