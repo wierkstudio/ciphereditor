@@ -46,7 +46,13 @@ export const controlSchema = z.object({
    * Wether a new value can be set from outside the enclosing operation or program
    * Defaults to true
    */
-  writable: z.boolean().optional()
+  writable: z.boolean().optional(),
+
+  /**
+   * The order number by which controls are ordered within their parent in
+   * ascending order. Order numbers 1000 or larger are placed below the header.
+   */
+  order: z.number().optional()
 })
 
 /**
@@ -59,7 +65,8 @@ export const controlChangeSchema = z.object({
   label: z.string().optional(),
   value: implicitTypedValueSchema.optional(),
   choices: z.array(labeledImplicitTypedValueSchema).optional(),
-  enabled: z.boolean().optional()
+  enabled: z.boolean().optional(),
+  order: z.number().optional()
 })
 
 /**
@@ -160,6 +167,12 @@ export interface ControlNode extends BlueprintNode {
    * Wether a new value can be set from outside the enclosing operation or program
    */
   writable: boolean
+
+  /**
+   * The order number by which controls are ordered within their parent in
+   * ascending order. Order numbers 1000 or larger are placed below the header.
+   */
+  order: number
 
   /**
    * Name of program/operation extern variable node attached to this control

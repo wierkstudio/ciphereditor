@@ -44,7 +44,8 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'target',
           initialValue: 'Hallo Welt.',
-          types: ['text']
+          types: ['text'],
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -73,7 +74,8 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'ciphertext',
           initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
-          types: ['text']
+          types: ['text'],
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -120,7 +122,8 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'ciphertext',
           initialValue: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
-          types: ['text']
+          types: ['text'],
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -184,7 +187,8 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'encodedData',
           initialValue: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
-          types: ['text']
+          types: ['text'],
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -203,19 +207,22 @@ const defaultDirectoryState: DirectoryState = {
           name: 'characterCount',
           initialValue: 44,
           types: ['integer'],
-          writable: false
+          writable: false,
+          order: 1000
         },
         {
           name: 'wordCount',
           initialValue: 9,
           types: ['integer'],
-          writable: false
+          writable: false,
+          order: 1000
         },
         {
           name: 'lineCount',
           initialValue: 1,
           types: ['integer'],
-          writable: false
+          writable: false,
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -233,7 +240,8 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'notA',
           initialValue: true,
-          types: ['boolean']
+          types: ['boolean'],
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -257,7 +265,8 @@ const defaultDirectoryState: DirectoryState = {
           name: 'aAndB',
           initialValue: false,
           types: ['boolean'],
-          writable: false
+          writable: false,
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -281,7 +290,8 @@ const defaultDirectoryState: DirectoryState = {
           name: 'aOrB',
           initialValue: false,
           types: ['boolean'],
-          writable: false
+          writable: false,
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-essentials.js',
@@ -327,7 +337,8 @@ const defaultDirectoryState: DirectoryState = {
           name: 'hash',
           initialValue: '408d94384216f890ff7a0c3528e8bed1e0b01621',
           types: ['text', 'bytes'],
-          writable: false
+          writable: false,
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-hash.js',
@@ -378,7 +389,8 @@ const defaultDirectoryState: DirectoryState = {
           name: 'hash',
           initialValue: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
           types: ['text', 'bytes'],
-          writable: false
+          writable: false,
+          order: 1000
         }
       ],
       bundleUrl: processorUrl + 'bundle-hash.js',

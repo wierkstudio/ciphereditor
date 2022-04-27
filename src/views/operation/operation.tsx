@@ -1,18 +1,19 @@
 
 import './operation.scss'
+import ButtonView from 'views/button/button'
 import ControlView from 'views/control/control'
 import IconView from 'views/icon/icon'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
+import useClassName from 'hooks/useClassName'
+import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
+import { ControlNode } from 'slices/blueprint/types/control'
 import { OperationNode, OperationState } from 'slices/blueprint/types/operation'
 import { ProgramNode } from 'slices/blueprint/types/program'
 import { enterProgramAction, retryOperationAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
-import ButtonView from 'views/button/button'
-import useClassName from 'hooks/useClassName'
 import { getOperationIssues } from 'slices/blueprint/selectors/operation'
-import useHighestIssueType from 'hooks/useHighestIssueType'
 
 export default function OperationView (props: {
   /**
@@ -27,9 +28,17 @@ export default function OperationView (props: {
   const dispatch = useAppDispatch()
   const node = useBlueprintSelector(state =>
     getNode(state, nodeId) as ProgramNode | OperationNode)
-  const controlIds = useBlueprintSelector(state =>
-    getNodeChildren(state, nodeId, BlueprintNodeType.Control)
-      .map((control) => control.id))
+
+  // Retrieve sorted control ids and order numbers
+  const controls = useBlueprintSelector(state =>
+    (getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[])
+      .slice()
+      .sort((a, b) => a.order - b.order)
+      .map(control => ({ id: control.id, order: control.order }))
+  )
+
+  const hasControlsBelowHeader =
+    controls.find(control => control.order >= 1000) !== undefined
 
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
   const highestIssueType = useHighestIssueType(issues)
@@ -58,7 +67,7 @@ export default function OperationView (props: {
     >
       <header
         className='operation__header'
-        style={{ order: controlIds.length - 1 }}
+        style={{ order: hasControlsBelowHeader ? 1000 : -1000 }}
       >
         <div className='operation__header-start'>
           <button
@@ -90,14 +99,14 @@ export default function OperationView (props: {
           )}
         </div>
       </header>
-      {controlIds.map((id, index) => (
+      {controls.map(control => (
         <div
-          key={id}
+          key={control.id}
           className='operation__control'
-          style={{ order: index }}
+          style={{ order: control.order }}
         >
           <ControlView
-            controlId={id}
+            controlId={control.id}
             contextProgramId={contextProgramId}
             onOutletRef={onOutletRef}
           />

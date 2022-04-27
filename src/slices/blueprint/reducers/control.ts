@@ -28,7 +28,8 @@ export const defaultControlNode: ControlNode = {
   enforceChoices: true,
   viewState: ControlViewState.Collapsed,
   enabled: true,
-  writable: true
+  writable: true,
+  order: 0
 }
 
 /**
@@ -108,6 +109,7 @@ export const changeControl = (
   // Apply changes not related to the value
   control.label = change.label ?? control.label
   control.enabled = change.enabled ?? control.enabled
+  control.order = change.order ?? control.order
 
   if (change.choices !== undefined) {
     control.choices = change.choices?.map(resolveLabeledImplicitTypedValue) ?? []
