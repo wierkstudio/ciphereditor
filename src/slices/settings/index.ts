@@ -8,11 +8,10 @@ import {
   undoAction
 } from 'slices/blueprint'
 import { cancelTopModalAction, endWireAction } from 'slices/ui'
-import { ReducedMotionPreferenceOption, ScalingOption, SettingsState, ThemeOption } from './types'
+import { ReducedMotionPreferenceOption, SettingsState, ThemeOption } from './types'
 
 const defaultSettingsState: SettingsState = {
   theme: ThemeOption.SystemDefault,
-  scaling: ScalingOption.SystemDefault,
   reducedMotionPreference: ReducedMotionPreferenceOption.SystemDefault,
   shortcutBindings: {
     // Order: alt+control+shift+meta+key
@@ -41,12 +40,6 @@ export const settingsSlice = createSlice({
       state.theme = payload.theme
     },
 
-    applyScaling: (state, { payload }: PayloadAction<{
-      scaling: ScalingOption
-    }>) => {
-      state.scaling = payload.scaling
-    },
-
     applyReducedMotionPreference: (state, { payload }: PayloadAction<{
       reducedMotionPreference: ReducedMotionPreferenceOption
     }>) => {
@@ -57,7 +50,6 @@ export const settingsSlice = createSlice({
 
 export const {
   applyTheme,
-  applyScaling,
   applyReducedMotionPreference
 } = settingsSlice.actions
 

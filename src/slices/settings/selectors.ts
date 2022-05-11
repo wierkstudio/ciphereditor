@@ -1,14 +1,13 @@
 
-import { ReducedMotionPreferenceOption, ScalingOption, SettingsState, ThemeOption } from './types'
+import { ReducedMotionPreferenceOption, SettingsState, ThemeOption } from './types'
 
-export const getTheme = (state: SettingsState): ThemeOption =>
-  state.theme
-
-export const getScaling = (state: SettingsState): ScalingOption =>
-  state.scaling
-
-export const getReducedMotionPreference = (state: SettingsState): ReducedMotionPreferenceOption =>
-  state.reducedMotionPreference
+export const getAccessibilitySettings = (state: SettingsState): {
+  theme: ThemeOption
+  reducedMotionPreference: ReducedMotionPreferenceOption
+} => ({
+  theme: state.theme,
+  reducedMotionPreference: state.reducedMotionPreference
+})
 
 export const getShortcutBindings = (state: SettingsState): {
   [name: string]: string | string[]

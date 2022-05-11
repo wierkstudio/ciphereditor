@@ -62,15 +62,14 @@ export default function ControlView (props: {
         dispatch(targetWireAction({ controlId: undefined }))
       }
 
-      if (headerRef.current !== null) {
-        headerRef.current.addEventListener('pointerenter', onEnter)
-        headerRef.current.addEventListener('pointerleave', onLeave)
-      }
+      const headerElement = headerRef.current
+      if (headerElement !== null) {
+        headerElement.addEventListener('pointerenter', onEnter)
+        headerElement.addEventListener('pointerleave', onLeave)
 
-      return () => {
-        if (headerRef.current !== null) {
-          headerRef.current.removeEventListener('pointerenter', onEnter)
-          headerRef.current.removeEventListener('pointerleave', onLeave)
+        return () => {
+          headerElement.removeEventListener('pointerenter', onEnter)
+          headerElement.removeEventListener('pointerleave', onLeave)
         }
       }
     }

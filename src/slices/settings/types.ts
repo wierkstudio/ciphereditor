@@ -9,11 +9,6 @@ export interface SettingsState {
   theme: ThemeOption
 
   /**
-   * Scaling factor, if any
-   */
-  scaling: ScalingOption
-
-  /**
    * Indicate wether the user has notified the app that they prefer an interface
    * that removes or replaces the types of motion-based animation that trigger
    * discomfort for those with vestibular motion disorders.
@@ -33,16 +28,6 @@ export enum ThemeOption {
   SystemDefault = 'system',
   Light = 'light',
   Dark = 'dark'
-}
-
-/**
- * Scaling options
- */
-export enum ScalingOption {
-  SystemDefault = 'system',
-  Normal = 'normal',
-  Large = 'large',
-  Huge = 'huge'
 }
 
 /**

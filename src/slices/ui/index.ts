@@ -1,10 +1,20 @@
 
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
-import { UICanvasState, UIState } from './types'
+import { UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushAddModal, pushSettingsModal } from './reducers'
 
+const detectInitialEmbedType = (): UIEmbedType => {
+  if (window.parent === window) {
+    return UIEmbedType.Standalone
+  }
+  return UIEmbedType.Embed
+}
+
 const defaultUIState: UIState = {
+  embedType: detectInitialEmbedType(),
+  embedMaximized: false,
+
   canvasState: UICanvasState.Idle,
   canvasOffsetX: 0,
   canvasOffsetY: 0,
@@ -18,6 +28,19 @@ export const settingsSlice = createSlice({
   name: 'ui',
   initialState: defaultUIState,
   reducers: {
+    applyEmbedTypeAction: (state, { payload }: PayloadAction<{
+      embedType: UIEmbedType
+    }>) => {
+      state.embedType = payload.embedType
+      if (state.embedType !== UIEmbedType.Platform) {
+        state.embedMaximized = false
+      }
+    },
+    toggleEmbedMaximizedAction: (state, { payload }: PayloadAction<{}>) => {
+      if (state.embedType === UIEmbedType.Platform) {
+        state.embedMaximized = !state.embedMaximized
+      }
+    },
     moveCanvasAction: (state, { payload }: PayloadAction<{
       x: number
       y: number
@@ -77,6 +100,8 @@ export const settingsSlice = createSlice({
 })
 
 export const {
+  applyEmbedTypeAction,
+  toggleEmbedMaximizedAction,
   moveCanvasAction,
   updateCanvasSizeAction,
   startWireAction,

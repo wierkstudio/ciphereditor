@@ -11,6 +11,7 @@ import { ReactComponent as ErrorIcon } from 'icons/error.svg'
 import { ReactComponent as HelpIcon } from 'icons/help.svg'
 import { ReactComponent as InfoIcon } from 'icons/info.svg'
 import { ReactComponent as MaximizeIcon } from 'icons/maximize.svg'
+import { ReactComponent as MinimizeIcon } from 'icons/minimize.svg'
 import { ReactComponent as MinusIcon } from 'icons/minus.svg'
 import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
@@ -35,6 +36,7 @@ const iconSVGMap = {
   help: HelpIcon,
   info: InfoIcon,
   maximize: MaximizeIcon,
+  minimize: MinimizeIcon,
   minus: MinusIcon,
   outletPull: OutletPullIcon,
   outletPush: OutletPushIcon,
