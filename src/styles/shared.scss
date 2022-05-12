@@ -1,8 +1,14 @@
 
+@import 'helpers/functions';
+
 @import 'variables/colors';
 @import 'variables/z-index';
+@import 'variables/breakpoints';
+
+@import 'helpers/breakpoint';
+@import 'helpers/each-breakpoint';
 @import 'helpers/prefers-reduced-motion';
-@import 'helpers/rem';
 @import 'helpers/theme-properties';
+
 @import 'symbols/accessibility';
 @import 'symbols/typography';

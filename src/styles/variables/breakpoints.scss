@@ -1,0 +1,19 @@
+
+$breakpoints: (
+  s: (
+    min: 0,
+    max: rem(359)
+  ),
+  m: (
+    min: rem(360),
+    max: rem(719)
+  ),
+  l: (
+    min: rem(720),
+    max: rem(863)
+  ),
+  xl: (
+    min: rem(864),
+    max: null
+  )
+);

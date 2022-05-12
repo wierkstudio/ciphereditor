@@ -6,6 +6,8 @@
   font-weight: 400;
   font-size: rem(16);
   line-height: math.div(24, 16);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 %t-label {
@@ -13,6 +15,8 @@
   font-weight: 400;
   font-size: rem(16);
   line-height: math.div(24, 16);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 %t-h1 {
@@ -21,6 +25,12 @@
   font-size: rem(32);
   line-height: math.div(40, 32);
   letter-spacing: rem(-1);
+  text-transform: none;
+
+  @include breakpoint(l, xl) {
+    font-size: rem(40);
+    line-height: math.div(48, 40);
+  }
 }
 
 %t-h2 {
@@ -28,6 +38,13 @@
   font-weight: bold;
   font-size: rem(24);
   line-height: math.div(32, 24);
+  letter-spacing: 0;
+  text-transform: none;
+
+  @include breakpoint(l, xl) {
+    font-size: rem(32);
+    line-height: math.div(40, 32);
+  }
 }
 
 %t-h3 {
@@ -35,6 +52,22 @@
   font-weight: bold;
   font-size: rem(16);
   line-height: math.div(24, 16);
+  letter-spacing: 0;
+  text-transform: none;
+
+  @include breakpoint(l, xl) {
+    font-size: rem(24);
+    line-height: math.div(32, 24);
+  }
+}
+
+%t-h4 {
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: bold;
+  font-size: rem(14);
+  line-height: math.div(24, 14);
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 %t-value {
@@ -42,4 +75,6 @@
   font-weight: 400;
   font-size: rem(16);
   line-height: math.div(24, 16);
+  letter-spacing: 0;
+  text-transform: none;
 }
