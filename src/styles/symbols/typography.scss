@@ -54,11 +54,6 @@
   line-height: math.div(24, 16);
   letter-spacing: 0;
   text-transform: none;
-
-  @include breakpoint(l, xl) {
-    font-size: rem(24);
-    line-height: math.div(32, 24);
-  }
 }
 
 %t-h4 {
