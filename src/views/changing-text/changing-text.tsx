@@ -1,7 +1,7 @@
 
 import './changing-text.scss'
 import React, { useEffect, useState } from 'react'
-import useClassName from 'hooks/useClassName'
+import { renderClassName } from 'utils/dom'
 
 interface ChangingTextViewState {
   lastText: string
@@ -66,7 +66,7 @@ export default React.memo(function ChangingTextView (props: {
   const modifiers = !state.transitioned ? ['will-transition'] : []
 
   return (
-    <span className={useClassName('changing-text', modifiers)}>
+    <span className={renderClassName('changing-text', modifiers)}>
       <span className='changing-text__last'>{state.lastText}</span>
       <span className='changing-text__current'>{state.currentText}</span>
     </span>

@@ -1,9 +1,9 @@
 
 import './input-text.scss'
 import React, { useRef, useCallback, useLayoutEffect, ChangeEvent, FocusEventHandler } from 'react'
-import useClassName, { ViewModifiers } from 'hooks/useClassName'
-import useWindowResizeListener from 'hooks/useWindowResizeListener'
 import useShortcutHandler from 'hooks/useShortcutHandler'
+import useWindowResizeListener from 'hooks/useWindowResizeListener'
+import { renderClassName, ViewModifiers } from 'utils/dom'
 
 /**
  * List of shortcuts that should not further propagate from the text input
@@ -66,7 +66,7 @@ export default function InputTextView (props: {
   useWindowResizeListener(resizeTextarea)
 
   return (
-    <div className={useClassName('input-text', modifiers)}>
+    <div className={renderClassName('input-text', modifiers)}>
       <textarea
         className='input-text__textarea'
         ref={textareaRef}

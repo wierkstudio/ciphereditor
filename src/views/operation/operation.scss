@@ -60,7 +60,7 @@
     padding: 0 rem(4);
     flex-grow: 1;
     flex-basis: 0;
-    @extend %t-h3;
+    @extend %t-node-label;
   }
 
   &__control,

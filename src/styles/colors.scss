@@ -7,7 +7,7 @@ html {
   }
 
   @each $theme-name, $colors in $themes {
-    &.theme-#{$theme-name} {
+    &.root--theme-#{$theme-name} {
       @include theme-properties($theme-name);
     }
   }

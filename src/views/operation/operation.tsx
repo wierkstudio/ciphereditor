@@ -5,7 +5,6 @@ import ControlView from 'views/control/control'
 import IconView from 'views/icon/icon'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
@@ -14,6 +13,7 @@ import { ProgramNode } from 'slices/blueprint/types/program'
 import { enterProgramAction, retryOperationAction } from 'slices/blueprint'
 import { getNode, getNodeChildren } from 'slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from 'slices/blueprint/selectors/operation'
+import { renderClassName } from 'utils/dom'
 
 export default function OperationView (props: {
   /**
@@ -58,7 +58,7 @@ export default function OperationView (props: {
   // semantic perspective the header contains the headline for the entire
   // operation and thus, it appears first in the DOM.
 
-  const className = useClassName('operation', state.toString())
+  const className = renderClassName('operation', state.toString())
 
   return (
     <div

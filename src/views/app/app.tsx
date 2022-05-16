@@ -5,7 +5,6 @@ import CanvasView from '../canvas/canvas'
 import ModalStackView from 'views/modal-stack/modal-stack'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useClassName, { mergeModifiers, ViewModifiers } from 'hooks/useClassName'
 import useSettingsSelector from 'hooks/useSettingsSelector'
 import useShortcutHandler from 'hooks/useShortcutHandler'
 import useUISelector from 'hooks/useUISelector'
@@ -14,6 +13,7 @@ import { UIEmbedType } from 'slices/ui/types'
 import { applyEmbedTypeAction } from 'slices/ui'
 import { getAccessibilitySettings, getShortcutBindings } from 'slices/settings/selectors'
 import { getEmbedType, isEmbedMaximized, isModalStackEmpty } from 'slices/ui/selectors'
+import { mergeModifiers, renderClassName, ViewModifiers } from 'utils/dom'
 import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from 'utils/embed'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
@@ -88,11 +88,13 @@ export default function AppView (): JSX.Element {
   // React to accessibility changes
   useEffect(() => {
     // Update document element class names to apply accessibility settings
-    const htmlClassNames = [
+    const modifiers = [
+      'script-enabled',
       'theme-' + theme,
       'reduced-motion-' + reducedMotionPreference
     ]
-    document.documentElement.className = htmlClassNames.join(' ')
+    const className = renderClassName('root', modifiers)
+    document.documentElement.className = className
 
     // Notify parent frame about updated accessibility settings, if any
     if (embedType !== UIEmbedType.Standalone) {
@@ -132,7 +134,7 @@ export default function AppView (): JSX.Element {
   }, [embedType, embedMaximized])
 
   return (
-    <div ref={appRef} className={useClassName('app', modifiers)}>
+    <div ref={appRef} className={renderClassName('app', modifiers)}>
       <div className='app__content'>
         <AppHeaderView />
         <CanvasView />

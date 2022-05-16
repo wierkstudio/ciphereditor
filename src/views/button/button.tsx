@@ -1,7 +1,7 @@
 
 import './button.scss'
 import IconView, { Icon } from 'views/icon/icon'
-import useClassName, { mergeModifiers, ViewModifiers } from 'hooks/useClassName'
+import { mergeModifiers, renderClassName, ViewModifiers } from 'utils/dom'
 
 type ButtonViewProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> & {
   icon?: Icon
@@ -16,7 +16,7 @@ export default function ButtonView (props: ButtonViewProps): JSX.Element {
   const buttonModifiers = icon !== undefined ? mergeModifiers(modifiers, ['icon']) : modifiers
   return (
     <button
-      className={useClassName('button', buttonModifiers)}
+      className={renderClassName('button', buttonModifiers)}
       {...buttonProps}
     >
       {icon !== undefined && (

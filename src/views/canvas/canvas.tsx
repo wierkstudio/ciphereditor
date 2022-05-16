@@ -6,7 +6,6 @@ import WireView from 'views/wire/wire'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import useDragMove from 'hooks/useDragMove'
 import useWindowResizeListener from 'hooks/useWindowResizeListener'
 import { BlueprintNodeType } from 'slices/blueprint/types/blueprint'
@@ -15,6 +14,7 @@ import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasState, getWireDraft } from 'slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { moveCanvasAction, updateCanvasSizeAction } from 'slices/ui'
+import { renderClassName } from 'utils/dom'
 import { selectNodeAction } from 'slices/blueprint'
 
 export default function CanvasView (): JSX.Element {
@@ -55,7 +55,7 @@ export default function CanvasView (): JSX.Element {
 
   const { onPointerDown } = useDragMove(x, y, onDragMove, true)
 
-  const onFocus = (event: FocusEvent) => {
+  const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
@@ -66,7 +66,7 @@ export default function CanvasView (): JSX.Element {
 
   return (
     <div
-      className={useClassName('canvas', [canvasState])}
+      className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
       onPointerDown={onPointerDown}
       onFocus={onFocus}

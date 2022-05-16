@@ -2,7 +2,7 @@
 import './select.scss'
 import IconView from 'views/icon/icon'
 import { ChangeEventHandler } from 'react'
-import useClassName, { ViewModifiers } from 'hooks/useClassName'
+import { renderClassName, ViewModifiers } from 'utils/dom'
 
 export interface SelectViewOptionElement {
   type: 'option'
@@ -37,7 +37,7 @@ export default function SelectView (props: {
     ) as SelectViewOptionElement | undefined
   return (
     <div
-      className={useClassName('select', props.modifiers)}
+      className={renderClassName('select', props.modifiers)}
       onPointerDown={(event) => event.stopPropagation()}
     >
       <select

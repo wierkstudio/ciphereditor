@@ -6,7 +6,7 @@ import ValueNumberView from 'views/value-number/value-number'
 import ValueTextView from 'views/value-text/value-text'
 import { BaseSyntheticEvent } from 'react'
 import { TypedValue } from 'slices/blueprint/types/value'
-import { ViewModifiers } from 'hooks/useClassName'
+import { ViewModifiers } from 'utils/dom'
 import { labelType } from 'slices/blueprint/reducers/value'
 
 export interface ValueViewProps<ValueType = TypedValue> {

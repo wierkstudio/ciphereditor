@@ -1,7 +1,7 @@
 
 @mixin prefers-reduced-motion() {
 
-  html.reduced-motion-reduce & {
+  .root--reduced-motion-reduce & {
     @content;
   }
 

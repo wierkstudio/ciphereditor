@@ -8,7 +8,6 @@ import OutletView from 'views/outlet/outlet'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import useHighestIssueType from 'hooks/useHighestIssueType'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlViewState } from 'slices/blueprint/types/control'
@@ -16,6 +15,7 @@ import { MouseEvent, useCallback, useEffect, useRef } from 'react'
 import { canAttachControls, getControlNode, getControlPreview } from 'slices/blueprint/selectors/control'
 import { getOperationIssues } from 'slices/blueprint/selectors/operation'
 import { getWireDraft } from 'slices/ui/selectors'
+import { renderClassName } from 'utils/dom'
 import { targetWireAction } from 'slices/ui'
 import { toggleControlViewState } from 'slices/blueprint'
 
@@ -88,7 +88,7 @@ export default function ControlView (props: {
   }
 
   return (
-    <div className={useClassName('control', modifiers)}>
+    <div className={renderClassName('control', modifiers)}>
       <div className='control__header' ref={headerRef}>
         <MovableButtonView
           className='control__toggle'

@@ -4,13 +4,13 @@ import ControlView from 'views/control/control'
 import OperationView from 'views/operation/operation'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import useDragMove from 'hooks/useDragMove'
 import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
 import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
 import { getNode, getNodeChildren, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveNodeAction, selectNodeAction } from 'slices/blueprint'
+import { renderClassName } from 'utils/dom'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -94,7 +94,7 @@ export default function NodeView (props: {
 
   const { onPointerDown } = useDragMove(node.x ?? 0, node.y ?? 0, onDragMove)
 
-  const onFocus = (event: FocusEvent) => {
+  const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (!isSelected) {
       dispatch(selectNodeAction({ nodeId }))
@@ -106,7 +106,7 @@ export default function NodeView (props: {
   return (
     <div
       ref={nodeRef}
-      className={useClassName('node', modifiers)}
+      className={renderClassName('node', modifiers)}
       role='region'
       style={{ transform: `translate(${node.x ?? 0}px, ${node.y ?? 0}px)` }}
       tabIndex={0}

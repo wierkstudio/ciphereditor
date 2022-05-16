@@ -2,12 +2,12 @@
 import './wire.scss'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { FocusEvent } from 'react'
 import { getVariableWireWaypoints } from 'slices/blueprint/selectors/variable'
 import { isSelectedNode } from 'slices/blueprint/selectors/blueprint'
+import { renderClassName } from 'utils/dom'
 import { selectNodeAction } from 'slices/blueprint'
-import { FocusEvent } from 'react'
 
 const minNodeGap = 48
 
@@ -28,7 +28,7 @@ export default function WireView (props: {
   const dispatch = useAppDispatch()
 
   const modifiers = isSelected ? ['selected'] : []
-  const className = useClassName('wire', modifiers)
+  const className = renderClassName('wire', modifiers)
 
   const count = waypoints.length
 
@@ -115,7 +115,7 @@ export default function WireView (props: {
       points[i].icon
   }
 
-  const onFocus = (event: FocusEvent) => {
+  const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (!isSelected) {
       dispatch(selectNodeAction({ nodeId: variableId }))

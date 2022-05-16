@@ -21,7 +21,7 @@
 
 %t-h1 {
   font-family: 'Lexend Deca', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   font-size: rem(32);
   line-height: math.div(40, 32);
   letter-spacing: rem(-1);
@@ -35,7 +35,7 @@
 
 %t-h2 {
   font-family: 'Lexend Deca', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   font-size: rem(24);
   line-height: math.div(32, 24);
   letter-spacing: 0;
@@ -49,20 +49,34 @@
 
 %t-h3 {
   font-family: 'Lexend Deca', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   font-size: rem(16);
   line-height: math.div(24, 16);
   letter-spacing: 0;
   text-transform: none;
+
+  @include breakpoint(l, xl) {
+    font-size: rem(24);
+    line-height: math.div(32, 24);
+  }
 }
 
 %t-h4 {
   font-family: 'Lexend Deca', sans-serif;
-  font-weight: bold;
+  font-weight: 600;
   font-size: rem(14);
   line-height: math.div(24, 14);
   letter-spacing: 0;
   text-transform: uppercase;
+}
+
+%t-node-label {
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: 600;
+  font-size: rem(16);
+  line-height: math.div(24, 16);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 %t-value {

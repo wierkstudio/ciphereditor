@@ -5,14 +5,13 @@ import OutletSelectView from 'views/outlet-select/outlet-select'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useClassName from 'hooks/useClassName'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
 import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
 import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
 import { getWireDraft } from 'slices/ui/selectors'
+import { releaseOptionalPointerCapture, renderClassName } from 'utils/dom'
 import { startWireAction } from 'slices/ui'
-import { releaseOptionalPointerCapture } from 'utils/dom'
 
 export default function OutletView (props: {
   control: ControlNode
@@ -47,7 +46,7 @@ export default function OutletView (props: {
   }
 
   return (
-    <div className={useClassName('outlet', modifiers)}>
+    <div className={renderClassName('outlet', modifiers)}>
       {props.expanded && (
         <div className='outlet__select'>
           <OutletSelectView control={control} contextProgramId={contextProgramId} />
