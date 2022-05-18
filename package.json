@@ -1,8 +1,7 @@
 {
-  "name": "cryptii",
+  "name": "cryptii-editor",
   "description": "Your online playground for all things encryption, encoding, conversion and data",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^4.2.4",
@@ -27,11 +26,12 @@
     "ts-standard": "^11.0.0"
   },
   "scripts": {
-    "start": "REACT_APP_PROCESSOR_URL=https://localhost:3001/processor/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start",
+    "start": "react-scripts start",
     "lint": "ts-standard",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "REACT_APP_PROCESSOR_URL=https://localhost:3001/processor/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"

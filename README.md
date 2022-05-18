@@ -1,5 +1,5 @@
 
-# cryptii-app
+# cryptii-editor
 
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 

@@ -2,8 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { DirectoryState } from './types'
 
-const processorUrl = process.env.REACT_APP_PROCESSOR_URL ?? './processor/'
-
 const defaultDirectoryState: DirectoryState = {
   operations: [
     {
@@ -48,7 +46,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'translate'
     },
     {
@@ -78,7 +76,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'rot13'
     },
     {
@@ -126,7 +124,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'caesar-cipher'
     },
     {
@@ -191,7 +189,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'basen'
     },
     {
@@ -225,7 +223,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'word-counter'
     },
     {
@@ -244,7 +242,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'logical-not'
     },
     {
@@ -269,7 +267,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'logical-and'
     },
     {
@@ -294,7 +292,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-essentials.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
       moduleId: 'logical-or'
     },
     {
@@ -341,7 +339,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-hash.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-hash.js',
       moduleId: 'hash'
     },
     {
@@ -393,7 +391,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      bundleUrl: processorUrl + 'bundle-hash.js',
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-hash.js',
       moduleId: 'hmac'
     }
   ]
