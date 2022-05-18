@@ -16,6 +16,7 @@ import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blu
 import { moveCanvasAction, updateCanvasSizeAction } from 'slices/ui'
 import { renderClassName } from 'utils/dom'
 import { selectNodeAction } from 'slices/blueprint'
+import IconView from 'views/icon/icon'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -95,6 +96,14 @@ export default function CanvasView (): JSX.Element {
             wireDraft={wireDraft}
             contextProgramId={contextProgramId}
           />
+        </div>
+      )}
+      {childNodeIds.length === 0 && (
+        <div className='canvas__empty'>
+          <p className='canvas__empty-message'>
+            Press <IconView icon='plus' modifiers='inline-reference' /> to add
+            your first operation.
+          </p>
         </div>
       )}
     </div>

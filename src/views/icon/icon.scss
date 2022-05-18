@@ -16,4 +16,13 @@
   [fill]:not([fill="none"]) {
     fill: currentColor;
   }
+
+  &--inline-reference {
+    display: inline-block;
+    margin: 0 rem(4);
+    border: rem(1) solid currentColor;
+    border-radius: rem(4);
+    vertical-align: middle;
+    transform: translate(0, #{rem(-2)});
+  }
 }
