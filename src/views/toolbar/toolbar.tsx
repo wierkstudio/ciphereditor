@@ -1,28 +1,42 @@
 
 import './toolbar.scss'
-import { ReactNode } from 'react'
 
 export default function ToolbarView (props: {
-  items: Array<ReactNode|ReactNode[]>
+  children: JSX.Element | Array<JSX.Element | false>
 }): JSX.Element {
   return (
     <div className='toolbar' role='toolbar'>
-      {props.items.map((item, index) =>
-        !Array.isArray(item)
-          ? (
+      {Array.isArray(props.children)
+        ? props.children
+          .filter(button => button !== false)
+          .map((button, index) => (
             <div key={index} className='toolbar__button'>
-              {item}
+              {button}
             </div>
-            )
-          : (
-            <div key={index} className='toolbar__group'>
-              {item.map((item, index) => (
-                <div key={index} className='toolbar__button'>
-                  {item}
-                </div>
-              ))}
-            </div>
-            ))}
+          ))
+        : (
+          <div className='toolbar__button'>
+            {props.children}
+          </div>
+          )}
     </div>
   )
 }
+
+const GroupView = (props: {
+  children: Array<JSX.Element | false>
+}): JSX.Element => {
+  return (
+    <div className='toolbar__group'>
+      {props.children
+        .filter(button => button !== false)
+        .map((button, index) => (
+          <div key={index} className='toolbar__button'>
+            {button}
+          </div>
+        ))}
+    </div>
+  )
+}
+
+ToolbarView.GroupView = GroupView

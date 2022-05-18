@@ -45,7 +45,7 @@ export enum UIEmbedType {
 export enum UICanvasState {
   Idle = 'idle',
   Wire = 'wire',
-  Modal = 'modal',
+  Modal = 'modal'
 }
 
 /**
@@ -61,13 +61,14 @@ export interface UIWireDraft {
  */
 export enum ModalType {
   Add = 'add',
-  Settings = 'settings'
+  Settings = 'settings',
+  Report = 'report'
 }
 
 /**
  * Generic modal state
  */
-export interface ModalState {
+interface AbstractModalState {
   type: ModalType
   cancelable: boolean
 }
@@ -75,7 +76,24 @@ export interface ModalState {
 /**
  * Add modal state
  */
-export interface AddModalState extends ModalState {
+export interface AddModalState extends AbstractModalState {
   type: ModalType.Add
-  search: string
 }
+
+/**
+ * Settings modal state
+ */
+export interface SettingsModalState extends AbstractModalState {
+  type: ModalType.Settings
+}
+
+/**
+ * Report modal state
+ */
+export interface ReportModalState extends AbstractModalState {
+  type: ModalType.Report
+  title: string
+  description: string
+}
+
+export type ModalState = AddModalState | SettingsModalState | ReportModalState

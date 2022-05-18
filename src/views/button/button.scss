@@ -77,4 +77,14 @@
   &__icon + &--large &__label {
     margin-left: rem(-8);
   }
+
+  .toolbar__group .toolbar__button:first-child & {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .toolbar__group .toolbar__button:last-child & {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }

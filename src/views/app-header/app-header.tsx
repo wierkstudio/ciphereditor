@@ -11,113 +11,87 @@ import { UIEmbedType } from 'slices/ui/types'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from 'slices/ui/selectors'
 import { leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
-import { pushAddModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from 'slices/ui'
+import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from 'slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
   const program = useBlueprintSelector(state => getActiveProgram(state))
   const embedType = useUISelector(getEmbedType)
   const maximized = useUISelector(isEmbedMaximized)
-
-  // TODO: Needs implementation
-  const onNeedsImplementation = (): void => {
-    alert('You have reached the end of this prototype. Come back later.')
-  }
-
   return (
     <header className='app-header'>
       <div className='app-header__start'>
         <div className='app-header__brand'>
           <LogoView />
         </div>
-        <ToolbarView
-          items={[
+        <ToolbarView>
+          <ButtonView
+            title='Add node'
+            icon='plus'
+            modifiers={['large']}
+            disabled={program === undefined}
+            onClick={() => dispatch(pushAddModalAction({}))}
+          />
+          <ToolbarView.GroupView>
             <ButtonView
-              key='add-node'
-              title='Add node'
-              icon='plus'
+              title='Undo'
+              icon='undo'
               modifiers={['large']}
-              disabled={program === undefined}
-              onClick={() => dispatch(pushAddModalAction({}))}
-            />,
-            [
-              <ButtonView
-                key='undo'
-                title='Undo'
-                icon='undo'
-                modifiers={['large']}
-                onClick={() => dispatch(undoAction())}
-                disabled={useAppSelector(state => state.blueprint.past.length) === 0}
-              />,
-              <ButtonView
-                key='redo'
-                title='Redo'
-                icon='redo'
-                modifiers={['large']}
-                onClick={() => dispatch(redoAction())}
-                disabled={useAppSelector(state => state.blueprint.future.length) === 0}
-              />
-            ],
-            <ButtonView
-              key='share'
-              title='Share'
-              icon='share'
-              modifiers={['large']}
-              onClick={onNeedsImplementation}
+              onClick={() => dispatch(undoAction())}
+              disabled={useAppSelector(state => state.blueprint.past.length) === 0}
             />
-          ].concat(program !== undefined && program.parentId !== program.id
-            ? [
-              <ButtonView
-                key='leave-program'
-                title='Leave program'
-                icon='arrowUp'
-                modifiers={['large']}
-                onClick={() => dispatch(leaveProgramAction({}))}
-                disabled={program === undefined || program.parentId === program.id}
-              />
-              ]
-            : [])}
-        />
+            <ButtonView
+              title='Redo'
+              icon='redo'
+              modifiers={['large']}
+              onClick={() => dispatch(redoAction())}
+              disabled={useAppSelector(state => state.blueprint.future.length) === 0}
+            />
+          </ToolbarView.GroupView>
+          <ButtonView
+            title='Share'
+            icon='share'
+            modifiers={['large']}
+            onClick={() => dispatch(pushDeadEndModalAction({}))}
+          />
+          {program !== undefined && program.parentId !== program.id && (
+            <ButtonView
+              title='Leave program'
+              icon='arrowUp'
+              modifiers={['large']}
+              onClick={() => dispatch(leaveProgramAction({}))}
+              disabled={program === undefined || program.parentId === program.id}
+            />
+          )}
+        </ToolbarView>
       </div>
       <div className='app-header__end'>
-        <ToolbarView
-          items={[
+        <ToolbarView>
+          <ButtonView
+            title='Settings'
+            icon='settings'
+            modifiers={['large']}
+            onClick={() => dispatch(pushSettingsModalAction({}))}
+          />
+          {embedType !== UIEmbedType.Platform && (
             <ButtonView
-              key='settings'
-              title='Settings'
-              icon='settings'
+              title='View manual'
+              icon='help'
               modifiers={['large']}
-              onClick={() => dispatch(pushSettingsModalAction({}))}
+              onClick={() => {
+                window.open('https://cryptii.blue/manual', '_blank')
+              }}
             />
-          ].concat([
-            embedType !== UIEmbedType.Platform
-              ? <ButtonView
-                  key='view-manual'
-                  title='View manual'
-                  icon='help'
-                  modifiers={['large']}
-                  onClick={() => {
-                    window.open('https://cryptii.blue/manual', '_blank')
-                  }}
-                />
-              : (maximized
-                  ? <ButtonView
-                      key='minimize'
-                      title='Show docs'
-                      icon='minimize'
-                      modifiers={['large']}
-                      onClick={() => dispatch(toggleEmbedMaximizedAction({}))}
-                    />
-                  : <ButtonView
-                      key='maximize'
-                      title='Hide docs'
-                      icon='maximize'
-                      modifiers={['large']}
-                      onClick={() => dispatch(toggleEmbedMaximizedAction({}))}
-                    />
-                )
-          ])}
-        />
+          )}
+          {embedType === UIEmbedType.Platform && (
+            <ButtonView
+              title={maximized ? 'Show docs' : 'Hide docs'}
+              icon={maximized ? 'minimize' : 'maximize'}
+              modifiers={['large']}
+              onClick={() => dispatch(toggleEmbedMaximizedAction({}))}
+            />
+          )}
+        </ToolbarView>
       </div>
     </header>
   )

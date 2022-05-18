@@ -2,7 +2,7 @@
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { popModal, pushAddModal, pushSettingsModal } from './reducers'
+import { popModal, pushAddModal, pushReportModal, pushSettingsModal } from './reducers'
 
 const detectInitialEmbedType = (): UIEmbedType => {
   if (window.parent === window) {
@@ -85,6 +85,21 @@ export const settingsSlice = createSlice({
     pushSettingsModalAction: (state, { payload }: PayloadAction<{}>) => {
       pushSettingsModal(state)
     },
+    pushReportModalAction: (state, { payload }: PayloadAction<{
+      title: string
+      description: string
+    }>) => {
+      pushReportModal(state, payload.title, payload.description)
+    },
+    pushDeadEndModalAction: (state, { payload }: PayloadAction<{}>) => {
+      pushReportModal(
+        state,
+        'You\'ve reached a dead-end.',
+        'You have found a part of this app that is yet to be built. ' +
+        'Check back again later. In the meantime you may leave us some ' +
+        'feedback about your experience so far. We would really appreciate it.'
+      )
+    },
     cancelTopModalAction: (state, { payload }: PayloadAction<{}>) => {
       const cancelable =
         state.modalStack.length > 0 &&
@@ -109,6 +124,8 @@ export const {
   endWireAction,
   pushAddModalAction,
   pushSettingsModalAction,
+  pushReportModalAction,
+  pushDeadEndModalAction,
   cancelTopModalAction,
   popModalAction
 } = settingsSlice.actions

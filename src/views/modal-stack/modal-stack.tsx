@@ -1,6 +1,7 @@
 
 import './modal-stack.scss'
 import AddModalView from 'views/modal-add/modal-add'
+import ReportModalView from 'views/modal-report/modal-report'
 import SettingsModalView from 'views/modal-settings/modal-settings'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -11,7 +12,8 @@ import { getModalStack } from 'slices/ui/selectors'
 
 const modalViewMap = {
   [ModalType.Add]: AddModalView,
-  [ModalType.Settings]: SettingsModalView
+  [ModalType.Settings]: SettingsModalView,
+  [ModalType.Report]: ReportModalView
 }
 
 export default function ModalStackView (): JSX.Element {
@@ -40,7 +42,7 @@ export default function ModalStackView (): JSX.Element {
           >
             <div className='modal-stack__backdrop' onClick={onBackdropClick} />
             <div className='modal-stack__scrollarea'>
-              <ModalView modal={modal} />
+              <ModalView modal={modal as any} />
             </div>
           </div>
         )
