@@ -6,6 +6,7 @@ import { ReactComponent as ChevronUpIcon } from 'icons/chevron-up.svg'
 import { ReactComponent as CloseIcon } from 'icons/close.svg'
 import { ReactComponent as CopyIcon } from 'icons/copy.svg'
 import { ReactComponent as DoubleChevronIcon } from 'icons/chevron-double.svg'
+import { ReactComponent as EditIcon } from 'icons/edit.svg'
 import { ReactComponent as ErrorIcon } from 'icons/error.svg'
 import { ReactComponent as HelpIcon } from 'icons/help.svg'
 import { ReactComponent as InfoIcon } from 'icons/info.svg'
@@ -16,11 +17,13 @@ import { ReactComponent as OutletPullIcon } from 'icons/outlet-pull.svg'
 import { ReactComponent as OutletPushIcon } from 'icons/outlet-push.svg'
 import { ReactComponent as OutletUnusedIcon } from 'icons/outlet-unused.svg'
 import { ReactComponent as PlusIcon } from 'icons/plus.svg'
+import { ReactComponent as ProgramIcon } from 'icons/program.svg'
 import { ReactComponent as RedoIcon } from 'icons/redo.svg'
 import { ReactComponent as RefreshIcon } from 'icons/refresh.svg'
 import { ReactComponent as SettingsIcon } from 'icons/settings.svg'
 import { ReactComponent as ShareIcon } from 'icons/share.svg'
 import { ReactComponent as SwitchIcon } from 'icons/switch.svg'
+import { ReactComponent as TrashIcon } from 'icons/trash.svg'
 import { ReactComponent as UndoIcon } from 'icons/undo.svg'
 import { ReactComponent as WarnIcon } from 'icons/warn.svg'
 import { renderClassName, ViewModifiers } from 'utils/dom'
@@ -32,6 +35,7 @@ const iconSVGMap = {
   close: CloseIcon,
   copy: CopyIcon,
   doubleChevron: DoubleChevronIcon,
+  edit: EditIcon,
   error: ErrorIcon,
   help: HelpIcon,
   info: InfoIcon,
@@ -42,11 +46,13 @@ const iconSVGMap = {
   outletPush: OutletPushIcon,
   outletUnused: OutletUnusedIcon,
   plus: PlusIcon,
+  program: ProgramIcon,
   redo: RedoIcon,
   refresh: RefreshIcon,
   settings: SettingsIcon,
   share: ShareIcon,
   switch: SwitchIcon,
+  trash: TrashIcon,
   undo: UndoIcon,
   warn: WarnIcon
 }

@@ -43,13 +43,8 @@ export default function OperationView (props: {
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
   const highestIssueType = useHighestIssueType(issues)
 
-  let doubleClickHandler
   let state = OperationState.Ready
-  if (node.type === BlueprintNodeType.Program) {
-    doubleClickHandler = () => {
-      dispatch(enterProgramAction({ programId: nodeId }))
-    }
-  } else if (node.type === BlueprintNodeType.Operation) {
+  if (node.type === BlueprintNodeType.Operation) {
     state = node.state
   }
 
@@ -61,10 +56,7 @@ export default function OperationView (props: {
   const className = renderClassName('operation', state.toString())
 
   return (
-    <div
-      className={className}
-      onDoubleClick={doubleClickHandler}
-    >
+    <div className={className}>
       <header
         className='operation__header'
         style={{ order: hasControlsBelowHeader ? 1000 : -1000 }}
@@ -77,7 +69,7 @@ export default function OperationView (props: {
             ).join('; ')}
           >
             <span className='operation__icon'>
-              <IconView icon='switch' />
+              <IconView icon={node.type === BlueprintNodeType.Program ? 'program' : 'switch'} />
             </span>
             <h3 className='operation__label'>
               {node.label}
@@ -95,6 +87,13 @@ export default function OperationView (props: {
               icon='refresh'
               title='Retry'
               onClick={() => dispatch(retryOperationAction({ nodeId }))}
+            />
+          )}
+          {node.type === BlueprintNodeType.Program && (
+            <ButtonView
+              icon='edit'
+              title='Edit program'
+              onClick={() => dispatch(enterProgramAction({ programId: nodeId }))}
             />
           )}
         </div>

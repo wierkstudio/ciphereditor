@@ -10,12 +10,14 @@ import useUISelector from 'hooks/useUISelector'
 import { UIEmbedType } from 'slices/ui/types'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from 'slices/ui/selectors'
-import { leaveProgramAction, redoAction, undoAction } from 'slices/blueprint'
+import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
+import { leaveProgramAction, redoAction, removeNodeAction, undoAction } from 'slices/blueprint'
 import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from 'slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
-  const program = useBlueprintSelector(state => getActiveProgram(state))
+  const program = useBlueprintSelector(getActiveProgram)
+  const selectedNode = useBlueprintSelector(getSelectedNode)
   const embedType = useUISelector(getEmbedType)
   const maximized = useUISelector(isEmbedMaximized)
   return (
@@ -28,7 +30,7 @@ export default function AppHeaderView (): JSX.Element {
           <ButtonView
             title='Add node'
             icon='plus'
-            modifiers={['large']}
+            modifiers='large'
             disabled={program === undefined}
             onClick={() => dispatch(pushAddModalAction({}))}
           />
@@ -36,14 +38,14 @@ export default function AppHeaderView (): JSX.Element {
             <ButtonView
               title='Undo'
               icon='undo'
-              modifiers={['large']}
+              modifiers='large'
               onClick={() => dispatch(undoAction())}
               disabled={useAppSelector(state => state.blueprint.past.length) === 0}
             />
             <ButtonView
               title='Redo'
               icon='redo'
-              modifiers={['large']}
+              modifiers='large'
               onClick={() => dispatch(redoAction())}
               disabled={useAppSelector(state => state.blueprint.future.length) === 0}
             />
@@ -51,16 +53,24 @@ export default function AppHeaderView (): JSX.Element {
           <ButtonView
             title='Share'
             icon='share'
-            modifiers={['large']}
+            modifiers='large'
             onClick={() => dispatch(pushDeadEndModalAction({}))}
           />
           {program !== undefined && program.parentId !== program.id && (
             <ButtonView
               title='Leave program'
               icon='arrowUp'
-              modifiers={['large']}
+              modifiers='large'
               onClick={() => dispatch(leaveProgramAction({}))}
               disabled={program === undefined || program.parentId === program.id}
+            />
+          )}
+          {selectedNode !== undefined && (
+            <ButtonView
+              title='Remove node'
+              icon='trash'
+              modifiers='large'
+              onClick={() => dispatch(removeNodeAction({ nodeId: selectedNode.id }))}
             />
           )}
         </ToolbarView>
@@ -70,14 +80,14 @@ export default function AppHeaderView (): JSX.Element {
           <ButtonView
             title='Settings'
             icon='settings'
-            modifiers={['large']}
+            modifiers='large'
             onClick={() => dispatch(pushSettingsModalAction({}))}
           />
           {embedType !== UIEmbedType.Platform && (
             <ButtonView
               title='View manual'
               icon='help'
-              modifiers={['large']}
+              modifiers='large'
               onClick={() => {
                 window.open('https://cryptii.blue/manual', '_blank')
               }}
@@ -87,7 +97,7 @@ export default function AppHeaderView (): JSX.Element {
             <ButtonView
               title={maximized ? 'Show docs' : 'Hide docs'}
               icon={maximized ? 'minimize' : 'maximize'}
-              modifiers={['large']}
+              modifiers='large'
               onClick={() => dispatch(toggleEmbedMaximizedAction({}))}
             />
           )}
