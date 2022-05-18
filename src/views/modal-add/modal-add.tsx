@@ -23,8 +23,26 @@ export default function AddModalView (props: {
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   return (
-    <ModalView modal={props.modal} title='Operation directory'>
+    <ModalView modal={props.modal} title='Add a new operation'>
       <ul>
+        {directoryOperations.map(operation => (
+          <li key={operation.name}>
+            <ButtonView
+              onClick={() => {
+                // TODO: Remove magic numbers
+                activeProgram !== undefined && dispatch(addOperationAction({
+                  programId: activeProgram.id,
+                  operation: operation,
+                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
+                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
+                }))
+                dispatch(popModalAction({}))
+              }}
+            >
+              {operation.label}
+            </ButtonView>
+          </li>
+        ))}
         <li key='empty-operation'>
           <ButtonView
             onClick={() => {
@@ -50,27 +68,9 @@ export default function AddModalView (props: {
               dispatch(popModalAction({}))
             }}
           >
-            Control
+            Empty control
           </ButtonView>
         </li>
-        {directoryOperations.map(operation => (
-          <li key={operation.name}>
-            <ButtonView
-              onClick={() => {
-                // TODO: Remove magic numbers
-                activeProgram !== undefined && dispatch(addOperationAction({
-                  programId: activeProgram.id,
-                  operation: operation,
-                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
-                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
-                }))
-                dispatch(popModalAction({}))
-              }}
-            >
-              {operation.label}
-            </ButtonView>
-          </li>
-        ))}
       </ul>
     </ModalView>
   )

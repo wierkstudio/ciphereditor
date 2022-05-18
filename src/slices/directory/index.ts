@@ -5,81 +5,6 @@ import { DirectoryState } from './types'
 const defaultDirectoryState: DirectoryState = {
   operations: [
     {
-      name: 'cryptii/translate',
-      label: 'Translate',
-      controls: [
-        {
-          name: 'source',
-          initialValue: 'Hello, World.',
-          types: ['text']
-        },
-        {
-          name: 'sourceLanguage',
-          initialValue: 'en',
-          types: ['text'],
-          choices: [
-            { value: '', label: 'Detect' },
-            { value: 'en', label: 'English' },
-            { value: 'de', label: 'German' },
-            { value: 'fr', label: 'French' },
-            { value: 'no', label: 'Norwegian' },
-            { value: 'lb', label: 'Luxembourgish' }
-          ]
-        },
-        {
-          name: 'targetLanguage',
-          initialValue: 'de',
-          types: ['text'],
-          choices: [
-            { value: '', label: 'Detect' },
-            { value: 'en', label: 'English' },
-            { value: 'de', label: 'German' },
-            { value: 'fr', label: 'French' },
-            { value: 'no', label: 'Norwegian' },
-            { value: 'lb', label: 'Luxembourgish' }
-          ]
-        },
-        {
-          name: 'target',
-          initialValue: 'Hallo Welt.',
-          types: ['text'],
-          order: 1000
-        }
-      ],
-      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'translate'
-    },
-    {
-      name: 'cryptii/rot13',
-      label: 'ROT13',
-      controls: [
-        {
-          name: 'plaintext',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
-          types: ['text']
-        },
-        {
-          name: 'variant',
-          initialValue: 'rot13',
-          types: ['text'],
-          choices: [
-            { value: 'rot5', label: 'ROT5 (0-9)' },
-            { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
-            { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
-            { value: 'rot47', label: 'ROT47 (!-~)' }
-          ]
-        },
-        {
-          name: 'ciphertext',
-          initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
-          types: ['text'],
-          order: 1000
-        }
-      ],
-      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'rot13'
-    },
-    {
       name: 'cryptii/caesar-cipher',
       label: 'Caesar cipher',
       controls: [
@@ -128,69 +53,34 @@ const defaultDirectoryState: DirectoryState = {
       moduleId: 'caesar-cipher'
     },
     {
-      name: 'cryptii/basen',
-      label: 'BaseN',
+      name: 'cryptii/rot13',
+      label: 'ROT13',
       controls: [
         {
-          name: 'data',
+          name: 'plaintext',
           initialValue: 'The quick brown fox jumps over the lazy dog.',
-          types: ['bytes', 'text']
+          types: ['text']
         },
         {
-          name: 'alphabet',
-          initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+          name: 'variant',
+          initialValue: 'rot13',
           types: ['text'],
           choices: [
-            { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', label: 'Base32' },
-            { value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/', label: 'Base64' }
-          ],
-          enforceChoices: false
+            { value: 'rot5', label: 'ROT5 (0-9)' },
+            { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
+            { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
+            { value: 'rot47', label: 'ROT47 (!-~)' }
+          ]
         },
         {
-          name: 'paddingSymbol',
-          initialValue: '=',
-          types: ['text'],
-          choices: [
-            { value: '', label: 'None' },
-            { value: '=', label: 'Equals sign (=)' }
-          ],
-          enforceChoices: false
-        },
-        {
-          name: 'paddingRequired',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'maxLineLength',
-          initialValue: { type: 'integer', data: 0 },
-          types: ['integer'],
-          choices: [
-            { value: { type: 'integer', data: 0 }, label: 'None' },
-            { value: { type: 'integer', data: 64 }, label: '64 (RFC 1421)' },
-            { value: { type: 'integer', data: 76 }, label: '76 (RFC 2045)' }
-          ],
-          enforceChoices: false
-        },
-        {
-          name: 'lineSeparator',
-          initialValue: '\r\n',
-          types: ['text'],
-          choices: [
-            { value: '\r\n', label: 'CR & LF' },
-            { value: '\n', label: 'LF' }
-          ],
-          enforceChoices: false
-        },
-        {
-          name: 'encodedData',
-          initialValue: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
+          name: 'ciphertext',
+          initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
           types: ['text'],
           order: 1000
         }
       ],
       bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'basen'
+      moduleId: 'rot13'
     },
     {
       name: 'cryptii/word-counter',
@@ -227,77 +117,8 @@ const defaultDirectoryState: DirectoryState = {
       moduleId: 'word-counter'
     },
     {
-      name: 'cryptii/logical-not',
-      label: 'Logical NOT',
-      controls: [
-        {
-          name: 'a',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'notA',
-          initialValue: true,
-          types: ['boolean'],
-          order: 1000
-        }
-      ],
-      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'logical-not'
-    },
-    {
-      name: 'cryptii/logical-and',
-      label: 'Logical AND',
-      controls: [
-        {
-          name: 'a',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'b',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'aAndB',
-          initialValue: false,
-          types: ['boolean'],
-          writable: false,
-          order: 1000
-        }
-      ],
-      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'logical-and'
-    },
-    {
-      name: 'cryptii/logical-or',
-      label: 'Logical OR',
-      controls: [
-        {
-          name: 'a',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'b',
-          initialValue: false,
-          types: ['boolean']
-        },
-        {
-          name: 'aOrB',
-          initialValue: false,
-          types: ['boolean'],
-          writable: false,
-          order: 1000
-        }
-      ],
-      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
-      moduleId: 'logical-or'
-    },
-    {
       name: 'cryptii/hash',
-      label: 'Hash function',
+      label: 'Cryptographic hash function',
       controls: [
         {
           name: 'message',
@@ -393,6 +214,124 @@ const defaultDirectoryState: DirectoryState = {
       ],
       bundleUrl: 'https://static.cryptii.blue/bundles/bundle-hash.js',
       moduleId: 'hmac'
+    },
+    {
+      name: 'cryptii/logical-not',
+      label: 'Logical NOT',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean']
+        },
+        {
+          name: 'notA',
+          initialValue: true,
+          types: ['boolean'],
+          order: 1000
+        }
+      ],
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
+      moduleId: 'logical-not'
+    },
+    {
+      name: 'cryptii/logical-and',
+      label: 'Logical AND',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean']
+        },
+        {
+          name: 'b',
+          initialValue: false,
+          types: ['boolean']
+        },
+        {
+          name: 'aAndB',
+          initialValue: false,
+          types: ['boolean'],
+          writable: false,
+          order: 1000
+        }
+      ],
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
+      moduleId: 'logical-and'
+    },
+    {
+      name: 'cryptii/logical-or',
+      label: 'Logical OR',
+      controls: [
+        {
+          name: 'a',
+          initialValue: false,
+          types: ['boolean']
+        },
+        {
+          name: 'b',
+          initialValue: false,
+          types: ['boolean']
+        },
+        {
+          name: 'aOrB',
+          initialValue: false,
+          types: ['boolean'],
+          writable: false,
+          order: 1000
+        }
+      ],
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
+      moduleId: 'logical-or'
+    },
+    {
+      name: 'cryptii/google-translate',
+      label: 'Google Translate',
+      controls: [
+        {
+          name: 'source',
+          initialValue: 'Hello, World.',
+          types: ['text']
+        },
+        {
+          name: 'sourceLanguage',
+          initialValue: 'en',
+          types: ['text'],
+          choices: [
+            { value: '', label: 'Detect' },
+            { value: 'de', label: 'German' },
+            { value: 'en', label: 'English' },
+            { value: 'fr', label: 'French' },
+            { value: 'lb', label: 'Luxembourgish' },
+            { value: 'no', label: 'Norwegian' },
+            { value: 'pl', label: 'Polish' },
+            { value: 'pt', label: 'Portuguese (Portugal, Brazil)' }
+          ]
+        },
+        {
+          name: 'targetLanguage',
+          initialValue: 'de',
+          types: ['text'],
+          choices: [
+            { value: '', label: 'Detect' },
+            { value: 'de', label: 'German' },
+            { value: 'en', label: 'English' },
+            { value: 'fr', label: 'French' },
+            { value: 'lb', label: 'Luxembourgish' },
+            { value: 'no', label: 'Norwegian' },
+            { value: 'pl', label: 'Polish' },
+            { value: 'pt', label: 'Portuguese (Portugal, Brazil)' }
+          ]
+        },
+        {
+          name: 'target',
+          initialValue: 'Hallo Welt.',
+          types: ['text'],
+          order: 1000
+        }
+      ],
+      bundleUrl: 'https://static.cryptii.blue/bundles/bundle-essentials.js',
+      moduleId: 'translate'
     }
   ]
 }

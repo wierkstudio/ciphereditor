@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "REACT_APP_PROCESSOR_URL=https://localhost:3001/processor/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start"
+    "dev": "REACT_APP_PROCESSOR_URL=https://processor.cryptii.blue/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"

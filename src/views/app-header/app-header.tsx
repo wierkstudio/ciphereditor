@@ -92,12 +92,12 @@ export default function AppHeaderView (): JSX.Element {
           ].concat([
             embedType !== UIEmbedType.Platform
               ? <ButtonView
-                  key='open-docs'
-                  title='Open docs'
+                  key='view-manual'
+                  title='View manual'
                   icon='help'
                   modifiers={['large']}
                   onClick={() => {
-                    window.open('https://cryptii.com', '_blank')
+                    window.open('https://cryptii.blue/manual', '_blank')
                   }}
                 />
               : (maximized
