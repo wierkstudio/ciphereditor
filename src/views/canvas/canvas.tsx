@@ -1,5 +1,6 @@
 
 import './canvas.scss'
+import IconView from 'views/icon/icon'
 import NodeView from 'views/node/node'
 import WireDraftView from 'views/wire-draft/wire-draft'
 import WireView from 'views/wire/wire'
@@ -16,7 +17,6 @@ import { getNodeChildren, getSelectedNode } from 'slices/blueprint/selectors/blu
 import { moveCanvasAction, updateCanvasSizeAction } from 'slices/ui'
 import { renderClassName } from 'utils/dom'
 import { selectNodeAction } from 'slices/blueprint'
-import IconView from 'views/icon/icon'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -56,7 +56,7 @@ export default function CanvasView (): JSX.Element {
 
   const { onPointerDown } = useDragMove(x, y, onDragMove, true)
 
-  const onFocus = (event: FocusEvent): void => {
+  const onFocusOrBlur = (event: FocusEvent): void => {
     event.stopPropagation()
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
@@ -70,7 +70,8 @@ export default function CanvasView (): JSX.Element {
       className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
       onPointerDown={onPointerDown}
-      onFocus={onFocus}
+      onFocus={onFocusOrBlur}
+      onBlur={onFocusOrBlur}
     >
       <div
         className='canvas__content'

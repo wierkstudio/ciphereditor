@@ -7,11 +7,10 @@ import usePointerFollowUp from 'hooks/usePointerFollowUp'
 import useUISelector from 'hooks/useUISelector'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import { UIWireDraft } from 'slices/ui/types'
-import { addControlAction, attachControlsAction } from 'slices/blueprint'
+import { attachControlsAction } from 'slices/blueprint'
 import { endWireAction } from 'slices/ui'
-import { getCanvasOffset, getCanvasSize } from 'slices/ui/selectors'
+import { getCanvasOffset } from 'slices/ui/selectors'
 import { getOutletPosition } from 'slices/blueprint/selectors/control'
-import { gridSize } from 'hooks/useDragMove'
 import { useState } from 'react'
 
 export default function WireDraftView (props: {
@@ -26,7 +25,6 @@ export default function WireDraftView (props: {
   const sourcePosition = useBlueprintSelector(state =>
     getOutletPosition(state, wireDraft.sourceControlId, contextProgramId))
   const canvasOffset = useUISelector(getCanvasOffset)
-  const canvasSize = useUISelector(getCanvasSize)
   const [targetPosition, setTargetPosition] =
     useState<{ x: number, y: number } | undefined>(undefined)
 
@@ -42,45 +40,9 @@ export default function WireDraftView (props: {
         targetControlId: wireDraft.targetControlId,
         contextProgramId
       }))
-    } else if (targetPosition !== undefined) {
-      // Create a new control at the target position and attach the source
-      // control to it
-
-      // Only continue if target position is within the viewport
-      if (
-        targetPosition.x >= 0 &&
-        targetPosition.x < canvasSize.width &&
-        targetPosition.y >= 0 &&
-        targetPosition.y < canvasSize.height
-      ) {
-        // Determine the location where the new control should be placed
-        // Default: Place center, center of the control below the pointer
-        let relX = -320 * 0.5
-        const relY = -24
-
-        if (
-          sourcePosition !== undefined &&
-          Math.abs(sourcePosition.y - targetPosition.y) <
-            Math.abs(sourcePosition.x - targetPosition.x)
-        ) {
-          relX =
-            sourcePosition.x - targetPosition.x > 0
-              // Place center, right of the control below the pointer
-              ? -320 + 24
-              // Place center, left of the control below the pointer
-              : -24
-        }
-
-        dispatch(addControlAction({
-          programId: contextProgramId,
-          x: Math.round((targetPosition.x + canvasOffset.x + relX) / gridSize) * gridSize,
-          y: Math.round((targetPosition.y + canvasOffset.y + relY) / gridSize) * gridSize,
-          sourceControlId: wireDraft.sourceControlId
-        }))
-      }
     }
     dispatch(endWireAction({}))
-  }, [dispatch, wireDraft, canvasOffset, sourcePosition, targetPosition, contextProgramId])
+  }, [dispatch, wireDraft, contextProgramId])
 
   usePointerFollowUp(onWireMove, onWireEnd)
 
