@@ -8,9 +8,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {
       isSerializable: (value: any): boolean => {
-        // Consider Uint8Array instances to be immutable, although they are not
-        // Assumption: We won't make changes to existing Uint8Array objects
-        if (value instanceof Uint8Array) {
+        // Consider ArrayBuffer instances to be immutable, although they are not
+        // Assumption: We won't make changes to existing ArrayBuffer objects
+        if (value instanceof ArrayBuffer) {
           return true
         }
         return isPlain(value)

@@ -32,7 +32,7 @@ export type TextValue = Readonly<z.infer<typeof textValueSchema>>
 
 export const bytesValueSchema = z.object({
   type: z.literal('bytes'),
-  data: z.instanceof(Uint8Array)
+  data: z.instanceof(ArrayBuffer)
 })
 
 export type BytesValue = Readonly<z.infer<typeof bytesValueSchema>>
@@ -57,7 +57,7 @@ export const implicitTypedValueSchema = z.union([
   z.boolean(),
   z.number(),
   z.string(),
-  z.instanceof(Uint8Array)
+  z.instanceof(ArrayBuffer)
 ])
 
 /**

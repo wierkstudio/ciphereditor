@@ -1,7 +1,7 @@
 
-import { ImplicitTypedValue, LabeledImplicitTypedValue, LabeledTypedValue, TextValue, TypedValue } from '../types/value'
+import { BytesValue, ImplicitTypedValue, LabeledImplicitTypedValue, LabeledTypedValue, TextValue, TypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
-import { bytesToHexString } from 'utils/binary'
+import { bufferToHexString } from 'utils/binary'
 import { capitalCase } from 'change-case'
 
 /**
@@ -49,7 +49,7 @@ export const isTypeWithinType = (type: string, withinType: string): boolean => {
 export const resolveImplicitTypedValue = (
   implicitValue: ImplicitTypedValue
 ): TypedValue => {
-  if (implicitValue instanceof Uint8Array) {
+  if (implicitValue instanceof ArrayBuffer) {
     return { type: 'bytes', data: implicitValue }
   }
   switch (typeof implicitValue) {
@@ -100,7 +100,7 @@ export const createValue = (type: string): TypedValue => {
       data = ''
       break
     case 'bytes':
-      data = new Uint8Array()
+      data = new ArrayBuffer(0)
       break
     default:
       throw new Error(`No empty value defined for type '${type}'`)
@@ -125,7 +125,10 @@ export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
     case 'text':
       return a.data === b.data
     case 'bytes':
-      return arrayEqual(a, b)
+      return arrayEqual(
+        new Uint8Array(a.data),
+        new Uint8Array((b as BytesValue).data)
+      )
     default:
       // Equality for values of the given type is not defined
       return false
@@ -161,7 +164,7 @@ export const stringifyValue = (value: TypedValue): string => {
     case 'text':
       return value.data
     case 'bytes':
-      return bytesToHexString(value.data)
+      return bufferToHexString(value.data)
     default:
       // Treat the value not of type never here as we might add additional types
       // without adding a way to stringify it
@@ -175,7 +178,7 @@ export const stringifyValue = (value: TypedValue): string => {
  */
 export const previewValue = (value: TypedValue): string => {
   if (value.type === 'bytes') {
-    return bytesToHexString(value.data.slice(0, 15))
+    return bufferToHexString(value.data.slice(0, 15))
   }
   return stringifyValue(value).substring(0, 30)
 }
