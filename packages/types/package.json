@@ -1,0 +1,5 @@
+{
+  "name": "cryptii-types",
+  "version": "5.0.0-alpha",
+  "typings": "index.ts"
+}

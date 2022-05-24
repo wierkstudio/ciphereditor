@@ -9,7 +9,7 @@ import {
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlChange, ControlChangeSource, ControlViewState } from './types/control'
-import { Operation, OperationRequest, OperationResult, operationSchema, OperationState } from './types/operation'
+import { OperationExtension, operationExtensionSchema, OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, retryOperation, setOperationState } from './reducers/operation'
@@ -18,6 +18,7 @@ import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
+import { OperationRequest, OperationResult } from '@app-types'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -38,13 +39,13 @@ export const blueprintSlice = createSlice({
      */
     addOperationAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
-      operation: Operation | any
+      extension: OperationExtension | any
       x: number
       y: number
     }>) => {
       const { programId, x, y } = payload
-      const operationEntity = operationSchema.parse(payload.operation)
-      const operation = addOperationNode(state, programId, operationEntity, x, y)
+      const operationExtension = operationExtensionSchema.parse(payload.extension)
+      const operation = addOperationNode(state, programId, operationExtension, x, y)
       state.selectedNodeId = operation.id
     },
 

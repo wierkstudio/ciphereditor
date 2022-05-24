@@ -10,7 +10,7 @@ import {
   changeControlValueToTypeAction
 } from 'slices/blueprint'
 import { ControlNode } from 'slices/blueprint/types/control'
-import { TypedValue } from 'slices/blueprint/types/value'
+import { TypedValue } from '@app-types'
 import { labelType, stringifyValue } from 'slices/blueprint/reducers/value'
 import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
 import ButtonView from 'views/button/button'

@@ -1,7 +1,7 @@
 {
   "name": "cryptii-editor",
   "description": "Your online playground for all things encryption, encoding, conversion and data",
-  "version": "0.1.0",
+  "version": "5.0.0-alpha",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^4.2.4",

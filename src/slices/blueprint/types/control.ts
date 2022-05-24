@@ -1,65 +1,20 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { ImplicitTypedValue, TypedValue, implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
+import { implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
+import { Control, ImplicitTypedValue, NamedControlChange, TypedValue } from '@app-types'
 import { z } from 'zod'
 
-export const controlSchema = z.object({
-  /**
-   * Control name unique within the enclosing operation or program
-   */
+export const controlSchema: z.ZodType<Control> = z.object({
   name: z.string(),
-
-  /**
-   * Control label
-   */
   label: z.string().optional(),
-
-  /**
-   * Accepted control value types
-   */
   types: z.array(z.string()),
-
-  /**
-   * Initial control value
-   */
   initialValue: implicitTypedValueSchema,
-
-  /**
-   * Control value choices
-   * Defaults to an empty array
-   */
   choices: z.array(labeledImplicitTypedValueSchema).optional(),
-
-  /**
-   * Wether the value is restricted to the given options (if not empty)
-   * Defaults to true
-   */
   enforceChoices: z.boolean().optional(),
-
-  /**
-   * Control enabled state
-   * Defaults to true
-   */
   enabled: z.boolean().optional(),
-
-  /**
-   * Wether a new value can be set from outside the enclosing operation or program
-   * Defaults to true
-   */
   writable: z.boolean().optional(),
-
-  /**
-   * The order number by which controls are ordered within their parent in
-   * ascending order. Order numbers 1000 or larger are placed below the header.
-   */
   order: z.number().optional()
 })
-
-/**
- * Control entity
- * Controls are the building blocks of operation and program interfaces.
- */
-export type Control = z.infer<typeof controlSchema>
 
 export const controlChangeSchema = z.object({
   label: z.string().optional(),
@@ -74,15 +29,12 @@ export const controlChangeSchema = z.object({
  */
 export type ControlChange = z.infer<typeof controlChangeSchema>
 
-export const namedControlChangesSchema = z.array(
+export const namedControlChangeSchema: z.ZodType<NamedControlChange> =
   controlChangeSchema.extend({
     name: z.string()
   })
-)
 
-/**
- * Set of structured changes targeted to named control nodes
- */
+export const namedControlChangesSchema = z.array(namedControlChangeSchema)
 export type NamedControlChanges = z.infer<typeof namedControlChangesSchema>
 
 /**

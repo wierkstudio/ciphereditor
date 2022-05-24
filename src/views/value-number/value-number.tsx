@@ -5,7 +5,7 @@ import InputTextView from 'views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from 'views/value/value'
 import { isNumericString } from 'utils/string'
-import { IntegerValue, NumberValue, TypedValue } from 'slices/blueprint/types/value'
+import { IntegerValue, NumberValue, TypedValue } from '@app-types'
 
 export default function ValueNumberView (props: ValueViewProps<NumberValue | IntegerValue>): JSX.Element {
   const { onChange, onBlur, value, readOnly = false } = props

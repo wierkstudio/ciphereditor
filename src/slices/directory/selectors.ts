@@ -1,6 +1,6 @@
 
-import { Operation } from 'slices/blueprint/types/operation'
 import { DirectoryState } from './types'
+import { OperationExtension } from 'slices/blueprint/types/operation'
 
-export const getOperations = (state: DirectoryState): Operation[] =>
-  state.operations
+export const getOperationExtensions = (state: DirectoryState): OperationExtension[] =>
+  state.operationExtensions

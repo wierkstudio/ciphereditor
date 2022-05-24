@@ -1,5 +1,6 @@
 
-import { BytesValue, ImplicitTypedValue, LabeledImplicitTypedValue, LabeledTypedValue, TextValue, TypedValue } from '../types/value'
+import { ImplicitTypedValue, LabeledImplicitTypedValue, TypedValue } from '@app-types'
+import { LabeledTypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
 import { bufferToHexString } from 'utils/binary'
 import { capitalCase } from 'change-case'
@@ -25,7 +26,7 @@ export const labelType = (type: string): string => {
 /**
  * Default value used e.g. as initial value in user-defined controls.
  */
-export const defaultValue: TextValue = { type: 'text', data: '' }
+export const defaultValue: TypedValue = { type: 'text', data: '' }
 
 /**
  * Return wether a type is within the given types.
@@ -54,7 +55,7 @@ export const resolveImplicitTypedValue = (
   }
   switch (typeof implicitValue) {
     case 'object':
-      return implicitValue as TypedValue
+      return implicitValue
     case 'boolean':
       return { type: 'boolean', data: implicitValue }
     case 'number':
@@ -127,7 +128,7 @@ export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
     case 'bytes':
       return arrayEqual(
         new Uint8Array(a.data),
-        new Uint8Array((b as BytesValue).data)
+        new Uint8Array(b.data as ArrayBuffer)
       )
     default:
       // Equality for values of the given type is not defined

@@ -2,12 +2,13 @@
 import Processor from 'app/Processor'
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from 'slices/blueprint/types/blueprint'
-import { OperationIssue, OperationResult, operationResultSchema, OperationState } from 'slices/blueprint/types/operation'
+import { operationResultSchema, OperationState } from 'slices/blueprint/types/operation'
 import { RootState } from 'slices'
 import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from 'slices/blueprint/selectors/operation'
 import { getNodeNamedControls } from 'slices/blueprint/selectors/control'
 import { hasNode } from 'slices/blueprint/selectors/blueprint'
 import { applyOperationResultAction } from 'slices/blueprint'
+import { OperationIssue, OperationResult } from '@app-types'
 
 // TODO: Move this to a better place where it can be configured properly
 const processor = new Processor(process.env.REACT_APP_PROCESSOR_URL ?? './processor/')

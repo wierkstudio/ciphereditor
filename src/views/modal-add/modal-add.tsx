@@ -7,9 +7,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import useBlueprintSelector from 'hooks/useBlueprintSelector'
 import { ModalState } from 'slices/ui/types'
 import { addControlAction, addEmptyProgramAction, addOperationAction } from 'slices/blueprint'
+import { capitalCase } from 'change-case'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from 'slices/ui/selectors'
-import { getOperations } from 'slices/directory/selectors'
+import { getOperationExtensions } from 'slices/directory/selectors'
 import { gridSize } from 'hooks/useDragMove'
 import { popModalAction } from 'slices/ui'
 
@@ -18,28 +19,28 @@ export default function AddModalView (props: {
 }): JSX.Element {
   const dispatch = useAppDispatch()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
-  const directoryOperations = useAppSelector(state => getOperations(state.directory))
+  const directoryOperations = useAppSelector(state => getOperationExtensions(state.directory))
   const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   return (
     <ModalView modal={props.modal} title='Add a new operation'>
       <ul>
-        {directoryOperations.map(operation => (
-          <li key={operation.name}>
+        {directoryOperations.map(extension => (
+          <li key={extension.operation.name}>
             <ButtonView
               onClick={() => {
                 // TODO: Remove magic numbers
                 activeProgram !== undefined && dispatch(addOperationAction({
                   programId: activeProgram.id,
-                  operation: operation,
+                  extension,
                   x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
                   y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
                 }))
                 dispatch(popModalAction({}))
               }}
             >
-              {operation.label}
+              {extension.operation.label ?? capitalCase(extension.operation.name)}
             </ButtonView>
           </li>
         ))}

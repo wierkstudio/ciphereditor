@@ -1,5 +1,5 @@
 
-import { OperationIssue } from 'slices/blueprint/types/operation'
+import { OperationIssue } from '@app-types'
 
 const typeOrder: Array<OperationIssue['type']> = ['info', 'warn', 'error']
 

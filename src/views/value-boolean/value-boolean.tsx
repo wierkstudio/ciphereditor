@@ -1,7 +1,7 @@
 
 import './value-boolean.scss'
 import { ValueViewProps } from 'views/value/value'
-import { BooleanValue } from 'slices/blueprint/types/value'
+import { BooleanValue } from '@app-types'
 
 export default function ValueBooleanView (props: ValueViewProps<BooleanValue>): JSX.Element {
   return (

@@ -5,7 +5,7 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { TypedValue } from '../types/value'
+import { TypedValue } from '@app-types'
 import { VariableNode } from '../types/variable'
 import { getNode, getNodeChildren } from './blueprint'
 import { getControlNode, isControlInternVariable } from './control'

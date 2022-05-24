@@ -1,9 +1,11 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { Operation, OperationIssue, OperationNode, OperationState } from '../types/operation'
-import { arrayRemove, arrayUniquePush } from 'utils/array'
+import { OperationExtension, OperationNode, OperationState } from '../types/operation'
+import { OperationIssue } from '@app-types'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
+import { arrayRemove, arrayUniquePush } from 'utils/array'
+import { capitalCase } from 'change-case'
 import { getNode } from '../selectors/blueprint'
 import { getOperationNode } from '../selectors/operation'
 
@@ -11,13 +13,13 @@ import { getOperationNode } from '../selectors/operation'
  * Add an operation node to the given program.
  * @param state Blueprint state
  * @param programId Program node id
- * @param operation Operation to be added
+ * @param extension Operation extension to be added
  * @returns New operation node
  */
 export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  operation: Operation,
+  extension: OperationExtension,
   x: number,
   y: number
 ): OperationNode => {
@@ -26,13 +28,13 @@ export const addOperationNode = (
     id: nextNodeId(state),
     parentId: programId,
     type: BlueprintNodeType.Operation,
-    label: operation.label,
+    label: extension.operation.label ?? capitalCase(extension.operation.name),
     childIds: [],
     state: OperationState.Ready,
     issues: [],
     priorityControlIds: [],
-    bundleUrl: operation.bundleUrl,
-    moduleId: operation.moduleId,
+    bundleUrl: extension.entryPoint.bundleUrl,
+    moduleId: extension.entryPoint.moduleId,
     x,
     y
   }
@@ -41,9 +43,9 @@ export const addOperationNode = (
 
   // Add operation controls
   operationNode.childIds =
-    operation.controls
-      .map(addOperationControlNode.bind(null, state, operationNode.id))
-      .map(node => node.id)
+  extension.operation.controls
+    .map(addOperationControlNode.bind(null, state, operationNode.id))
+    .map(node => node.id)
 
   // Set initial priority to control order
   operationNode.priorityControlIds = operationNode.childIds.slice()

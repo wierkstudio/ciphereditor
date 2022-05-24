@@ -5,9 +5,10 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { OperationIssue, OperationNode, OperationRequest, OperationState } from '../types/operation'
-import { getNode, hasNode } from './blueprint'
+import { OperationIssue, OperationRequest } from '@app-types'
+import { OperationNode, OperationState } from '../types/operation'
 import { getControlNode, getNodeControlValues } from './control'
+import { getNode, hasNode } from './blueprint'
 
 /**
  * Find a variable node by the given node id.

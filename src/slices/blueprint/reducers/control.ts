@@ -1,6 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { Control, ControlChange, ControlChangeSource, ControlNode, ControlViewState } from '../types/control'
+import { Control } from '@app-types'
+import { ControlChange, ControlChangeSource, ControlNode, ControlViewState } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'

@@ -1,25 +1,16 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { Operation, OperationIssue, OperationResult } from '@app-types'
 import { controlSchema, namedControlChangesSchema } from './control'
 import { z } from 'zod'
-import { TypedValue } from './value'
 
-export const operationSchema = z.object({
-  /**
-   * Unique operation entity name
-   */
+export const operationSchema: z.ZodType<Operation> = z.object({
   name: z.string(),
+  label: z.string().optional(),
+  controls: z.array(controlSchema)
+})
 
-  /**
-   * Operation label
-   */
-  label: z.string(),
-
-  /**
-   * Array of control configurations
-   */
-  controls: z.array(controlSchema),
-
+export const extensionEntryPointSchema = z.object({
   /**
    * Bundle url
    */
@@ -31,49 +22,24 @@ export const operationSchema = z.object({
   moduleId: z.string()
 })
 
-/**
- * Operation entity
- */
-export type Operation = z.infer<typeof operationSchema>
+export const operationExtensionSchema = z.object({
+  operation: operationSchema,
+  entryPoint: extensionEntryPointSchema
+})
 
-export const operationIssueSchema = z.object({
+export type OperationExtension = z.infer<typeof operationExtensionSchema>
+
+export const operationIssueSchema: z.ZodType<OperationIssue> = z.object({
   type: z.enum(['error', 'warn', 'info']),
   controlName: z.string().optional(),
   message: z.string(),
   description: z.string().optional()
 })
 
-/**
- * An operation result hint is an error, warning or information that occurred
- * while processing an operation request.
- */
-export type OperationIssue = z.infer<typeof operationIssueSchema>
-
-/**
- * A well-formed operation request
- */
-export interface OperationRequest {
-  /**
-   * The current value for each control
-   */
-  values: { [controlName: string]: TypedValue }
-
-  /**
-   * Array of control names ordered by priority (highest to lowest)
-   * Allows the operation to decide on what direction the content flows.
-   */
-  controlPriorities: string[]
-}
-
-export const operationResultSchema = z.object({
+export const operationResultSchema: z.ZodType<OperationResult> = z.object({
   changes: namedControlChangesSchema.optional(),
   issues: z.array(operationIssueSchema).optional()
 })
-
-/**
- * A well-formed operation result
- */
-export type OperationResult = z.infer<typeof operationResultSchema>
 
 /**
  * Operation state

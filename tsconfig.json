@@ -6,6 +6,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "baseUrl": "./src/",
+    "paths": {
+      "@app-types": ["../packages/types/index"]
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -19,10 +23,10 @@
     "isolatedModules": true,
     "downlevelIteration": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./src/"
+    "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "packages/types"
   ]
 }

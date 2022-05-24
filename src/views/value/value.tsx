@@ -5,7 +5,7 @@ import ValueBytesView from 'views/value-bytes/value-bytes'
 import ValueNumberView from 'views/value-number/value-number'
 import ValueTextView from 'views/value-text/value-text'
 import { BaseSyntheticEvent } from 'react'
-import { TypedValue } from 'slices/blueprint/types/value'
+import { TypedValue } from '@app-types'
 import { ViewModifiers } from 'utils/dom'
 import { labelType } from 'slices/blueprint/reducers/value'
 

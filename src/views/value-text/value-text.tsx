@@ -1,7 +1,7 @@
 
-import { ValueViewProps } from 'views/value/value'
 import InputTextView from 'views/input-text/input-text'
-import { TextValue } from 'slices/blueprint/types/value'
+import { TextValue } from '@app-types'
+import { ValueViewProps } from 'views/value/value'
 
 export default function ValueTextView (props: ValueViewProps<TextValue>): JSX.Element {
   return (
