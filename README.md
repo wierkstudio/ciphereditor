@@ -1,9 +1,23 @@
 
-# cryptii-editor
+# cryptii
 
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 Your online playground for all things encryption, encoding, conversion and data.
+
+## Packages
+
+As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other.
+
+- `cryptii-editor` - Contains the core web app built on React+Redux.
+- `cryptii-types` - Contains TypeScript types shared between packages and third-party extensions.
+
+## Scripts
+
+Following scripts are offered by the root package:
+
+- `npm run editor-build` - Create an optimized production build for the editor web app
+- `npm run editor-start` - Start the development server for the editor web app
 
 ## Contributing
 
