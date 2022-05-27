@@ -1,6 +1,6 @@
 
 import InputTextView from 'views/input-text/input-text'
-import { TextValue } from 'cryptii-types'
+import { TextValue } from '@cryptii/types'
 import { ValueViewProps } from 'views/value/value'
 
 export default function ValueTextView (props: ValueViewProps<TextValue>): JSX.Element {

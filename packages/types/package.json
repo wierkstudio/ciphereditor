@@ -1,6 +1,11 @@
 {
-  "name": "cryptii-types",
+  "name": "@cryptii/types",
   "version": "5.0.0-alpha",
+  "description": "TypeScript types shared between packages and third-party extensions",
+  "license": "MIT",
+  "scripts": {
+    "lint": "ts-standard"
+  },
   "main": "index.js",
   "types": "index.d.ts"
 }

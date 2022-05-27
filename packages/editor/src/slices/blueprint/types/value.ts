@@ -8,7 +8,7 @@ import {
   NumberValue,
   TextValue,
   TypedValue
-} from 'cryptii-types'
+} from '@cryptii/types'
 import { z } from 'zod'
 
 export const booleanValueSchema: z.ZodType<BooleanValue> = z.object({

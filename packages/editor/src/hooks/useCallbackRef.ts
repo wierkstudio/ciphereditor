@@ -16,7 +16,7 @@ const useCallbackRef = <C extends (...args: any[]) => any>(
   callback: C,
   deps: DependencyList
 ): MutableRefObject<C> => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line
   const memoCallback = useCallback(callback, deps)
   const ref = useRef<C>(memoCallback)
   useEffect(() => { ref.current = memoCallback }, [memoCallback])

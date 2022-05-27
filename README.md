@@ -9,15 +9,18 @@ Your online playground for all things encryption, encoding, conversion and data.
 
 As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other.
 
-- `cryptii-editor` - Contains the core web app built on React+Redux.
-- `cryptii-types` - Contains TypeScript types shared between packages and third-party extensions.
+- `editor` - Contains the core web app built on React+Redux.
+- `operation-essentials` - Extensions providing essential operations
+- `types` - TypeScript types shared between packages and third-party extensions
 
 ## Scripts
 
 Following scripts are offered by the root package:
 
+- `npm run lint` - Lint all projects
 - `npm run editor-build` - Create an optimized production build for the editor web app
 - `npm run editor-start` - Start the development server for the editor web app
+- `npm run operation-essentials-build` - Create a production build for the operation essentials extensions
 
 ## Contributing
 

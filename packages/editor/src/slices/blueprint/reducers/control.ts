@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { Control } from 'cryptii-types'
+import { Control } from '@cryptii/types'
 import { ControlChange, ControlChangeSource, ControlNode, ControlViewState } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'

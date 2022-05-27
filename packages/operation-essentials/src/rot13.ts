@@ -1,0 +1,81 @@
+
+import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+
+export const spec = 'https://cryptii.com/developer/extension/operation/v1'
+
+export const operation: Operation = {
+  name: 'cryptii/rot13',
+  label: 'ROT13',
+  controls: [
+    {
+      name: 'plaintext',
+      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      types: ['text']
+    },
+    {
+      name: 'variant',
+      initialValue: 'rot13',
+      types: ['text'],
+      choices: [
+        { value: 'rot5', label: 'ROT5 (0-9)' },
+        { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
+        { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
+        { value: 'rot47', label: 'ROT47 (!-~)' }
+      ]
+    },
+    {
+      name: 'ciphertext',
+      initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+      types: ['text'],
+      order: 1000
+    }
+  ]
+}
+
+export const onOperationRequest: OperationRequestHandler = (request) => {
+  const { values, controlPriorities } = request
+  const variant = values.variant.data
+  const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
+  const string = (forward ? values.plaintext.data : values.ciphertext.data) as string
+
+  const codePoints = stringToUnicodeCodePoints(string)
+  const ouputCodePoints = codePoints.map(codePoint => {
+    // Rotate numbers 0-9
+    if (variant === 'rot5' || variant === 'rot18') {
+      codePoint = rotateCodePoint(codePoint, 48, 57)
+    }
+
+    // Rotate lowercase letters a-z, A-Z
+    if (variant === 'rot13' || variant === 'rot18') {
+      codePoint = rotateCodePoint(codePoint, 97, 122)
+      codePoint = rotateCodePoint(codePoint, 65, 90)
+    }
+
+    // Rotate characters !-~
+    if (variant === 'rot47') {
+      codePoint = rotateCodePoint(codePoint, 33, 126)
+    }
+    return codePoint
+  })
+
+  const outputString = stringFromUnicodeCodePoints(ouputCodePoints)
+  const outputControl = forward ? 'ciphertext' : 'plaintext'
+
+  return { changes: [{ name: outputControl, value: outputString }] }
+}
+
+/**
+ * Rotate a code point within the given bounds.
+ */
+const rotateCodePoint = (codePoint: number, start: number, end: number): number => {
+  if (codePoint >= start && codePoint <= end) {
+    const count = end - start + 1
+    codePoint += count / 2
+
+    if (codePoint > end) {
+      codePoint -= count
+    }
+  }
+  return codePoint
+}

@@ -18,7 +18,7 @@ import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { OperationRequest, OperationResult } from 'cryptii-types'
+import { OperationRequest, OperationResult } from '@cryptii/types'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',

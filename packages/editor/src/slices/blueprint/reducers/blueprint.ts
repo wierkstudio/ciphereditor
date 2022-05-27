@@ -127,7 +127,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
   parentNode.childIds = parentNode.childIds.filter(id => id !== nodeId)
 
   // Remove self from blueprint
-  delete state.nodes[node.id] // eslint-disable-line @typescript-eslint/no-dynamic-delete
+  delete state.nodes[node.id] // eslint-disable-line
 }
 
 /**

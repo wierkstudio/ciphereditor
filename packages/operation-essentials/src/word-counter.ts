@@ -1,0 +1,53 @@
+
+import { Operation, OperationRequestHandler } from '@cryptii/types'
+
+export const spec = 'https://cryptii.com/developer/extension/operation/v1'
+
+export const operation: Operation = {
+  name: 'cryptii/word-counter',
+  label: 'Word counter',
+  controls: [
+    {
+      name: 'text',
+      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      types: ['text']
+    },
+    {
+      name: 'characterCount',
+      initialValue: 44,
+      types: ['integer'],
+      writable: false,
+      order: 1000
+    },
+    {
+      name: 'wordCount',
+      initialValue: 9,
+      types: ['integer'],
+      writable: false,
+      order: 1000
+    },
+    {
+      name: 'lineCount',
+      initialValue: 1,
+      types: ['integer'],
+      writable: false,
+      order: 1000
+    }
+  ]
+}
+
+export const onOperationRequest: OperationRequestHandler = (request) => {
+  const text = request.values.text.data as string
+
+  const characters = Array.from(text.normalize())
+  const words = text.split(/\s+/)
+  const lines = text.split(/\r?\n/)
+
+  const changes = [
+    { name: 'characterCount', value: characters.length },
+    { name: 'wordCount', value: words.length },
+    { name: 'lineCount', value: lines.length }
+  ]
+
+  return { changes }
+}

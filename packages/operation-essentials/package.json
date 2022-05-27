@@ -1,0 +1,17 @@
+{
+  "name": "@cryptii/operation-essentials",
+  "version": "5.0.0-alpha",
+  "description": "Extensions providing essential operations",
+  "license": "MIT",
+  "scripts": {
+    "lint": "ts-standard",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.4",
+    "ts-standard": "^11.0.0",
+    "@cryptii/types": "*"
+  }
+}

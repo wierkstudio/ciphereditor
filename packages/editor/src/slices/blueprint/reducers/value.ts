@@ -1,5 +1,5 @@
 
-import { ImplicitTypedValue, LabeledImplicitTypedValue, TypedValue } from 'cryptii-types'
+import { ImplicitTypedValue, LabeledImplicitTypedValue, TypedValue } from '@cryptii/types'
 import { LabeledTypedValue } from '../types/value'
 import { arrayEqual } from 'utils/array'
 import { bufferToHexString } from 'utils/binary'

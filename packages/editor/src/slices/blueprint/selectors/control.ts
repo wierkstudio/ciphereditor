@@ -5,7 +5,7 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { TypedValue } from 'cryptii-types'
+import { TypedValue } from '@cryptii/types'
 import { VariableNode } from '../types/variable'
 import { equalValues, isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'

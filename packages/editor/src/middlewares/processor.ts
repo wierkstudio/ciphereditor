@@ -8,7 +8,7 @@ import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from '
 import { getNodeNamedControls } from 'slices/blueprint/selectors/control'
 import { hasNode } from 'slices/blueprint/selectors/blueprint'
 import { applyOperationResultAction } from 'slices/blueprint'
-import { OperationIssue, OperationResult } from 'cryptii-types'
+import { OperationIssue, OperationResult } from '@cryptii/types'
 
 // TODO: Move this to a better place where it can be configured properly
 const processor = new Processor(process.env.REACT_APP_PROCESSOR_URL ?? './processor/')

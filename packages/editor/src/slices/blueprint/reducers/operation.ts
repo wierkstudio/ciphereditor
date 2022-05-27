@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { OperationExtension, OperationNode, OperationState } from '../types/operation'
-import { OperationIssue } from 'cryptii-types'
+import { OperationIssue } from '@cryptii/types'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from 'utils/array'

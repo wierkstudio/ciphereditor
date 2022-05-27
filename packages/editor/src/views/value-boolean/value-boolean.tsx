@@ -1,7 +1,7 @@
 
 import './value-boolean.scss'
 import { ValueViewProps } from 'views/value/value'
-import { BooleanValue } from 'cryptii-types'
+import { BooleanValue } from '@cryptii/types'
 
 export default function ValueBooleanView (props: ValueViewProps<BooleanValue>): JSX.Element {
   return (

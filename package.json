@@ -3,10 +3,13 @@
   "private": true,
   "workspaces": ["./packages/*"],
   "scripts": {
-    "editor-build": "npm run build --workspace cryptii-editor",
-    "editor-start": "npm run start --workspace cryptii-editor"
+    "lint": "npm run lint -ws",
+    "editor-build": "npm run build --workspace @cryptii/editor",
+    "editor-start": "npm run start --workspace @cryptii/editor",
+    "operation-essentials-build": "npm run build --workspace @cryptii/operation-essentials"
   },
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "lerna": "^4.0.0",
+    "ts-standard": "^11.0.0"
   }
 }

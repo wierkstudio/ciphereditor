@@ -1,12 +1,13 @@
 {
-  "name": "cryptii-editor",
+  "name": "@cryptii/editor",
   "version": "5.0.0-alpha",
   "description": "Your online playground for all things encryption, encoding, conversion and data",
+  "license": "MIT",
   "scripts": {
-    "build": "react-scripts build",
-    "start": "react-scripts start",
     "lint": "ts-standard",
     "test": "react-scripts test",
+    "build": "react-scripts build",
+    "start": "react-scripts start",
     "eject": "react-scripts eject",
     "dev": "REACT_APP_PROCESSOR_URL=https://processor.cryptii.blue/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start"
   },
@@ -32,10 +33,7 @@
   },
   "devDependencies": {
     "ts-standard": "^11.0.0",
-    "cryptii-types": "*"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
+    "@cryptii/types": "*"
   },
   "browserslist": {
     "production": [
