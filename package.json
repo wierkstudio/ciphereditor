@@ -1,12 +1,15 @@
 {
   "name": "cryptii",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "private": true,
   "workspaces": ["./packages/*"],
   "scripts": {
     "lint": "npm run lint -ws",
-    "editor-build": "npm run build --workspace @cryptii/editor",
-    "editor-start": "npm run start --workspace @cryptii/editor",
-    "operation-essentials-build": "npm run build --workspace @cryptii/operation-essentials"
+    "app-web-build": "npm run build -w @cryptii/app-web",
+    "app-web-start": "npm run start -w @cryptii/app-web",
+    "app-desktop-start": "npm run start -w @cryptii/app-desktop",
+    "app-desktop-pack": "npm run pack -w @cryptii/app-desktop",
+    "operation-essentials-build": "npm run build -w @cryptii/operation-essentials"
   },
   "devDependencies": {
     "lerna": "^4.0.0",

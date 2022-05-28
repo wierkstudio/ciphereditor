@@ -2,6 +2,7 @@
   "name": "@cryptii/operation-essentials",
   "version": "5.0.0-alpha",
   "description": "Extensions providing essential operations",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
   "scripts": {
     "lint": "ts-standard",

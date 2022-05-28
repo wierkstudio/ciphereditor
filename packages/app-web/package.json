@@ -1,8 +1,10 @@
 {
-  "name": "@cryptii/editor",
+  "name": "@cryptii/app-web",
   "version": "5.0.0-alpha",
-  "description": "Your online playground for all things encryption, encoding, conversion and data",
+  "description": "Online playground for all things encryption, encoding, conversion and data",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
+  "homepage": "./",
   "scripts": {
     "lint": "ts-standard",
     "test": "react-scripts test",

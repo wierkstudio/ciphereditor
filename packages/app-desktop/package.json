@@ -1,0 +1,25 @@
+{
+  "name": "@cryptii/app-desktop",
+  "productName": "cryptii",
+  "version": "5.0.0-alpha",
+  "description": "Playground for all things encryption, encoding, conversion and data",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
+  "license": "MIT",
+  "main": "build/main.js",
+  "scripts": {
+    "lint": "ts-standard",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "copyfiles -u 3 \"../app-web/build/**/*\" build/web/",
+    "build": "npm run prebuild && tsc",
+    "pack:macos": "electron-packager . --out ./bundles --overwrite --icon ./assets/icon.icns --app-bundle-id com.cryptii.app-desktop",
+    "pack": "npm run build && npm run pack:macos",
+    "watch": "tsc -w",
+    "start": "npm run build && electron ."
+  },
+  "devDependencies": {
+    "@cryptii/app-web": "*",
+    "copyfiles": "^2.4.1",
+    "electron": "^19.0.1",
+    "electron-packager": "^15.5.1"
+  }
+}

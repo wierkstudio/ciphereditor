@@ -1,6 +1,7 @@
 
 # cryptii
 
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 Your online playground for all things encryption, encoding, conversion and data.
@@ -9,17 +10,18 @@ Your online playground for all things encryption, encoding, conversion and data.
 
 As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other.
 
-- `editor` - Contains the core web app built on React+Redux.
-- `operation-essentials` - Extensions providing essential operations
+- `app-web` - Core web app built on React and Redux Toolkit
+- `app-desktop` - Desktop application source built on the web app and Electron
 - `types` - TypeScript types shared between packages and third-party extensions
+- `operation-essentials` - Extensions providing essential operations
 
 ## Scripts
 
 Following scripts are offered by the root package:
 
 - `npm run lint` - Lint all projects
-- `npm run editor-build` - Create an optimized production build for the editor web app
-- `npm run editor-start` - Start the development server for the editor web app
+- `npm run app-web-build` - Create an optimized production build for the web app
+- `npm run app-web-start` - Start the development server for the web app
 - `npm run operation-essentials-build` - Create a production build for the operation essentials extensions
 
 ## Contributing
