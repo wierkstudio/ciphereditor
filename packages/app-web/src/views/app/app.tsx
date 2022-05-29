@@ -12,7 +12,7 @@ import useWindowLoadListener from 'hooks/useWindowLoadListener'
 import { UIEmbedType } from 'slices/ui/types'
 import { applyEmbedTypeAction } from 'slices/ui'
 import { getAccessibilitySettings, getShortcutBindings } from 'slices/settings/selectors'
-import { getEmbedType, isEmbedMaximized, isModalStackEmpty } from 'slices/ui/selectors'
+import { getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from 'slices/ui/selectors'
 import { mergeModifiers, renderClassName, ViewModifiers } from 'utils/dom'
 import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from 'utils/embed'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -23,6 +23,7 @@ export default function AppView (): JSX.Element {
 
   // Retrieve settings
   const embedType = useUISelector(getEmbedType)
+  const embedEnv = useUISelector(getEmbedEnv)
   const embedMaximized = useUISelector(isEmbedMaximized)
   const shortcutBindings = useSettingsSelector(getShortcutBindings)
   const { theme, reducedMotionPreference } =
@@ -90,8 +91,10 @@ export default function AppView (): JSX.Element {
     // Update document element class names to apply accessibility settings
     const modifiers = [
       'script-enabled',
-      'theme-' + theme,
-      'reduced-motion-' + reducedMotionPreference
+      `embed-${embedType as string}`,
+      `env-${embedEnv as string}`,
+      `theme-${theme as string}`,
+      `reduced-motion-${reducedMotionPreference as string}`
     ]
     const className = renderClassName('root', modifiers)
     document.documentElement.className = className
@@ -100,7 +103,7 @@ export default function AppView (): JSX.Element {
     if (embedType !== UIEmbedType.Standalone) {
       postAccessibilityChangedMessage({ theme, reducedMotionPreference })
     }
-  }, [embedType, theme, reducedMotionPreference])
+  }, [embedType, theme, reducedMotionPreference, embedEnv])
 
   // Observe and react to intrinsic app size changes
   const intrinsicAppSizeObserver = useMemo(() => {

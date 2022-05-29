@@ -6,6 +6,7 @@ import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
  */
 export interface UIState {
   embedType: UIEmbedType
+  embedEnv: string
   embedMaximized: boolean
 
   canvasState: UICanvasState
@@ -24,17 +25,22 @@ export interface UIState {
  */
 export enum UIEmbedType {
   /**
-   * The app is not embedded
+   * The web app is not embedded
    */
   Standalone = 'standalone',
 
   /**
-   * The app is embedded within the platform
+   * The web app is embedded within the platform
    */
   Platform = 'platform',
 
   /**
-   * The app is embedded within a third-party website
+   * The web app is embedded within the Electron-based desktop app
+   */
+  Electron = 'electron',
+
+  /**
+   * The web app is embedded within a third-party website
    */
   Embed = 'embed'
 }

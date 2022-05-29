@@ -4,15 +4,25 @@ import { UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushAddModal, pushReportModal, pushSettingsModal } from './reducers'
 
-const detectInitialEmbedType = (): UIEmbedType => {
-  if (window.parent === window) {
-    return UIEmbedType.Standalone
+const detectDefaultState = (): Partial<UIState> => {
+  if (typeof (window as any).electronContext !== 'undefined') {
+    return {
+      embedType: UIEmbedType.Electron,
+      embedEnv: (window as any).electronContext.platform
+    }
+  } else {
+    return {
+      embedType:
+        window.parent === window
+          ? UIEmbedType.Standalone
+          : UIEmbedType.Embed
+    }
   }
-  return UIEmbedType.Embed
 }
 
 const defaultUIState: UIState = {
-  embedType: detectInitialEmbedType(),
+  embedType: UIEmbedType.Standalone,
+  embedEnv: 'chrome',
   embedMaximized: false,
 
   canvasState: UICanvasState.Idle,
@@ -21,7 +31,9 @@ const defaultUIState: UIState = {
   canvasWidth: 1,
   canvasHeight: 1,
 
-  modalStack: []
+  modalStack: [],
+
+  ...detectDefaultState()
 }
 
 export const settingsSlice = createSlice({

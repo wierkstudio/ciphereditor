@@ -1,18 +1,28 @@
 
 import * as path from 'path'
-import { app, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow } from 'electron'
 
 const createWindow = (): void => {
   const mainWindow = new BrowserWindow({
-    // titleBarStyle: 'hidden',
+    titleBarStyle: 'hidden',
+    trafficLightPosition: {
+      x: 16,
+      y: 20
+    },
     width: 1024,
-    height: 800
+    height: 800,
+    webPreferences: {
+      preload: path.resolve(__dirname, 'preload.js')
+    }
+  })
+
+  // Open links in an external browser
+  mainWindow.webContents.setWindowOpenHandler(details => {
+    void shell.openExternal(details.url)
+    return { action: 'deny' }
   })
 
   void mainWindow.loadFile(path.resolve(__dirname, 'web/index.html'))
-
-  // Open the DevTools
-  // mainWindow.webContents.openDevTools()
 }
 
 void app.whenReady().then(() => {

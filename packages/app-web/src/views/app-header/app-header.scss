@@ -11,6 +11,15 @@
   z-index: $z-index-app-header;
   pointer-events: none;
 
+  .root--embed-electron & {
+    top: rem(0);
+    left: rem(0);
+    right: rem(0);
+    border-bottom: rem(2) solid $c-muted;
+    background: $c-background;
+    -webkit-app-region: drag;
+  }
+
   &__start,
   &__end {
     display: flex;
@@ -20,6 +29,15 @@
     line-height: 0;
     background: $c-muted;
     pointer-events: initial;
+  }
+
+  .root--embed-electron &__start,
+  .root--embed-electron &__end {
+    background: none;
+  }
+
+  .root--env-darwin &__start {
+    padding-left: rem(84);
   }
 
   &__brand {

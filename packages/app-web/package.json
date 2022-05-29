@@ -34,8 +34,8 @@
     "zod": "^3.14.4"
   },
   "devDependencies": {
-    "ts-standard": "^11.0.0",
-    "@cryptii/types": "*"
+    "@cryptii/types": "*",
+    "ts-standard": "^11.0.0"
   },
   "browserslist": {
     "production": [
