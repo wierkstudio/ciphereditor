@@ -5,7 +5,7 @@ import InputTextView from 'views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from 'views/value/value'
 import { isNumericString } from 'utils/string'
-import { IntegerValue, NumberValue, TypedValue } from '@cryptii/types'
+import { IntegerValue, NumberValue, TypedValue } from '@ciphereditor/types'
 
 export default function ValueNumberView (props: ValueViewProps<NumberValue | IntegerValue>): JSX.Element {
   const { onChange, onBlur, value, readOnly = false } = props

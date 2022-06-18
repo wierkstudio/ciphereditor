@@ -1,5 +1,5 @@
 
-import { ContributionExports, ExtensionActivateExport, ExtensionContext, ExtensionExports, OperationContribution, OperationContributionBody, OperationContributionExports } from '@cryptii/types'
+import { ContributionExports, ExtensionActivateExport, ExtensionContext, ExtensionExports, OperationContribution, OperationContributionBody, OperationContributionExports } from '@ciphereditor/types'
 import { controlSchema } from './control'
 import { operationRequestSchema, operationResultSchema } from './operation'
 import { z } from 'zod'

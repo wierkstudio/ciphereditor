@@ -1,5 +1,5 @@
 {
-  "name": "cryptii",
+  "name": "ciphereditor",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "private": true,
   "workspaces": [
@@ -7,12 +7,14 @@
   ],
   "scripts": {
     "lint": "npm run lint -ws",
-    "app-web-build": "npm run processor-build && npm run build -w @cryptii/app-web",
-    "app-web-start": "npm run start -w @cryptii/app-web",
-    "app-desktop-start": "npm run start -w @cryptii/app-desktop",
-    "app-desktop-pack": "npm run pack -w @cryptii/app-desktop",
-    "processor-build": "npm run build -w @cryptii/processor",
-    "extension-essentials-build": "npm run build -w @cryptii/extension-essentials"
+    "app-web-build": "npm run processor-build && npm run build -w @ciphereditor/app-web",
+    "app-web-start": "npm run start -w @ciphereditor/app-web",
+    "app-web-dev": "npm run dev -w @ciphereditor/app-web",
+    "app-desktop-start": "npm run start -w @ciphereditor/app-desktop",
+    "app-desktop-pack": "npm run pack -w @ciphereditor/app-desktop",
+    "processor-build": "npm run build -w @ciphereditor/processor",
+    "processor-watch": "npm run watch -w @ciphereditor/processor",
+    "extension-essentials-build": "npm run build -w @ciphereditor/extension-essentials"
   },
   "devDependencies": {
     "ts-standard": "^11.0.0"

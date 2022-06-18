@@ -1,8 +1,8 @@
 
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from 'slices/blueprint/types/blueprint'
-import { ContributionExports, ExtensionContext, OperationIssue, OperationResult } from '@cryptii/types'
-import { ProcessorWorker } from '@cryptii/processor'
+import { ContributionExports, ExtensionContext, OperationIssue, OperationResult } from '@ciphereditor/types'
+import { ProcessorWorker } from '@ciphereditor/processor'
 import { RootState } from 'slices'
 import { applyOperationResultAction } from 'slices/blueprint'
 import { contributionExportsSchema } from 'slices/blueprint/types/extension'

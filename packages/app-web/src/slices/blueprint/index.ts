@@ -9,7 +9,7 @@ import {
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlChange, ControlChangeSource, ControlViewState } from './types/control'
-import { OperationContribution, OperationRequest, OperationResult } from '@cryptii/types'
+import { OperationContribution, OperationRequest, OperationResult } from '@ciphereditor/types'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'

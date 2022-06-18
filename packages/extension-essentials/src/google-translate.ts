@@ -1,5 +1,5 @@
 
-import { Contribution, NamedControlChange, OperationExecuteExport } from '@cryptii/types'
+import { Contribution, NamedControlChange, OperationExecuteExport } from '@ciphereditor/types'
 
 // TODO: Create proxy service with rate limiting and origin check
 const apiKey = 'REDACTED'
@@ -119,7 +119,7 @@ const languageOptions = [
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@cryptii/operation-essentials/google-translate',
+  name: '@ciphereditor/operation-essentials/google-translate',
   label: 'Google Translate',
   controls: [
     {

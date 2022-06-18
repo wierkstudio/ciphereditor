@@ -1,9 +1,9 @@
 
-import { Contribution, OperationExecuteExport } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@cryptii/operation-essentials/logical-not',
+  name: '@ciphereditor/operation-essentials/logical-not',
   label: 'Logical NOT',
   controls: [
     {

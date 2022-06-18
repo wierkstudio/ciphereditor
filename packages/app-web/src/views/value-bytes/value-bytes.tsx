@@ -1,7 +1,7 @@
 
 import InputTextView from 'views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react'
-import { BytesValue, TypedValue } from '@cryptii/types'
+import { BytesValue, TypedValue } from '@ciphereditor/types'
 import { ValueViewProps } from 'views/value/value'
 import { bufferToHexString, hexStringToBuffer } from 'utils/binary'
 import { equalValues } from 'slices/blueprint/reducers/value'

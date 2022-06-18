@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { OperationContribution, OperationIssue } from '@cryptii/types'
+import { OperationContribution, OperationIssue } from '@ciphereditor/types'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'

@@ -1,5 +1,5 @@
 
-# cryptii
+# ciphereditor
 
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
@@ -42,4 +42,4 @@ Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source
 
 ---
 
-This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/cryptii-app/cryptii-app/graphs/contributors).
+This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/ciphereditor-app/ciphereditor-app/graphs/contributors).

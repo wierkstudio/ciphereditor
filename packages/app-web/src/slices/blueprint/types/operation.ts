@@ -1,6 +1,6 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { OperationIssue, OperationRequest, OperationResult } from '@cryptii/types'
+import { OperationIssue, OperationRequest, OperationResult } from '@ciphereditor/types'
 import { namedControlChangesSchema } from './control'
 import { typedValueSchema } from './value'
 import { z } from 'zod'

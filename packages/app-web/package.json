@@ -1,6 +1,6 @@
 {
-  "name": "@cryptii/app-web",
-  "version": "5.0.0-alpha",
+  "name": "@ciphereditor/app-web",
+  "version": "1.0.0-alpha",
   "description": "Online playground for all things encryption, encoding, conversion and data",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "build": "react-scripts build",
     "start": "react-scripts start",
     "eject": "react-scripts eject",
-    "dev": "REACT_APP_PROCESSOR_URL=https://processor.cryptii.blue/ HTTPS=true SSL_CRT_FILE=assets/localhost.crt SSL_KEY_FILE=assets/localhost.key react-scripts start"
+    "dev": "HTTPS=true SSL_CRT_FILE=../../../assets/localhost.crt SSL_KEY_FILE=../../../assets/localhost.key react-scripts start"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.2",
@@ -34,8 +34,8 @@
     "zod": "^3.14.4"
   },
   "devDependencies": {
-    "@cryptii/processor": "*",
-    "@cryptii/types": "*",
+    "@ciphereditor/processor": "*",
+    "@ciphereditor/types": "*",
     "ts-standard": "^11.0.0"
   },
   "browserslist": {

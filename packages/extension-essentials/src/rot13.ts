@@ -1,10 +1,10 @@
 
-import { Contribution, OperationExecuteExport } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@cryptii/operation-essentials/rot13',
+  name: '@ciphereditor/operation-essentials/rot13',
   label: 'ROT13',
   controls: [
     {

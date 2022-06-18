@@ -1,7 +1,7 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
-import { Control, ImplicitTypedValue, NamedControlChange, TypedValue } from '@cryptii/types'
+import { Control, ImplicitTypedValue, NamedControlChange, TypedValue } from '@ciphereditor/types'
 import { z } from 'zod'
 
 export const controlSchema: z.ZodType<Control> = z.object({

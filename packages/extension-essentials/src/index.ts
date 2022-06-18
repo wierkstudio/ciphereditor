@@ -6,7 +6,7 @@ import logicalNot from './logical-not'
 import logicalOr from './logical-or'
 import rot13 from './rot13'
 import wordCounter from './word-counter'
-import { ExtensionActivateExport } from '@cryptii/types'
+import { ExtensionActivateExport } from '@ciphereditor/types'
 
 export const activate: ExtensionActivateExport = (context) => [
   caesarCipher,

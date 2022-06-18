@@ -1,6 +1,6 @@
 {
-  "name": "@cryptii/processor",
-  "version": "5.0.0-alpha",
+  "name": "@ciphereditor/processor",
+  "version": "1.0.0-alpha",
   "description": "JavaScript sandbox for Browser environments where extensions are executed in",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",

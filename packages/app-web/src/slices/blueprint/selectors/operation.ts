@@ -5,7 +5,7 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { OperationIssue, OperationRequest } from '@cryptii/types'
+import { OperationIssue, OperationRequest } from '@ciphereditor/types'
 import { OperationNode, OperationState } from '../types/operation'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, hasNode } from './blueprint'

@@ -1,11 +1,11 @@
 
-import { Contribution, OperationExecuteExport } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
 import { mod } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@cryptii/operation-essentials/caesar-cipher',
+  name: '@ciphereditor/operation-essentials/caesar-cipher',
   label: 'Caesar cipher',
   controls: [
     {

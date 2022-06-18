@@ -1,6 +1,6 @@
 {
-  "name": "@cryptii/extension-essentials",
-  "version": "5.0.0-alpha",
+  "name": "@ciphereditor/extension-essentials",
+  "version": "1.0.0-alpha",
   "description": "Extension providing essential operations",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
@@ -13,6 +13,6 @@
   "devDependencies": {
     "typescript": "^4.6.4",
     "ts-standard": "^11.0.0",
-    "@cryptii/types": "*"
+    "@ciphereditor/types": "*"
   }
 }

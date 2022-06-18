@@ -1,5 +1,5 @@
 
-import { OperationIssue } from '@cryptii/types'
+import { OperationIssue } from '@ciphereditor/types'
 
 const typeOrder: Array<OperationIssue['type']> = ['info', 'warn', 'error']
 

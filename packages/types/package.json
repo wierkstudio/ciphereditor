@@ -1,6 +1,6 @@
 {
-  "name": "@cryptii/types",
-  "version": "5.0.0-alpha",
+  "name": "@ciphereditor/types",
+  "version": "1.0.0-alpha",
   "description": "TypeScript types shared between packages and third-party extensions",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
