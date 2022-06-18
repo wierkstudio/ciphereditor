@@ -9,7 +9,8 @@ import {
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlChange, ControlChangeSource, ControlViewState } from './types/control'
-import { OperationExtension, operationExtensionSchema, OperationState } from './types/operation'
+import { OperationContribution, OperationRequest, OperationResult } from '@cryptii/types'
+import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, retryOperation, setOperationState } from './reducers/operation'
@@ -17,8 +18,8 @@ import { attachControls, attachControlToVariable, detachControlFromVariable } fr
 import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
+import { operationContributionSchema } from './types/extension'
 import { removeNode, selectNode } from './reducers/blueprint'
-import { OperationRequest, OperationResult } from '@cryptii/types'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -39,13 +40,13 @@ export const blueprintSlice = createSlice({
      */
     addOperationAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
-      extension: OperationExtension | any
+      contribution: OperationContribution | unknown
       x: number
       y: number
     }>) => {
       const { programId, x, y } = payload
-      const operationExtension = operationExtensionSchema.parse(payload.extension)
-      const operation = addOperationNode(state, programId, operationExtension, x, y)
+      const contribution = operationContributionSchema.parse(payload.contribution)
+      const operation = addOperationNode(state, programId, contribution, x, y)
       state.selectedNodeId = operation.id
     },
 

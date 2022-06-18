@@ -1,0 +1,10 @@
+{
+    "extends": "./tsconfig",
+    "compilerOptions": {
+      "target": "ES2016",
+      "module": "none",
+      "lib": ["ES2016", "dom"],
+      "sourceMap": false,
+      "declaration": false
+    }
+  }

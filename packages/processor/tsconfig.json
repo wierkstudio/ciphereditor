@@ -1,0 +1,14 @@
+{
+    "extends": "../../tsconfig",
+    "compilerOptions": {
+      "target": "ES2016",
+      "lib": ["ES2016", "dom", "webworker"],
+      "sourceRoot": "./src/",
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "declaration": true
+    },
+    "include": [
+      "src"
+    ]
+  }

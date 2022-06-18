@@ -1,12 +1,11 @@
 
-import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@cryptii/types'
 import { mod } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
-
-export const operation: Operation = {
-  name: 'cryptii/caesar-cipher',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/caesar-cipher',
   label: 'Caesar cipher',
   controls: [
     {
@@ -55,7 +54,7 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = (request) => {
+const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
 
   const caseStrategy = values.caseStrategy.data as string
@@ -125,4 +124,11 @@ export const onOperationRequest: OperationRequestHandler = (request) => {
   const output = stringFromUnicodeCodePoints(resultCodePoints)
 
   return { changes: [{ name: outputControl, value: output }] }
+}
+
+export default {
+  contribution,
+  body: {
+    execute
+  }
 }

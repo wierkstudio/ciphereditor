@@ -1,7 +1,5 @@
 
-import { NamedControlChange, Operation, OperationRequestHandler } from '@cryptii/types'
-
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
+import { Contribution, NamedControlChange, OperationExecuteExport } from '@cryptii/types'
 
 // TODO: Create proxy service with rate limiting and origin check
 const apiKey = 'REDACTED'
@@ -119,8 +117,9 @@ const languageOptions = [
 ]
   .map(entry => ({ value: entry[1], label: entry[0] }))
 
-export const operation: Operation = {
-  name: 'cryptii/google-translate',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/google-translate',
   label: 'Google Translate',
   controls: [
     {
@@ -151,7 +150,7 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = async (request) => {
+const execute: OperationExecuteExport = async (request) => {
   const { values, controlPriorities } = request
 
   const forward = controlPriorities.indexOf('source') < controlPriorities.indexOf('target')
@@ -218,4 +217,11 @@ export const onOperationRequest: OperationRequestHandler = async (request) => {
   await new Promise(resolve => setTimeout(resolve, 500))
 
   return { changes }
+}
+
+export default {
+  contribution,
+  body: {
+    execute
+  }
 }

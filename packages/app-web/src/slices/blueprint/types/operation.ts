@@ -1,33 +1,9 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { Operation, OperationIssue, OperationResult } from '@cryptii/types'
-import { controlSchema, namedControlChangesSchema } from './control'
+import { OperationIssue, OperationRequest, OperationResult } from '@cryptii/types'
+import { namedControlChangesSchema } from './control'
+import { typedValueSchema } from './value'
 import { z } from 'zod'
-
-export const operationSchema: z.ZodType<Operation> = z.object({
-  name: z.string(),
-  label: z.string().optional(),
-  controls: z.array(controlSchema)
-})
-
-export const extensionEntryPointSchema = z.object({
-  /**
-   * Bundle url
-   */
-  bundleUrl: z.string(),
-
-  /**
-   * Bundle module id
-   */
-  moduleId: z.string()
-})
-
-export const operationExtensionSchema = z.object({
-  operation: operationSchema,
-  entryPoint: extensionEntryPointSchema
-})
-
-export type OperationExtension = z.infer<typeof operationExtensionSchema>
 
 export const operationIssueSchema: z.ZodType<OperationIssue> = z.object({
   type: z.enum(['error', 'warn', 'info']),
@@ -39,6 +15,11 @@ export const operationIssueSchema: z.ZodType<OperationIssue> = z.object({
 export const operationResultSchema: z.ZodType<OperationResult> = z.object({
   changes: namedControlChangesSchema.optional(),
   issues: z.array(operationIssueSchema).optional()
+})
+
+export const operationRequestSchema: z.ZodType<OperationRequest> = z.object({
+  values: z.record(typedValueSchema),
+  controlPriorities: z.array(z.string())
 })
 
 /**
@@ -71,6 +52,11 @@ export interface OperationNode extends BlueprintNode {
   type: BlueprintNodeType.Operation
 
   /**
+   * Operation contribution name
+   */
+  contributionName: string
+
+  /**
    * Operation label
    */
   label: string
@@ -96,12 +82,7 @@ export interface OperationNode extends BlueprintNode {
   priorityControlIds: BlueprintNodeId[]
 
   /**
-   * Bundle url
+   * Extension url
    */
-  bundleUrl: string
-
-  /**
-   * Bundle module id
-   */
-  moduleId: string
+  extensionUrl?: string
 }

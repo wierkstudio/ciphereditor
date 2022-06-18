@@ -1,11 +1,10 @@
 
-import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@cryptii/types'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
-
-export const operation: Operation = {
-  name: 'cryptii/rot13',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/rot13',
   label: 'ROT13',
   controls: [
     {
@@ -33,7 +32,7 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = (request) => {
+const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
   const variant = values.variant.data
   const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
@@ -78,4 +77,11 @@ const rotateCodePoint = (codePoint: number, start: number, end: number): number 
     }
   }
   return codePoint
+}
+
+export default {
+  contribution,
+  body: {
+    execute
+  }
 }

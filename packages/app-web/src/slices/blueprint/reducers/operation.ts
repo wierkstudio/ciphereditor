@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { OperationExtension, OperationNode, OperationState } from '../types/operation'
-import { OperationIssue } from '@cryptii/types'
+import { OperationContribution, OperationIssue } from '@cryptii/types'
+import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from 'utils/array'
@@ -13,28 +13,27 @@ import { getOperationNode } from '../selectors/operation'
  * Add an operation node to the given program.
  * @param state Blueprint state
  * @param programId Program node id
- * @param extension Operation extension to be added
+ * @param operationContribution Operation contribution to be used
  * @returns New operation node
  */
 export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  extension: OperationExtension,
+  operationContribution: OperationContribution,
   x: number,
   y: number
 ): OperationNode => {
-  // TODO: Where to put the operation entity name
   const operationNode: OperationNode = {
     id: nextNodeId(state),
     parentId: programId,
     type: BlueprintNodeType.Operation,
-    label: extension.operation.label ?? capitalCase(extension.operation.name),
+    contributionName: operationContribution.name,
+    label: operationContribution.label ?? capitalCase(operationContribution.name),
     childIds: [],
     state: OperationState.Ready,
     issues: [],
     priorityControlIds: [],
-    bundleUrl: extension.entryPoint.bundleUrl,
-    moduleId: extension.entryPoint.moduleId,
+    extensionUrl: operationContribution.extensionUrl,
     x,
     y
   }
@@ -43,7 +42,7 @@ export const addOperationNode = (
 
   // Add operation controls
   operationNode.childIds =
-  extension.operation.controls
+  operationContribution.controls
     .map(addOperationControlNode.bind(null, state, operationNode.id))
     .map(node => node.id)
 

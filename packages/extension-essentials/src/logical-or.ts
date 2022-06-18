@@ -1,11 +1,10 @@
 
-import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@cryptii/types'
 
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
-
-export const operation: Operation = {
-  name: 'cryptii/logical-and',
-  label: 'Logical AND',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/logical-or',
+  label: 'Logical OR',
   controls: [
     {
       name: 'a',
@@ -18,7 +17,7 @@ export const operation: Operation = {
       types: ['boolean']
     },
     {
-      name: 'aAndB',
+      name: 'aOrB',
       initialValue: false,
       types: ['boolean'],
       writable: false,
@@ -27,9 +26,16 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = (request) => {
+const execute: OperationExecuteExport = (request) => {
   const a = request.values.a.data as boolean
   const b = request.values.b.data as boolean
-  const result = a && b
+  const result = a || b
   return { changes: [{ name: 'aOrB', value: result }] }
+}
+
+export default {
+  contribution,
+  body: {
+    execute
+  }
 }

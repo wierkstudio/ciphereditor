@@ -1,6 +1,6 @@
 
 import { configureStore, ThunkAction, Action, isPlain } from '@reduxjs/toolkit'
-import { processorMiddleware } from 'middlewares/processor'
+import { extensionMiddleware } from 'middlewares/extension'
 import { rootReducer, RootState } from './slices'
 
 export const store = configureStore({
@@ -17,7 +17,7 @@ export const store = configureStore({
       }
     }
   }).concat(
-    processorMiddleware
+    extensionMiddleware
   )
 })
 

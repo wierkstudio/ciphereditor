@@ -1,6 +1,6 @@
 
+import { Contribution } from '@cryptii/types'
 import { DirectoryState } from './types'
-import { OperationExtension } from 'slices/blueprint/types/operation'
 
-export const getOperationExtensions = (state: DirectoryState): OperationExtension[] =>
-  state.operationExtensions
+export const getContributions = (state: DirectoryState): Contribution[] =>
+  state.contributions

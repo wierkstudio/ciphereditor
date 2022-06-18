@@ -140,27 +140,6 @@ export interface NamedControlChange {
 }
 
 /**
- * Object describing an operation
- */
-export interface Operation {
-  /**
-   * Unique operation name
-   */
-  name: string
-
-  /**
-   * Operation label
-   * Defaults to the capitalized name of the operation
-   */
-  label?: string
-
-  /**
-   * Array of controls
-   */
-  controls: Control[]
-}
-
-/**
  * An operation result hint is an error, warning or information that occur
  * while processing an operation request.
  */
@@ -220,5 +199,95 @@ export interface OperationResult {
 /**
  * Method resolving an operation request to an operation result
  */
-export type OperationRequestHandler =
-  (request: OperationRequest) => OperationResult | Promise<OperationResult>
+export type OperationExecuteExport =
+  (request: OperationRequest) => OperationResult | PromiseLike<OperationResult>
+
+/**
+ * Abstract contribution interface all contributions extend from
+ */
+interface AbstractContribution {
+  /**
+   * Contribution type
+   */
+  type: string
+
+  /**
+   * Unique name the contribution is identified by
+   */
+  name: string
+
+  /**
+   * Url of extension JavaScript bundle containing this contribution
+   */
+  extensionUrl?: string
+}
+
+/**
+ * Operation contribution metadata
+ */
+export interface OperationContribution extends AbstractContribution {
+  /**
+   * Contribution type
+   */
+  type: 'operation'
+
+  /**
+   * Operation label
+   * Defaults to the capitalized name of the operation
+   */
+  label?: string
+
+  /**
+   * Array of controls
+   */
+  controls: Control[]
+}
+
+/**
+ * Operation contribution body
+ */
+export interface OperationContributionBody {
+  execute: OperationExecuteExport
+}
+
+/**
+ * Operation contribution exports
+ */
+export interface OperationContributionExports {
+  contribution: OperationContribution
+  body: OperationContributionBody
+}
+
+/**
+ * Contribution metadata
+ */
+export type Contribution =
+  OperationContribution
+
+/**
+ * Contribution exports
+ */
+export type ContributionExports =
+  OperationContributionExports
+
+/**
+ * Extension context (for future use)
+ */
+export type ExtensionContext = ({})
+
+/**
+ * Extension activate function signature
+ */
+export type ExtensionActivateExport =
+  (context: ExtensionContext) => ContributionExports[] | PromiseLike<ContributionExports[]>
+
+/**
+ * Represents the module of an extension.
+ */
+export interface ExtensionExports {
+  /**
+   * Called when an extension is activated to give the opportunity to register
+   * extension contributions.
+   */
+  activate: ExtensionActivateExport
+}

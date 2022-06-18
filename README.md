@@ -8,12 +8,13 @@ Your online playground for all things encryption, encoding, conversion and data.
 
 ## Packages
 
-As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other.
+As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other. All packages listed below share the same version.
 
 - `app-web` - Core web app built on React and Redux Toolkit
 - `app-desktop` - Desktop application source built on the web app and Electron
 - `types` - TypeScript types shared between packages and third-party extensions
-- `operation-essentials` - Extensions providing essential operations
+- `processor` - JavaScript sandbox for Browser environments where extensions are executed in
+- `extension-essentials` - Extension providing essential operations
 
 ## Scripts
 
@@ -22,7 +23,8 @@ Following scripts are offered by the root package:
 - `npm run lint` - Lint all projects
 - `npm run app-web-build` - Create an optimized production build for the web app
 - `npm run app-web-start` - Start the development server for the web app
-- `npm run operation-essentials-build` - Create a production build for the operation essentials extensions
+- `npm run processor-build` - Create an optimized production build for the processor
+- `npm run extension-essentials-build` - Create a production build for the operation essentials extensions
 
 ## Contributing
 

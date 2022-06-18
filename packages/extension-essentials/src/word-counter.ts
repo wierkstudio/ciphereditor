@@ -1,10 +1,9 @@
 
-import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@cryptii/types'
 
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
-
-export const operation: Operation = {
-  name: 'cryptii/word-counter',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/word-counter',
   label: 'Word counter',
   controls: [
     {
@@ -36,7 +35,7 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = (request) => {
+const execute: OperationExecuteExport = (request) => {
   const text = request.values.text.data as string
 
   const characters = Array.from(text.normalize())
@@ -50,4 +49,11 @@ export const onOperationRequest: OperationRequestHandler = (request) => {
   ]
 
   return { changes }
+}
+
+export default {
+  contribution,
+  body: {
+    execute
+  }
 }

@@ -1,12 +1,12 @@
 
-import { OperationExtension } from 'slices/blueprint/types/operation'
+import { Contribution } from '@cryptii/types'
 
 /**
  * Directory state
  */
 export interface DirectoryState {
   /**
-   * Operations
+   * Contributions
    */
-  operationExtensions: OperationExtension[]
+  contributions: Contribution[]
 }

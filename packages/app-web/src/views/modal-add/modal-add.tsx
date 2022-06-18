@@ -10,7 +10,7 @@ import { addControlAction, addEmptyProgramAction, addOperationAction } from 'sli
 import { capitalCase } from 'change-case'
 import { getActiveProgram } from 'slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from 'slices/ui/selectors'
-import { getOperationExtensions } from 'slices/directory/selectors'
+import { getContributions } from 'slices/directory/selectors'
 import { gridSize } from 'hooks/useDragMove'
 import { popModalAction } from 'slices/ui'
 
@@ -19,28 +19,28 @@ export default function AddModalView (props: {
 }): JSX.Element {
   const dispatch = useAppDispatch()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
-  const directoryOperations = useAppSelector(state => getOperationExtensions(state.directory))
+  const contributions = useAppSelector(state => getContributions(state.directory))
   const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   return (
     <ModalView modal={props.modal} title='Add a new operation'>
       <ul>
-        {directoryOperations.map(extension => (
-          <li key={extension.operation.name}>
+        {contributions.map(contribution => (
+          <li key={contribution.name}>
             <ButtonView
               onClick={() => {
                 // TODO: Remove magic numbers
                 activeProgram !== undefined && dispatch(addOperationAction({
                   programId: activeProgram.id,
-                  extension,
+                  contribution,
                   x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
                   y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
                 }))
                 dispatch(popModalAction({}))
               }}
             >
-              {extension.operation.label ?? capitalCase(extension.operation.name)}
+              {contribution.label ?? capitalCase(contribution.name)}
             </ButtonView>
           </li>
         ))}

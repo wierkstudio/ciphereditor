@@ -1,10 +1,9 @@
 
-import { Operation, OperationRequestHandler } from '@cryptii/types'
+import { Contribution, OperationExecuteExport } from '@cryptii/types'
 
-export const spec = 'https://cryptii.com/developer/extension/operation/v1'
-
-export const operation: Operation = {
-  name: 'cryptii/logical-not',
+const contribution: Contribution = {
+  type: 'operation',
+  name: '@cryptii/operation-essentials/logical-not',
   label: 'Logical NOT',
   controls: [
     {
@@ -21,7 +20,7 @@ export const operation: Operation = {
   ]
 }
 
-export const onOperationRequest: OperationRequestHandler = (request) => {
+const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
   const forward = controlPriorities.indexOf('a') < controlPriorities.indexOf('notA')
   if (forward) {
@@ -32,5 +31,12 @@ export const onOperationRequest: OperationRequestHandler = (request) => {
     const notA = values.notA.data as boolean
     const result = !notA
     return { changes: [{ name: 'a', value: result }] }
+  }
+}
+
+export default {
+  contribution,
+  body: {
+    execute
   }
 }

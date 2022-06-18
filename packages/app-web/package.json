@@ -34,6 +34,7 @@
     "zod": "^3.14.4"
   },
   "devDependencies": {
+    "@cryptii/processor": "*",
     "@cryptii/types": "*",
     "ts-standard": "^11.0.0"
   },

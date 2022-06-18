@@ -1,0 +1,24 @@
+{
+  "name": "@cryptii/processor",
+  "version": "5.0.0-alpha",
+  "description": "JavaScript sandbox for Browser environments where extensions are executed in",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
+  "license": "MIT",
+  "scripts": {
+    "lint": "ts-standard",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "watch": "gulp watch"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-inject": "^5.0.5",
+    "gulp-terser": "^2.1.0",
+    "gulp-typescript": "^5.0.1",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.6.4"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts"
+}
