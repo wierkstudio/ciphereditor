@@ -13,5 +13,9 @@
 # Logs
 npm-debug.log*
 
+# Local assets
+/assets/localhost.crt
+/assets/localhost.key
+
 # Misc
 .DS_Store

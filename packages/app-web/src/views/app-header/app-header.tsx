@@ -1,18 +1,18 @@
 
 import './app-header.scss'
-import ButtonView from 'views/button/button'
-import LogoView from 'views/logo/logo'
-import ToolbarView from 'views/toolbar/toolbar'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useUISelector from 'hooks/useUISelector'
-import { UIEmbedType } from 'slices/ui/types'
-import { getActiveProgram } from 'slices/blueprint/selectors/program'
-import { getEmbedType, isEmbedMaximized } from 'slices/ui/selectors'
-import { getSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { leaveProgramAction, redoAction, removeNodeAction, undoAction } from 'slices/blueprint'
-import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from 'slices/ui'
+import ButtonView from '../../views/button/button'
+import LogoView from '../../views/logo/logo'
+import ToolbarView from '../../views/toolbar/toolbar'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useAppSelector from '../../hooks/useAppSelector'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useUISelector from '../../hooks/useUISelector'
+import { UIEmbedType } from '../../slices/ui/types'
+import { getActiveProgram } from '../../slices/blueprint/selectors/program'
+import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
+import { getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { leaveProgramAction, redoAction, removeNodeAction, undoAction } from '../../slices/blueprint'
+import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -88,7 +88,7 @@ export default function AppHeaderView (): JSX.Element {
           {embedType !== UIEmbedType.Platform && (
             <ButtonView
               title='View manual'
-              icon='help'
+              icon='helpCircle'
               modifiers='large'
               onClick={() => {
                 window.open('https://cryptii.blue/manual', '_blank')

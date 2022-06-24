@@ -1,13 +1,13 @@
 
 import './wire.scss'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
-import { getVariableWireWaypoints } from 'slices/blueprint/selectors/variable'
-import { isSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { renderClassName } from 'utils/dom'
-import { selectNodeAction } from 'slices/blueprint'
+import { getVariableWireWaypoints } from '../../slices/blueprint/selectors/variable'
+import { isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { renderClassName } from '../../utils/dom'
+import { selectNodeAction } from '../../slices/blueprint'
 
 const minNodeGap = 48
 

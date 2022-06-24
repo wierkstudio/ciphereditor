@@ -1,5 +1,5 @@
 
-import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { BlueprintNodeId } from '../blueprint/types/blueprint'
 
 /**
  * UI state

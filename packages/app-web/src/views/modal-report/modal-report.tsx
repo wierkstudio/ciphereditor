@@ -1,7 +1,7 @@
 
 import './modal-report.scss'
-import ModalView from 'views/modal/modal'
-import { ReportModalState } from 'slices/ui/types'
+import ModalView from '../../views/modal/modal'
+import { ReportModalState } from '../../slices/ui/types'
 
 export default function ReportModalView (props: {
   modal: ReportModalState

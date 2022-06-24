@@ -1,6 +1,6 @@
 
 import useAppSelector from './useAppSelector'
-import { SettingsState } from 'slices/settings/types'
+import { SettingsState } from '../slices/settings/types'
 import { TypedUseSelectorHook } from 'react-redux'
 
 /**

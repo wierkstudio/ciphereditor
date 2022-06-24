@@ -1,9 +1,9 @@
 
 import './input-text.scss'
 import React, { useRef, useCallback, useLayoutEffect, ChangeEvent, FocusEventHandler } from 'react'
-import useShortcutHandler from 'hooks/useShortcutHandler'
-import useWindowResizeListener from 'hooks/useWindowResizeListener'
-import { renderClassName, ViewModifiers } from 'utils/dom'
+import useShortcutHandler from '../../hooks/useShortcutHandler'
+import useWindowResizeListener from '../../hooks/useWindowResizeListener'
+import { renderClassName, ViewModifiers } from '../../utils/dom'
 
 /**
  * List of shortcuts that should not further propagate from the text input

@@ -10,7 +10,7 @@ import { VariableNode } from '../types/variable'
 import { equalValues, isTypeWithinTypes, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
-import { mapNamedObjects } from 'utils/map'
+import { mapNamedObjects } from '../../../utils/map'
 
 /**
  * Find a control node by the given node id.

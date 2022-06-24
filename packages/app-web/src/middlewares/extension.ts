@@ -1,15 +1,15 @@
 
 import { AnyAction, Middleware } from 'redux'
-import { BlueprintNodeId, BlueprintState } from 'slices/blueprint/types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../slices/blueprint/types/blueprint'
 import { ContributionExports, ExtensionContext, OperationIssue, OperationResult } from '@ciphereditor/types'
 import { ProcessorWorker } from '@ciphereditor/processor'
-import { RootState } from 'slices'
-import { applyOperationResultAction } from 'slices/blueprint'
-import { contributionExportsSchema } from 'slices/blueprint/types/extension'
-import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from 'slices/blueprint/selectors/operation'
-import { getNodeNamedControls } from 'slices/blueprint/selectors/control'
-import { hasNode } from 'slices/blueprint/selectors/blueprint'
-import { operationResultSchema, OperationState } from 'slices/blueprint/types/operation'
+import { RootState } from '../slices'
+import { applyOperationResultAction } from '../slices/blueprint'
+import { contributionExportsSchema } from '../slices/blueprint/types/extension'
+import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from '../slices/blueprint/selectors/operation'
+import { getNodeNamedControls } from '../slices/blueprint/selectors/control'
+import { hasNode } from '../slices/blueprint/selectors/blueprint'
+import { operationResultSchema, OperationState } from '../slices/blueprint/types/operation'
 import { z } from 'zod'
 
 export const extensionMiddleware: Middleware<{}, RootState> = store => next => (action: AnyAction) => {

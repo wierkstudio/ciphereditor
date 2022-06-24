@@ -6,8 +6,8 @@ import {
   redoAction,
   removeNodeAction,
   undoAction
-} from 'slices/blueprint'
-import { cancelTopModalAction, endWireAction } from 'slices/ui'
+} from '../blueprint'
+import { cancelTopModalAction, endWireAction } from '../ui'
 import { ReducedMotionPreferenceOption, SettingsState, ThemeOption } from './types'
 
 const defaultSettingsState: SettingsState = {

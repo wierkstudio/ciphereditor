@@ -1,7 +1,7 @@
 
 import useAppSelector from './useAppSelector'
 import { TypedUseSelectorHook } from 'react-redux'
-import { UIState } from 'slices/ui/types'
+import { UIState } from '../slices/ui/types'
 
 /**
  * A hook to access the UI state. This hook takes a UI selector function as an

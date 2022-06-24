@@ -5,7 +5,3 @@
 
 # Production
 /build
-
-# Misc
-/assets/localhost.crt
-/assets/localhost.key

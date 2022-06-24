@@ -1,14 +1,14 @@
 
 import './modal-stack.scss'
-import AddModalView from 'views/modal-add/modal-add'
-import ReportModalView from 'views/modal-report/modal-report'
-import SettingsModalView from 'views/modal-settings/modal-settings'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import { ModalType } from 'slices/ui/types'
+import AddModalView from '../../views/modal-add/modal-add'
+import ReportModalView from '../../views/modal-report/modal-report'
+import SettingsModalView from '../../views/modal-settings/modal-settings'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useAppSelector from '../../hooks/useAppSelector'
+import { ModalType } from '../../slices/ui/types'
 import { MouseEvent, useCallback } from 'react'
-import { cancelTopModalAction } from 'slices/ui'
-import { getModalStack } from 'slices/ui/selectors'
+import { cancelTopModalAction } from '../../slices/ui'
+import { getModalStack } from '../../slices/ui/selectors'
 
 const modalViewMap = {
   [ModalType.Add]: AddModalView,

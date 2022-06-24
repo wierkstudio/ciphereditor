@@ -1,16 +1,16 @@
 
 import './node.scss'
-import ControlView from 'views/control/control'
-import OperationView from 'views/operation/operation'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import useDragMove from 'hooks/useDragMove'
-import { BlueprintNodeId, BlueprintNodeType } from 'slices/blueprint/types/blueprint'
-import { ControlNode } from 'slices/blueprint/types/control'
+import ControlView from '../../views/control/control'
+import OperationView from '../../views/operation/operation'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useDragMove from '../../hooks/useDragMove'
+import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
+import { ControlNode } from '../../slices/blueprint/types/control'
 import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
-import { getNode, getNodeChildren, isSelectedNode } from 'slices/blueprint/selectors/blueprint'
-import { layoutNodeAction, moveNodeAction, selectNodeAction } from 'slices/blueprint'
-import { renderClassName } from 'utils/dom'
+import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
+import { renderClassName } from '../../utils/dom'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId

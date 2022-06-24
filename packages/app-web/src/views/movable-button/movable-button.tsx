@@ -1,7 +1,7 @@
 
 import { PointerEvent as ReactPointerEvent, useEffect, useState } from 'react'
-import { euclideanDistance } from 'utils/math'
-import { passiveListenerOptions } from 'utils/dom'
+import { euclideanDistance } from '../../utils/math'
+import { passiveListenerOptions } from '../../utils/dom'
 
 /**
  * Internal drag recognition states

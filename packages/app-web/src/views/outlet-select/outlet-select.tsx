@@ -1,17 +1,17 @@
 
-import SelectView, { SelectViewElement, SelectViewOptionElement } from 'views/select/select'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useBlueprintSelector from 'hooks/useBlueprintSelector'
+import SelectView, { SelectViewElement, SelectViewOptionElement } from '../../views/select/select'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import {
   addVariableFromControlAction,
   attachControlToVariableAction,
   detachControlFromVariableAction
-} from 'slices/blueprint'
-import { ControlNode } from 'slices/blueprint/types/control'
-import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
-import { getControlVariableOptions } from 'slices/blueprint/selectors/control'
+} from '../../slices/blueprint'
+import { ControlNode } from '../../slices/blueprint/types/control'
+import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
+import { getControlVariableOptions } from '../../slices/blueprint/selectors/control'
 import { useCallback } from 'react'
-import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 
 export default function OutletSelectView (props: {
   control: ControlNode

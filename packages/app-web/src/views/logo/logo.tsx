@@ -1,7 +1,7 @@
 
 import './logo.scss'
-import { mulberry32 } from 'utils/random'
-import { shuffleArray } from 'utils/array'
+import { mulberry32 } from '../../utils/random'
+import { shuffleArray } from '../../utils/array'
 import { useState } from 'react'
 
 const crossPath = 'M7.01444 8.83393L9.15162 11H11V9.15162L8.83393 6.98556L11 4.84838V3H9.15162L7.01444 5.16606L4.84838 3H3V4.84838L5.16606 6.98556L3 9.15162V11H4.84838L7.01444 8.83393Z'

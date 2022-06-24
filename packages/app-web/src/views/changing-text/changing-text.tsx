@@ -1,7 +1,7 @@
 
 import './changing-text.scss'
 import React, { useEffect, useState } from 'react'
-import { renderClassName } from 'utils/dom'
+import { renderClassName } from '../../utils/dom'
 
 interface ChangingTextViewState {
   lastText: string

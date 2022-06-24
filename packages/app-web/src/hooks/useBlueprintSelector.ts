@@ -1,6 +1,6 @@
 
 import { TypedUseSelectorHook } from 'react-redux'
-import { BlueprintState } from 'slices/blueprint/types/blueprint'
+import { BlueprintState } from '../slices/blueprint/types/blueprint'
 import useAppSelector from './useAppSelector'
 
 /**

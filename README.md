@@ -23,6 +23,7 @@ Following scripts are offered by the root package:
 - `npm run lint` - Lint all projects
 - `npm run app-web-build` - Create an optimized production build for the web app
 - `npm run app-web-start` - Start the development server for the web app
+- `npm run app-web-preview` - Locally preview the production build for the web app
 - `npm run processor-build` - Create an optimized production build for the processor
 - `npm run extension-essentials-build` - Create a production build for the operation essentials extensions
 

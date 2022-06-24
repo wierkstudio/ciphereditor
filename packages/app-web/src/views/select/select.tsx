@@ -1,8 +1,8 @@
 
 import './select.scss'
-import IconView from 'views/icon/icon'
+import IconView from '../../views/icon/icon'
 import { ChangeEventHandler } from 'react'
-import { renderClassName, ViewModifiers } from 'utils/dom'
+import { renderClassName, ViewModifiers } from '../../utils/dom'
 
 export interface SelectViewOptionElement {
   type: 'option'

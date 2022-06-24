@@ -1,17 +1,17 @@
 
 import './outlet.scss'
-import IconView from 'views/icon/icon'
-import OutletSelectView from 'views/outlet-select/outlet-select'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useBlueprintSelector from 'hooks/useBlueprintSelector'
-import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
-import { ControlNode } from 'slices/blueprint/types/control'
+import IconView from '../../views/icon/icon'
+import OutletSelectView from '../../views/outlet-select/outlet-select'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useAppSelector from '../../hooks/useAppSelector'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
+import { ControlNode } from '../../slices/blueprint/types/control'
 import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
-import { getControlVariable, getVariableControl } from 'slices/blueprint/selectors/variable'
-import { getWireDraft } from 'slices/ui/selectors'
-import { releaseOptionalPointerCapture, renderClassName } from 'utils/dom'
-import { startWireAction } from 'slices/ui'
+import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
+import { getWireDraft } from '../../slices/ui/selectors'
+import { releaseOptionalPointerCapture, renderClassName } from '../../utils/dom'
+import { startWireAction } from '../../slices/ui'
 
 export default function OutletView (props: {
   control: ControlNode

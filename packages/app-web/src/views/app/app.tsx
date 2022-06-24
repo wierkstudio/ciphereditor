@@ -1,20 +1,20 @@
 
 import './app.scss'
-import AppHeaderView from 'views/app-header/app-header'
+import AppHeaderView from '../../views/app-header/app-header'
 import CanvasView from '../canvas/canvas'
-import ModalStackView from 'views/modal-stack/modal-stack'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import useSettingsSelector from 'hooks/useSettingsSelector'
-import useShortcutHandler from 'hooks/useShortcutHandler'
-import useUISelector from 'hooks/useUISelector'
-import useWindowLoadListener from 'hooks/useWindowLoadListener'
-import { UIEmbedType } from 'slices/ui/types'
-import { applyEmbedTypeAction } from 'slices/ui'
-import { getAccessibilitySettings, getShortcutBindings } from 'slices/settings/selectors'
-import { getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from 'slices/ui/selectors'
-import { mergeModifiers, renderClassName, ViewModifiers } from 'utils/dom'
-import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from 'utils/embed'
+import ModalStackView from '../../views/modal-stack/modal-stack'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useAppSelector from '../../hooks/useAppSelector'
+import useSettingsSelector from '../../hooks/useSettingsSelector'
+import useShortcutHandler from '../../hooks/useShortcutHandler'
+import useUISelector from '../../hooks/useUISelector'
+import useWindowLoadListener from '../../hooks/useWindowLoadListener'
+import { UIEmbedType } from '../../slices/ui/types'
+import { applyEmbedTypeAction } from '../../slices/ui'
+import { getAccessibilitySettings, getShortcutBindings } from '../../slices/settings/selectors'
+import { getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
+import { mergeModifiers, renderClassName, ViewModifiers } from '../../utils/dom'
+import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from '../../utils/embed'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 export default function AppView (): JSX.Element {
@@ -92,7 +92,7 @@ export default function AppView (): JSX.Element {
     const modifiers = [
       'script-enabled',
       `embed-${embedType as string}`,
-      `env-${embedEnv as string}`,
+      `env-${embedEnv}`,
       `theme-${theme as string}`,
       `reduced-motion-${reducedMotionPreference as string}`
     ]

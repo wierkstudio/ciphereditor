@@ -4,16 +4,16 @@
     <meta charset="utf-8" />
     <title>ciphereditor</title>
 
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/icons/icon-192px.png" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/icons/icon-192px.png" />
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#169aed" />
 
-    <link rel="prefetch" href="%PUBLIC_URL%/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2" as="font" type="font/woff2">
-    <link rel="prefetch" href="%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-400.woff2" as="font" type="font/woff2">
-    <link rel="prefetch" href="%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-600.woff2" as="font" type="font/woff2">
+    <link rel="prefetch" href="/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2" as="font" type="font/woff2">
+    <link rel="prefetch" href="/fonts/lexend-deca-v10-latin-ext-latin-400.woff2" as="font" type="font/woff2">
+    <link rel="prefetch" href="/fonts/lexend-deca-v10-latin-ext-latin-600.woff2" as="font" type="font/woff2">
 
     <style>
     @font-face {
@@ -22,8 +22,8 @@
       font-style: normal;
       font-weight: 400;
       src: local(''),
-            url('%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-400.woff2') format('woff2'),
-            url('%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-400.woff') format('woff');
+            url('/fonts/lexend-deca-v10-latin-ext-latin-400.woff2') format('woff2'),
+            url('/fonts/lexend-deca-v10-latin-ext-latin-400.woff') format('woff');
     }
     @font-face {
       font-display: swap;
@@ -31,8 +31,8 @@
       font-style: normal;
       font-weight: 600;
       src: local(''),
-            url('%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-600.woff2') format('woff2'),
-            url('%PUBLIC_URL%/fonts/lexend-deca-v10-latin-ext-latin-600.woff') format('woff');
+            url('/fonts/lexend-deca-v10-latin-ext-latin-600.woff2') format('woff2'),
+            url('/fonts/lexend-deca-v10-latin-ext-latin-600.woff') format('woff');
     }
     @font-face {
       font-display: swap;
@@ -40,8 +40,8 @@
       font-style: normal;
       font-weight: 400;
       src: local(''),
-            url('%PUBLIC_URL%/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2') format('woff2'),
-            url('%PUBLIC_URL%/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff') format('woff');
+            url('/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2') format('woff2'),
+            url('/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff') format('woff');
     }
     body {
       color: #ffffff;
@@ -63,5 +63,6 @@
       Please enable it to continue.
     </noscript>
     <div id="root"></div>
+    <script type="module" src="/src/index.tsx"></script>
   </body>
 </html>

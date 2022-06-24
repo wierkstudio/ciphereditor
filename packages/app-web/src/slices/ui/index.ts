@@ -1,5 +1,5 @@
 
-import { BlueprintNodeId } from 'slices/blueprint/types/blueprint'
+import { BlueprintNodeId } from '../blueprint/types/blueprint'
 import { UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushAddModal, pushReportModal, pushSettingsModal } from './reducers'

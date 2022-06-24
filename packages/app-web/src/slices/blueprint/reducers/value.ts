@@ -1,8 +1,8 @@
 
 import { ImplicitTypedValue, LabeledImplicitTypedValue, TypedValue } from '@ciphereditor/types'
 import { LabeledTypedValue } from '../types/value'
-import { arrayEqual } from 'utils/array'
-import { bufferToHexString } from 'utils/binary'
+import { arrayEqual } from '../../../utils/array'
+import { bufferToHexString } from '../../../utils/binary'
 import { capitalCase } from 'change-case'
 
 /**

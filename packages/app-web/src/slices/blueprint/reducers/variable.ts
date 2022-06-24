@@ -2,7 +2,7 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ControlChangeSource } from '../types/control'
 import { VariableNode } from '../types/variable'
-import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from 'utils/array'
+import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../utils/array'
 import { canAttachControls, getControlNode } from '../selectors/control'
 import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 import { addNode, nextNodeId, removeNode } from './blueprint'

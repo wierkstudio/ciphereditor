@@ -1,6 +1,6 @@
 
 import { configureStore, ThunkAction, Action, isPlain } from '@reduxjs/toolkit'
-import { extensionMiddleware } from 'middlewares/extension'
+import { extensionMiddleware } from './middlewares/extension'
 import { rootReducer, RootState } from './slices'
 
 export const store = configureStore({

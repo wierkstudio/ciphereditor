@@ -1,7 +1,7 @@
 
-import InputTextView from 'views/input-text/input-text'
+import InputTextView from '../../views/input-text/input-text'
 import { TextValue } from '@ciphereditor/types'
-import { ValueViewProps } from 'views/value/value'
+import { ValueViewProps } from '../../views/value/value'
 
 export default function ValueTextView (props: ValueViewProps<TextValue>): JSX.Element {
   return (

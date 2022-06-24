@@ -1,13 +1,13 @@
 
 import './modal-settings.scss'
-import ModalView from 'views/modal/modal'
-import SelectView from 'views/select/select'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useSettingsSelector from 'hooks/useSettingsSelector'
-import { ModalState } from 'slices/ui/types'
-import { ReducedMotionPreferenceOption, ThemeOption } from 'slices/settings/types'
-import { applyReducedMotionPreference, applyTheme } from 'slices/settings'
-import { getAccessibilitySettings } from 'slices/settings/selectors'
+import ModalView from '../../views/modal/modal'
+import SelectView from '../../views/select/select'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useSettingsSelector from '../../hooks/useSettingsSelector'
+import { ModalState } from '../../slices/ui/types'
+import { ReducedMotionPreferenceOption, ThemeOption } from '../../slices/settings/types'
+import { applyReducedMotionPreference, applyTheme } from '../../slices/settings'
+import { getAccessibilitySettings } from '../../slices/settings/selectors'
 
 export default function SettingsModalView (props: {
   modal: ModalState

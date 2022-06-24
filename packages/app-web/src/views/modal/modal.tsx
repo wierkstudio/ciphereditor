@@ -1,10 +1,10 @@
 
 import './modal.scss'
-import useAppDispatch from 'hooks/useAppDispatch'
-import { ModalState } from 'slices/ui/types'
+import ButtonView from '../../views/button/button'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import { ModalState } from '../../slices/ui/types'
 import { MouseEvent, ReactNode, useCallback } from 'react'
-import { cancelTopModalAction } from 'slices/ui'
-import ButtonView from 'views/button/button'
+import { cancelTopModalAction } from '../../slices/ui'
 
 export default function ModalView (props: {
   modal: ModalState

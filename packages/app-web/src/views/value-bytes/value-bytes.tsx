@@ -1,11 +1,11 @@
 
-import InputTextView from 'views/input-text/input-text'
+import InputTextView from '../../views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react'
 import { BytesValue, TypedValue } from '@ciphereditor/types'
-import { ValueViewProps } from 'views/value/value'
-import { bufferToHexString, hexStringToBuffer } from 'utils/binary'
-import { equalValues } from 'slices/blueprint/reducers/value'
-import { isHexString } from 'utils/string'
+import { ValueViewProps } from '../../views/value/value'
+import { bufferToHexString, hexStringToBuffer } from '../../utils/binary'
+import { equalValues } from '../../slices/blueprint/reducers/value'
+import { isHexString } from '../../utils/string'
 
 const valueToString = (value: TypedValue): string =>
   bufferToHexString(value.data as ArrayBuffer)

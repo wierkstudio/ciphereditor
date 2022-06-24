@@ -9,7 +9,7 @@
     "lint": "npm run lint -ws",
     "app-web-build": "npm run processor-build && npm run build -w @ciphereditor/app-web",
     "app-web-start": "npm run start -w @ciphereditor/app-web",
-    "app-web-dev": "npm run dev -w @ciphereditor/app-web",
+    "app-web-preview": "npm run preview -w @ciphereditor/app-web",
     "app-desktop-start": "npm run start -w @ciphereditor/app-desktop",
     "app-desktop-pack": "npm run pack -w @ciphereditor/app-desktop",
     "processor-build": "npm run build -w @ciphereditor/processor",
