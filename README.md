@@ -42,4 +42,4 @@ Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source
 
 ---
 
-This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/ciphereditor-app/ciphereditor-app/graphs/contributors).
+This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/wierkstudio/ciphereditor/graphs/contributors).
