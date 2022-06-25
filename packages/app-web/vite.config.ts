@@ -9,6 +9,8 @@ const httpsCertPath = '../../assets/localhost.crt'
 const useHttps = fs.existsSync(httpsKeyPath) && fs.existsSync(httpsCertPath)
 
 export default defineConfig({
+  // Use relative URLs (useful for Electron)
+  base: './',
   build: {
     outDir: 'build'
   },

@@ -22,7 +22,7 @@ const createWindow = (): void => {
     return { action: 'deny' }
   })
 
-  void mainWindow.loadFile(path.resolve(__dirname, 'web/index.html'))
+  void mainWindow.loadFile(path.resolve(__dirname, 'app-web/index.html'))
 }
 
 void app.whenReady().then(() => {
