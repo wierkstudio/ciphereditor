@@ -91,7 +91,7 @@ export default function AppHeaderView (): JSX.Element {
               icon='helpCircle'
               modifiers='large'
               onClick={() => {
-                window.open('https://cryptii.blue/manual', '_blank')
+                window.open('https://ciphereditor.com/manual', '_blank')
               }}
             />
           )}
