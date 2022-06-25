@@ -13,7 +13,6 @@
     "build": "npm run prebuild && tsc",
     "pack:macos": "electron-packager . --out ./bundles --overwrite --icon ./assets/icon.icns --app-bundle-id com.ciphereditor.app-desktop",
     "pack": "npm run build && npm run pack:macos",
-    "watch": "tsc -w",
     "start": "npm run build && electron ."
   },
   "devDependencies": {

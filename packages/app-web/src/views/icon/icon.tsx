@@ -55,7 +55,7 @@ const iconSVGMap = {
     </svg>
   ),
   /** Icon by Iconic (https://iconic.app/help-circle/) */
-  helpCircle: (props: SVGProps): JSX.Element => (
+  help: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24' fill='none'>
       <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M19.25 12C19.25 16.0041 16.0041 19.25 12 19.25C7.99594 19.25 4.75 16.0041 4.75 12C4.75 7.99594 7.99594 4.75 12 4.75C16.0041 4.75 19.25 7.99594 19.25 12Z' />
       <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M9.75 10C9.75 10 10 7.75 12 7.75C14 7.75 14.25 9 14.25 10C14.25 10.7513 13.8266 11.5027 12.9798 11.8299C12.4647 12.0289 12 12.4477 12 13V13.25' />

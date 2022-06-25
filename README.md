@@ -4,7 +4,7 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
-Your online playground for all things encryption, encoding, conversion and data.
+Your playground for cryptography, coding & data.
 
 ## Packages
 
@@ -24,7 +24,9 @@ Following scripts are offered by the root package:
 - `npm run app-web-build` - Create an optimized production build for the web app
 - `npm run app-web-start` - Start the development server for the web app
 - `npm run app-web-preview` - Locally preview the production build for the web app
+- `npm run app-desktop-start` - Start the development Electron app locally
 - `npm run processor-build` - Create an optimized production build for the processor
+- `npm run processor-watch` - Watch the processor source files and build on change
 - `npm run extension-essentials-build` - Create a production build for the operation essentials extensions
 
 ## Contributing

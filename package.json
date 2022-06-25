@@ -1,5 +1,5 @@
 {
-  "name": "ciphereditor",
+  "name": "@ciphereditor/root",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "private": true,
   "workspaces": [

@@ -1,7 +1,7 @@
 {
   "name": "@ciphereditor/app-web",
   "version": "1.0.0-alpha",
-  "description": "Online playground for all things encryption, encoding, conversion and data",
+  "description": "Your playground for cryptography, coding & data",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
   "homepage": "https://ciphereditor.com/",

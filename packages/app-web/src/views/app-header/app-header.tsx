@@ -88,7 +88,7 @@ export default function AppHeaderView (): JSX.Element {
           {embedType !== UIEmbedType.Platform && (
             <ButtonView
               title='View manual'
-              icon='helpCircle'
+              icon='help'
               modifiers='large'
               onClick={() => {
                 window.open('https://ciphereditor.com/manual', '_blank')
