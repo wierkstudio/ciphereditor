@@ -5,6 +5,8 @@ import { ControllerMessage, WorkerMessage, WorkerRequest } from './shared'
 const iframeSrc: string =
   /* inject:iframe_html_url_literal */ 'data:text/html;' /* endinject */
 
+const defaultContentSecurityPolicy = 'default-src \'none\'; script-src data:;'
+
 /**
  * State of the processor worker
  */
@@ -37,6 +39,7 @@ type ResetHandler = ((processorWorker: ProcessorWorker, reason: unknown) => void
 export class ProcessorWorker {
   // Internal state
   private state = ProcessorWorkerState.Initial
+  private readonly contentSecurityPolicy: string
   private readonly functionPointerMap = new Map<string, Function>()
   private readonly pendingRequestMap = new Map<number, PromiseCallbacks>()
   private queuedMessages: QueuedWorkerMessage[] = []
@@ -47,6 +50,16 @@ export class ProcessorWorker {
   private readonly messageHandler = this.onWorkerMessage.bind(this)
   private initializeHandler: InitializeHandler
   private resetHandler: ResetHandler
+
+  /**
+   * Constructor
+   * @param contentSecurityPolicy Content Security Policy (CSP) to be applied on
+   * the sandbox iframe document.
+   * See https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
+   */
+  constructor (contentSecurityPolicy: string = defaultContentSecurityPolicy) {
+    this.contentSecurityPolicy = contentSecurityPolicy
+  }
 
   /**
    * Load the iframe and prepare the worker inside it
@@ -62,6 +75,8 @@ export class ProcessorWorker {
     // Create sandbox iframe element
     const iframe = document.createElement('iframe')
     iframe.setAttribute('sandbox', 'allow-scripts')
+    iframe.setAttribute('csp', this.contentSecurityPolicy)
+    iframe.referrerPolicy = 'no-referrer'
 
     // Make iframe invisible and non-interactable
     iframe.style.display = 'none'
@@ -72,9 +87,15 @@ export class ProcessorWorker {
     // Start listening to messages
     window.addEventListener('message', this.messageHandler)
 
+    // Inject CSP into the iframe src data URI
+    const preparedIframeSrc = iframeSrc.replace(
+      '__INJECT_CSP__',
+      JSON.stringify(this.contentSecurityPolicy).slice(1, -1)
+    )
+
     // Install iframe and trigger loading
     this.iframeElement = iframe
-    iframe.src = iframeSrc
+    iframe.src = preparedIframeSrc
     document.body.appendChild(iframe)
   }
 
@@ -177,28 +198,17 @@ export class ProcessorWorker {
 
         const response = message.response
         const error = message.error
-
-        switch (this.state) {
-          case ProcessorWorkerState.Initializing:
-          case ProcessorWorkerState.Running: {
-            const request = this.pendingRequestMap.get(id)
-            if (request !== undefined) {
-              // Remove pending request and resolve or reject it
-              this.pendingRequestMap.delete(id)
-              if (error === undefined) {
-                request.resolve(this.hydrateValue(response))
-              } else {
-                request.reject(this.hydrateValue(error))
-              }
-            } else {
-              this.doResetTransition()
-            }
-            break
+        const request = this.pendingRequestMap.get(id)
+        if (request !== undefined) {
+          // Remove pending request and resolve or reject it
+          this.pendingRequestMap.delete(id)
+          if (error === undefined) {
+            request.resolve(this.hydrateValue(response))
+          } else {
+            request.reject(this.hydrateValue(error))
           }
-
-          default: {
-            this.doResetTransition()
-          }
+        } else {
+          this.doResetTransition()
         }
         break
       }

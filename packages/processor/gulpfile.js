@@ -9,16 +9,16 @@ const workerTypeScriptProject = ts.createProject('tsconfig.worker.json')
 const iframeTypeScriptProject = ts.createProject('tsconfig.iframe.json')
 const libTypeScriptProject = ts.createProject('tsconfig.json')
 
-function injectDataUri (sources, placeholder, contentType, wrapInLiteral) {
+function injectDataUri (sources, placeholder, contentType, base64Encoded, wrapInLiteral) {
   return inject(sources, {
     starttag: `/* inject:${placeholder} */`,
     endtag: '/* endinject */',
     removeTags: true,
     transform: (path, file) => {
       const source = file.contents.toString('utf8')
-      const dataUri =
-        `data:${contentType};base64,` +
-        Buffer.from(source).toString('base64')
+      const dataUri = base64Encoded
+        ? `data:${contentType};base64,${Buffer.from(source).toString('base64')}`
+        : `data:${contentType},${encodeURIComponent(Buffer.from(source).toString())}`
       return wrapInLiteral ? JSON.stringify(dataUri) : dataUri
     }
   })
@@ -38,6 +38,7 @@ function buildIframeScript () {
       buildWorkerScript(),
       'worker_script_url_literal',
       'text/javascript',
+      true,
       true
     ))
     .pipe(terser())
@@ -45,10 +46,13 @@ function buildIframeScript () {
 
 function buildIframeHtml () {
   return src('./src/iframe.html')
+    // The data URI must not be encoded with base64 as we'd like to inject the
+    // Content Security Policy placeholder at runtime
     .pipe(injectDataUri(
       buildIframeScript(),
       'iframe_script_url',
       'text/javascript',
+      true,
       false
     ))
 }
@@ -60,6 +64,7 @@ function build () {
       buildIframeHtml(),
       'iframe_html_url_literal',
       'text/html',
+      false,
       true
     ))
     .pipe(dest('./build'))

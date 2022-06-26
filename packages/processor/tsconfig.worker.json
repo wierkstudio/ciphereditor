@@ -1,9 +1,11 @@
 {
     "extends": "./tsconfig",
     "compilerOptions": {
-      "target": "ES2016",
       "module": "none",
-      "lib": ["ES2016", "webworker"],
+      "lib": [
+        "ESNext",
+        "WebWorker"
+      ],
       "sourceMap": false,
       "declaration": false
     }

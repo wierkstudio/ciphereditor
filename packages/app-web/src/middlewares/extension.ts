@@ -125,6 +125,8 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
   }
 }
 
+const contentSecurityPolicy =
+  'default-src https:; script-src data: https:;'
 const contributionWorkerMap = new Map<string, ProcessorWorker>()
 const contributionExportsMap = new Map<string, ContributionExports>()
 
@@ -165,7 +167,7 @@ const getContributionExports = async (
 }
 
 const activateExtension = async (extensionUrl: string): Promise<void> => {
-  const worker = new ProcessorWorker()
+  const worker = new ProcessorWorker(contentSecurityPolicy)
   let activeContributionNames: string[] = []
 
   worker.setInitializeHandler(async (worker) => {

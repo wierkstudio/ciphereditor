@@ -1,11 +1,10 @@
 {
   "extends": "../../tsconfig",
   "compilerOptions": {
-    "target": "es6",
     "module": "amd",
     "lib": [
-      "es6",
-      "webworker"
+      "ESNext",
+      "WebWorker"
     ],
     "outFile": "./build/operation-essentials.js",
     "sourceRoot": "./src/",

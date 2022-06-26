@@ -103,13 +103,13 @@ const iconSVGMap = {
   /** Custom icon */
   outletPush: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24'>
-      <rect x='6' y='6' width='12' height='12' rx='6' fill='#000000' />
+      <rect x='6' y='6' width='12' height='12' rx='6' fill='currentColor' />
     </svg>
   ),
   /** Custom icon */
   outletUnused: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24'>
-      <path fill-rule='evenodd' clip-rule='evenodd' d='M8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12ZM12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6Z' fill='#000000' />
+      <path fillRule='evenodd' clipRule='evenodd' d='M8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12ZM12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6Z' fill='currentColor' />
     </svg>
   ),
   /** Icon by Iconic (https://iconic.app/plus/) */

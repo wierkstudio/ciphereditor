@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "Node",
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
