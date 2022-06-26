@@ -96,8 +96,8 @@ const iconSVGMap = {
   ),
   /** Custom icon */
   outletPull: (props: SVGProps): JSX.Element => (
-    <svg {...props} width='24' height='24' viewBox='0 0 24 24' fill='none'>
-      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M18.25 12.25L5.75 12.25' />
+    <svg {...props} width='24' height='24' viewBox='0 0 24 24'>
+      <path d='M3.5 13.366C2.83333 12.9811 2.83333 12.0189 3.5 11.634L13.25 6.00481C13.9167 5.61991 14.75 6.10104 14.75 6.87084V18.1292C14.75 18.899 13.9167 19.3801 13.25 18.9952L3.5 13.366Z' fill='currentColor' />
     </svg>
   ),
   /** Custom icon */

@@ -15,6 +15,7 @@ As a monorepo this repository contains multiple packages to share common depende
 - `types` - TypeScript types shared between packages and third-party extensions
 - `processor` - JavaScript sandbox for Browser environments where extensions are executed in
 - `extension-essentials` - Extension providing essential operations
+- `extension-hash` - Extension providing operations related to cryptographic hash functions
 
 ## Scripts
 
@@ -27,7 +28,8 @@ Following scripts are offered by the root package:
 - `npm run app-desktop-start` - Start the development Electron app locally
 - `npm run processor-build` - Create an optimized production build for the processor
 - `npm run processor-watch` - Watch the processor source files and build on change
-- `npm run extension-essentials-build` - Create a production build for the operation essentials extensions
+- `npm run extension-essentials-build` - Create a production build for the essentials extension
+- `npm run extension-hash-build` - Create a production build for the cryptographic hash function extension
 
 ## Contributing
 

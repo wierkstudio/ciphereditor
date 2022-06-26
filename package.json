@@ -14,7 +14,8 @@
     "app-desktop-pack": "npm run pack -w @ciphereditor/app-desktop",
     "processor-build": "npm run build -w @ciphereditor/processor",
     "processor-watch": "npm run watch -w @ciphereditor/processor",
-    "extension-essentials-build": "npm run build -w @ciphereditor/extension-essentials"
+    "extension-essentials-build": "npm run build -w @ciphereditor/extension-essentials",
+    "extension-hash-build": "npm run build -w @ciphereditor/extension-hash"
   },
   "devDependencies": {
     "ts-standard": "^11.0.0"

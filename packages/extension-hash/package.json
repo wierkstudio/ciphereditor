@@ -1,7 +1,7 @@
 {
-  "name": "@ciphereditor/extension-essentials",
+  "name": "@ciphereditor/extension-hash",
   "version": "1.0.0-alpha",
-  "description": "Extension providing essential operations",
+  "description": "Extension providing operations related to cryptographic hash functions",
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
   "scripts": {
@@ -9,6 +9,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",
     "watch": "rollup -c -w"
+  },
+  "dependencies": {
+    "hash-wasm": "^4.9.0"
   },
   "devDependencies": {
     "@ciphereditor/types": "*",

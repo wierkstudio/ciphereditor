@@ -222,14 +222,12 @@ export class ProcessorWorker {
 
   private exportValue (value: any): any {
     // TODO: This function should be reused in the worker
-    if (Array.isArray(value)) {
-      // Export each array element recursively
-      return value.map(this.exportValue.bind(this))
-    } else if (typeof value === 'object') {
-      if (value instanceof Error) {
-        // Wrap error instance in a proxy object
-        return { __$proxy: 'error', name: value.name, message: value.message }
-      } else {
+    switch (Object.prototype.toString.call(value)) {
+      case '[object Array]': {
+        // Export each element recursively
+        return value.map(this.exportValue.bind(this))
+      }
+      case '[object Object]': {
         // Export each key value pair recursively
         const exportedValue: any = {}
         for (const key of Object.keys(value)) {
@@ -237,45 +235,54 @@ export class ProcessorWorker {
         }
         return exportedValue
       }
-    } else if (typeof value === 'function') {
-      // Wrap function in a function pointer proxy object
-      const func = value as Function
-      const pointer = `func${this.getNextUniqueId()}/${func.length}`
-      this.functionPointerMap.set(pointer, func)
-      return { __$proxy: 'function', pointer }
-    } else {
-      // Use value as is
-      return value
+      case '[object Function]':
+      case '[object AsyncFunction]': {
+        // Wrap function in a function pointer proxy object
+        const func = value as Function
+        const pointer = `func${this.getNextUniqueId()}/${func.length}`
+        this.functionPointerMap.set(pointer, func)
+        return { __$proxy: 'function', pointer }
+      }
+      case '[object Error]': {
+        // Wrap error instance in a proxy object
+        return { __$proxy: 'error', name: value.name, message: value.message }
+      }
+      default: {
+        return value
+      }
     }
   }
 
   private hydrateValue (value: any): any {
     // TODO: This function should be reused in the worker
-    if (Array.isArray(value)) {
-      // Hydrate each array element recursively
-      return value.map(this.hydrateValue.bind(this))
-    } else if (typeof value === 'object') {
-      if (value.__$proxy === 'error' && typeof value.name === 'string' && typeof value.message === 'string') {
-        // Rebuild error instance from proxy object
-        const error = new Error()
-        error.message = value.message
-        error.name = value.name
-        return error
-      } else if (value.__$proxy === 'function' && typeof value.pointer === 'string') {
-        // Rebuild function from proxy object
-        const pointer = value.pointer
-        return this.callFunctionPointer.bind(this, pointer)
-      } else {
-        // Hydrate each key value pair recursively
-        const hydratedValue: any = {}
-        for (const key of Object.keys(value)) {
-          hydratedValue[key] = this.hydrateValue(value[key])
-        }
-        return hydratedValue
+    switch (Object.prototype.toString.call(value)) {
+      case '[object Array]': {
+        // Hydrate each element recursively
+        return value.map(this.hydrateValue.bind(this))
       }
-    } else {
-      // Use value as is
-      return value
+      case '[object Object]': {
+        if (value.__$proxy === 'error' && typeof value.name === 'string' && typeof value.message === 'string') {
+          // Rebuild error instance from proxy object
+          const error = new Error()
+          error.message = value.message
+          error.name = value.name
+          return error
+        } else if (value.__$proxy === 'function' && typeof value.pointer === 'string') {
+          // Rebuild function from proxy object
+          const pointer = value.pointer
+          return this.callFunctionPointer.bind(this, pointer)
+        } else {
+          // Hydrate each key value pair recursively
+          const hydratedValue: any = {}
+          for (const key of Object.keys(value)) {
+            hydratedValue[key] = this.hydrateValue(value[key])
+          }
+          return hydratedValue
+        }
+      }
+      default: {
+        return value
+      }
     }
   }
 

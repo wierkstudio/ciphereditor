@@ -2,6 +2,7 @@
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from '../slices/blueprint/types/blueprint'
 import { ContributionExports, ExtensionContext, OperationIssue, OperationResult } from '@ciphereditor/types'
+import { OperationState } from '../slices/blueprint/types/operation'
 import { ProcessorWorker } from '@ciphereditor/processor'
 import { RootState } from '../slices'
 import { applyOperationResultAction } from '../slices/blueprint'
@@ -9,7 +10,6 @@ import { contributionExportsSchema } from '../slices/blueprint/types/extension'
 import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from '../slices/blueprint/selectors/operation'
 import { getNodeNamedControls } from '../slices/blueprint/selectors/control'
 import { hasNode } from '../slices/blueprint/selectors/blueprint'
-import { operationResultSchema, OperationState } from '../slices/blueprint/types/operation'
 import { z } from 'zod'
 
 export const extensionMiddleware: Middleware<{}, RootState> = store => next => (action: AnyAction) => {
@@ -54,17 +54,13 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
     if (contributionExports.contribution.type !== 'operation') {
       throw new Error(`Contribution '${contributionName}' was expected to be of type operation but found '${contributionType}'`)
     }
-
-    const rawResult: unknown = await contributionExports.body.execute(request)
-
-    // Validate result against schema
-    result = operationResultSchema.parse(rawResult)
-  } catch (err: any) {
+    result = await contributionExports.body.execute(request)
+  } catch (error: any) {
     result = {
       issues: [{
         type: 'error',
         message: 'An unexpected error occurred',
-        description: err.toString()
+        description: error.toString()
       }]
     }
   }
