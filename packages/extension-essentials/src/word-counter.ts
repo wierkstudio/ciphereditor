@@ -3,7 +3,7 @@ import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-essentials/word-counter',
+  name: '@ciphereditor/extension-essentials/word-counter',
   label: 'Word counter',
   controls: [
     {

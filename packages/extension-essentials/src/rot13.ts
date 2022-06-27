@@ -4,7 +4,7 @@ import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/st
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-essentials/rot13',
+  name: '@ciphereditor/extension-essentials/rot13',
   label: 'ROT13',
   controls: [
     {

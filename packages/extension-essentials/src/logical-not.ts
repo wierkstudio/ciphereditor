@@ -3,7 +3,7 @@ import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-essentials/logical-not',
+  name: '@ciphereditor/extension-essentials/logical-not',
   label: 'Logical NOT',
   controls: [
     {

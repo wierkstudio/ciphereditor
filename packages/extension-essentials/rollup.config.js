@@ -6,7 +6,7 @@ import { terser } from 'rollup-plugin-terser'
 export default {
   input: './src/index.ts',
   output: {
-    file: './build/extension-essentials.js',
+    file: './build/extension.js',
     format: 'amd',
     amd: {
       id: 'index'

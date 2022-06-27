@@ -5,7 +5,7 @@ import { getAlgorithmChoices, createHMACDigest } from './lib/digest'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-hash/hmac',
+  name: '@ciphereditor/extension-hash/hmac',
   label: 'HMAC function',
   controls: [
     {

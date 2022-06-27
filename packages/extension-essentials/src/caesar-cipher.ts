@@ -5,7 +5,7 @@ import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/st
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-essentials/caesar-cipher',
+  name: '@ciphereditor/extension-essentials/caesar-cipher',
   label: 'Caesar cipher',
   controls: [
     {

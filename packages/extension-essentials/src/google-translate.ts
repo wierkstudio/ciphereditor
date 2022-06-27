@@ -119,7 +119,7 @@ const languageOptions = [
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-essentials/google-translate',
+  name: '@ciphereditor/extension-essentials/google-translate',
   label: 'Google Translate',
   controls: [
     {

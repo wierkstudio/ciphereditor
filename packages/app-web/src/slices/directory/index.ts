@@ -6,8 +6,8 @@ const defaultDirectoryState: DirectoryState = {
   contributions: [
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/caesar-cipher',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/caesar-cipher',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Caesar cipher',
       controls: [
         {
@@ -54,8 +54,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/rot13',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/rot13',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'ROT13',
       controls: [
         {
@@ -84,8 +84,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/word-counter',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/word-counter',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Word counter',
       controls: [
         {
@@ -118,8 +118,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-hash/hash',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-hash.js',
+      name: '@ciphereditor/extension-hash/hash',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
       label: 'Hash function',
       controls: [
         {
@@ -165,8 +165,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-hash/hmac',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-hash.js',
+      name: '@ciphereditor/extension-hash/hmac',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
       label: 'HMAC function',
       controls: [
         {
@@ -217,8 +217,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/logical-not',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/logical-not',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Logical NOT',
       controls: [
         {
@@ -236,8 +236,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/logical-and',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/logical-and',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Logical AND',
       controls: [
         {
@@ -261,8 +261,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/logical-or',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/logical-or',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Logical OR',
       controls: [
         {
@@ -286,8 +286,8 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/operation-essentials/google-translate',
-      extensionUrl: 'https://static.cryptii.blue/extensions/extension-essentials.js',
+      name: '@ciphereditor/extension-essentials/google-translate',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
       label: 'Google Translate',
       controls: [
         {

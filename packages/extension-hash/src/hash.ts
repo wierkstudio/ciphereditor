@@ -5,7 +5,7 @@ import { getAlgorithmChoices, createDigest } from './lib/digest'
 
 const contribution: Contribution = {
   type: 'operation',
-  name: '@ciphereditor/operation-hash/hash',
+  name: '@ciphereditor/extension-hash/hash',
   label: 'Hash function',
   controls: [
     {
