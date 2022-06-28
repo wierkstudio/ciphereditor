@@ -9,50 +9,20 @@
 
     <link rel="manifest" href="/manifest.json" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#169aed" />
-
-    <link rel="prefetch" href="/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2" as="font" type="font/woff2">
-    <link rel="prefetch" href="/fonts/lexend-deca-v10-latin-ext-latin-400.woff2" as="font" type="font/woff2">
-    <link rel="prefetch" href="/fonts/lexend-deca-v10-latin-ext-latin-600.woff2" as="font" type="font/woff2">
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#040D21">
 
     <style>
-    @font-face {
-      font-display: swap;
-      font-family: 'Lexend Deca';
-      font-style: normal;
-      font-weight: 400;
-      src: local(''),
-            url('/fonts/lexend-deca-v10-latin-ext-latin-400.woff2') format('woff2'),
-            url('/fonts/lexend-deca-v10-latin-ext-latin-400.woff') format('woff');
-    }
-    @font-face {
-      font-display: swap;
-      font-family: 'Lexend Deca';
-      font-style: normal;
-      font-weight: 600;
-      src: local(''),
-            url('/fonts/lexend-deca-v10-latin-ext-latin-600.woff2') format('woff2'),
-            url('/fonts/lexend-deca-v10-latin-ext-latin-600.woff') format('woff');
-    }
-    @font-face {
-      font-display: swap;
-      font-family: 'IBM Plex Mono';
-      font-style: normal;
-      font-weight: 400;
-      src: local(''),
-            url('/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff2') format('woff2'),
-            url('/fonts/ibm-plex-mono-v7-latin-ext-latin-400.woff') format('woff');
-    }
     body {
-      color: #ffffff;
-      background: #13182c;
-      font-family: 'Lexend Deca';
+      font-family: sans-serif;
       font-weight: 400;
+      background: #ffffff;
+      color: #002f6d;
     }
     @media (prefers-color-scheme: dark) {
       body {
-        color: #ffffff;
         background: #040D21;
+        color: #ffffff;
       }
     }
     </style>
