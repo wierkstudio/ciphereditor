@@ -1,9 +1,9 @@
 
-<a href="https://ciphereditor.com">
-  <h1>
+<h1>
+  <a href="https://ciphereditor.com">
     <img src="https://cdn.ciphereditor.com/assets/images/logo-ciphereditor-full-horizontal-light-pill.svg" alt="ciphereditor" height="46" />
-  </h1>
-</a>
+  </a>
+</h1>
 
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&labelColor=688097)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square&labelColor=688097)](https://standardjs.com)
