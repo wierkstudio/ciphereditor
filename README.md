@@ -1,8 +1,12 @@
 
-# ciphereditor
+<a href="https://ciphereditor.com">
+  <h1>
+    <img src="https://cdn.ciphereditor.com/assets/images/logo-ciphereditor-full-horizontal-light-pill.svg" alt="ciphereditor" height="46" />
+  </h1>
+</a>
 
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
-[![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&labelColor=688097)](LICENSE.txt)
+[![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square&labelColor=688097)](https://standardjs.com)
 
 Your playground for cryptography, coding & data.
 
@@ -36,6 +40,13 @@ Following scripts are offered by the root package:
 If you consider contributing to this project, [please read this first](CONTRIBUTING.md).
 
 ## Acknowledgements
+
+### Use of Open Source fonts
+
+We use fonts licensed under the [SIL Open Font License, 1.1](http://scripts.sil.org/OFL):
+
+- LexendDeca[wght].ttf: Copyright 2019 The Lexend Project Authors ([https://github.com/googlefonts/lexend](https://github.com/googlefonts/lexend))
+- IBMPlexMono-Regular.ttf: Copyright 2017 IBM Corp. All rights reserved.
 
 ### Use of Iconic Pro icons
 
