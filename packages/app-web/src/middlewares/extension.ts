@@ -122,7 +122,7 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
 }
 
 const contentSecurityPolicy =
-  'default-src https:; script-src data: https:;'
+  'default-src https:; script-src data: https: \'wasm-unsafe-eval\';'
 const contributionWorkerMap = new Map<string, ProcessorWorker>()
 const contributionExportsMap = new Map<string, ContributionExports>()
 
