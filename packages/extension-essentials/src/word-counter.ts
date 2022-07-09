@@ -5,6 +5,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/word-counter',
   label: 'Word counter',
+  description: 'Operation for counting the number of characters, words and lines that appear in a text.',
+  url: 'https://ciphereditor.com/operations/word-counter',
+  keywords: [],
   controls: [
     {
       name: 'text',

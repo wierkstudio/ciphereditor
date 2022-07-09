@@ -30,8 +30,15 @@ interface QueuedWorkerMessage extends PromiseCallbacks {
   message: WorkerMessage | undefined
 }
 
+interface PendingWorkerRequest extends PromiseCallbacks {
+  timeout: ReturnType<typeof setTimeout> | undefined
+}
+
 type InitializeHandler = ((processorWorker: ProcessorWorker) => void | Promise<void>) | undefined
 type ResetHandler = ((processorWorker: ProcessorWorker, reason: unknown) => void | Promise<void>) | undefined
+
+const defaultIframeTimeout = 5000
+const defaultRequestTimeout = 5000
 
 /**
  * Class managing a single sandboxed worker
@@ -41,10 +48,11 @@ export class ProcessorWorker {
   private state = ProcessorWorkerState.Initial
   private readonly contentSecurityPolicy: string
   private readonly functionPointerMap = new Map<string, Function>()
-  private readonly pendingRequestMap = new Map<number, PromiseCallbacks>()
+  private readonly pendingRequestMap = new Map<number, PendingWorkerRequest>()
   private queuedMessages: QueuedWorkerMessage[] = []
   private uniqueIdCounter: number = 1
   private iframeElement: HTMLIFrameElement | undefined
+  private iframeTimeout: ReturnType<typeof setTimeout> | undefined
 
   // Handlers
   private readonly messageHandler = this.onWorkerMessage.bind(this)
@@ -86,6 +94,13 @@ export class ProcessorWorker {
 
     // Start listening to messages
     window.addEventListener('message', this.messageHandler)
+
+    // Install an initialization timeout
+    this.iframeTimeout = setTimeout(() => {
+      this.doResetTransition(new Error(
+        `Processor initialization took longer than ${defaultIframeTimeout}ms`
+      ))
+    }, defaultIframeTimeout)
 
     // Inject CSP into the iframe src data URI
     const preparedIframeSrc = iframeSrc.replace(
@@ -131,6 +146,7 @@ export class ProcessorWorker {
 
     // Update state
     this.state = ProcessorWorkerState.Running
+    clearTimeout(this.iframeTimeout)
 
     // Send queued messages
     const queuedMessages = this.queuedMessages
@@ -155,6 +171,7 @@ export class ProcessorWorker {
     const queuedMessages = this.queuedMessages
     this.queuedMessages = []
     this.functionPointerMap.clear()
+    clearTimeout(this.iframeTimeout)
 
     // Send terminate message
     this.postWorkerMessage({ type: 'terminate' })
@@ -198,14 +215,15 @@ export class ProcessorWorker {
 
         const response = message.response
         const error = message.error
-        const request = this.pendingRequestMap.get(id)
-        if (request !== undefined) {
+        const pendingRequest = this.pendingRequestMap.get(id)
+        if (pendingRequest !== undefined) {
           // Remove pending request and resolve or reject it
           this.pendingRequestMap.delete(id)
+          clearTimeout(pendingRequest.timeout)
           if (error === undefined) {
-            request.resolve(this.hydrateValue(response))
+            pendingRequest.resolve(this.hydrateValue(response))
           } else {
-            request.reject(this.hydrateValue(error))
+            pendingRequest.reject(this.hydrateValue(error))
           }
         } else {
           this.doResetTransition()
@@ -346,19 +364,30 @@ export class ProcessorWorker {
    */
   private async queueWorkerRequest (
     targetState: 'initializing' | 'running' | 'both',
-    request: WorkerRequest
+    request: WorkerRequest,
+    timeout = defaultRequestTimeout
   ): Promise<any> {
     const id = this.getNextUniqueId()
     const message: WorkerMessage = { type: 'request', id, request }
     return await new Promise<any>((resolve, reject) => {
-      this.pendingRequestMap.set(id, { resolve, reject })
+      const pendingRequest: PendingWorkerRequest =
+        { resolve, reject, timeout: undefined }
+      this.pendingRequestMap.set(id, pendingRequest)
       void this.queueWorkerMessage(targetState, message)
         .then(() => {
-          // TODO: Start message timeout upon delivery
+          // Install a request timeout after the message has been delivered
+          pendingRequest.timeout = setTimeout(() => {
+            if (this.pendingRequestMap.has(id)) {
+              // The request timed out, reject it
+              this.pendingRequestMap.delete(id)
+              reject(new Error(`Request took longer than ${timeout}ms`))
+            }
+          }, timeout)
         })
         .catch((reason) => {
           // The message delivery failed and our request should fail with it
           this.pendingRequestMap.delete(id)
+          clearTimeout(pendingRequest.timeout)
           reject(reason)
         })
     })

@@ -33,6 +33,7 @@ Following scripts are offered by the root package:
 - `npm run processor-build` - Create an optimized production build for the processor
 - `npm run processor-watch` - Watch the processor source files and build on change
 - `npm run extension-essentials-build` - Create a production build for the essentials extension
+- `npm run extension-essentials-watch` - Watch the essentials extension source files and build on change
 - `npm run extension-hash-build` - Create a production build for the cryptographic hash function extension
 
 ## Contributing

@@ -121,9 +121,11 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/google-translate',
   label: 'Google Translate',
+  description: 'Translate content between languages using the Google Cloud Translation API',
+  url: 'https://ciphereditor.com/operations/google-translate',
+  keywords: ['english', 'german', 'spanish', 'french'],
   controls: [
     {
-      // TODO: Limit length
       name: 'source',
       initialValue: 'Hello, World.',
       types: ['text']
@@ -141,7 +143,6 @@ const contribution: Contribution = {
       choices: languageOptions
     },
     {
-      // TODO: Limit length
       name: 'target',
       initialValue: 'Hallo Welt.',
       types: ['text'],
@@ -163,13 +164,19 @@ const execute: OperationExecuteExport = async (request) => {
   const source = values[sourceControl].data as string
   const target = values[targetControl].data as string
 
+  if (source.length > 1000) {
+    return {
+      type: 'error',
+      controlName: sourceControl,
+      message: 'The translation source must not exceed 1,000 characters'
+    }
+  }
+
   if (target === '') {
     return {
-      issues: [{
-        type: 'error',
-        controlName: targetControl,
-        message: 'The target language cannot be detected'
-      }]
+      type: 'error',
+      controlName: targetControl,
+      message: 'The target language cannot be detected'
     }
   }
 
@@ -192,11 +199,9 @@ const execute: OperationExecuteExport = async (request) => {
     translatedText = data.data.translations[0].translatedText
   } catch (err: any) {
     return {
-      issues: [{
-        type: 'error',
-        message: 'Error while contacting the Google Translate service',
-        description: 'Please check your internet connection or try again later'
-      }]
+      type: 'error',
+      message: 'Error while contacting the Google Translate service',
+      description: 'Please check your internet connection or try again later'
     }
   }
 

@@ -1,6 +1,6 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { OperationIssue, OperationRequest, OperationResult } from '@ciphereditor/types'
+import { ErrorOperationIssue, OperationIssue, OperationRequest, OperationResult } from '@ciphereditor/types'
 import { namedControlChangesSchema } from './control'
 import { typedValueSchema } from './value'
 import { z } from 'zod'
@@ -11,6 +11,14 @@ export const operationIssueSchema: z.ZodType<OperationIssue> = z.object({
   message: z.string(),
   description: z.string().optional()
 })
+
+export const errorOperationIssueSchema: z.ZodType<ErrorOperationIssue> =
+  z.object({
+    type: z.literal('error'),
+    controlName: z.string().optional(),
+    message: z.string(),
+    description: z.string().optional()
+  })
 
 export const operationResultSchema: z.ZodType<OperationResult> = z.object({
   changes: namedControlChangesSchema.optional(),

@@ -5,6 +5,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/logical-and',
   label: 'Logical AND',
+  description: 'Output true if and only if all the operands are true',
+  url: 'https://ciphereditor.com/operations/logical-and-or-not',
+  keywords: ['boolean'],
   controls: [
     {
       name: 'a',

@@ -7,6 +7,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-hash/hash',
   label: 'Hash function',
+  description: 'Map data of arbitrary size to hashes of fixed size',
+  url: 'https://ciphereditor.com/operations/cryptographic-hash-function',
+  keywords: ['digest', 'md5', 'sha'],
   controls: [
     {
       name: 'message',

@@ -1,7 +1,7 @@
 
 import { ContributionExports, ExtensionActivateExport, ExtensionContext, ExtensionExports, OperationContribution, OperationContributionBody, OperationContributionExports } from '@ciphereditor/types'
 import { controlSchema } from './control'
-import { operationRequestSchema, operationResultSchema } from './operation'
+import { errorOperationIssueSchema, operationRequestSchema, operationResultSchema } from './operation'
 import { z } from 'zod'
 
 export const contributionSchema =
@@ -14,7 +14,10 @@ export const contributionSchema =
 export const operationContributionSchema: z.ZodType<OperationContribution> =
   contributionSchema.extend({
     type: z.literal('operation'),
-    label: z.string(),
+    label: z.string().optional(),
+    description: z.string().optional(),
+    url: z.string().optional(),
+    keywords: z.array(z.string()).optional(),
     controls: z.array(controlSchema)
   })
 
@@ -23,8 +26,8 @@ export const operationContributionBodySchema: z.ZodType<OperationContributionBod
     execute: z.function()
       .args(operationRequestSchema)
       .returns(z.union([
-        operationResultSchema,
-        z.promise(operationResultSchema)
+        z.promise(z.union([errorOperationIssueSchema, operationResultSchema])),
+        z.union([errorOperationIssueSchema, operationResultSchema])
       ]))
   })
 

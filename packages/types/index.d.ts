@@ -166,6 +166,13 @@ export interface OperationIssue {
 }
 
 /**
+ * An error that occured while processing an operation request
+ */
+export type ErrorOperationIssue = OperationIssue & {
+  type: 'error'
+}
+
+/**
  * Operation execution request
  */
 export interface OperationRequest {
@@ -200,7 +207,10 @@ export interface OperationResult {
  * Method resolving an operation request to an operation result
  */
 export type OperationExecuteExport =
-  (request: OperationRequest) => OperationResult | PromiseLike<OperationResult>
+  (request: OperationRequest) =>
+  OperationResult |
+  ErrorOperationIssue |
+  PromiseLike<OperationResult | ErrorOperationIssue>
 
 /**
  * Abstract contribution interface all contributions extend from
@@ -236,6 +246,21 @@ export interface OperationContribution extends AbstractContribution {
    * Defaults to the capitalized name of the operation
    */
   label?: string
+
+  /**
+   * Operation description
+   */
+  description?: string
+
+  /**
+   * The url to the contribution website or documentation
+   */
+  url?: string
+
+  /**
+   * Keywords help people discover this contribution through search
+   */
+  keywords?: string[]
 
   /**
    * Array of controls

@@ -6,6 +6,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/rot13',
   label: 'ROT13',
+  description: 'Method in which each letter in a text is rotated by 13 places.',
+  url: 'https://ciphereditor.com/operations/rot13',
+  keywords: ['substitution', 'cipher', 'shift'],
   controls: [
     {
       name: 'plaintext',

@@ -1,5 +1,6 @@
 
 import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { hasUniqueElements } from './lib/array'
 import { mod } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
@@ -7,6 +8,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/caesar-cipher',
   label: 'Caesar cipher',
+  description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
+  url: 'https://ciphereditor.com/operations/caesar-cipher',
+  keywords: ['substitution', 'cipher', 'shift', 'julius'],
   controls: [
     {
       name: 'plaintext',
@@ -22,28 +26,6 @@ const contribution: Contribution = {
       name: 'alphabet',
       initialValue: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text']
-      // TODO: Unique characters
-      // TODO: Min length 2
-      // TODO: Case sensitivity
-    },
-    {
-      name: 'caseStrategy',
-      initialValue: 'maintain',
-      types: ['text'],
-      choices: [
-        { value: 'maintain', label: 'Maintain case' },
-        { value: 'ignore', label: 'Ignore case' },
-        { value: 'strict', label: 'Strict (A ≠ a)' }
-      ]
-    },
-    {
-      name: 'foreignStrategy',
-      initialValue: 'maintain',
-      types: ['text'],
-      choices: [
-        { value: 'maintain', label: 'Maintain foreign chars' },
-        { value: 'ignore', label: 'Ignore foreign chars' }
-      ]
     },
     {
       name: 'ciphertext',
@@ -57,8 +39,6 @@ const contribution: Contribution = {
 const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
 
-  const caseStrategy = values.caseStrategy.data as string
-  const foreignStrategy = values.foreignStrategy.data as string
   const shift = values.shift.data as number
 
   const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
@@ -67,18 +47,29 @@ const execute: OperationExecuteExport = (request) => {
   const input = values[inputControl].data as string
   const inputCodePoints = stringToUnicodeCodePoints(input)
 
-  const maintainForeignCharacters = foreignStrategy === 'maintain'
+  // Prepare alphabet
+  const alphabet = (values.alphabet.data as string).toLowerCase()
+  const alphabetCodePoints = stringToUnicodeCodePoints(alphabet)
 
-  // Prepare alphabet(s) depending on chosen case strategy
-  let alphabet = values.alphabet.data as string
-  let uppercaseAlphabet = ''
-  if (caseStrategy !== 'strict') {
-    alphabet = alphabet.toLowerCase()
-    uppercaseAlphabet = alphabet.toUpperCase()
+  // Validate alphabet
+  if (alphabetCodePoints.length <= 1) {
+    return {
+      type: 'error',
+      controlName: 'alphabet',
+      message: 'The alphabet must have a size of 2 characters or more'
+    }
   }
 
-  const alphabetCodePoints = stringToUnicodeCodePoints(alphabet)
-  const uppercaseAlphabetCodePoints = stringToUnicodeCodePoints(uppercaseAlphabet)
+  if (!hasUniqueElements(alphabetCodePoints)) {
+    return {
+      type: 'error',
+      controlName: 'alphabet',
+      message: 'The alphabet must not contain duplicate characters'
+    }
+  }
+
+  // Prepare uppercase alphabet
+  const uppercaseAlphabetCodePoints = stringToUnicodeCodePoints(alphabet.toUpperCase())
 
   const m = alphabetCodePoints.length
   const n = inputCodePoints.length
@@ -96,22 +87,20 @@ const execute: OperationExecuteExport = (request) => {
     uppercase = false
 
     // Match uppercase alphabet character (depending on case strategy)
-    if (x === -1 && caseStrategy !== 'strict') {
+    if (x === -1) {
       x = uppercaseAlphabetCodePoints.indexOf(codePoint)
       uppercase = true
     }
 
     if (x === -1) {
       // Character is not in the alphabet
-      if (maintainForeignCharacters) {
-        result[j++] = codePoint
-      }
+      result[j++] = codePoint
     } else {
       // Shift character
       y = mod(x + shift * (forward ? 1 : -1), m)
 
       // Translate index to character following the case strategy
-      if (caseStrategy === 'maintain' && uppercase) {
+      if (uppercase) {
         result[j++] = uppercaseAlphabetCodePoints[y]
       } else {
         result[j++] = alphabetCodePoints[y]
