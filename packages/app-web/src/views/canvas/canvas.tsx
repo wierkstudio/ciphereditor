@@ -56,7 +56,17 @@ export default function CanvasView (): JSX.Element {
 
   const { onPointerDown } = useDragMove(x, y, onDragMove, true)
 
-  const onFocusOrBlur = (event: FocusEvent): void => {
+  /**
+   * Handle blur events emitted by child nodes.
+   */
+  const onBlur = (event: FocusEvent): void => {
+    event.stopPropagation()
+    if (hasSelectedNode) {
+      dispatch(selectNodeAction({ nodeId: undefined }))
+    }
+  }
+
+  const onCanvasFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
@@ -70,11 +80,12 @@ export default function CanvasView (): JSX.Element {
       className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
       onPointerDown={onPointerDown}
-      onFocus={onFocusOrBlur}
-      onBlur={onFocusOrBlur}
+      onFocus={onCanvasFocus}
     >
       <div
         className='canvas__content'
+        onFocus={event => { event.stopPropagation() }}
+        onBlur={onBlur}
         style={{ transform: `translate(${-x}px, ${-y}px)` }}
       >
         {variableIds.map(variableId => (

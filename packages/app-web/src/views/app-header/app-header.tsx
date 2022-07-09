@@ -10,14 +10,12 @@ import useUISelector from '../../hooks/useUISelector'
 import { UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
-import { getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { leaveProgramAction, redoAction, removeNodeAction, undoAction } from '../../slices/blueprint'
+import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
 import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
   const program = useBlueprintSelector(getActiveProgram)
-  const selectedNode = useBlueprintSelector(getSelectedNode)
   const embedType = useUISelector(getEmbedType)
   const maximized = useUISelector(isEmbedMaximized)
   return (
@@ -65,14 +63,6 @@ export default function AppHeaderView (): JSX.Element {
               modifiers='large'
               onClick={() => dispatch(leaveProgramAction({}))}
               disabled={program === undefined || program.parentId === program.id}
-            />
-          )}
-          {selectedNode !== undefined && (
-            <ButtonView
-              title='Remove node'
-              icon='trash'
-              modifiers='large'
-              onClick={() => dispatch(removeNodeAction({ nodeId: selectedNode.id }))}
             />
           )}
         </ToolbarView>

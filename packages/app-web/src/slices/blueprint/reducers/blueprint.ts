@@ -134,5 +134,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
  * Select a node or clear the selection.
  */
 export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | undefined): void => {
-  state.selectedNodeId = nodeId
+  if (state.selectedNodeId !== nodeId) {
+    state.selectedNodeId = nodeId
+  }
 }
