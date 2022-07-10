@@ -2,18 +2,42 @@
 @import '../../styles/shared';
 
 .input-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: rem(8) rem(16);
+  border-radius: rem(4);
+  line-height: 0;
+  cursor: text;
+
+  &:hover,
+  &:focus-within {
+    background: $c-line;
+  }
+
+  &__leading-icon {
+    margin-left: rem(-8);
+    padding-right: rem(8);
+  }
 
   &__textarea {
-    height: rem(32);
-    padding: rem(4) rem(8);
-    border-radius: rem(4);
+    height: rem(24);
     @extend %t-value;
     outline: none;
     user-select: auto;
+  }
+
+  &--slim {
+    padding: rem(4) rem(8);
+  }
+
+  &--muted,
+  .modal & {
+    background: $c-muted;
 
     &:hover,
-    &:focus {
-      background: $c-line;
+    &:focus-within {
+      background: $c-muted;
     }
   }
 }

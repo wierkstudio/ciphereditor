@@ -14,6 +14,8 @@ import { enterProgramAction, retryOperationAction } from '../../slices/blueprint
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { renderClassName } from '../../utils/dom'
+import { pushModalAction } from '../../slices/ui'
+import { ModalType } from '../../slices/ui/types'
 
 export default function OperationView (props: {
   /**
@@ -64,6 +66,13 @@ export default function OperationView (props: {
         <div className='operation__header-start'>
           <button
             className='operation__pill'
+            onClick={() => dispatch(pushModalAction({
+              payload: {
+                type: ModalType.Operation,
+                cancelable: true,
+                nodeId
+              }
+            }))}
             title={issues.map(i =>
               i.message + (i.description !== undefined ? ': ' + i.description : '')
             ).join('; ')}

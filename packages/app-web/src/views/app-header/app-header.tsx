@@ -7,11 +7,11 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useUISelector from '../../hooks/useUISelector'
-import { UIEmbedType } from '../../slices/ui/types'
+import { ModalType, UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
 import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
-import { pushAddModalAction, pushDeadEndModalAction, pushSettingsModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
+import { pushDeadEndModalAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -32,7 +32,12 @@ export default function AppHeaderView (): JSX.Element {
             icon='plus'
             modifiers='large'
             disabled={program === undefined}
-            onClick={() => dispatch(pushAddModalAction({}))}
+            onClick={() => dispatch(pushModalAction({
+              payload: {
+                type: ModalType.Add,
+                cancelable: true
+              }
+            }))}
           />
           <ToolbarView.GroupView>
             <ButtonView
@@ -73,7 +78,12 @@ export default function AppHeaderView (): JSX.Element {
             title='Settings'
             icon='settings'
             modifiers='large'
-            onClick={() => dispatch(pushSettingsModalAction({}))}
+            onClick={() => dispatch(pushModalAction({
+              payload: {
+                type: ModalType.Settings,
+                cancelable: true
+              }
+            }))}
           />
           {embedType !== UIEmbedType.Platform && (
             <ButtonView

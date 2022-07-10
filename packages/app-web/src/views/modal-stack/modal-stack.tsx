@@ -1,6 +1,7 @@
 
 import './modal-stack.scss'
 import AddModalView from '../../views/modal-add/modal-add'
+import OperationModalView from '../modal-operation/modal-operation'
 import ReportModalView from '../../views/modal-report/modal-report'
 import SettingsModalView from '../../views/modal-settings/modal-settings'
 import useAppDispatch from '../../hooks/useAppDispatch'
@@ -13,7 +14,8 @@ import { getModalStack } from '../../slices/ui/selectors'
 const modalViewMap = {
   [ModalType.Add]: AddModalView,
   [ModalType.Settings]: SettingsModalView,
-  [ModalType.Report]: ReportModalView
+  [ModalType.Report]: ReportModalView,
+  [ModalType.Operation]: OperationModalView
 }
 
 export default function ModalStackView (): JSX.Element {
@@ -30,8 +32,8 @@ export default function ModalStackView (): JSX.Element {
 
   return (
     <div className='modal-stack'>
-      {modals.map((modal, index) => {
-        const ModalView = modalViewMap[modal.type]
+      {modals.map((payload, index) => {
+        const ModalView = modalViewMap[payload.type]
         return (
           <div
             className='modal-stack__layer'
@@ -42,7 +44,7 @@ export default function ModalStackView (): JSX.Element {
           >
             <div className='modal-stack__backdrop' onClick={onBackdropClick} />
             <div className='modal-stack__scrollarea'>
-              <ModalView modal={modal as any} />
+              <ModalView {...(payload as any)} />
             </div>
           </div>
         )

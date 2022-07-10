@@ -1,5 +1,5 @@
 
-import { ModalState, UICanvasState, UIEmbedType, UIState, UIWireDraft } from './types'
+import { ModalPayload, UICanvasState, UIEmbedType, UIState, UIWireDraft } from './types'
 
 export const getEmbedType = (state: UIState): UIEmbedType =>
   state.embedType
@@ -22,7 +22,7 @@ export const getCanvasSize = (state: UIState): { width: number, height: number }
 export const getWireDraft = (state: UIState): UIWireDraft | undefined =>
   state.wireDraft
 
-export const getModalStack = (state: UIState): ModalState[] =>
+export const getModalStack = (state: UIState): ModalPayload[] =>
   state.modalStack
 
 export const isModalStackEmpty = (state: UIState): boolean =>

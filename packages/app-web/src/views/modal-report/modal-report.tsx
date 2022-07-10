@@ -1,14 +1,11 @@
 
-import './modal-report.scss'
 import ModalView from '../../views/modal/modal'
-import { ReportModalState } from '../../slices/ui/types'
+import { ReportModalPayload } from '../../slices/ui/types'
 
-export default function ReportModalView (props: {
-  modal: ReportModalState
-}): JSX.Element {
+export default function ReportModalView (props: ReportModalPayload): JSX.Element {
   return (
-    <ModalView modal={props.modal} title={props.modal.title}>
-      <p>{props.modal.description}</p>
+    <ModalView payload={props} title={props.title}>
+      <p>{props.description}</p>
     </ModalView>
   )
 }

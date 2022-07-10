@@ -48,7 +48,9 @@ textarea {
 
 input[type='text'],
 select,
-textarea {
+textarea,
+fieldset,
+fieldset legend {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -77,6 +79,7 @@ input[type='number'] {
 textarea {
   resize: none;
 }
+
 
 ul,
 ol,

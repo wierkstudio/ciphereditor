@@ -1,11 +1,11 @@
 
-import './modal-add.scss'
 import ButtonView from '../../views/button/button'
+import InputTextView from '../input-text/input-text'
 import ModalView from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import { ModalState } from '../../slices/ui/types'
+import { AddModalPayload } from '../../slices/ui/types'
 import { addControlAction, addEmptyProgramAction, addOperationAction } from '../../slices/blueprint'
 import { capitalCase } from 'change-case'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
@@ -13,20 +13,44 @@ import { getCanvasOffset, getCanvasSize } from '../../slices/ui/selectors'
 import { getContributions } from '../../slices/directory/selectors'
 import { gridSize } from '../../hooks/useDragMove'
 import { popModalAction } from '../../slices/ui'
+import { useState } from 'react'
 
-export default function AddModalView (props: {
-  modal: ModalState
-}): JSX.Element {
+export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
   const contributions = useAppSelector(state => getContributions(state.directory))
   const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
+  const [searchQuery, setSearchQuery] = useState('')
+  const searchKeywords = searchQuery.toLowerCase().split(/\s+/g)
+
+  // Filter contributions by keywords
+  // TODO: Optimize search by building up an index
+  const matchingContributions = contributions.filter(contribution => {
+    const contributionText =
+      (contribution.keywords?.join(', ').toLowerCase() ?? '') + ' ' +
+      (contribution.label?.toLowerCase() ?? '') + ' ' +
+      (contribution.description?.toLowerCase() ?? '')
+    for (const searchKeyword of searchKeywords) {
+      if (!contributionText.includes(searchKeyword)) {
+        return false
+      }
+    }
+    return true
+  })
+
   return (
-    <ModalView modal={props.modal} title='Add a new operation'>
+    <ModalView payload={props} title='Add a new operation'>
+      <InputTextView
+        value={searchQuery}
+        onChange={setSearchQuery}
+        placeholder='Search'
+        leadingIcon='search'
+        autoFocus
+      />
       <ul>
-        {contributions.map(contribution => (
+        {matchingContributions.map(contribution => (
           <li key={contribution.name}>
             <ButtonView
               onClick={() => {

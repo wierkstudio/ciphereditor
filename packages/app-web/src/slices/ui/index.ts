@@ -1,8 +1,8 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
-import { UICanvasState, UIEmbedType, UIState } from './types'
+import { ModalPayload, ModalType, UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { popModal, pushAddModal, pushReportModal, pushSettingsModal } from './reducers'
+import { popModal, pushModal } from './reducers'
 
 const detectDefaultState = (): Partial<UIState> => {
   if (typeof (window as any).electronContext !== 'undefined') {
@@ -91,26 +91,32 @@ export const settingsSlice = createSlice({
         state.wireDraft = undefined
       }
     },
-    pushAddModalAction: (state, { payload }: PayloadAction<{}>) => {
-      pushAddModal(state)
-    },
-    pushSettingsModalAction: (state, { payload }: PayloadAction<{}>) => {
-      pushSettingsModal(state)
+    pushModalAction: (state, { payload }: PayloadAction<{
+      payload: ModalPayload
+    }>) => {
+      pushModal(state, payload.payload)
     },
     pushReportModalAction: (state, { payload }: PayloadAction<{
       title: string
       description: string
     }>) => {
-      pushReportModal(state, payload.title, payload.description)
+      pushModal(state, {
+        type: ModalType.Report,
+        cancelable: true,
+        title: payload.title,
+        description: payload.description
+      })
     },
     pushDeadEndModalAction: (state, { payload }: PayloadAction<{}>) => {
-      pushReportModal(
-        state,
-        'You\'ve reached a dead-end.',
-        'You have found a part of this app that is yet to be built. ' +
-        'Check back again later. In the meantime you may leave us some ' +
-        'feedback about your experience so far. We would really appreciate it.'
-      )
+      pushModal(state, {
+        type: ModalType.Report,
+        cancelable: true,
+        title: 'You\'ve reached a dead-end.',
+        description:
+          'You have found a part of this app that is yet to be built. ' +
+          'Check back again later. In the meantime you may leave us some ' +
+          'feedback about your experience so far. We would really appreciate it.'
+      })
     },
     cancelTopModalAction: (state, { payload }: PayloadAction<{}>) => {
       const cancelable =
@@ -134,8 +140,7 @@ export const {
   startWireAction,
   targetWireAction,
   endWireAction,
-  pushAddModalAction,
-  pushSettingsModalAction,
+  pushModalAction,
   pushReportModalAction,
   pushDeadEndModalAction,
   cancelTopModalAction,

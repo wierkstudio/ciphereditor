@@ -2,12 +2,12 @@
 import './modal.scss'
 import ButtonView from '../../views/button/button'
 import useAppDispatch from '../../hooks/useAppDispatch'
-import { ModalState } from '../../slices/ui/types'
+import { ModalPayload } from '../../slices/ui/types'
 import { MouseEvent, ReactNode, useCallback } from 'react'
 import { cancelTopModalAction } from '../../slices/ui'
 
 export default function ModalView (props: {
-  modal: ModalState
+  payload: ModalPayload
   title?: string
   children: ReactNode
 }): JSX.Element {
@@ -30,6 +30,19 @@ export default function ModalView (props: {
       <div className='modal__content'>
         {props.children}
       </div>
+      <footer className='modal__footer' />
     </div>
+  )
+}
+
+ModalView.SectionView = (props: {
+  headline: string
+  children: React.ReactNode
+}): JSX.Element => {
+  return (
+    <fieldset className='modal__section'>
+      <legend className='modal__section-headline'>{props.headline}</legend>
+      {props.children}
+    </fieldset>
   )
 }

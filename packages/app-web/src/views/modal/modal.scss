@@ -16,11 +16,12 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: rem(24) rem(56) rem(16) rem(32);
+    padding: rem(24) rem(56) 0 rem(32);
+    margin: 0 0 rem(16) 0;
   }
 
   &__title {
-    @extend %t-h2;
+    @extend %t-h3;
   }
 
   &__btn-close {
@@ -31,6 +32,20 @@
   }
 
   &__content {
-    padding: 0 rem(32) rem(32);
+    padding: 0 rem(32);
+  }
+
+  &__footer {
+    margin-top: rem(32);
+  }
+
+  &__section {
+    margin: rem(24) 0;
+  }
+
+  &__section-headline {
+    padding-bottom: rem(4);
+    @extend %t-h4;
+    color: $c-meta;
   }
 }

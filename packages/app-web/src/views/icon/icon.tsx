@@ -144,6 +144,12 @@ const iconSVGMap = {
       <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M14.25 17H10.75C7.43629 17 4.75 14.3137 4.75 11V10.75' />
     </svg>
   ),
+  /** Icon by Iconic (https://iconic.app/search/) */
+  search: (props: SVGProps): JSX.Element => (
+    <svg {...props} width='24' height='24' fill='none' viewBox='0 0 24 24'>
+      <path stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19.25 19.25L15.5 15.5M4.75 11C4.75 7.54822 7.54822 4.75 11 4.75C14.4518 4.75 17.25 7.54822 17.25 11C17.25 14.4518 14.4518 17.25 11 17.25C7.54822 17.25 4.75 14.4518 4.75 11Z' />
+    </svg>
+  ),
   /** Icon by Iconic Pro (https://iconic.app/settings-2/) */
   settings: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24' fill='none'>

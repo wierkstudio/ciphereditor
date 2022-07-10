@@ -17,6 +17,7 @@ export default function ValueTextView (props: ValueViewProps<TextValue>): JSX.El
             props.onChange({ type: 'text', data: string }, event)
           }
         }}
+        modifiers='slim'
       />
     </div>
   )

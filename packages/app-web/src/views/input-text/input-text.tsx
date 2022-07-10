@@ -1,9 +1,10 @@
 
 import './input-text.scss'
-import React, { useRef, useCallback, useLayoutEffect, ChangeEvent, FocusEventHandler } from 'react'
+import React, { useRef, useCallback, useLayoutEffect, ChangeEvent } from 'react'
 import useShortcutHandler from '../../hooks/useShortcutHandler'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { renderClassName, ViewModifiers } from '../../utils/dom'
+import IconView, { Icon } from '../icon/icon'
 
 /**
  * List of shortcuts that should not further propagate from the text input
@@ -18,19 +19,18 @@ const stopPropagationForShortcuts = [
   'shift+meta+z'
 ]
 
+type InputTextViewProps =
+  Omit<React.ComponentPropsWithoutRef<'textarea'>, 'value' | 'onChange'> & {
+    value?: string
+    onChange?: (value: string, event: ChangeEvent) => void
+    leadingIcon?: Icon
+    modifiers?: ViewModifiers
+  }
+
 /**
  * Component for single and multiline text.
  */
-export default function InputTextView (props: {
-  id?: string
-  value?: string
-  disabled?: boolean
-  readOnly?: boolean
-  modifiers?: ViewModifiers
-  onChange?: (value: string, event: ChangeEvent) => void
-  onFocus?: FocusEventHandler
-  onBlur?: FocusEventHandler
-}): JSX.Element {
+export default function InputTextView (props: InputTextViewProps): JSX.Element {
   const { onChange, modifiers, ...textareaProps } = props
   const textareaRef = useRef<HTMLTextAreaElement|null>(null)
 
@@ -66,7 +66,12 @@ export default function InputTextView (props: {
   useWindowResizeListener(resizeTextarea)
 
   return (
-    <div className={renderClassName('input-text', modifiers)}>
+    <label className={renderClassName('input-text', modifiers)}>
+      {props.leadingIcon !== undefined && (
+        <div className='input-text__leading-icon'>
+          <IconView icon={props.leadingIcon} />
+        </div>
+      )}
       <textarea
         className='input-text__textarea'
         ref={textareaRef}
@@ -78,6 +83,6 @@ export default function InputTextView (props: {
         rows={1}
         {...textareaProps}
       />
-    </div>
+    </label>
   )
 }
