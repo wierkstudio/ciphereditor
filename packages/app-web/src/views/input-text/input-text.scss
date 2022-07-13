@@ -4,7 +4,6 @@
 .input-text {
   display: flex;
   flex-direction: row;
-  align-items: center;
   padding: rem(8) rem(16);
   border-radius: rem(4);
   line-height: 0;
@@ -20,11 +19,29 @@
     padding-right: rem(8);
   }
 
+  &__field {
+    display: grid;
+  }
+
+  &__field::after {
+    content: attr(data-autogrow-value) " ";
+    white-space: pre-wrap;
+    visibility: hidden;
+  }
+
   &__textarea {
-    height: rem(24);
-    @extend %t-value;
     outline: none;
     user-select: auto;
+  }
+
+  &__field::after,
+  &__textarea {
+    // Textarea autogrow trick taken from:
+    // https://gomakethings.com/how-to-automatically-size-a-textarea-based-on-its-using-vanilla-javascript/
+    grid-area: 1 / 1 / 2 / 2;
+    margin: 0;
+    padding: 0;
+    @extend %t-value;
   }
 
   &--slim {

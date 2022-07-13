@@ -1,10 +1,9 @@
 
 import './input-text.scss'
-import React, { useRef, useCallback, useLayoutEffect, ChangeEvent } from 'react'
-import useShortcutHandler from '../../hooks/useShortcutHandler'
-import useWindowResizeListener from '../../hooks/useWindowResizeListener'
-import { renderClassName, ViewModifiers } from '../../utils/dom'
 import IconView, { Icon } from '../icon/icon'
+import React, { useRef, ChangeEvent } from 'react'
+import useShortcutHandler from '../../hooks/useShortcutHandler'
+import { renderClassName, ViewModifiers } from '../../utils/dom'
 
 /**
  * List of shortcuts that should not further propagate from the text input
@@ -31,58 +30,42 @@ type InputTextViewProps =
  * Component for single and multiline text.
  */
 export default function InputTextView (props: InputTextViewProps): JSX.Element {
-  const { onChange, modifiers, ...textareaProps } = props
+  const { leadingIcon, value, onChange, modifiers, ...textareaProps } = props
   const textareaRef = useRef<HTMLTextAreaElement|null>(null)
 
-  // Auto resize textarea
-  const resizeTextarea = useCallback(() => {
-    if (textareaRef.current !== null) {
-      // Autoresize textarea
-      const $textarea = textareaRef.current
-      $textarea.style.height = ''
-      $textarea.style.height = `${$textarea.scrollHeight}px`
-    }
-  }, [textareaRef])
-
-  // Shortcuts
   useShortcutHandler(textareaRef.current, (shortcut, event) => {
     if (stopPropagationForShortcuts.includes(shortcut)) {
       event.stopPropagation()
     }
   })
 
-  // Handle changes
-  const onInternalChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    if (event.currentTarget.value !== undefined) {
-      resizeTextarea()
-    }
+  const onTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>): void => {
     if (onChange !== undefined) {
       onChange(event.currentTarget.value, event)
     }
   }
 
-  // Resize textarea on window resize and synchronously after all DOM mutations
-  useLayoutEffect(resizeTextarea)
-  useWindowResizeListener(resizeTextarea)
-
   return (
     <label className={renderClassName('input-text', modifiers)}>
-      {props.leadingIcon !== undefined && (
+      {leadingIcon !== undefined && (
         <div className='input-text__leading-icon'>
-          <IconView icon={props.leadingIcon} />
+          <IconView icon={leadingIcon} />
         </div>
       )}
-      <textarea
-        className='input-text__textarea'
-        ref={textareaRef}
-        tabIndex={0}
-        onChange={onInternalChange}
-        spellCheck={false}
-        autoComplete='off'
-        autoCorrect='off'
-        rows={1}
-        {...textareaProps}
-      />
+      <div className='input-text__field' data-autogrow-value={value}>
+        <textarea
+          className='input-text__textarea'
+          value={value}
+          ref={textareaRef}
+          tabIndex={0}
+          onChange={onTextareaChange}
+          spellCheck={false}
+          autoComplete='off'
+          autoCorrect='off'
+          rows={1}
+          {...textareaProps}
+        />
+      </div>
     </label>
   )
 }
