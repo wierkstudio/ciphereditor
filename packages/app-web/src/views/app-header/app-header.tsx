@@ -21,11 +21,9 @@ export default function AppHeaderView (): JSX.Element {
   return (
     <header className='app-header'>
       <div className='app-header__start'>
-        {embedType !== UIEmbedType.Electron && (
-          <div className='app-header__brand'>
-            <LogoView />
-          </div>
-        )}
+        <div className='app-header__brand'>
+          <LogoView />
+        </div>
         <ToolbarView>
           <ButtonView
             title='Add node'

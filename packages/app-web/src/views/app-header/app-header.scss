@@ -42,5 +42,13 @@
 
   &__brand {
     padding: 0 rem(24) 0 rem(8);
+
+    @include breakpoint(s, m) {
+      display: none;
+    }
+  }
+
+  .root--embed-electron &__brand {
+    display: none;
   }
 }
