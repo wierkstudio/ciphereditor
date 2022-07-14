@@ -2,7 +2,7 @@
 import { Contribution, NamedControlChange, OperationExecuteExport } from '@ciphereditor/types'
 
 // TODO: Create proxy service with rate limiting and origin check
-const apiKey = 'REDACTED'
+const apiKey = process.env.GOOGLE_CLOUD_TRANSLATION_API_KEY ?? 'unknown'
 const apiEndpointUrl = 'https://translation.googleapis.com/language/translate/v2'
 
 const languageOptions = [
