@@ -15,6 +15,7 @@ export default defineConfig({
     outDir: 'build'
   },
   server: {
+    port: 3010,
     https: useHttps
       ? {
           key: fs.readFileSync(httpsKeyPath),
