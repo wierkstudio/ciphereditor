@@ -16,6 +16,7 @@ import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { renderClassName } from '../../utils/dom'
 import { pushModalAction } from '../../slices/ui'
 import { ModalType } from '../../slices/ui/types'
+import MovableButtonView from '../movable-button/movable-button'
 
 export default function OperationView (props: {
   /**
@@ -64,7 +65,7 @@ export default function OperationView (props: {
         style={{ order: hasControlsBelowHeader ? 1000 : -1000 }}
       >
         <div className='operation__header-start'>
-          <button
+          <MovableButtonView
             className='operation__pill'
             onClick={() => dispatch(pushModalAction({
               payload: {
@@ -88,7 +89,7 @@ export default function OperationView (props: {
                 <IconView icon={highestIssueType} />
               </div>
             )}
-          </button>
+          </MovableButtonView>
         </div>
         <div className='operation__header-end'>
           {node.type === BlueprintNodeType.Operation && node.state === OperationState.Error && (
