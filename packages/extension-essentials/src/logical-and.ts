@@ -33,7 +33,7 @@ const execute: OperationExecuteExport = (request) => {
   const a = request.values.a.data as boolean
   const b = request.values.b.data as boolean
   const result = a && b
-  return { changes: [{ name: 'aOrB', value: result }] }
+  return { changes: [{ name: 'aAndB', value: result }] }
 }
 
 export default {
