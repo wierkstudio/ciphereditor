@@ -1,26 +1,22 @@
 
 import './value-boolean.scss'
-import { ValueViewProps } from '../../views/value/value'
+import InputCheckboxView from '../input-checkbox/input-checkbox'
 import { BooleanValue } from '@ciphereditor/types'
+import { ValueViewProps } from '../../views/value/value'
+import { renderClassName } from '../../utils/dom'
 
-export default function ValueBooleanView (props: ValueViewProps<BooleanValue>): JSX.Element {
+export default function ValueBooleanView (
+  props: ValueViewProps<BooleanValue>
+): JSX.Element {
+  const { value, onChange, readOnly, modifiers, ...inputCheckboxProps } = props
   return (
-    <label className='value-boolean'>
-      <input
-        className='value-boolean__input'
-        id={props.id}
-        type='checkbox'
-        checked={props.value.data}
-        readOnly={props.readOnly}
-        onChange={event => {
-          if (props.onChange !== undefined) {
-            props.onChange({ type: 'boolean', data: event.target.checked }, event)
-          }
-        }}
+    <label className={renderClassName('value-boolean', modifiers)}>
+      <InputCheckboxView
+        value={props.value.data}
+        onChange={(data, event) => onChange?.({ type: 'boolean', data }, event)}
+        disabled={readOnly}
+        {...inputCheckboxProps}
       />
-      <div className='value-boolean__track'>
-        <div className='value-boolean__thumb' />
-      </div>
     </label>
   )
 }

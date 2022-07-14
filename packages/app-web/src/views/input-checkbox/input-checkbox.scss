@@ -1,0 +1,61 @@
+
+@import '../../styles/shared';
+
+$size: rem(16);
+$track-size: rem(12);
+
+.input-checkbox {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+
+  &__input {
+    @extend %a-visually-hidden-but-accessible;
+  }
+
+  &__track {
+    display: block;
+    width: $size + $track-size;
+    height: $size;
+    background-color: $c-background;
+    transition-property: background-color, border-color;
+    transition-duration: 0.1s;
+    border-radius: $size;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: $size;
+      border: rem(2) solid currentColor;
+    }
+  }
+
+  &__input:disabled + &__track {
+    color: $c-meta;
+  }
+
+  &__thumb {
+    width: $size;
+    height: $size;
+    background-color: $c-background;
+    border: rem(2) solid currentColor;
+    border-radius: $size;
+    transform: none;
+    transition-property: transform, background-color;
+    transition-duration: 0.15s;
+  }
+
+  &__input:checked + &__track {
+    background-color: currentColor;
+    border-color: currentColor;
+  }
+
+  &__input:checked + &__track &__thumb {
+    transform: translate(#{$track-size}, 0);
+    background-color: $c-background;
+  }
+}
