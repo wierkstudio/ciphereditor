@@ -25,7 +25,6 @@
 
   &__field::after {
     content: attr(data-autogrow-value) " ";
-    white-space: pre-wrap;
     visibility: hidden;
   }
 
@@ -42,6 +41,8 @@
     margin: 0;
     padding: 0;
     @extend %t-value;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   &--slim {
