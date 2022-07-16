@@ -90,6 +90,7 @@ export default function ControlView (props: {
   return (
     <div className={renderClassName('control', modifiers)}>
       <div className='control__header' ref={headerRef}>
+        {/* TODO: Remove title as soon as issues are accessible somewhere else */}
         <MovableButtonView
           className='control__toggle'
           onClick={onToggleClick}

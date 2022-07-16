@@ -1,25 +1,27 @@
 
 import './control-drawer.scss'
+import ButtonView from '../../views/button/button'
 import React, { BaseSyntheticEvent, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from '../../views/select/select'
 import ValueView from '../../views/value/value'
 import useAppDispatch from '../../hooks/useAppDispatch'
+import useTranslation from '../../hooks/useTranslation'
 import {
   changeControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction
 } from '../../slices/blueprint'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { TypedValue } from '@ciphereditor/types'
 import { labelType, stringifyValue } from '../../slices/blueprint/reducers/value'
-import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
-import ButtonView from '../../views/button/button'
 
 export default function ControlDrawerView (props: {
   control: ControlNode
   contextProgramId: BlueprintNodeId
 }): JSX.Element {
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
   const { control } = props
   const controlId = control.id
   const value = control.value
@@ -61,7 +63,7 @@ export default function ControlDrawerView (props: {
   if (control.choices.length > 0) {
     selectElements.push({
       type: 'group',
-      label: 'Known value',
+      label: t('Known value'),
       elements: control.choices.map((choice, index) => ({
         type: 'option',
         value: `c${index}`,
@@ -75,10 +77,11 @@ export default function ControlDrawerView (props: {
     }
   }
 
+  // TODO: Translate label type
   if (!control.enforceChoices || control.choices.length === 0) {
     selectElements.push({
       type: 'group',
-      label: 'Custom value',
+      label: t('Custom value'),
       elements: control.types.map((type, index) => ({
         type: 'option',
         value: `t${index}`,
@@ -128,12 +131,14 @@ export default function ControlDrawerView (props: {
               )
             : (
               <ButtonView disabled modifiers={['meta']}>
+                {/* TODO: Needs translation */}
                 {labelType(control.value.type) + (!control.writable ? ' (read only)' : '')}
               </ButtonView>
               )}
         </div>
         <div className='control-drawer__footer-end'>
           <ButtonView
+            title={t('Copy control value')}
             icon='copy'
             onClick={onValueCopy}
             modifiers={['meta']}

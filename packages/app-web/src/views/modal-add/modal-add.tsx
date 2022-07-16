@@ -5,6 +5,7 @@ import ModalView from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useTranslation from '../../hooks/useTranslation'
 import { AddModalPayload } from '../../slices/ui/types'
 import { addControlAction, addEmptyProgramAction, addOperationAction } from '../../slices/blueprint'
 import { capitalCase } from 'change-case'
@@ -17,6 +18,7 @@ import { useState } from 'react'
 
 export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
   const contributions = useAppSelector(state => getContributions(state.directory))
   const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
@@ -41,11 +43,11 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
   })
 
   return (
-    <ModalView payload={props} title='Add a new operation'>
+    <ModalView payload={props} title={t('Add a new operation')}>
       <InputTextView
         value={searchQuery}
         onChange={setSearchQuery}
-        placeholder='Search'
+        placeholder={t('Search')}
         leadingIcon='search'
         autoFocus
       />
@@ -64,6 +66,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
                 dispatch(popModalAction({}))
               }}
             >
+              {/* TODO: Needs translation */}
               {contribution.label ?? capitalCase(contribution.name)}
             </ButtonView>
           </li>
@@ -79,7 +82,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
               dispatch(popModalAction({}))
             }}
           >
-            New program
+            {t('New program')}
           </ButtonView>
         </li>
         <li key='empty-control'>
@@ -93,7 +96,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
               dispatch(popModalAction({}))
             }}
           >
-            Empty control
+            {t('Empty control')}
           </ButtonView>
         </li>
       </ul>

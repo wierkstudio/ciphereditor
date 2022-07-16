@@ -113,6 +113,7 @@ export default function CanvasView (): JSX.Element {
       {childNodeIds.length === 0 && (
         <div className='canvas__empty'>
           <p className='canvas__empty-message'>
+            {/* TODO: Needs translation */}
             Press <IconView icon='plus' modifiers='inline-reference' /> to add
             your first operation.
           </p>

@@ -12,12 +12,14 @@ import { getControlVariable, getVariableControl } from '../../slices/blueprint/s
 import { getControlVariableOptions } from '../../slices/blueprint/selectors/control'
 import { useCallback } from 'react'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
+import useTranslation from '../../hooks/useTranslation'
 
 export default function OutletSelectView (props: {
   control: ControlNode
   contextProgramId: BlueprintNodeId
 }): JSX.Element {
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
   const { control, contextProgramId } = props
   const controlId = control.id
 
@@ -80,30 +82,31 @@ export default function OutletSelectView (props: {
   const isUnused = attachedVariable === undefined
   const isPushing = attachedVariableSourceControl !== undefined && attachedVariableSourceControl.id === control.id
 
-  let selectLabel = 'Use'
+  let selectLabel = t('Use')
   if (!isUnused) {
-    selectLabel = isPushing ? 'Push' : 'Pull'
+    selectLabel = isPushing ? t('Push') : t('Pull')
   }
 
   let selectValue = 'u'
   const selectElements: SelectViewElement[] = [{
     type: 'option',
-    label: 'Unused',
+    label: t('Unused value'),
     value: 'u'
   }]
 
   selectElements.push({
     type: 'group',
-    label: 'Push to',
+    label: t('Push value to'),
     elements:
       pushOptions.map((variable, index): SelectViewOptionElement => ({
         type: 'option',
         value: `s${index}`,
+        // TODO: Needs translation
         label: `Variable ${variable.id}`
       })).concat([{
         type: 'option',
         value: 'n',
-        label: 'New variable'
+        label: t('New variable')
       }])
   })
 
@@ -117,10 +120,11 @@ export default function OutletSelectView (props: {
   if (pullOptions.length > 0) {
     selectElements.push({
       type: 'group',
-      label: 'Pull from',
+      label: t('Pull value from'),
       elements: pullOptions.map((variable, index) => ({
         type: 'option',
         value: `l${index}`,
+        // TODO: Needs translation
         label: `Variable ${variable.id}`
       }))
     })

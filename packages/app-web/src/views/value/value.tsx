@@ -42,6 +42,7 @@ export default function ValueView (props: ValueViewProps): JSX.Element {
       onFocus={props.onFocus}
     >
       <p className='value__meta'>
+        {/* TODO: Needs translation */}
         {`${labelType((value as TypedValue).type)} value is not viewable.`}
       </p>
     </div>

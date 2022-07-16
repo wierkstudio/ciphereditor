@@ -67,7 +67,7 @@ export default React.memo(function ChangingTextView (props: {
 
   return (
     <span className={renderClassName('changing-text', modifiers)}>
-      <span className='changing-text__last'>{state.lastText}</span>
+      <span className='changing-text__last' aria-hidden>{state.lastText}</span>
       <span className='changing-text__current'>{state.currentText}</span>
     </span>
   )

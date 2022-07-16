@@ -6,10 +6,12 @@ import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, u
 import { ValueViewProps } from '../../views/value/value'
 import { isNumericString } from '../../utils/string'
 import { IntegerValue, NumberValue, TypedValue } from '@ciphereditor/types'
+import useTranslation from '../../hooks/useTranslation'
 
 export default function ValueNumberView (props: ValueViewProps<NumberValue | IntegerValue>): JSX.Element {
   const { onChange, onBlur, value, readOnly = false } = props
 
+  const [t] = useTranslation()
   const [stringValue, setStringValue] = useState(value.data.toString())
 
   const onValueChange = (value: TypedValue, event: BaseSyntheticEvent): void => {
@@ -49,7 +51,11 @@ export default function ValueNumberView (props: ValueViewProps<NumberValue | Int
   return (
     <div className='value-number'>
       {!readOnly && (
-        <ButtonView icon='minus' onClick={onMinusClick} />
+        <ButtonView
+          title={t('Decrease value')}
+          icon='minus'
+          onClick={onMinusClick}
+        />
       )}
       <div className='value-number__input'>
         <InputTextView
@@ -62,7 +68,11 @@ export default function ValueNumberView (props: ValueViewProps<NumberValue | Int
         />
       </div>
       {!readOnly && (
-        <ButtonView icon='plus' onClick={onPlusClick} />
+        <ButtonView
+          title={t('Increase value')}
+          icon='plus'
+          onClick={onPlusClick}
+        />
       )}
     </div>
   )

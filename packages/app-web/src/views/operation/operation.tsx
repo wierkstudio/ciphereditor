@@ -17,6 +17,7 @@ import { renderClassName } from '../../utils/dom'
 import { pushModalAction } from '../../slices/ui'
 import { ModalType } from '../../slices/ui/types'
 import MovableButtonView from '../movable-button/movable-button'
+import useTranslation from '../../hooks/useTranslation'
 
 export default function OperationView (props: {
   /**
@@ -29,6 +30,7 @@ export default function OperationView (props: {
   const { nodeId, contextProgramId, onOutletRef } = props
 
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
   const node = useBlueprintSelector(state =>
     getNode(state, nodeId) as ProgramNode | OperationNode)
 
@@ -82,6 +84,7 @@ export default function OperationView (props: {
               <IconView icon={node.type === BlueprintNodeType.Program ? 'program' : 'switch'} />
             </span>
             <h3 className='operation__label'>
+              {/* TODO: Needs translation */}
               {node.label}
             </h3>
             {highestIssueType !== undefined && (
@@ -95,14 +98,14 @@ export default function OperationView (props: {
           {node.type === BlueprintNodeType.Operation && node.state === OperationState.Error && (
             <ButtonView
               icon='refresh'
-              title='Retry'
+              title={t('Retry')}
               onClick={() => dispatch(retryOperationAction({ nodeId }))}
             />
           )}
           {node.type === BlueprintNodeType.Program && (
             <ButtonView
               icon='edit'
-              title='Edit program'
+              title={t('Edit program')}
               onClick={() => dispatch(enterProgramAction({ programId: nodeId }))}
             />
           )}

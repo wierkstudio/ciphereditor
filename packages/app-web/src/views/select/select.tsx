@@ -3,6 +3,7 @@ import './select.scss'
 import IconView from '../../views/icon/icon'
 import { ChangeEventHandler } from 'react'
 import { renderClassName, ViewModifiers } from '../../utils/dom'
+import useTranslation from '../../hooks/useTranslation'
 
 export interface SelectViewOptionElement {
   type: 'option'
@@ -30,6 +31,7 @@ export default function SelectView (props: {
   onChange?: ChangeEventHandler<HTMLSelectElement>
   modifiers?: ViewModifiers
 }): JSX.Element {
+  const [t] = useTranslation()
   const selectedElement =
     props.elements.find(element =>
       element.type === 'option' &&
@@ -51,7 +53,7 @@ export default function SelectView (props: {
         {props.elements.map(renderElement)}
       </select>
       <div className='select__value'>
-        {props.valueLabel ?? selectedElement?.label ?? 'Select'}
+        {props.valueLabel ?? selectedElement?.label ?? t('Select')}
       </div>
       <div className='select__chevron'>
         <IconView icon='doubleChevron' />

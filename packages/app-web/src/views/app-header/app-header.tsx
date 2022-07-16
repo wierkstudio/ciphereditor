@@ -6,6 +6,7 @@ import ToolbarView from '../../views/toolbar/toolbar'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
 import { ModalType, UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
@@ -18,6 +19,7 @@ export default function AppHeaderView (): JSX.Element {
   const program = useBlueprintSelector(getActiveProgram)
   const embedType = useUISelector(getEmbedType)
   const maximized = useUISelector(isEmbedMaximized)
+  const [t] = useTranslation()
   return (
     <header className='app-header'>
       <div className='app-header__start'>
@@ -26,7 +28,7 @@ export default function AppHeaderView (): JSX.Element {
         </div>
         <ToolbarView>
           <ButtonView
-            title='Add node'
+            title={t('Add node')}
             icon='plus'
             modifiers='large'
             disabled={program === undefined}
@@ -39,14 +41,14 @@ export default function AppHeaderView (): JSX.Element {
           />
           <ToolbarView.GroupView>
             <ButtonView
-              title='Undo'
+              title={t('Undo')}
               icon='undo'
               modifiers='large'
               onClick={() => dispatch(undoAction())}
               disabled={useAppSelector(state => state.blueprint.past.length) === 0}
             />
             <ButtonView
-              title='Redo'
+              title={t('Redo')}
               icon='redo'
               modifiers='large'
               onClick={() => dispatch(redoAction())}
@@ -54,14 +56,14 @@ export default function AppHeaderView (): JSX.Element {
             />
           </ToolbarView.GroupView>
           <ButtonView
-            title='Share'
+            title={t('Share')}
             icon='share'
             modifiers='large'
             onClick={() => dispatch(pushDeadEndModalAction({}))}
           />
           {program !== undefined && program.parentId !== program.id && (
             <ButtonView
-              title='Leave program'
+              title={t('Leave program')}
               icon='arrowUp'
               modifiers='large'
               onClick={() => dispatch(leaveProgramAction({}))}
@@ -73,7 +75,7 @@ export default function AppHeaderView (): JSX.Element {
       <div className='app-header__end'>
         <ToolbarView>
           <ButtonView
-            title='Settings'
+            title={t('Settings')}
             icon='settings'
             modifiers='large'
             onClick={() => dispatch(pushModalAction({
@@ -85,7 +87,7 @@ export default function AppHeaderView (): JSX.Element {
           />
           {embedType !== UIEmbedType.Platform && (
             <ButtonView
-              title='View manual'
+              title={t('View manual')}
               icon='help'
               modifiers='large'
               onClick={() => {
@@ -95,7 +97,7 @@ export default function AppHeaderView (): JSX.Element {
           )}
           {embedType === UIEmbedType.Platform && (
             <ButtonView
-              title={maximized ? 'Show docs' : 'Hide docs'}
+              title={maximized ? t('Show docs') : t('Hide docs')}
               icon={maximized ? 'minimize' : 'maximize'}
               modifiers='large'
               onClick={() => dispatch(toggleEmbedMaximizedAction({}))}

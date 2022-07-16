@@ -3,6 +3,7 @@ import ModalView from '../../views/modal/modal'
 import SelectView from '../../views/select/select'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
+import useTranslation from '../../hooks/useTranslation'
 import { ReducedMotionPreferenceOption, ThemeOption } from '../../slices/settings/types'
 import { SettingsModalPayload } from '../../slices/ui/types'
 import { applyReducedMotionPreference, applyTheme } from '../../slices/settings'
@@ -10,15 +11,16 @@ import { getAccessibilitySettings } from '../../slices/settings/selectors'
 
 export default function SettingsModalView (props: SettingsModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
   const accessibilitySettings = useSettingsSelector(getAccessibilitySettings)
   return (
-    <ModalView payload={props} title='Settings'>
-      <ModalView.SectionView headline='Theme'>
+    <ModalView payload={props} title={t('Settings')}>
+      <ModalView.SectionView headline={t('Theme')}>
         <SelectView
           elements={[
-            { type: 'option', value: ThemeOption.SystemDefault, label: 'System default' },
-            { type: 'option', value: ThemeOption.Light, label: 'Light' },
-            { type: 'option', value: ThemeOption.Dark, label: 'Dark' }
+            { type: 'option', value: ThemeOption.SystemDefault, label: t('System default') },
+            { type: 'option', value: ThemeOption.Light, label: t('Light theme') },
+            { type: 'option', value: ThemeOption.Dark, label: t('Dark theme') }
           ]}
           value={accessibilitySettings.theme}
           onChange={event => dispatch(applyTheme({
@@ -26,11 +28,11 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
           }))}
         />
       </ModalView.SectionView>
-      <ModalView.SectionView headline='Reduced motion'>
+      <ModalView.SectionView headline={t('Reduced motion')}>
         <SelectView
           elements={[
-            { type: 'option', value: ReducedMotionPreferenceOption.SystemDefault, label: 'System default' },
-            { type: 'option', value: ReducedMotionPreferenceOption.Reduce, label: 'Reduce' }
+            { type: 'option', value: ReducedMotionPreferenceOption.SystemDefault, label: t('System default') },
+            { type: 'option', value: ReducedMotionPreferenceOption.Reduce, label: t('Reduce motion') }
           ]}
           value={accessibilitySettings.reducedMotionPreference}
           onChange={event => dispatch(applyReducedMotionPreference({
@@ -39,7 +41,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
         />
       </ModalView.SectionView>
       <ModalView.SectionView headline='Scaling'>
-        This app scales according to your Browser settings for zoom and text size.
+        {t('This app scales according to your Browser settings for zoom and text size.')}
       </ModalView.SectionView>
     </ModalView>
   )

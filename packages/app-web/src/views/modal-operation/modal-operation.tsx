@@ -8,16 +8,21 @@ import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNode } from '../../slices/blueprint/types/operation'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
+import useTranslation from '../../hooks/useTranslation'
 
 export default function OperationModalView (props: OperationModalPayload): JSX.Element {
   const node = useBlueprintSelector(state => getNode(state, props.nodeId))
+  const [t] = useTranslation()
 
-  let title = 'Configure your program'
-  let description: string | undefined =
-    'A program consists of one or more operations and controls bundled together as a custom operation.'
+  let title = t('Configure your program')
+  let description: string | undefined = t(
+    'A program consists of one or more operations and controls bundled ' +
+    'together as a custom operation.'
+  )
   let contribution: OperationContribution | undefined
   if (node.type === BlueprintNodeType.Operation) {
     const operation = node as OperationNode
+    // TODO: Needs translation
     title = `Configure ${operation.label}`
     contribution = useDirectorySelector(state => getOperationContribution(state, operation.contributionName))
     description = contribution?.description
@@ -25,7 +30,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
 
   return (
     <ModalView payload={props} title={title}>
-      <ModalView.SectionView headline='Description'>
+      <ModalView.SectionView headline={t('Description')}>
         {description}
       </ModalView.SectionView>
     </ModalView>
