@@ -128,8 +128,9 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
   }
 }
 
+// We need 'unsafe-eval' for backwards compatibility
 const contentSecurityPolicy =
-  'default-src https:; script-src data: https: \'wasm-unsafe-eval\';'
+  'default-src https:; script-src data: https: \'unsafe-eval\' \'wasm-unsafe-eval\';'
 const contributionWorkerMap = new Map<string, ProcessorWorker>()
 const contributionExportsMap = new Map<string, ContributionExports>()
 
