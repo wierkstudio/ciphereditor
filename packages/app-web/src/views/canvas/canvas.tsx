@@ -8,19 +8,22 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDragMove from '../../hooks/useDragMove'
+import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
-import { getCanvasOffset, getCanvasState, getWireDraft } from '../../slices/ui/selectors'
+import { getCanvasMode, getCanvasOffset, getCanvasState, getWireDraft } from '../../slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
 import { renderClassName } from '../../utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
+import { UICanvasMode } from '../../slices/ui/types'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
 
+  const canvasMode = useUISelector(getCanvasMode)
   const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
   const contextProgramId = useBlueprintSelector(state => getActiveProgram(state)?.id)
   if (contextProgramId === undefined) {
@@ -79,16 +82,16 @@ export default function CanvasView (): JSX.Element {
     <div
       className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
-      onPointerDown={onPointerDown}
+      onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
       onFocus={onCanvasFocus}
     >
       <div
         className='canvas__content'
         onFocus={event => { event.stopPropagation() }}
         onBlur={onBlur}
-        style={{ transform: `translate(${-x}px, ${-y}px)` }}
+        style={canvasMode === UICanvasMode.Plane ? { transform: `translate(${-x}px, ${-y}px)` } : {}}
       >
-        {variableIds.map(variableId => (
+        {canvasMode === UICanvasMode.Plane && variableIds.map(variableId => (
           <WireView
             key={variableId}
             variableId={variableId}

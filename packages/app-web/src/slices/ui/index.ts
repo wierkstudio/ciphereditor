@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
-import { ModalPayload, ModalType, UICanvasState, UIEmbedType, UIState } from './types'
+import { ModalPayload, ModalType, UICanvasMode, UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushModal } from './reducers'
 
@@ -25,6 +25,7 @@ const defaultUIState: UIState = {
   embedEnv: 'chrome',
   embedMaximized: false,
 
+  canvasMode: UICanvasMode.Plane,
   canvasState: UICanvasState.Idle,
   canvasOffsetX: 0,
   canvasOffsetY: 0,
@@ -64,8 +65,22 @@ export const settingsSlice = createSlice({
       width: number
       height: number
     }>) => {
+      const previousWidth = state.canvasWidth
       state.canvasWidth = payload.width
       state.canvasHeight = payload.height
+
+      if (previousWidth !== payload.width) {
+        // TODO: Move magic numbers
+        const newCanvasMode =
+          payload.width > 719
+            ? UICanvasMode.Plane
+            : UICanvasMode.Sequential
+        if (state.canvasMode !== newCanvasMode) {
+          state.canvasMode = newCanvasMode
+          console.log('newCanvasMode', newCanvasMode)
+          // TODO: Transition from one mode to the other
+        }
+      }
     },
     startWireAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId

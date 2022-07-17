@@ -12,7 +12,7 @@ import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { UIEmbedType } from '../../slices/ui/types'
 import { applyEmbedTypeAction } from '../../slices/ui'
 import { getAccessibilitySettings, getShortcutBindings } from '../../slices/settings/selectors'
-import { getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
+import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../utils/dom'
 import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from '../../utils/embed'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -25,6 +25,8 @@ export default function AppView (): JSX.Element {
   const embedType = useUISelector(getEmbedType)
   const embedEnv = useUISelector(getEmbedEnv)
   const embedMaximized = useUISelector(isEmbedMaximized)
+  const canvasMode = useUISelector(getCanvasMode)
+  const canvasState = useUISelector(getCanvasState)
   const shortcutBindings = useSettingsSelector(getShortcutBindings)
   const { theme, reducedMotionPreference } =
     useSettingsSelector(getAccessibilitySettings)
@@ -93,6 +95,8 @@ export default function AppView (): JSX.Element {
       'script-enabled',
       `embed-${embedType as string}`,
       `env-${embedEnv}`,
+      `canvas-mode-${canvasMode}`,
+      `canvas-state-${canvasState}`,
       `theme-${theme as string}`,
       `reduced-motion-${reducedMotionPreference as string}`
     ]
@@ -103,7 +107,7 @@ export default function AppView (): JSX.Element {
     if (embedType !== UIEmbedType.Standalone) {
       postAccessibilityChangedMessage({ theme, reducedMotionPreference })
     }
-  }, [embedType, theme, reducedMotionPreference, embedEnv])
+  }, [embedType, theme, reducedMotionPreference, embedEnv, canvasMode, canvasState])
 
   // Observe and react to intrinsic app size changes
   const intrinsicAppSizeObserver = useMemo(() => {

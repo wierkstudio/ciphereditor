@@ -5,12 +5,15 @@ import OperationView from '../../views/operation/operation'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDragMove from '../../hooks/useDragMove'
+import useUISelector from '../../hooks/useUISelector'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
+import { getCanvasMode } from '../../slices/ui/selectors'
 import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
 import { renderClassName } from '../../utils/dom'
+import { UICanvasMode } from '../../slices/ui/types'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -22,6 +25,7 @@ export default function NodeView (props: {
 
   const node = useBlueprintSelector(state => getNode(state, nodeId))
   const isSelected = useBlueprintSelector(state => isSelectedNode(state, nodeId))
+  const canvasMode = useUISelector(getCanvasMode)
 
   const controls = useBlueprintSelector(state => {
     const controlNodes =
@@ -108,9 +112,9 @@ export default function NodeView (props: {
       ref={nodeRef}
       className={renderClassName('node', modifiers)}
       role='region'
-      style={{ transform: `translate(${node.x ?? 0}px, ${node.y ?? 0}px)` }}
+      style={canvasMode === UICanvasMode.Plane ? { transform: `translate(${node.x ?? 0}px, ${node.y ?? 0}px)` } : {}}
       tabIndex={0}
-      onPointerDown={onPointerDown}
+      onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
       onFocus={onFocus}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (

@@ -2,14 +2,11 @@
 @import '../../styles/shared';
 
 .modal-stack {
+  display: grid;
+  pointer-events: none;
 
   &__layer {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: $z-index-app-modal;
+    grid-area: 1 / 1 / 2 / 2;
   }
 
   &__backdrop {
@@ -20,18 +17,20 @@
     left: 0;
     background: $c-muted;
     opacity: 0.6;
+    pointer-events: all;
+    z-index: $z-index-app-modal;
   }
 
-  &__scrollarea {
+  &__modal {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: rem(88) rem(32);
-    width: 100vw;
-    height: 100vh;
-    overflow: auto;
-    pointer-events: none;
-    overscroll-behavior: none;
+    padding: rem(88) rem(24) rem(32);
+    z-index: $z-index-app-modal;
+
+    @include breakpoint(l) {
+      padding: rem(96) rem(32) rem(64);
+    }
   }
 }

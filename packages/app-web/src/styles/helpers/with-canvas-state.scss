@@ -1,0 +1,7 @@
+
+@mixin with-canvas-state($canvas-state) {
+
+  .root--canvas-state-#{$canvas-state} & {
+    @content;
+  }
+}

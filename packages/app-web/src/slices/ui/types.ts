@@ -9,6 +9,7 @@ export interface UIState {
   embedEnv: string
   embedMaximized: boolean
 
+  canvasMode: UICanvasMode
   canvasState: UICanvasState
   canvasOffsetX: number
   canvasOffsetY: number
@@ -43,6 +44,23 @@ export enum UIEmbedType {
    * The web app is embedded within a third-party website
    */
   Embed = 'embed'
+}
+
+/**
+ * Canvas mode
+ */
+export enum UICanvasMode {
+  /**
+   * Nodes are placed on a 2-dimensional plane.
+   * Used on larger form factors (e.g. desktops and tablets).
+   */
+  Plane = 'plane',
+
+  /**
+   * Nodes are placed sequentially below each other (1-dimensional).
+   * Used on smaller form factors (e.g. mobile phones).
+   */
+  Sequential = 'sequential'
 }
 
 /**

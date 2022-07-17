@@ -9,6 +9,8 @@
 @import 'helpers/each-breakpoint';
 @import 'helpers/prefers-reduced-motion';
 @import 'helpers/theme-properties';
+@import 'helpers/with-canvas-mode';
+@import 'helpers/with-canvas-state';
 
 @import 'symbols/accessibility';
 @import 'symbols/typography';

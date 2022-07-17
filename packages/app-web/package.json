@@ -9,7 +9,7 @@
     "lint": "ts-standard",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "vite build",
-    "start": "vite",
+    "start": "vite --host",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -2,28 +2,38 @@
 @import '../../styles/shared';
 
 .canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
+  position: relative;
   z-index: $z-index-canvas;
 
-  // This is generally bad for accessibility but improves the overall touch
-  // experience. We hope to compensate the disabling of the zoom gestures by
-  // providing a scaling option in the app settings.
-  touch-action: none;
+  @include with-canvas-mode(sequential) {
+    min-height: rem(480);
+  }
+
+  @include with-canvas-mode(plane) {
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
 
   &--wire {
     cursor: grabbing;
   }
 
   &__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(0px, 0px);
+    padding: rem(96) 0 rem(8);
+
+    @include with-canvas-mode(sequential) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    @include with-canvas-mode(plane) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translate(0px, 0px);
+    }
   }
 
   &--wire &__content {

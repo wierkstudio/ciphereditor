@@ -1,0 +1,7 @@
+
+@mixin with-canvas-mode($canvas-mode) {
+
+  .root--canvas-mode-#{$canvas-mode} & {
+    @content;
+  }
+}

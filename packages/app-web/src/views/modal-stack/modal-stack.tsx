@@ -43,7 +43,7 @@ export default function ModalStackView (): JSX.Element {
             key={index}
           >
             <div className='modal-stack__backdrop' onClick={onBackdropClick} />
-            <div className='modal-stack__scrollarea'>
+            <div className='modal-stack__modal'>
               <ModalView {...(payload as any)} />
             </div>
           </div>

@@ -2,13 +2,19 @@
 @import '../../styles/shared';
 
 .node {
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: relative;
   width: rem(320);
-  transform: translate(0px, 0px);
+  margin-bottom: rem(24);
   cursor: default;
   outline: none;
+
+  @include with-canvas-mode(plane) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0px, 0px);
+    margin-bottom: 0;
+  }
 
   // Selected frame
   &::before {

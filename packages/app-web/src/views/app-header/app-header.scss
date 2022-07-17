@@ -4,7 +4,7 @@
 .app-header {
   display: flex;
   justify-content: space-between;
-  position: absolute;
+  position: fixed;
   top: rem(16);
   left: rem(16);
   right: rem(16);

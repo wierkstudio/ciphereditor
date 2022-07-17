@@ -17,7 +17,10 @@
     padding: rem(8 - 1) rem(8) rem(8 - 1) rem(8);
     line-height: 0;
     color: $c-primary;
-    cursor: grab;
+
+    @include with-canvas-mode(plane) {
+      cursor: grab;
+    }
   }
 
   &__header-start,

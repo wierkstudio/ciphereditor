@@ -18,6 +18,9 @@
   &__button {
     padding: rem(8) rem(8) rem(8) 0;
     line-height: 0;
-    cursor: grab;
+
+    &:not(:disabled) {
+      cursor: grab;
+    }
   }
 }

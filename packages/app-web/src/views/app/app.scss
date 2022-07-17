@@ -2,19 +2,20 @@
 @import '../../styles/shared';
 
 .app {
+  display: grid;
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  width: 100dvw;
-  height: 100dvh;
-  min-height: 560px;
-  filter: blur(0rem);
-  transition-property: filter;
-  transition-duration: 0.3s;
-  transition-timing-function: ease;
+  width: 100%;
+  min-height: 100%;
   user-select: none;
 
-  &__header {
-    padding: rem(24);
+  &__content {
+    position: relative;
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  &__modals {
+    position: relative;
+    grid-area: 1 / 1 / 2 / 2;
+    pointer-events: none;
   }
 }
