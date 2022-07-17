@@ -43,7 +43,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
   })
 
   return (
-    <ModalView payload={props} title={t('Add a new operation')}>
+    <ModalView title={t('Add a new operation')}>
       <InputTextView
         value={searchQuery}
         onChange={setSearchQuery}

@@ -8,7 +8,7 @@ import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
-import { ModalType, UIEmbedType } from '../../slices/ui/types'
+import { UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
 import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
@@ -33,10 +33,7 @@ export default function AppHeaderView (): JSX.Element {
             modifiers='large'
             disabled={program === undefined}
             onClick={() => dispatch(pushModalAction({
-              payload: {
-                type: ModalType.Add,
-                cancelable: true
-              }
+              payload: { type: 'add' }
             }))}
           />
           <ToolbarView.GroupView>
@@ -79,10 +76,7 @@ export default function AppHeaderView (): JSX.Element {
             icon='settings'
             modifiers='large'
             onClick={() => dispatch(pushModalAction({
-              payload: {
-                type: ModalType.Settings,
-                cancelable: true
-              }
+              payload: { type: 'settings' }
             }))}
           />
           {embedType !== UIEmbedType.Platform && (

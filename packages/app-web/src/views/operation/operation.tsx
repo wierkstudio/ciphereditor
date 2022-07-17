@@ -3,9 +3,11 @@ import './operation.scss'
 import ButtonView from '../../views/button/button'
 import ControlView from '../../views/control/control'
 import IconView from '../../views/icon/icon'
+import MovableButtonView from '../movable-button/movable-button'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useHighestIssueType from '../../hooks/useHighestIssueType'
+import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { OperationNode, OperationState } from '../../slices/blueprint/types/operation'
@@ -13,11 +15,8 @@ import { ProgramNode } from '../../slices/blueprint/types/program'
 import { enterProgramAction, retryOperationAction } from '../../slices/blueprint'
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
-import { renderClassName } from '../../utils/dom'
 import { pushModalAction } from '../../slices/ui'
-import { ModalType } from '../../slices/ui/types'
-import MovableButtonView from '../movable-button/movable-button'
-import useTranslation from '../../hooks/useTranslation'
+import { renderClassName } from '../../utils/dom'
 
 export default function OperationView (props: {
   /**
@@ -71,8 +70,7 @@ export default function OperationView (props: {
             className='operation__pill'
             onClick={() => dispatch(pushModalAction({
               payload: {
-                type: ModalType.Operation,
-                cancelable: true,
+                type: 'operation',
                 nodeId
               }
             }))}

@@ -6,16 +6,15 @@ import ReportModalView from '../../views/modal-report/modal-report'
 import SettingsModalView from '../../views/modal-settings/modal-settings'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
-import { ModalType } from '../../slices/ui/types'
 import { MouseEvent, useCallback } from 'react'
-import { cancelTopModalAction } from '../../slices/ui'
 import { getModalStack } from '../../slices/ui/selectors'
+import { popModalAction } from '../../slices/ui'
 
 const modalViewMap = {
-  [ModalType.Add]: AddModalView,
-  [ModalType.Settings]: SettingsModalView,
-  [ModalType.Report]: ReportModalView,
-  [ModalType.Operation]: OperationModalView
+  add: AddModalView,
+  settings: SettingsModalView,
+  report: ReportModalView,
+  operation: OperationModalView
 }
 
 export default function ModalStackView (): JSX.Element {
@@ -23,7 +22,7 @@ export default function ModalStackView (): JSX.Element {
   const modals = useAppSelector(state => getModalStack(state.ui))
 
   const onBackdropClick = useCallback((event: MouseEvent) => {
-    dispatch(cancelTopModalAction({}))
+    dispatch(popModalAction({}))
   }, [dispatch])
 
   if (modals.length === 0) {

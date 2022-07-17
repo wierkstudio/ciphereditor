@@ -16,27 +16,17 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: rem(24) rem(48) 0 rem(24);
+    align-items: center;
+    padding: rem(16) rem(16) 0 rem(24);
     margin: 0 0 rem(16) 0;
 
     @include breakpoint(l) {
-      padding: rem(24) rem(56) 0 rem(32);
+      padding: rem(16) rem(16) 0 rem(32);
     }
   }
 
   &__title {
     @extend %t-h3;
-  }
-
-  &__btn-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: rem(16) rem(16) 0 0;
-
-    @include breakpoint(l) {
-      padding: rem(20) rem(20) 0 0;
-    }
   }
 
   &__content {

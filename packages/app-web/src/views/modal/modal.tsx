@@ -2,31 +2,47 @@
 import './modal.scss'
 import ButtonView from '../../views/button/button'
 import useAppDispatch from '../../hooks/useAppDispatch'
-import { ModalPayload } from '../../slices/ui/types'
-import { MouseEvent, ReactNode, useCallback } from 'react'
-import { cancelTopModalAction } from '../../slices/ui'
+import useTranslation from '../../hooks/useTranslation'
+import { Icon } from '../icon/icon'
+import { MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react'
+import { popModalAction } from '../../slices/ui'
 
 export default function ModalView (props: {
-  payload: ModalPayload
   title?: string
+  actions?: Array<{
+    title: string
+    icon: Icon
+    onClick: MouseEventHandler<HTMLButtonElement>
+  }>
   children: ReactNode
 }): JSX.Element {
   const dispatch = useAppDispatch()
+  const [t] = useTranslation()
 
   const onCloseClick = useCallback((event: MouseEvent) => {
-    dispatch(cancelTopModalAction({}))
+    dispatch(popModalAction({}))
   }, [dispatch])
 
   return (
     <div className='modal'>
-      {props.title !== undefined && (
-        <header className='modal__header'>
-          <h2 className='modal__title'>{props.title}</h2>
-          <div className='modal__btn-close'>
-            <ButtonView icon='close' modifiers='large' onClick={onCloseClick} />
-          </div>
-        </header>
-      )}
+      <header className='modal__header'>
+        <h2 className='modal__title'>{props.title}</h2>
+        <div className='modal__actions'>
+          {props.actions?.map(action => (
+            <ButtonView
+              key={action.title}
+              modifiers='large'
+              {...action}
+            />
+          ))}
+          <ButtonView
+            title={t('Close')}
+            icon='close'
+            modifiers='large'
+            onClick={onCloseClick}
+          />
+        </div>
+      </header>
       <div className='modal__content'>
         {props.children}
       </div>

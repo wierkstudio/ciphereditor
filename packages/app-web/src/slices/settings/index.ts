@@ -7,7 +7,7 @@ import {
   removeNodeAction,
   undoAction
 } from '../blueprint'
-import { cancelTopModalAction, endWireAction } from '../ui'
+import { popModalAction, endWireAction } from '../ui'
 import { ReducedMotionPreferenceOption, SettingsState, ThemeOption } from './types'
 
 const defaultSettingsState: SettingsState = {
@@ -25,7 +25,7 @@ const defaultSettingsState: SettingsState = {
     'control+z': undoAction.type,
     'shift+meta+z': redoAction.type,
     'control+shift+z': redoAction.type,
-    'escape': [cancelTopModalAction.type, endWireAction.type]
+    'escape': [popModalAction.type, endWireAction.type]
     /* eslint-enable quote-props */
   }
 }

@@ -14,7 +14,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
   const [t] = useTranslation()
   const accessibilitySettings = useSettingsSelector(getAccessibilitySettings)
   return (
-    <ModalView payload={props} title={t('Settings')}>
+    <ModalView title={t('Settings')}>
       <ModalView.SectionView headline={t('Theme')}>
         <SelectView
           elements={[

@@ -81,42 +81,24 @@ export interface UIWireDraft {
 }
 
 /**
- * Modal types
- */
-export enum ModalType {
-  Add = 'add',
-  Settings = 'settings',
-  Report = 'report',
-  Operation = 'operation'
-}
-
-/**
- * Generic modal state
- */
-interface AbstractModalPayload {
-  type: ModalType
-  cancelable: boolean
-}
-
-/**
  * Add modal state
  */
-export interface AddModalPayload extends AbstractModalPayload {
-  type: ModalType.Add
+export interface AddModalPayload {
+  type: 'add'
 }
 
 /**
  * Settings modal state
  */
-export interface SettingsModalPayload extends AbstractModalPayload {
-  type: ModalType.Settings
+export interface SettingsModalPayload {
+  type: 'settings'
 }
 
 /**
  * Report modal state
  */
-export interface ReportModalPayload extends AbstractModalPayload {
-  type: ModalType.Report
+export interface ReportModalPayload {
+  type: 'report'
   title: string
   description: string
 }
@@ -124,8 +106,8 @@ export interface ReportModalPayload extends AbstractModalPayload {
 /**
  * Operation modal state
  */
-export interface OperationModalPayload extends AbstractModalPayload {
-  type: ModalType.Operation
+export interface OperationModalPayload {
+  type: 'operation'
   nodeId: BlueprintNodeId
 }
 
