@@ -1,19 +1,27 @@
 
-# Contributing
+# Contributing Guidelines
 
 First off, thanks for taking the time to contribute!
 
 ## Technical Assumptions & Constraints
 
+### Browser Compatibility
+
+We target modern browsers that support the [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) and [`import.meta`](https://caniuse.com/mdn-javascript_statements_import_meta).
+
+- Chrome >=87
+- Firefox >=78
+- Safari >=13
+- Edge >=88
+
+For more details refer to the [Vite docs](https://vitejs.dev/guide/build.html#browser-compatibility).
+
+### JavaScript
+
 - Use functional style React components with hooks over React component classes.
 - Use [Pointer events](https://developer.mozilla.org/en-US/docs/web/api/pointer_events) instead of mouse or touch specific events.
 
 ## Styleguides
-
-### Naming Conventions
-
-- Use the naming pattern `${typeName}Schema` with a lowercase first character when naming [Zod](https://github.com/colinhacks/zod) schema objects. Example: The Zod schema for the TypeScript type `TypedValue` is called `typedValueSchema`. Instances of `TypedValue` may be called `typedValue`.
-- Use a `View` suffix when naming React components to avoid mixing them up with equally named object types (`OperationView` instead of `Operation`)
 
 ### Comments
 
@@ -30,6 +38,18 @@ First off, thanks for taking the time to contribute!
 ### JavaScript Styleguide
 
 All JavaScript, JSX and TypeScript must adhere to the [Standard Style](https://standardjs.com/).
+
+Naming conventions:
+
+- When dealing with [Zod](https://github.com/colinhacks/zod) schema objects use the naming pattern `${typeName}Schema` with a lowercase first character. Example: The Zod schema for the TypeScript type `TypedValue` is called `typedValueSchema`. Instances of `TypedValue` may be called `typedValue`.
+- Use a `View` suffix when naming React components to avoid mixing them up with equally named object types (`OperationView` instead of `Operation`)
+
+
+### Sass Styleguide
+
+We use [Sass](https://sass-lang.com/) with the [SCSS syntax](https://sass-lang.com/documentation/syntax#scss) for CSS style generation and follow the [BEM methodology](https://en.bem.info/methodology/) (introducing blocks, elements and modifiers) with the [Two Dashes style](https://en.bem.info/methodology/naming-convention/#two-dashes-style) to organize and name our CSS classes.
+
+- Introduce new BEM blocks or elements instead of using HTML tags as selectors to keep the CSS specificity flat. Default styles for HTML tags go to `generics.scss`.
 
 ## Work amenities
 
