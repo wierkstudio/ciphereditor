@@ -1,7 +1,7 @@
 
 import './input-checkbox.scss'
 import { ChangeEvent } from 'react'
-import { renderClassName, ViewModifiers } from '../../utils/dom'
+import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 type InputCheckboxViewProps =
   Omit<React.ComponentPropsWithoutRef<'input'>, 'value' | 'onChange'> & {

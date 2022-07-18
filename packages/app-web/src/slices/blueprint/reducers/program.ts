@@ -2,7 +2,7 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ProgramNode } from '../types/program'
 import { addNode, nextNodeId } from './blueprint'
-import { deriveUniqueName } from '../../../utils/string'
+import { deriveUniqueName } from '../../../lib/utils/string'
 import { getNodeChildren } from '../selectors/blueprint'
 
 /**

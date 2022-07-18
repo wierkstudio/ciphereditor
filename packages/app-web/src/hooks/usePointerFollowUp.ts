@@ -1,6 +1,6 @@
 
 import { MutableRefObject, useEffect } from 'react'
-import { passiveListenerOptions } from '../utils/dom'
+import { passiveListenerOptions } from '../lib/utils/dom'
 
 type PointerEventHandler = (event: PointerEvent) => void
 

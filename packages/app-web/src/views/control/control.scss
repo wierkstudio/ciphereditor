@@ -114,5 +114,6 @@
     @extend %t-value;
     line-height: rem(32);
     color: $c-meta;
+    user-select: none;
   }
 }

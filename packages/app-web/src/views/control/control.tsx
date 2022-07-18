@@ -15,7 +15,7 @@ import { MouseEvent, useCallback, useEffect, useRef } from 'react'
 import { canAttachControls, getControlNode, getControlPreview } from '../../slices/blueprint/selectors/control'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { getWireDraft } from '../../slices/ui/selectors'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 import { targetWireAction } from '../../slices/ui'
 import { toggleControlViewState } from '../../slices/blueprint'
 

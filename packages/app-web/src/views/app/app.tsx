@@ -13,9 +13,10 @@ import { UIEmbedType } from '../../slices/ui/types'
 import { applyEmbedTypeAction } from '../../slices/ui'
 import { getAccessibilitySettings, getShortcutBindings } from '../../slices/settings/selectors'
 import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
-import { mergeModifiers, renderClassName, ViewModifiers } from '../../utils/dom'
-import { postAccessibilityChangedMessage, postInitiatedMessage, postMaximizedChangedMessage, postIntrinsicHeightChangeMessage } from '../../utils/embed'
+import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { postWebsiteMessage } from '../../lib/embed'
+import { EditorMessage, editorMessageSchema } from '../../lib/embed/types'
 
 export default function AppView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -31,35 +32,38 @@ export default function AppView (): JSX.Element {
   const { theme, reducedMotionPreference } =
     useSettingsSelector(getAccessibilitySettings)
 
-  // Parent frame message handler
+  const onEditorMessage = useCallback((message: EditorMessage): void => {
+    const messageType = message.type
+    switch (messageType) {
+      case 'configure': {
+        if (message.embedType === 'website') {
+          dispatch(applyEmbedTypeAction({
+            embedType: UIEmbedType.Website
+          }))
+        }
+        break
+      }
+    }
+  }, [dispatch])
+
+  // Editor message handler
   useEffect(() => {
     const onMessage = (event: MessageEvent): void => {
       if (event.source === window.parent) {
-        // TODO: Validate messages with Zod schemas
-        const message = event.data
-        switch (message.type ?? '') {
-          case 'configure': {
-            if (message.embedType === 'platform') {
-              dispatch(applyEmbedTypeAction({
-                embedType: UIEmbedType.Platform
-              }))
-            }
-            break
-          }
-        }
+        onEditorMessage(editorMessageSchema.parse(event.data))
       }
     }
-
     window.addEventListener('message', onMessage)
     return () => {
       window.removeEventListener('message', onMessage)
     }
-  }, [dispatch])
+  }, [onEditorMessage])
 
   // Document load handler
+  // TODO: Dedupe this call
   const onAppLoad = useCallback(() => {
     if (window.parent !== window) {
-      postInitiatedMessage()
+      postWebsiteMessage({ type: 'initiated' })
     }
   }, [])
 
@@ -105,7 +109,11 @@ export default function AppView (): JSX.Element {
 
     // Notify parent frame about updated accessibility settings, if any
     if (embedType !== UIEmbedType.Standalone) {
-      postAccessibilityChangedMessage({ theme, reducedMotionPreference })
+      postWebsiteMessage({
+        type: 'settingsChange',
+        theme,
+        reducedMotionPreference
+      })
     }
   }, [embedType, theme, reducedMotionPreference, embedEnv, canvasMode, canvasState])
 
@@ -114,7 +122,10 @@ export default function AppView (): JSX.Element {
     return new ResizeObserver(entries => {
       for (const entry of entries) {
         if (embedType !== UIEmbedType.Standalone) {
-          postIntrinsicHeightChangeMessage({ height: entry.contentRect.height })
+          postWebsiteMessage({
+            type: 'intrinsicHeightChange',
+            height: entry.contentRect.height
+          })
         }
       }
     })
@@ -125,18 +136,26 @@ export default function AppView (): JSX.Element {
     if (appElement !== null) {
       intrinsicAppSizeObserver.observe(appElement)
       // Initial observation
-      const rect = appElement.getBoundingClientRect()
-      postIntrinsicHeightChangeMessage({ height: rect.height })
+      if (embedType !== UIEmbedType.Standalone) {
+        const rect = appElement.getBoundingClientRect()
+        postWebsiteMessage({
+          type: 'intrinsicHeightChange',
+          height: rect.height
+        })
+      }
       return () => {
         intrinsicAppSizeObserver.unobserve(appElement)
       }
     }
-  }, [intrinsicAppSizeObserver, appRef])
+  }, [intrinsicAppSizeObserver, appRef, embedType])
 
   // React to maximized changes
   useEffect(() => {
     if (embedType !== UIEmbedType.Standalone) {
-      postMaximizedChangedMessage({ maximized: embedMaximized })
+      postWebsiteMessage({
+        type: 'maximizedChange',
+        maximized: embedMaximized
+      })
     }
   }, [embedType, embedMaximized])
 

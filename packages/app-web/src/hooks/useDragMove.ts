@@ -4,7 +4,7 @@ import {
   useCallback,
   useState
 } from 'react'
-import { releaseOptionalPointerCapture } from '../utils/dom'
+import { releaseOptionalPointerCapture } from '../lib/utils/dom'
 import useCallbackRef from './useCallbackRef'
 import usePointerFollowUp from './usePointerFollowUp'
 

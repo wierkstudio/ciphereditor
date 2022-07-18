@@ -7,13 +7,15 @@ import { Icon } from '../icon/icon'
 import { MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react'
 import { popModalAction } from '../../slices/ui'
 
+export interface ModalViewAction {
+  title: string
+  icon: Icon
+  onClick: MouseEventHandler<HTMLButtonElement>
+}
+
 export default function ModalView (props: {
   title?: string
-  actions?: Array<{
-    title: string
-    icon: Icon
-    onClick: MouseEventHandler<HTMLButtonElement>
-  }>
+  actions?: ModalViewAction[]
   children: ReactNode
 }): JSX.Element {
   const dispatch = useAppDispatch()

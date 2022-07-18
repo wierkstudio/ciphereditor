@@ -1,7 +1,7 @@
 
 import './button.scss'
 import IconView, { Icon } from '../../views/icon/icon'
-import { mergeModifiers, renderClassName, ViewModifiers } from '../../utils/dom'
+import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 type ButtonViewProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> & {
   icon?: Icon

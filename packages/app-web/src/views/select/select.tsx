@@ -2,7 +2,7 @@
 import './select.scss'
 import IconView from '../../views/icon/icon'
 import { ChangeEventHandler } from 'react'
-import { renderClassName, ViewModifiers } from '../../utils/dom'
+import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import useTranslation from '../../hooks/useTranslation'
 
 export interface SelectViewOptionElement {

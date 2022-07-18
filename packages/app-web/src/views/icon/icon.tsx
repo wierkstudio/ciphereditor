@@ -1,6 +1,6 @@
 
 import './icon.scss'
-import { renderClassName, ViewModifiers } from '../../utils/dom'
+import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 type SVGProps = React.ComponentPropsWithoutRef<'svg'>
 

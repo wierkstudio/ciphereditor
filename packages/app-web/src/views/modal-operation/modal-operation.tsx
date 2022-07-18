@@ -1,5 +1,6 @@
 
-import ModalView from '../../views/modal/modal'
+import ModalView, { ModalViewAction } from '../../views/modal/modal'
+import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
@@ -9,9 +10,8 @@ import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNode } from '../../slices/blueprint/types/operation'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
-import useAppDispatch from '../../hooks/useAppDispatch'
+import { openUrlAction, popModalAction } from '../../slices/ui'
 import { removeNodeAction } from '../../slices/blueprint'
-import { popModalAction } from '../../slices/ui'
 
 export default function OperationModalView (props: OperationModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
@@ -33,18 +33,32 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
     description = contribution?.description
   }
 
-  const onRemove = (): void => {
-    dispatch(popModalAction({}))
-    dispatch(removeNodeAction({ nodeId }))
+  const actions: ModalViewAction[] = []
+
+  // Help action
+  if (contribution?.url !== undefined) {
+    const url = contribution?.url
+    actions.push({
+      title: t('Help'),
+      icon: 'help',
+      onClick: (): void => {
+        dispatch(openUrlAction({ url }))
+      }
+    })
   }
 
+  // Remove action
+  actions.push({
+    title: t('Remove node'),
+    icon: 'trash',
+    onClick: (): void => {
+      dispatch(popModalAction({}))
+      dispatch(removeNodeAction({ nodeId }))
+    }
+  })
+
   return (
-    <ModalView
-      title={title}
-      actions={[
-        { title: t('Remove node'), icon: 'trash', onClick: onRemove }
-      ]}
-    >
+    <ModalView title={title} actions={actions}>
       <ModalView.SectionView headline={t('Description')}>
         {description}
       </ModalView.SectionView>

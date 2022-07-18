@@ -25,6 +25,7 @@
     left: 0;
     transform: translate(0, -120%);
     visibility: hidden;
+    user-select: none;
 
     @include prefers-reduced-motion {
       display: none;

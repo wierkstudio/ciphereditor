@@ -16,7 +16,7 @@ import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasMode, getCanvasOffset, getCanvasState, getWireDraft } from '../../slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
 import { UICanvasMode } from '../../slices/ui/types'
 

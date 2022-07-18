@@ -10,7 +10,7 @@ import { VariableNode } from '../types/variable'
 import { getControlNode } from '../selectors/control'
 import { ControlNode } from '../types/control'
 import { getVariableNode } from '../selectors/variable'
-import { arrayRemove } from '../../../utils/array'
+import { arrayRemove } from '../../../lib/utils/array'
 
 /**
  * Generate a new node id that has not been assigned, yet.

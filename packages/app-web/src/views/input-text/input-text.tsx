@@ -3,7 +3,7 @@ import './input-text.scss'
 import IconView, { Icon } from '../icon/icon'
 import React, { useRef, ChangeEvent } from 'react'
 import useShortcutHandler from '../../hooks/useShortcutHandler'
-import { renderClassName, ViewModifiers } from '../../utils/dom'
+import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 /**
  * List of shortcuts that should not further propagate from the text input

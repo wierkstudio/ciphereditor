@@ -12,7 +12,7 @@ import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
 import { getCanvasMode } from '../../slices/ui/selectors'
 import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 import { UICanvasMode } from '../../slices/ui/types'
 
 export default function NodeView (props: {

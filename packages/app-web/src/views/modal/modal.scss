@@ -16,7 +16,6 @@
     position: relative;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     padding: rem(16) rem(16) 0 rem(24);
     margin: 0 0 rem(16) 0;
 
@@ -27,6 +26,11 @@
 
   &__title {
     @extend %t-h3;
+    align-self: center;
+  }
+
+  &__actions {
+    display: flex;
   }
 
   &__content {

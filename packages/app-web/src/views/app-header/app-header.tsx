@@ -12,7 +12,7 @@ import { UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
 import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
-import { pushDeadEndModalAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
+import { openUrlAction, pushDeadEndModalAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -79,17 +79,17 @@ export default function AppHeaderView (): JSX.Element {
               payload: { type: 'settings' }
             }))}
           />
-          {embedType !== UIEmbedType.Platform && (
+          {embedType !== UIEmbedType.Website && (
             <ButtonView
               title={t('View manual')}
               icon='help'
               modifiers='large'
-              onClick={() => {
-                window.open('https://ciphereditor.com/manual', '_blank')
-              }}
+              onClick={() => dispatch(openUrlAction({
+                url: 'https://ciphereditor.com/manual'
+              }))}
             />
           )}
-          {embedType === UIEmbedType.Platform && (
+          {embedType === UIEmbedType.Website && (
             <ButtonView
               title={maximized ? t('Show docs') : t('Hide docs')}
               icon={maximized ? 'minimize' : 'maximize'}

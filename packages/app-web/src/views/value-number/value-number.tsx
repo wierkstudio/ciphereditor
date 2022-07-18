@@ -4,7 +4,7 @@ import ButtonView from '../../views/button/button'
 import InputTextView from '../../views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from '../../views/value/value'
-import { isNumericString } from '../../utils/string'
+import { isNumericString } from '../../lib/utils/string'
 import { IntegerValue, NumberValue, TypedValue } from '@ciphereditor/types'
 import useTranslation from '../../hooks/useTranslation'
 

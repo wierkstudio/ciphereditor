@@ -3,6 +3,7 @@ import { BlueprintNodeId } from '../blueprint/types/blueprint'
 import { ModalPayload, UICanvasMode, UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushModal } from './reducers'
+import { postWebsiteMessage } from '../../lib/embed'
 
 const detectDefaultState = (): Partial<UIState> => {
   if (typeof (window as any).electronContext !== 'undefined') {
@@ -45,12 +46,12 @@ export const settingsSlice = createSlice({
       embedType: UIEmbedType
     }>) => {
       state.embedType = payload.embedType
-      if (state.embedType !== UIEmbedType.Platform) {
+      if (state.embedType !== UIEmbedType.Website) {
         state.embedMaximized = false
       }
     },
     toggleEmbedMaximizedAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.embedType === UIEmbedType.Platform) {
+      if (state.embedType === UIEmbedType.Website) {
         state.embedMaximized = !state.embedMaximized
       }
     },
@@ -133,6 +134,18 @@ export const settingsSlice = createSlice({
     },
     popModalAction: (state, { payload }: PayloadAction<{}>) => {
       popModal(state)
+    },
+    openUrlAction: (state, { payload }: PayloadAction<{
+      url: string
+    }>) => {
+      // TODO: This action has side effects, is that allowed?
+      if (state.embedType === UIEmbedType.Website) {
+        // Ask parent website to open the given URL
+        postWebsiteMessage({ type: 'open', url: payload.url })
+      } else {
+        // Open the given URL in a new tab
+        window.open(payload.url, '_blank')
+      }
     }
   }
 })
@@ -148,7 +161,8 @@ export const {
   pushModalAction,
   pushReportModalAction,
   pushDeadEndModalAction,
-  popModalAction
+  popModalAction,
+  openUrlAction
 } = settingsSlice.actions
 
 export default settingsSlice.reducer

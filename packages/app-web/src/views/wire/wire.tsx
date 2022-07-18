@@ -6,7 +6,7 @@ import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
 import { getVariableWireWaypoints } from '../../slices/blueprint/selectors/variable'
 import { isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
 
 const minNodeGap = 48

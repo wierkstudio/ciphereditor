@@ -11,7 +11,7 @@ import { ControlNode } from '../../slices/blueprint/types/control'
 import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
 import { getCanvasMode, getWireDraft } from '../../slices/ui/selectors'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
-import { releaseOptionalPointerCapture, renderClassName } from '../../utils/dom'
+import { releaseOptionalPointerCapture, renderClassName } from '../../lib/utils/dom'
 import { startWireAction } from '../../slices/ui'
 import { UICanvasMode } from '../../slices/ui/types'
 

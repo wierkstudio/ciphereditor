@@ -16,7 +16,7 @@ import { enterProgramAction, retryOperationAction } from '../../slices/blueprint
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { pushModalAction } from '../../slices/ui'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 
 export default function OperationView (props: {
   /**

@@ -3,7 +3,7 @@ import './value-boolean.scss'
 import InputCheckboxView from '../input-checkbox/input-checkbox'
 import { BooleanValue } from '@ciphereditor/types'
 import { ValueViewProps } from '../../views/value/value'
-import { renderClassName } from '../../utils/dom'
+import { renderClassName } from '../../lib/utils/dom'
 
 export default function ValueBooleanView (
   props: ValueViewProps<BooleanValue>

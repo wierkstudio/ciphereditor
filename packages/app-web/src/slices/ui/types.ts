@@ -31,9 +31,9 @@ export enum UIEmbedType {
   Standalone = 'standalone',
 
   /**
-   * The web app is embedded within the platform
+   * The web app is embedded within the official website
    */
-  Platform = 'platform',
+  Website = 'website',
 
   /**
    * The web app is embedded within the Electron-based desktop app
