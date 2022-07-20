@@ -8,9 +8,10 @@ import { ControlNode } from '../types/control'
 import { TypedValue } from '@ciphereditor/types'
 import { VariableNode } from '../types/variable'
 import { equalValues, isTypeWithinTypes, previewValue } from '../reducers/value'
-import { getNode, getNodeChildren } from './blueprint'
+import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
+import { UICanvasMode } from '../../ui/types'
 
 /**
  * Find a control node by the given node id.
@@ -52,22 +53,23 @@ export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNod
 export const getOutletPosition = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId | undefined
+  contextProgramId: BlueprintNodeId | undefined,
+  canvasMode: UICanvasMode = UICanvasMode.Plane
 ): { x: number, y: number } | undefined => {
   const control = getControlNode(state, controlId)
   const node =
     control.parentId === contextProgramId
       ? control
       : getNode(state, control.parentId)
+  const nodePosition = getNodePosition(state, node.id, canvasMode)
   if (
-    node.x !== undefined &&
-    node.y !== undefined &&
+    nodePosition !== undefined &&
     control.nodeOutletX !== undefined &&
     control.nodeOutletY !== undefined
   ) {
     return {
-      x: node.x + control.nodeOutletX,
-      y: node.y + control.nodeOutletY
+      x: nodePosition.x + control.nodeOutletX,
+      y: nodePosition.y + control.nodeOutletY
     }
   }
   return undefined

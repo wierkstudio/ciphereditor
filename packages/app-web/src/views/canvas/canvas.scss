@@ -17,6 +17,10 @@
 
   &--wire {
     cursor: grabbing;
+    touch-action: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
   }
 
   &__content {
@@ -47,6 +51,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    z-index: $z-index-wire-draft;
     pointer-events: none;
   }
 

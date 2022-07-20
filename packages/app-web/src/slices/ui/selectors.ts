@@ -23,8 +23,14 @@ export const getCanvasMode = (state: UIState): UICanvasMode =>
 export const getCanvasState = (state: UIState): UICanvasState =>
   state.canvasState
 
-export const getCanvasOffset = (state: UIState): { x: number, y: number } =>
-  ({ x: state.canvasOffsetX, y: state.canvasOffsetY })
+export const getCanvasOffset = (state: UIState): { x: number, y: number } => {
+  if (state.canvasMode === UICanvasMode.Plane) {
+    return { x: state.canvasOffsetX, y: state.canvasOffsetY }
+  } else {
+    // TODO: Evacuate magic numbers (320px is the width of a node)
+    return { x: -(state.canvasWidth * 0.5 - 320 * 0.5), y: 0 }
+  }
+}
 
 export const getCanvasSize = (state: UIState): { width: number, height: number } =>
   ({ width: state.canvasWidth, height: state.canvasHeight })

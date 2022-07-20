@@ -1,4 +1,5 @@
 
+import { UICanvasMode } from '../../ui/types'
 import {
   BlueprintNode,
   BlueprintNodeId,
@@ -54,13 +55,32 @@ export const getNodeChildren = (
     .map(id => getNode(state, id))
     .filter(node => type === undefined || node.type === type)
 
+/**
+ * Retrive a node position on the plane or sequential canvas.
+ */
 export const getNodePosition = (
   state: BlueprintState,
-  nodeId: BlueprintNodeId
-): { x: number, y: number } => {
+  nodeId: BlueprintNodeId,
+  canvasMode: UICanvasMode = UICanvasMode.Plane
+): { x: number, y: number } | undefined => {
   const node = getNode(state, nodeId)
-  if (node.x === undefined || node.y === undefined) {
-    throw new Error('Trying to access the position of a node that has none set')
+  if (canvasMode === UICanvasMode.Plane) {
+    if (node.x !== undefined && node.y !== undefined) {
+      return { x: node.x, y: node.y }
+    }
+  } else if (canvasMode === UICanvasMode.Sequential) {
+    // TODO: Evacuate magic numbers
+    let y = 96 // Canvas top padding at S-M
+    // We sum up the heights and margins of the nodes situated above
+    const siblings = getNodeChildren(state, node.parentId)
+    for (const sibling of siblings) {
+      if (sibling.id !== nodeId) {
+        y += (sibling.height ?? 0) + 24 // Node margin at S-M
+      } else {
+        break
+      }
+    }
+    return { x: 0, y }
   }
-  return { x: node.x, y: node.y }
+  return undefined
 }

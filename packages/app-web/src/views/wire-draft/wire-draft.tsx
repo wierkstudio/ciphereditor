@@ -9,7 +9,7 @@ import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { UIWireDraft } from '../../slices/ui/types'
 import { attachControlsAction } from '../../slices/blueprint'
 import { endWireAction } from '../../slices/ui'
-import { getCanvasOffset } from '../../slices/ui/selectors'
+import { getCanvasMode, getCanvasOffset } from '../../slices/ui/selectors'
 import { getOutletPosition } from '../../slices/blueprint/selectors/control'
 import { useState } from 'react'
 
@@ -22,8 +22,13 @@ export default function WireDraftView (props: {
   const dispatch = useAppDispatch()
 
   // TODO: Handle source control node deletion while wiring
-  const sourcePosition = useBlueprintSelector(state =>
-    getOutletPosition(state, wireDraft.sourceControlId, contextProgramId))
+  const canvasMode = useUISelector(getCanvasMode)
+  const sourcePosition = useBlueprintSelector(state => getOutletPosition(
+    state,
+    wireDraft.sourceControlId,
+    contextProgramId,
+    canvasMode
+  ))
   const canvasOffset = useUISelector(getCanvasOffset)
   const [targetPosition, setTargetPosition] =
     useState<{ x: number, y: number } | undefined>(undefined)
