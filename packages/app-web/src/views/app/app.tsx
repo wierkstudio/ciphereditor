@@ -71,13 +71,13 @@ export default function AppView (): JSX.Element {
   // Shortcut handler
   const onShortcut = useCallback((shortcut: string, event: KeyboardEvent) => {
     const actions = shortcutBindings[shortcut]
-    if (actions === undefined) {
-      console.log('Unhandled shortcut', shortcut)
-    } else if (typeof actions === 'string') {
-      dispatch({ type: actions, payload: {} })
-    } else {
-      for (const action of actions) {
-        dispatch({ type: action, payload: {} })
+    if (actions !== undefined) {
+      if (typeof actions === 'string') {
+        dispatch({ type: actions, payload: {} })
+      } else {
+        for (const action of actions) {
+          dispatch({ type: action, payload: {} })
+        }
       }
     }
   }, [shortcutBindings, dispatch])
