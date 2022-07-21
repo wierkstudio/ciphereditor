@@ -10,7 +10,7 @@ import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
 import { UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
-import { getEmbedType, isEmbedMaximized } from '../../slices/ui/selectors'
+import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
 import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
 import { openUrlAction, pushDeadEndModalAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
@@ -18,6 +18,7 @@ export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
   const program = useBlueprintSelector(getActiveProgram)
   const embedType = useUISelector(getEmbedType)
+  const maximizable = useUISelector(isEmbedMaximizable)
   const maximized = useUISelector(isEmbedMaximized)
   const [t] = useTranslation()
   return (
@@ -89,7 +90,7 @@ export default function AppHeaderView (): JSX.Element {
               }))}
             />
           )}
-          {embedType === UIEmbedType.Website && (
+          {maximizable && (
             <ButtonView
               title={maximized ? t('Show docs') : t('Hide docs')}
               icon={maximized ? 'minimize' : 'maximize'}

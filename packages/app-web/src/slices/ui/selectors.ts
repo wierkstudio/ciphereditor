@@ -14,6 +14,9 @@ export const getEmbedType = (state: UIState): UIEmbedType =>
 export const getEmbedEnv = (state: UIState): string =>
   state.embedEnv
 
+export const isEmbedMaximizable = (state: UIState): boolean =>
+  state.embedMaximizable
+
 export const isEmbedMaximized = (state: UIState): boolean =>
   state.embedMaximized
 

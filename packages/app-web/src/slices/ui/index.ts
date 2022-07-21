@@ -24,6 +24,7 @@ const detectDefaultState = (): Partial<UIState> => {
 const defaultUIState: UIState = {
   embedType: UIEmbedType.Standalone,
   embedEnv: 'chrome',
+  embedMaximizable: false,
   embedMaximized: false,
 
   canvasMode: UICanvasMode.Plane,
@@ -42,12 +43,19 @@ export const settingsSlice = createSlice({
   name: 'ui',
   initialState: defaultUIState,
   reducers: {
-    applyEmbedTypeAction: (state, { payload }: PayloadAction<{
-      embedType: UIEmbedType
+    configureEmbedAction: (state, { payload }: PayloadAction<{
+      embedType?: UIEmbedType
+      maximizable?: boolean
     }>) => {
-      state.embedType = payload.embedType
-      if (state.embedType !== UIEmbedType.Website) {
-        state.embedMaximized = false
+      if (payload.embedType !== undefined) {
+        state.embedType = payload.embedType
+        if (state.embedType !== UIEmbedType.Website) {
+          state.embedMaximized = false
+          state.embedMaximizable = false
+        }
+      }
+      if (payload.maximizable !== undefined) {
+        state.embedMaximizable = payload.maximizable
       }
     },
     toggleEmbedMaximizedAction: (state, { payload }: PayloadAction<{}>) => {
@@ -78,7 +86,6 @@ export const settingsSlice = createSlice({
             : UICanvasMode.Sequential
         if (state.canvasMode !== newCanvasMode) {
           state.canvasMode = newCanvasMode
-          console.log('newCanvasMode', newCanvasMode)
           // TODO: Transition from one mode to the other
         }
       }
@@ -151,7 +158,7 @@ export const settingsSlice = createSlice({
 })
 
 export const {
-  applyEmbedTypeAction,
+  configureEmbedAction,
   toggleEmbedMaximizedAction,
   moveCanvasAction,
   updateCanvasSizeAction,

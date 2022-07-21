@@ -7,6 +7,7 @@ import { BlueprintNodeId } from '../blueprint/types/blueprint'
 export interface UIState {
   embedType: UIEmbedType
   embedEnv: string
+  embedMaximizable: boolean
   embedMaximized: boolean
 
   canvasMode: UICanvasMode

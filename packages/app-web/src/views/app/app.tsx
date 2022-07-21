@@ -9,14 +9,14 @@ import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useShortcutHandler from '../../hooks/useShortcutHandler'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
+import { EditorMessage, editorMessageSchema } from '../../lib/embed/types'
 import { UIEmbedType } from '../../slices/ui/types'
-import { applyEmbedTypeAction } from '../../slices/ui'
+import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getShortcutBindings } from '../../slices/settings/selectors'
 import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
 import { postWebsiteMessage } from '../../lib/embed'
-import { EditorMessage, editorMessageSchema } from '../../lib/embed/types'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 export default function AppView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -36,11 +36,10 @@ export default function AppView (): JSX.Element {
     const messageType = message.type
     switch (messageType) {
       case 'configure': {
-        if (message.embedType === 'website') {
-          dispatch(applyEmbedTypeAction({
-            embedType: UIEmbedType.Website
-          }))
-        }
+        dispatch(configureEmbedAction({
+          embedType: message.embedType as UIEmbedType | undefined,
+          maximizable: message.maximizable
+        }))
         break
       }
     }
