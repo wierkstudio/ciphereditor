@@ -11,16 +11,19 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'a',
+      label: 'A',
       initialValue: false,
       types: ['boolean']
     },
     {
       name: 'b',
+      label: 'B',
       initialValue: false,
       types: ['boolean']
     },
     {
       name: 'aAndB',
+      label: 'A AND B',
       initialValue: false,
       types: ['boolean'],
       writable: false,

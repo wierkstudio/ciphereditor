@@ -110,6 +110,69 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/case-transform',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
+      label: 'Case transform',
+      description: 'Transform text to lower case, upper case, capitalize, alternating case or inverse case',
+      keywords: [],
+      controls: [
+        {
+          name: 'source',
+          initialValue: 'Hello World',
+          types: ['text']
+        },
+        {
+          name: 'transform',
+          initialValue: 'upperCase',
+          types: ['text'],
+          choices: [
+            { value: 'lowerCase', label: 'Lower case' },
+            { value: 'upperCase', label: 'Upper case' },
+            { value: 'capitalize', label: 'Capitalize' },
+            { value: 'alternatingCase', label: 'Alternating case' },
+            { value: 'inverseCase', label: 'Inverse case' }
+          ]
+        },
+        {
+          name: 'transformed',
+          initialValue: 'HELLO WORLD',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/concatenate',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
+      label: 'Concatenate',
+      description: 'Concatenate text or byte inputs',
+      keywords: ['append', 'join'],
+      controls: [
+        {
+          name: 'a',
+          label: 'A',
+          initialValue: 'foo',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'b',
+          label: 'B',
+          initialValue: 'bar',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'ab',
+          label: 'AB',
+          initialValue: 'foobar',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-hash/hash',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
       label: 'Hash function',
@@ -224,11 +287,13 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'a',
+          label: 'A',
           initialValue: false,
           types: ['boolean']
         },
         {
           name: 'notA',
+          label: 'NOT A',
           initialValue: true,
           types: ['boolean'],
           order: 1000
@@ -246,16 +311,19 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'a',
+          label: 'A',
           initialValue: false,
           types: ['boolean']
         },
         {
           name: 'b',
+          label: 'B',
           initialValue: false,
           types: ['boolean']
         },
         {
           name: 'aAndB',
+          label: 'A AND B',
           initialValue: false,
           types: ['boolean'],
           writable: false,
@@ -274,16 +342,19 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'a',
+          label: 'A',
           initialValue: false,
           types: ['boolean']
         },
         {
           name: 'b',
+          label: 'B',
           initialValue: false,
           types: ['boolean']
         },
         {
           name: 'aOrB',
+          label: 'A OR B',
           initialValue: false,
           types: ['boolean'],
           writable: false,

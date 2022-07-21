@@ -11,11 +11,13 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'a',
+      label: 'A',
       initialValue: false,
       types: ['boolean']
     },
     {
       name: 'notA',
+      label: 'NOT A',
       initialValue: true,
       types: ['boolean'],
       order: 1000

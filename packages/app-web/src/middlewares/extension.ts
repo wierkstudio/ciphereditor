@@ -157,7 +157,7 @@ const getContributionExports = async (
   }
 
   if (fallbackExtensionUrl === undefined) {
-    throw new Error(`Contribution '${name} could not be found`)
+    throw new Error(`Contribution '${name}' could not be found`)
   }
 
   // Load the given fallback extension
