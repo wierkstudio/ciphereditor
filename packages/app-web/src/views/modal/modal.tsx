@@ -60,7 +60,9 @@ ModalView.SectionView = (props: {
   return (
     <fieldset className='modal__section'>
       <legend className='modal__section-headline'>{props.headline}</legend>
-      {props.children}
+      <div className='modal__section-content'>
+        {props.children}
+      </div>
     </fieldset>
   )
 }

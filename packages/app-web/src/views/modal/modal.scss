@@ -58,4 +58,11 @@
     @extend %t-h4;
     color: $c-meta;
   }
+
+  &__section-content {
+
+    p {
+      user-select: text;
+    }
+  }
 }

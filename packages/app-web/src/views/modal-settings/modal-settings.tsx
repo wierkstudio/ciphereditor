@@ -46,7 +46,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
         />
       </ModalView.SectionView>
       <ModalView.SectionView headline='Scaling'>
-        {t('This app scales according to your Browser settings for zoom and text size.')}
+        <p>{t('This app scales according to your Browser settings for zoom and text size.')}</p>
       </ModalView.SectionView>
       <ModalView.SectionView headline='About this app'>
         <p>ciphereditor</p>
