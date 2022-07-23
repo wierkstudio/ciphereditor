@@ -200,7 +200,6 @@ export const changeControlValueToType = (
   valueType: string
 ): void => {
   const control = getControlNode(state, controlId)
-  // Derive value of desired type from current value
   control.selectedChoiceIndex = undefined
   if (control.value.type !== valueType) {
     let value = castValue(control.value, valueType)

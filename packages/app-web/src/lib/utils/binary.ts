@@ -1,5 +1,24 @@
 
 /**
+ * Decode a binary buffer to a string.
+ * @return Decoded string or undefined, if decoding failed
+ */
+export const bufferToString = (buffer: ArrayBuffer): string | undefined => {
+  try {
+    return new TextDecoder('utf-8', { fatal: true }).decode(buffer)
+  } catch (error) {
+    return undefined
+  }
+}
+
+/**
+ * Encode a string to a binary buffer.
+ */
+export const stringToBuffer = (string: string): ArrayBuffer => {
+  return new TextEncoder().encode(string).buffer
+}
+
+/**
  * Convert a binary buffer to a hex string
  */
 export const bufferToHexString = (buffer: ArrayBuffer): string => {

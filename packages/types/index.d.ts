@@ -106,7 +106,7 @@ export interface Control {
    * Wether the value is restricted to the given options (if not empty)
    * Defaults to true
    */
-  enforcechoices?: boolean
+  enforceChoices?: boolean
 
   /**
    * Control enabled state

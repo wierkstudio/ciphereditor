@@ -131,6 +131,7 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
 // We need 'unsafe-eval' for backwards compatibility
 const contentSecurityPolicy =
   'default-src https:; script-src data: https: \'unsafe-eval\' \'wasm-unsafe-eval\';'
+const extensionPromiseMap = new Map<string, Promise<void>>()
 const contributionWorkerMap = new Map<string, ProcessorWorker>()
 const contributionExportsMap = new Map<string, ContributionExports>()
 
@@ -161,7 +162,12 @@ const getContributionExports = async (
   }
 
   // Load the given fallback extension
-  await activateExtension(fallbackExtensionUrl)
+  let extensionPromise = extensionPromiseMap.get(fallbackExtensionUrl)
+  if (extensionPromise === undefined) {
+    extensionPromise = activateExtension(fallbackExtensionUrl)
+    extensionPromiseMap.set(fallbackExtensionUrl, extensionPromise)
+  }
+  await extensionPromise
   contributionExports = contributionExportsMap.get(name)
   if (contributionExports !== undefined) {
     return contributionExports

@@ -65,6 +65,7 @@ export default function ValueNumberView (props: ValueViewProps<NumberValue | Int
           onFocus={props.onFocus}
           onBlur={onInputBlur}
           onChange={onInputChange}
+          modifiers='slim'
         />
       </div>
       {!readOnly && (

@@ -2,7 +2,7 @@
 import { ImplicitTypedValue, LabeledImplicitTypedValue, TypedValue } from '@ciphereditor/types'
 import { LabeledTypedValue } from '../types/value'
 import { arrayEqual } from '../../../lib/utils/array'
-import { bufferToHexString } from '../../../lib/utils/binary'
+import { bufferToHexString, bufferToString, stringToBuffer } from '../../../lib/utils/binary'
 import { capitalCase } from 'change-case'
 
 /**
@@ -54,19 +54,24 @@ export const resolveImplicitTypedValue = (
     return { type: 'bytes', data: implicitValue }
   }
   switch (typeof implicitValue) {
-    case 'object':
+    case 'object': {
       return implicitValue
-    case 'boolean':
+    }
+    case 'boolean': {
       return { type: 'boolean', data: implicitValue }
-    case 'number':
+    }
+    case 'number': {
       return {
         type: Number.isInteger(implicitValue) ? 'integer' : 'number',
         data: implicitValue
       }
-    case 'string':
+    }
+    case 'string': {
       return { type: 'text', data: implicitValue }
-    default:
+    }
+    default: {
       throw new Error(`Unable to resolve an implicit value of type '${typeof implicitValue}'`)
+    }
   }
 }
 
@@ -90,21 +95,26 @@ export const resolveLabeledImplicitTypedValue = (
 export const createValue = (type: string): TypedValue => {
   let data: any
   switch (type) {
-    case 'boolean':
+    case 'boolean': {
       data = false
       break
+    }
     case 'integer':
-    case 'number':
+    case 'number': {
       data = 0
       break
-    case 'text':
+    }
+    case 'text': {
       data = ''
       break
-    case 'bytes':
+    }
+    case 'bytes': {
       data = new ArrayBuffer(0)
       break
-    default:
+    }
+    default: {
       throw new Error(`No empty value defined for type '${type}'`)
+    }
   }
   return { type, data }
 }
@@ -123,16 +133,19 @@ export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
     case 'boolean':
     case 'integer':
     case 'number':
-    case 'text':
+    case 'text': {
       return a.data === b.data
-    case 'bytes':
+    }
+    case 'bytes': {
       return arrayEqual(
         new Uint8Array(a.data),
         new Uint8Array(b.data as ArrayBuffer)
       )
-    default:
+    }
+    default: {
       // Equality for values of the given type is not defined
       return false
+    }
   }
 }
 
@@ -142,12 +155,26 @@ export const equalValues = (a: TypedValue, b: TypedValue): boolean => {
  */
 export const castValue = (
   value: TypedValue,
-  type: string
+  newType: string
 ): TypedValue | undefined => {
-  if (value.type === type) {
+  if (value.type === newType) {
     return value
   }
-  // TODO: Needs implementation
+  if (value.type === 'bytes' && newType === 'text') {
+    const string = bufferToString(value.data)
+    if (string !== undefined) {
+      return { type: 'text', data: string }
+    }
+  }
+  if (value.type === 'text' && newType === 'bytes') {
+    const buffer = stringToBuffer(value.data)
+    if (buffer !== undefined) {
+      return { type: 'bytes', data: buffer }
+    }
+  }
+  if (newType === 'text') {
+    return { type: 'text', data: stringifyValue(value) }
+  }
   return undefined
 }
 
@@ -156,20 +183,26 @@ export const castValue = (
  */
 export const stringifyValue = (value: TypedValue): string => {
   switch (value.type) {
-    case 'boolean':
+    case 'boolean': {
       return value.data ? 'True' : 'False'
-    case 'integer':
+    }
+    case 'integer': {
       return value.data.toString()
-    case 'number':
+    }
+    case 'number': {
       return value.data.toString()
-    case 'text':
+    }
+    case 'text': {
       return value.data
-    case 'bytes':
+    }
+    case 'bytes': {
       return bufferToHexString(value.data)
-    default:
+    }
+    default: {
       // Treat the value not of type never here as we might add additional types
       // without adding a way to stringify it
       return labelType((value as TypedValue).type)
+    }
   }
 }
 

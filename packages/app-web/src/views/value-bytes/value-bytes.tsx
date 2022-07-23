@@ -55,6 +55,7 @@ export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.
           onFocus={onFocus}
           onBlur={onInputBlur}
           onChange={onInputChange}
+          modifiers='slim'
         />
       </div>
     </div>

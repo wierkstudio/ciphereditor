@@ -173,6 +173,78 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/binary-to-text',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
+      label: 'Binary to text encoding',
+      description: 'Operation for commonly used base64, base32, base16, hex, and binary encoding schemes.',
+      url: 'https://ciphereditor.com/operations/binary-to-text',
+      keywords: ['base64', 'base32', 'base16', 'binary'],
+      controls: [
+        {
+          name: 'data',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['bytes', 'text']
+        },
+        {
+          name: 'alphabet',
+          initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+          types: ['text'],
+          choices: [
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+              label: 'base64'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_',
+              label: 'base64url'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567',
+              label: 'base32'
+            },
+            {
+              value: '0123456789ABCDEFGHIJKLMNOPQRSTUV',
+              label: 'base32hex'
+            },
+            {
+              value: 'ybndrfg8ejkmcpqxot1uwisza345h769',
+              label: 'z-base-32'
+            },
+            {
+              value: '0123456789ABCDEF',
+              label: 'base16, hex'
+            },
+            {
+              value: '0123',
+              label: 'base4, quaternary'
+            },
+            {
+              value: '01',
+              label: 'base2, binary'
+            }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'padding',
+          initialValue: '=',
+          types: ['text'],
+          choices: [
+            { value: '', label: 'None' },
+            { value: '=', label: 'Equals sign (=)' }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'encodedData',
+          initialValue: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-hash/hash',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
       label: 'Hash function',
