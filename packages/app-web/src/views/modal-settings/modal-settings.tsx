@@ -13,6 +13,11 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
   const accessibilitySettings = useSettingsSelector(getAccessibilitySettings)
+
+  const version = process.env.VERSION ?? 'N/A'
+  const versionDate = process.env.VERSION_DATE ?? 'N/A'
+  const versionCommit = (process.env.VERSION_COMMIT ?? 'N/A').substring(0, 8)
+
   return (
     <ModalView title={t('Settings')}>
       <ModalView.SectionView headline={t('Theme')}>
@@ -42,6 +47,11 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
       </ModalView.SectionView>
       <ModalView.SectionView headline='Scaling'>
         {t('This app scales according to your Browser settings for zoom and text size.')}
+      </ModalView.SectionView>
+      <ModalView.SectionView headline='About this app'>
+        <p>ciphereditor</p>
+        <p>{`${t('Version')}: ${version}`}</p>
+        <p>{`${t('Commit')}: ${versionCommit} (${versionDate})`}</p>
       </ModalView.SectionView>
     </ModalView>
   )
