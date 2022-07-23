@@ -1,7 +1,7 @@
 
 import ButtonView from '../../views/button/button'
 import InputTextView from '../input-text/input-text'
-import ModalView from '../../views/modal/modal'
+import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
@@ -13,7 +13,7 @@ import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from '../../slices/ui/selectors'
 import { getContributions } from '../../slices/directory/selectors'
 import { gridSize } from '../../hooks/useDragMove'
-import { popModalAction } from '../../slices/ui'
+import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
 
 export default function AddModalView (props: AddModalPayload): JSX.Element {
@@ -42,8 +42,21 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
     return true
   })
 
+  const helpAction: ModalViewAction = {
+    title: t('Help'),
+    icon: 'help',
+    onClick: (event) => {
+      dispatch(openUrlAction({
+        url: 'https://ciphereditor.com/operations'
+      }))
+    }
+  }
+
   return (
-    <ModalView title={t('Add a new operation')}>
+    <ModalView
+      title={t('Add a new operation')}
+      actions={[helpAction]}
+    >
       <InputTextView
         value={searchQuery}
         onChange={setSearchQuery}
