@@ -15,8 +15,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
   const accessibilitySettings = useSettingsSelector(getAccessibilitySettings)
 
   const version = process.env.VERSION ?? 'N/A'
-  const versionDate = process.env.VERSION_DATE ?? 'N/A'
-  const versionCommit = (process.env.VERSION_COMMIT ?? 'N/A').substring(0, 8)
+  const versionCommit = (process.env.VERSION_COMMIT ?? 'N/A').substring(0, 7)
 
   return (
     <ModalView title={t('Settings')}>
@@ -51,7 +50,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
       <ModalView.SectionView headline='About this app'>
         <p>ciphereditor</p>
         <p>{`${t('Version')}: ${version}`}</p>
-        <p>{`${t('Commit')}: ${versionCommit} (${versionDate})`}</p>
+        <p>{`${t('Commit')}: ${versionCommit}`}</p>
       </ModalView.SectionView>
     </ModalView>
   )

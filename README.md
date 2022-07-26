@@ -8,9 +8,11 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&labelColor=688097)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square&labelColor=688097)](https://standardjs.com)
 
-Your playground for cryptography, coding & data.
+## Your playground for cryptography, coding & data
 
-## Packages
+ciphereditor is a web app for cryptography, coding and data. It encourages beginners and pros alike to explore new operations and build own workflows on top of them without relying on detached bulky tools – [ciphereditor.com](https://ciphereditor.com)
+
+## How to navigate the source code
 
 As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other. All packages listed below share the same version.
 
@@ -21,9 +23,13 @@ As a monorepo this repository contains multiple packages to share common depende
 - `extension-essentials` - Extension providing essential operations
 - `extension-hash` - Extension providing operations related to cryptographic hash functions
 
-## Scripts
+## Build your own
 
-Following scripts are offered by the root package:
+To build the project on your own machine you may [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the command `git clone git@github.com:cryptii/cryptii.git` in your terminal.
+
+Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as mentioned in `.nvmrc`. Install the dependencies by issuing `npm install` in your terminal within the repository root folder. You need to repeat this step every time `package-lock.json` changes.
+
+Following commands are available in the repository root folder:
 
 - `npm run lint` - Lint all projects
 - `npm run app-web-build` - Create an optimized production build for the web app
@@ -42,20 +48,24 @@ If you consider contributing to this project, [please read this first](CONTRIBUT
 
 ## Acknowledgements
 
-### Use of Open Source fonts
+<details><summary>Use of Open Source fonts</summary>
 
 We use fonts licensed under the [SIL Open Font License, 1.1](http://scripts.sil.org/OFL):
 
 - LexendDeca[wght].ttf: Copyright 2019 The Lexend Project Authors ([https://github.com/googlefonts/lexend](https://github.com/googlefonts/lexend))
 - IBMPlexMono-Regular.ttf: Copyright 2017 IBM Corp. All rights reserved.
 
-### Use of Iconic Pro icons
+</details>
+
+<details><summary>Use of Iconic Pro icons</summary>
 
 We use [Iconic Pro](https://iconic.app) icons in this project.
 
 Copyright (c) Iconic
 
 Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source and binary forms, with or without modification, is allowed if you own an Iconic Pro license.
+
+</details>
 
 ---
 

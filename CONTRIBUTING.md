@@ -3,6 +3,10 @@
 
 First off, thanks for taking the time to contribute!
 
+## Code of Conduct
+
+This project and everyone participating in it is governed by the [ciphereditor code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to contact@wierk.lu.
+
 ## Technical Assumptions & Constraints
 
 ### Browser Compatibility
