@@ -5,8 +5,8 @@
   </a>
 </h1>
 
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square&labelColor=688097)](LICENSE.txt)
-[![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square&labelColor=688097)](https://standardjs.com)
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
+[![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Your playground for cryptography, coding & data
 
@@ -69,4 +69,4 @@ Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source
 
 ---
 
-This is a project by [wierk.lu](https://wierk.lu/) and [contributors](https://github.com/wierkstudio/ciphereditor/graphs/contributors).
+This is a project by [Wierk](https://wierk.lu/) and [contributors](https://github.com/wierkstudio/ciphereditor/graphs/contributors).

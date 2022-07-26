@@ -7,6 +7,28 @@ First off, thanks for taking the time to contribute!
 
 This project and everyone participating in it is governed by the [ciphereditor code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to contact@wierk.lu.
 
+## How to contribute
+
+### Reporting bugs or feature requests
+
+Please follow these steps when creating an issue:
+
+1. Make sure your issue hasn't been [reported already](https://github.com/wierkstudio/ciphereditor/issues).
+2. Please don't report multiple unrelated bugs or requests in a single issue.
+3. If your issue has security implications please refer to the [security policy](SECURITY.md).
+4. Follow all instructions in the issue template.
+
+### Bring your changes to the repository with a pull request
+
+By contributing your code to this repository, you agree to license your contribution under [the same license](LICENSE.txt).
+
+Please follow these steps to have your contribution considered:
+
+1. Follow the technical assumptions, constraints and styleguides below.
+2. Write tests for your changes.
+3. Successfully build the project.
+4. Create a pull request and follow all instructions in the template.
+
 ## Technical Assumptions & Constraints
 
 ### Browser Compatibility
@@ -58,7 +80,3 @@ We use [Sass](https://sass-lang.com/) with the [SCSS syntax](https://sass-lang.c
 ## Work amenities
 
 Wearing nice sneakers while coding is not a requirement but it is very much appreciated.
-
-## License
-
-By contributing your code to this repository, you agree to license your contribution under [the same license](LICENSE.txt).
