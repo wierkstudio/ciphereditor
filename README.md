@@ -25,7 +25,7 @@ As a monorepo this repository contains multiple packages to share common depende
 
 ## Build your own
 
-To build the project on your own machine you may [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the command `git clone git@github.com:cryptii/cryptii.git` in your terminal.
+To build the project on your own machine you may [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the command `git clone git@github.com:wierkstudio/ciphereditor.git` in your terminal.
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as mentioned in `.nvmrc`. Install the dependencies by issuing `npm install` in your terminal within the repository root folder. You need to repeat this step every time `package-lock.json` changes.
 
