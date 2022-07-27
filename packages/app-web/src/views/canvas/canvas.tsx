@@ -117,8 +117,8 @@ export default function CanvasView (): JSX.Element {
         <div className='canvas__empty'>
           <p className='canvas__empty-message'>
             {/* TODO: Needs translation */}
-            Press <IconView icon='plus' modifiers='inline-reference' /> to add
-            your first operation.
+            Press <IconView icon='plus' modifiers='inline-reference' /> to
+            explore operations and start building your own workflow.
           </p>
         </div>
       )}

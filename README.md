@@ -10,7 +10,7 @@
 
 ## Your playground for cryptography, coding & data
 
-ciphereditor is a web app for cryptography, coding and data. It encourages beginners and pros alike to explore new operations and build own workflows on top of them without relying on detached bulky tools – [ciphereditor.com](https://ciphereditor.com)
+ciphereditor is a web app for cryptography, coding and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
 
 ## How to navigate the source code
 
