@@ -149,6 +149,11 @@ export const settingsSlice = createSlice({
       if (state.embedType === UIEmbedType.Website) {
         // Ask parent website to open the given URL
         postWebsiteMessage({ type: 'open', url: payload.url })
+
+        // Minimize embed to make docs visible
+        if (state.embedMaximizable) {
+          state.embedMaximized = false
+        }
       } else {
         // Open the given URL in a new tab
         window.open(payload.url, '_blank')
