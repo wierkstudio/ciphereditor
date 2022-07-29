@@ -28,7 +28,26 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'alphabet',
           initialValue: 'abcdefghijklmnopqrstuvwxyz',
-          types: ['text']
+          types: ['text'],
+          choices: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceChoices: false
         },
         {
           name: 'ciphertext',
@@ -66,6 +85,67 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'ciphertext',
           initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/letter-number-cipher',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js',
+      label: 'Letter number cipher',
+      description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
+      url: 'https://ciphereditor.com/operations/letter-number-cipher',
+      keywords: ['a1z26 cipher', 'letter number code', 'substitution cipher'],
+      controls: [
+        {
+          name: 'letters',
+          initialValue: 'the quick brown fox jumps over the lazy dog',
+          types: ['text']
+        },
+        {
+          name: 'alphabet',
+          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          choices: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'separator',
+          initialValue: ' ',
+          types: ['text'],
+          choices: [
+            { value: ' ', label: 'Space' },
+            { value: ',', label: 'Comma (,)' },
+            { value: ';', label: 'Semicolon (;)' },
+            { value: '-', label: 'Minus (-)' },
+            { value: '_', label: 'Underscore (_)' },
+            { value: '\n', label: 'Newline (LF)' },
+            { value: '\r\n', label: 'Newline (CR LF)' }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'numbers',
+          initialValue: '20 8 5 17 21 9 3 11 2 18 15 23 14 6 15 24 10 21 13 16 19 15 22 5 18 20 8 5 12 1 26 25 4 15 7',
           types: ['text'],
           order: 1000
         }

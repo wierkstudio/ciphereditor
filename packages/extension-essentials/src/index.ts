@@ -4,6 +4,7 @@ import caesarCipher from './caesar-cipher'
 import caseTransform from './case-transform'
 import concatenate from './concatenate'
 import googleTranslate from './google-translate'
+import letterNumberCipher from './letter-number-cipher'
 import logicalAnd from './logical-and'
 import logicalNot from './logical-not'
 import logicalOr from './logical-or'
@@ -17,6 +18,7 @@ export const activate: ExtensionActivateExport = (context) => [
   caseTransform,
   concatenate,
   googleTranslate,
+  letterNumberCipher,
   logicalAnd,
   logicalNot,
   logicalOr,

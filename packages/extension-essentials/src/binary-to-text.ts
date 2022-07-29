@@ -194,7 +194,7 @@ const execute: OperationExecuteExport = (request) => {
       issues.push({
         type: 'warn',
         controlName: 'encodedData',
-        message: 'The value contains characters that are not part of the alphabet and get ignored while decoding'
+        message: 'The value contains characters that are not part of the alphabet and thus get ignored'
       })
     }
 
