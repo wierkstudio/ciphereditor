@@ -74,9 +74,6 @@ export default function OperationView (props: {
                 nodeId
               }
             }))}
-            title={issues.map(i =>
-              i.message + (i.description !== undefined ? ': ' + i.description : '')
-            ).join('; ')}
           >
             <span className='operation__icon'>
               <IconView icon={node.type === BlueprintNodeType.Program ? 'program' : 'switch'} />

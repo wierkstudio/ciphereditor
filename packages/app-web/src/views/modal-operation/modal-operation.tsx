@@ -12,12 +12,15 @@ import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
 import { openUrlAction, popModalAction } from '../../slices/ui'
 import { removeNodeAction } from '../../slices/blueprint'
+import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
+import IssueListView from '../issue-list/issue-list'
 
 export default function OperationModalView (props: OperationModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const nodeId = props.nodeId
   const node = useBlueprintSelector(state => getNode(state, nodeId))
   const [t] = useTranslation()
+  const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
 
   let title = t('Configure your program')
   let description: string | undefined = t(
@@ -62,6 +65,11 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
       <ModalView.SectionView headline={t('Description')}>
         {description}
       </ModalView.SectionView>
+      {issues.length > 0 && (
+        <ModalView.SectionView headline={t('Pending issues')}>
+          <IssueListView issues={issues} />
+        </ModalView.SectionView>
+      )}
     </ModalView>
   )
 }

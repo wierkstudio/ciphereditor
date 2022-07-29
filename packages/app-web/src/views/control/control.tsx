@@ -91,13 +91,7 @@ export default function ControlView (props: {
     <div className={renderClassName('control', modifiers)}>
       <div className='control__header' ref={headerRef}>
         {/* TODO: Remove title as soon as issues are accessible somewhere else */}
-        <MovableButtonView
-          className='control__toggle'
-          onClick={onToggleClick}
-          title={issues.map(i =>
-            i.message + (i.description !== undefined ? ': ' + i.description : '')
-          ).join('; ')}
-        >
+        <MovableButtonView className='control__toggle' onClick={onToggleClick}>
           <div className='control__pill'>
             <div className='control__chevron'>
               <IconView icon='chevronDown' />
@@ -107,9 +101,7 @@ export default function ControlView (props: {
             </h4>
             {highestIssueType !== undefined && (
               <div className={'control__issue control__issue--' + highestIssueType}>
-                <IconView
-                  icon={highestIssueType}
-                />
+                <IconView icon={highestIssueType} />
               </div>
             )}
           </div>

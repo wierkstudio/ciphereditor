@@ -1,0 +1,37 @@
+
+@import '../../styles/shared';
+
+.issue-list {
+  margin: rem(-4) 0;
+  user-select: text;
+  cursor: auto;
+
+  &__item {
+    display: flex;
+    padding: rem(4) 0;
+  }
+
+  &__item-icon {
+    margin: 0 rem(-2);
+  }
+
+  &__item--error &__item-icon {
+    color: $c-danger;
+  }
+
+  &__item-message {
+    color: $c-text;
+  }
+
+  &__item-detail {
+    padding-left: rem(8);
+    flex-grow: 1;
+    flex-basis: 0;
+    @extend %t-text;
+  }
+
+  &__item-description {
+    padding-left: rem(8);
+    color: $c-meta;
+  }
+}

@@ -15,6 +15,9 @@ import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { TypedValue } from '@ciphereditor/types'
 import { labelType, stringifyValue } from '../../slices/blueprint/reducers/value'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
+import IssueListView from '../issue-list/issue-list'
 
 export default function ControlDrawerView (props: {
   control: ControlNode
@@ -25,6 +28,8 @@ export default function ControlDrawerView (props: {
   const { control } = props
   const controlId = control.id
   const value = control.value
+
+  const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
 
   const onValueChange = useCallback((value: TypedValue, event?: BaseSyntheticEvent) => {
     dispatch(changeControlAction({ controlId, change: { value } }))
@@ -115,6 +120,11 @@ export default function ControlDrawerView (props: {
             onChange={onValueChange}
             modifiers={['drawer']}
           />
+        </div>
+      )}
+      {issues.length > 0 && (
+        <div className='control-drawer__issues'>
+          <IssueListView issues={issues} />
         </div>
       )}
       <div className='control-drawer__footer'>
