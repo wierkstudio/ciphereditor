@@ -101,7 +101,7 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'letters',
-          initialValue: 'the quick brown fox jumps over the lazy dog',
+          initialValue: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text']
         },
         {
@@ -145,7 +145,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'numbers',
-          initialValue: '20 8 5 17 21 9 3 11 2 18 15 23 14 6 15 24 10 21 13 16 19 15 22 5 18 20 8 5 12 1 26 25 4 15 7',
+          initialValue: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
           types: ['text'],
           order: 1000
         }
