@@ -16,14 +16,14 @@ ciphereditor is a web app for cryptography, coding and data encouraging beginner
 
 As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other. All packages listed below share the same version.
 
-- `app-web` - Core web app built on React and Redux Toolkit
+- [`app-web`](packages/app-web/README.md) - Core web app built on React and Redux Toolkit
 - `app-desktop` - Desktop application source built on the web app and Electron
 - `types` - TypeScript types shared between packages and third-party extensions
 - `processor` - JavaScript sandbox for Browser environments where extensions are executed in
 - `extension-essentials` - Extension providing essential operations
 - `extension-hash` - Extension providing operations related to cryptographic hash functions
 
-## Build your own
+## Getting started
 
 To build the project on your own machine you may [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the command `git clone git@github.com:wierkstudio/ciphereditor.git` in your terminal.
 
