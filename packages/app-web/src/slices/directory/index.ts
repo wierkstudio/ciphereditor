@@ -223,6 +223,88 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/vigenere-cipher',
+      label: 'Vigenère cipher',
+      description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=1',
+      keywords: ['substitution cipher', 'shift', 'vigenere', 'key', 'beaufort', 'trithemius'],
+      controls: [
+        {
+          name: 'plaintext',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text']
+        },
+        {
+          name: 'variant',
+          initialValue: 'vigenere',
+          types: ['text'],
+          choices: [
+            {
+              value: 'vigenere',
+              label: 'Vigenère cipher'
+            },
+            {
+              value: 'beaufort',
+              label: 'Beaufort cipher'
+            },
+            {
+              value: 'variantBeaufort',
+              label: 'Variant Beaufort cipher'
+            },
+            {
+              value: 'trithemius',
+              label: 'Trithemius cipher'
+            }
+          ]
+        },
+        {
+          name: 'key',
+          initialValue: 'ciphereditor',
+          types: ['text']
+        },
+        {
+          name: 'keyMode',
+          initialValue: 'repeat',
+          types: ['text'],
+          choices: [
+            { value: 'repeat', label: 'Repeat' },
+            { value: 'autoKey', label: 'Auto-key' }
+          ]
+        },
+        {
+          name: 'alphabet',
+          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          choices: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'ciphertext',
+          initialValue: 'Vpt xyzgn jkcnp nde nlqsa hjvt bwl prdb lhu.',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/concatenate',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=1',
       label: 'Concatenate',
