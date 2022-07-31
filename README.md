@@ -12,9 +12,9 @@
 
 ciphereditor is a web app for cryptography, coding and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
 
-## How to navigate the source code
+## Repository packages
 
-As a monorepo this repository contains multiple packages to share common dependencies or to depend on each other. All packages listed below share the same version.
+As a monorepo this repository contains multiple packages that share common dependencies or depend on each other. All packages listed below share the same version.
 
 - [`app-web`](packages/app-web/README.md) - Core web app built on React and Redux Toolkit
 - `app-desktop` - Desktop application source built on the web app and Electron
@@ -23,24 +23,45 @@ As a monorepo this repository contains multiple packages to share common depende
 - `extension-essentials` - Extension providing essential operations
 - `extension-hash` - Extension providing operations related to cryptographic hash functions
 
-## Getting started
+## Development setup
 
-To build the project on your own machine you may [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the command `git clone git@github.com:wierkstudio/ciphereditor.git` in your terminal.
+Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as written in `.nvmrc`.
 
-Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as mentioned in `.nvmrc`. Install the dependencies by issuing `npm install` in your terminal within the repository root folder. You need to repeat this step every time `package-lock.json` changes.
+To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the following command in your terminal:
 
-Following commands are available in the repository root folder:
+```bash
+git clone git@github.com:wierkstudio/ciphereditor.git
+```
 
-- `npm run lint` - Lint all projects
-- `npm run app-web-build` - Create an optimized production build for the web app
-- `npm run app-web-start` - Start the development server for the web app
-- `npm run app-web-preview` - Locally preview the production build for the web app
-- `npm run app-desktop-start` - Start the development Electron app locally
-- `npm run processor-build` - Create an optimized production build for the processor
-- `npm run processor-watch` - Watch the processor source files and build on change
-- `npm run extension-essentials-build` - Create a production build for the essentials extension
-- `npm run extension-essentials-watch` - Watch the essentials extension source files and build on change
-- `npm run extension-hash-build` - Create a production build for the cryptographic hash function extension
+Install the dependencies for all packages within the repository root folder using the following command. You need to repeat this step every time `package-lock.json` changes.
+
+```bash
+npm install
+```
+
+(Re-)build the processor package from source like so:
+
+```bash
+npm run processor-build
+```
+
+As some of the browser features the web app depends on require a secure HTTPS connection to the server, we recommend you to generate a self-signed certificate to be used during development. To do this, run the following OpenSSL command in the repository root folder:
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout assets/localhost.key -out assets/localhost.crt -sha256 -days 365 -nodes -subj '/CN=localhost'
+```
+
+It will create a new certificate and place the necessary files at `assets/localhost.key` and `assets/localhost.crt` that will automatically be used by the web app dev server.
+
+Finally, start the web app dev server using this command:
+
+```bash
+npm run app-web-start
+```
+
+It will make the app available at https://localhost:3010. As the certificate in use is self-signed you will get a nasty warning by the browser which you can ignore. To stop the server, press `Ctrl+C`.
+
+Find the full list of available project commands in the root `package.json`.
 
 ## Contributing
 
