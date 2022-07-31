@@ -9,6 +9,7 @@ import logicalAnd from './logical-and'
 import logicalNot from './logical-not'
 import logicalOr from './logical-or'
 import rot13 from './rot13'
+import vigenereCipher from './vigenere-cipher'
 import wordCounter from './word-counter'
 import { ExtensionActivateExport } from '@ciphereditor/types'
 
@@ -23,5 +24,6 @@ export const activate: ExtensionActivateExport = (context) => [
   logicalNot,
   logicalOr,
   rot13,
+  vigenereCipher,
   wordCounter
 ]
