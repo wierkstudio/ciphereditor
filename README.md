@@ -39,6 +39,12 @@ Install the dependencies for all packages within the repository root folder usin
 npm install
 ```
 
+Environment variables used during development can be set in `.env.local`. Create it from the example file and fill in the blanks as needed:
+
+```bash
+cp .env.local.example .env.local
+```
+
 (Re-)build the processor package from source like so:
 
 ```bash
