@@ -49,15 +49,21 @@ For more details refer to the [Vite docs](https://vitejs.dev/guide/build.html#br
 
 ## Styleguides
 
-### Comments
+### General
 
-- Capitalize comments (`// Awesome comment` instead of `// awesome comment`)
+- Avoid trailing whitespaces at the ends of lines.
+- Add a single newline character at the end of each file.
+- Capitalize comments (“Awesome comment” instead of “awesome comment”).
+
+### Brand Styleguide
+
+When referring to “ciphereditor” use this exact spelling (all lowercase and no space between “cipher” and “editor”).
 
 ### Git Commit Messages
 
 1. Capitalize the subject line
-2. Use the present tense ("Add feature" instead of "Added feature")
-3. Use the imperative mood ("Move cursor to…" instead of "Moves cursor to…")
+2. Use the present tense (“Add feature” instead of “Added feature”)
+3. Use the imperative mood (“Move cursor to…” instead of “Moves cursor to…”)
 4. Do not end the subject line with a period
 5. Limit the first line to 72 characters or less
 

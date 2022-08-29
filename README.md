@@ -16,12 +16,13 @@ ciphereditor is a web app for cryptography, coding and data encouraging beginner
 
 As a monorepo this repository contains multiple packages that share common dependencies or depend on each other. All packages listed below share the same version.
 
-- [`app-web`](packages/app-web/README.md) - Core web app built on React and Redux Toolkit
-- `app-desktop` - Desktop application source built on the web app and Electron
-- `types` - TypeScript types shared between packages and third-party extensions
-- `processor` - JavaScript sandbox for Browser environments where extensions are executed in
-- `extension-essentials` - Extension providing essential operations
-- `extension-hash` - Extension providing operations related to cryptographic hash functions
+- 🚀 [`app-web`](packages/app-web/README.md) - Core web app built on React and Redux Toolkit
+- 🚀 [`app-desktop`](packages/app-desktop/README.md) - Desktop application source built on the web app and Electron
+- 🚀 [`website`](packages/website/README.md) - Website the web app is embedded in providing content pages (closed source)
+- 📦 [`processor`](packages/processor/README.md) - JavaScript sandbox for Browser environments where extensions are executed in
+- 📦 `types` - TypeScript types shared between packages and third-party extensions
+- 📦 `extension-essentials` - Extension providing essential operations
+- 📦 `extension-hash` - Extension providing operations related to cryptographic hash functions
 
 ## Development setup
 
@@ -68,6 +69,10 @@ npm run app-web-start
 It will make the app available at https://localhost:3010. As the certificate in use is self-signed you will get a nasty warning by the browser which you can ignore. To stop the server, press `Ctrl+C`.
 
 Find the full list of available project commands in the root `package.json`.
+
+## License
+
+The source code in this repository is published under the MIT license. See [LICENSE.txt](LICENSE.txt).
 
 ## Contributing
 
