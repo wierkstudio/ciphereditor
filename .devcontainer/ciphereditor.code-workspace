@@ -5,6 +5,10 @@
 			"path": ".."
 		},
 		{
+			"name": "📦 @ciphereditor/app-desktop",
+			"path": "../packages/app-desktop"
+		},
+		{
 			"name": "🚀 @ciphereditor/app-web",
 			"path": "../packages/app-web"
 		},
