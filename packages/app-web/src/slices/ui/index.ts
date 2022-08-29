@@ -120,8 +120,8 @@ export const settingsSlice = createSlice({
       pushModal(state, payload.payload)
     },
     toggleAddModalAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.modalStack.length !== 0 && state.modalStack[state.modalStack.length - 1].type === "add") popModal(state)
-      else pushModal(state, { type: 'add' })
+      if (state.modalStack.length !== 0 && state.modalStack[state.modalStack.length - 1].type === 'add') popModal(state)
+      else if (state.modalStack.length === 0) pushModal(state, { type: 'add' })
     },
     pushReportModalAction: (state, { payload }: PayloadAction<{
       title: string
