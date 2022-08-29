@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"name": "✨ @ciphereditor/root",
+			"path": ".."
+		},
+		{
+			"name": "🚀 @ciphereditor/app-web",
+			"path": "../packages/app-web"
+		},
+		{
+			"name": "📦 @ciphereditor/extension-essentials",
+			"path": "../packages/extension-essentials"
+		},
+		{
+			"name": "📦 @ciphereditor/extension-hash",
+			"path": "../packages/extension-hash"
+		},
+		{
+			"name": "📦 @ciphereditor/processor",
+			"path": "../packages/processor"
+		},
+		{
+			"name": "📦 @ciphereditor/types",
+			"path": "../packages/types"
+		}
+	],
+	"settings": {}
+}
