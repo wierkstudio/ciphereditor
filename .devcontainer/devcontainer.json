@@ -28,7 +28,8 @@
 	"forwardPorts": [3010],
 	"portsAttributes": {
 		"3010": {
-			"label": "Web Application"
+			"label": "Web Application",
+			"protocol": "https"
 		}
 	},
 
