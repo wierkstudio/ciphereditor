@@ -1,11 +1,11 @@
 {
 	"folders": [
 		{
-			"name": "✨ @ciphereditor/root",
+			"name": "🏠 @ciphereditor/root",
 			"path": ".."
 		},
 		{
-			"name": "📦 @ciphereditor/app-desktop",
+			"name": "🚀 @ciphereditor/app-desktop",
 			"path": "../packages/app-desktop"
 		},
 		{
@@ -29,5 +29,8 @@
 			"path": "../packages/types"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"monorepoWorkspace.folders.regex.apps": "^app|web|api|frontend|backend|desktop",
+		"monorepoWorkspace.folders.prefix.root": "🏠 "
+	}
 }

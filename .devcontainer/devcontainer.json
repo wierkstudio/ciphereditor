@@ -1,7 +1,7 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/typescript-node
 {
-	"name": "CipherEditor Dev Container Suite",
+	"name": "ciphereditor Dev Container Suite",
 	"build": {
 		"dockerfile": "Dockerfile",
 		// Update 'VARIANT' to pick a Node version: 18, 16, 14.
@@ -18,7 +18,7 @@
 		"vscode": {
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
-				"dbaeumer.vscode-eslint",
+				"standard.vscode-standard",
 				"folke.vscode-monorepo-workspace"
 			]
 		}
@@ -28,7 +28,7 @@
 	"forwardPorts": [3010],
 	"portsAttributes": {
 		"3010": {
-			"label": "Web Application",
+			"label": "ciphereditor web app",
 			"protocol": "https"
 		}
 	},
