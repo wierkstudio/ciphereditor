@@ -119,8 +119,9 @@ export const settingsSlice = createSlice({
     }>) => {
       pushModal(state, payload.payload)
     },
-    pushAddModalAction: (state, { payload }: PayloadAction<{}>) => {
-      pushModal(state, { type: 'add' })
+    toggleAddModalAction: (state, { payload }: PayloadAction<{}>) => {
+      if (state.modalStack.length !== 0 && state.modalStack[state.modalStack.length - 1].type === "add") popModal(state)
+      else pushModal(state, { type: 'add' })
     },
     pushReportModalAction: (state, { payload }: PayloadAction<{
       title: string
@@ -174,7 +175,7 @@ export const {
   targetWireAction,
   endWireAction,
   pushModalAction,
-  pushAddModalAction,
+  toggleAddModalAction,
   pushReportModalAction,
   pushDeadEndModalAction,
   popModalAction,
