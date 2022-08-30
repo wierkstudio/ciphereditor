@@ -30,9 +30,12 @@ As a monorepo this repository contains multiple packages that share common depen
 ## Development setup
 
 There are multiple ways to setup your development environment. The currently supported methods are: 
-- Setting up your development environment manually
+- Setting up your development environment manually. 
+  - Choose this if you don't want to fiddle around with Docker/Dev Containers/GitHub Codespaces and you find yourself comfortable with setting up your development environment manually.
 - Cloning the repository locally and opening it in VSCode Remote Containers. *Allows for host installed tools like GitKraken/GitHub Desktop to work on the repository*.
+  - Choose this if you want to make use of the power of dev containers and also want external tools like GitKraken/GitHub Desktop to work like normal.
 - Cloning the repository in a Container Volume (GitHub Codespaces/VSCode Remote Containers). *Repository is downloaded automatically in a Volume*.
+  - Choose this if you're using GitHub Codespaces or you need to do something quickly without needing external developer tools like GitKraken/GitHub Desktop.
 
 **We kindly request that you read all the instructions for your relevant setup at least once before proceeding**
 
