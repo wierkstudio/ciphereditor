@@ -26,6 +26,15 @@ As a monorepo this repository contains multiple packages that share common depen
 
 ## Development setup
 
+There are multiple ways to setup your development environment. The currently supported methods are: 
+- Setting up your development environment manually
+- Cloning the repository locally and opening it in VSCode Remote Containers. *Allows for host installed tools like GitKraken/GitHub Desktop to work on the repository*.
+- Cloning the repository in a Container Volume (GitHub Codespaces/VSCode Remote Containers). *Repository is downloaded automatically in a Volume*.
+
+**We kindly request that you read all the instructions for your relevant setup at least once before proceeding**
+
+## Manual Development setup
+
 Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as written in `.nvmrc`.
 
 To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the following command in your terminal:
@@ -69,6 +78,43 @@ npm run app-web-start
 It will make the app available at https://localhost:3010. As the certificate in use is self-signed you will get a nasty warning by the browser which you can ignore. To stop the server, press `Ctrl+C`.
 
 Find the full list of available project commands in the root `package.json`.
+
+## Cloning locally and opening in a Dev Container
+
+Before proceeding, make sure that you have setup [Docker](https://www.docker.com/get-started/), installed the [Visual Studio Code](https://code.visualstudio.com/) editor and the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
+
+To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using this [button](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor) or using Git by issuing the following command in your terminal:
+
+```bash
+git clone git@github.com:wierkstudio/ciphereditor.git
+```
+
+Once the repository is downloaded, open the repository you downloaded in Visual Studio Code. If you're already in the terminal, you should be able to open it using the following command:
+
+```bash
+code ./ciphereditor
+```
+
+Otherwise, if the above command fails (generally caused by command not found errors), you can open the folder manually like you would with any application.
+
+Once the folder is open in Visual Studio Code, you can finally open the folder in a Dev Container. The easiest way is by using the Command Palette and running the task:
+
+```
+Remote-Containers: Open Folder in Container
+```
+
+To open the Command Palette, you can use this shortcut:
+
+```
+Ctrl + Shift + P [Windows/Linux]
+Command + Shift + P [MacOS]
+```
+
+## Cloning into a Development Volume
+
+There are 2 simple ways to clone the repository, either by clicking the Remote Containers open badge, or by doing it directly from the DEVVOLUMES section in the Remote Containers pane.
+
+[![Open in Remote - Containers](https://img.shields.io/static/v1?label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
 
 ## License
 
