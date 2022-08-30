@@ -8,9 +8,6 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
-[![Open in Remote - Containers](https://img.shields.io/static/v1?label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
-[![Visual Studio Code Git Clone](https://img.shields.io/static/v1?label=VSC%20Git&message=Clone&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor)
-
 ## Your playground for cryptography, coding & data
 
 ciphereditor is a web app for cryptography, coding and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
@@ -29,17 +26,21 @@ As a monorepo this repository contains multiple packages that share common depen
 
 ## Development setup
 
-There are multiple ways to setup your development environment. The currently supported methods are: 
-- Setting up your development environment manually. 
-  - Choose this if you don't want to fiddle around with Docker/Dev Containers/GitHub Codespaces and you find yourself comfortable with setting up your development environment manually.
-- Cloning the repository locally and opening it in VSCode Remote Containers. *Allows for host installed tools like GitKraken/GitHub Desktop to work on the repository*.
-  - Choose this if you want to make use of the power of dev containers and also want external tools like GitKraken/GitHub Desktop to work like normal.
-- Cloning the repository in a Container Volume (GitHub Codespaces/VSCode Remote Containers). *Repository is downloaded automatically in a Volume*.
-  - Choose this if you're using GitHub Codespaces or you need to do something quickly without needing external developer tools like GitKraken/GitHub Desktop.
+### Develop inside a container
 
-**We kindly request that you read all the instructions for your relevant setup at least once before proceeding**
+[![Clone in volume in Visual Studio Remote - Containers](https://img.shields.io/static/v1?style=flat-square&label=vscode%20Remote%20-%20Containers&message=Clone%20in%20volume&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
 
-## Manual Development setup
+A development container is a running Docker container with a well-defined tool/runtime stack and its prerequisites. It allows you to get up and running within minutes. To learn more, head to the [Visual Studio Code documentation](https://code.visualstudio.com/docs/remote/containers).
+
+To use a development container, make sure that you have [Docker](https://www.docker.com/get-started/), [Visual Studio Code](https://code.visualstudio.com/), and the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
+
+Get started by pressing the “Clone in volume” badge above.
+
+Alternatively, clone or download the repository and manually open its root folder in Visual Studio Code. Then, open the command palette by pressing `Ctrl+Shift+P` on Windows/Linux, or `Cmd+Shift+P` on macOS, and issue the task “Remote-Containers: Open Folder in Container”.
+
+### Manual setup
+
+[![Clone in Visual Studio Code](https://img.shields.io/static/v1?style=flat-square&label=vscode&message=Clone&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor)
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as written in `.nvmrc`.
 
@@ -84,43 +85,6 @@ npm run app-web-start
 It will make the app available at https://localhost:3010. As the certificate in use is self-signed you will get a nasty warning by the browser which you can ignore. To stop the server, press `Ctrl+C`.
 
 Find the full list of available project commands in the root `package.json`.
-
-## Cloning locally and opening in a Dev Container
-
-Before proceeding, make sure that you have setup [Docker](https://www.docker.com/get-started/), installed the [Visual Studio Code](https://code.visualstudio.com/) editor and the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
-
-To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases), clone the entire repository using the [![Visual Studio Code Git Clone](https://img.shields.io/static/v1?label=Git&message=Clone&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor) badge or using Git by issuing the following command in your terminal:
-
-```bash
-git clone git@github.com:wierkstudio/ciphereditor.git
-```
-
-Once the repository is downloaded, open the repository you downloaded in Visual Studio Code. If you're already in the terminal, you should be able to open it using the following command:
-
-```bash
-code ./ciphereditor
-```
-
-Otherwise, if the above command fails (generally caused by command not found errors), you can open the folder manually like you would with any application.
-
-Once the folder is open in Visual Studio Code, you can finally open the folder in a Dev Container. The easiest way is by using the Command Palette and running the task:
-
-```
-Remote-Containers: Open Folder in Container
-```
-
-To open the Command Palette, you can use this shortcut:
-
-```
-Ctrl + Shift + P [Windows/Linux]
-Command + Shift + P [MacOS]
-```
-
-## Cloning into a Development Volume
-
-There are 2 simple ways to clone the repository, either by clicking the Remote Containers open badge, or by doing it directly from the DEVVOLUMES section in the Remote Explorer pane.
-
-[![Open in Remote - Containers](https://img.shields.io/static/v1?label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
 
 ## License
 
