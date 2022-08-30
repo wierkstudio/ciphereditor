@@ -8,6 +8,9 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
 [![Standard Code Style](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
+[![Open in Remote - Containers](https://img.shields.io/static/v1?label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
+[![Visual Studio Code Git Clone](https://img.shields.io/static/v1?label=VSC%20Git&message=Clone&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor)
+
 ## Your playground for cryptography, coding & data
 
 ciphereditor is a web app for cryptography, coding and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
@@ -83,7 +86,7 @@ Find the full list of available project commands in the root `package.json`.
 
 Before proceeding, make sure that you have setup [Docker](https://www.docker.com/get-started/), installed the [Visual Studio Code](https://code.visualstudio.com/) editor and the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension.
 
-To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using this [button](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor) or using Git by issuing the following command in your terminal:
+To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases), clone the entire repository using the [![Visual Studio Code Git Clone](https://img.shields.io/static/v1?label=Git&message=Clone&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://vscode.git/clone?url=https://github.com/wierkstudio/ciphereditor) badge or using Git by issuing the following command in your terminal:
 
 ```bash
 git clone git@github.com:wierkstudio/ciphereditor.git
@@ -112,7 +115,7 @@ Command + Shift + P [MacOS]
 
 ## Cloning into a Development Volume
 
-There are 2 simple ways to clone the repository, either by clicking the Remote Containers open badge, or by doing it directly from the DEVVOLUMES section in the Remote Containers pane.
+There are 2 simple ways to clone the repository, either by clicking the Remote Containers open badge, or by doing it directly from the DEVVOLUMES section in the Remote Explorer pane.
 
 [![Open in Remote - Containers](https://img.shields.io/static/v1?label=Remote%20-%20Containers&message=Open&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
 

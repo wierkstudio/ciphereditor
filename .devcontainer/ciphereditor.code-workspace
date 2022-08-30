@@ -13,6 +13,10 @@
 			"path": "../packages/app-web"
 		},
 		{
+			"name": "🚀 @ciphereditor/website",
+			"path": "../packages/website"
+		},
+		{
 			"name": "📦 @ciphereditor/extension-essentials",
 			"path": "../packages/extension-essentials"
 		},
