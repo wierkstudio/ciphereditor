@@ -16,6 +16,7 @@ const defaultSettingsState: SettingsState = {
   shortcutBindings: {
     // Order: alt+control+shift+meta+key
     // Make sure shortcuts don't trigger for both input-text and app views
+    // TODO: Allow for dispatching an action based on platform
     /* eslint-disable quote-props */
     'delete': removeNodeAction.type,
     'backspace': removeNodeAction.type,

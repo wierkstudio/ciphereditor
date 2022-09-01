@@ -15,7 +15,8 @@ const stopPropagationForShortcuts = [
   'control+z',
   'delete',
   'meta+z',
-  'shift+meta+z'
+  'shift+meta+z',
+  'control+y'
 ]
 
 type InputTextViewProps =
