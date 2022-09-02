@@ -5,7 +5,7 @@ First off, thanks for taking the time to contribute!
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [ciphereditor code of conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to contact@wierk.lu.
+This project and everyone participating in it is governed by the [ciphereditor Community Guidelines](https://ciphereditor.com/community-guidelines).
 
 ## How to contribute
 
@@ -51,9 +51,10 @@ For more details refer to the [Vite docs](https://vitejs.dev/guide/build.html#br
 
 ### General
 
+- Capitalize comments (“Awesome comment” instead of “awesome comment”).
+- Split lines longer than 80 characters into multiple subsequent lines, if possible.
 - Avoid trailing whitespaces at the ends of lines.
 - Add a single newline character at the end of each file.
-- Capitalize comments (“Awesome comment” instead of “awesome comment”).
 
 ### Brand Styleguide
 
@@ -71,11 +72,14 @@ When referring to “ciphereditor” use this exact spelling (all lowercase and 
 
 All JavaScript, JSX and TypeScript must adhere to the [Standard Style](https://standardjs.com/).
 
+Additional rules:
+
+- Never omit curly braces around blocks (e.g. after control statements like `if`, `for`, `while`, and `do`), even when they are optional.
+
 Naming conventions:
 
 - When dealing with [Zod](https://github.com/colinhacks/zod) schema objects use the naming pattern `${typeName}Schema` with a lowercase first character. Example: The Zod schema for the TypeScript type `TypedValue` is called `typedValueSchema`. Instances of `TypedValue` may be called `typedValue`.
 - Use a `View` suffix when naming React components to avoid mixing them up with equally named object types (`OperationView` instead of `Operation`)
-
 
 ### Sass Styleguide
 
