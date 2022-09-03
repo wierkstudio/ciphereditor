@@ -2,7 +2,7 @@
 import * as fs from 'fs'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
-import * as getRepositoryMetaData from 'git-repo-info'
+import getRepositoryMetaData from 'git-repo-info'
 
 // Enable server HTTPS if local certificate files are present
 const httpsKeyPath = '../../assets/localhost.key'
