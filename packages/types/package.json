@@ -5,7 +5,7 @@
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
   "scripts": {
-    "lint": "ts-standard"
+    "test": "ts-standard"
   },
   "main": "index.js",
   "types": "index.d.ts"

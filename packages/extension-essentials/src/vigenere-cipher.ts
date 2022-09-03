@@ -212,7 +212,7 @@ const execute: OperationExecuteExport = (request) => {
   const resultCodePoints = result.slice(0, j)
   const outputControl = forward ? 'ciphertext' : 'plaintext'
   const output = stringFromUnicodeCodePoints(resultCodePoints)
-  changes.push({name: outputControl, value: output})
+  changes.push({ name: outputControl, value: output })
 
   return { changes: changes, issues: issues }
 }

@@ -7,8 +7,7 @@
   "license": "MIT",
   "main": "build/main.js",
   "scripts": {
-    "lint": "ts-standard",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-standard && tsc --noEmit",
     "prebuild": "copyfiles -u 3 \"../app-web/build/**/*\" build/app-web/",
     "build": "npm run prebuild && tsc",
     "pack:macos": "electron-packager . --out ./bundles --overwrite --icon ./assets/icon.icns --app-bundle-id com.ciphereditor.app-desktop",

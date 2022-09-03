@@ -5,8 +5,7 @@
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "license": "MIT",
   "scripts": {
-    "lint": "ts-standard",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-standard && tsc --noEmit",
     "build": "gulp build",
     "watch": "gulp watch"
   },

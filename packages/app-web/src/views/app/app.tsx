@@ -76,7 +76,7 @@ export default function AppView (): JSX.Element {
     if (actions !== undefined) {
       // TODO: Somehow check for platform and dispatch shortcut/call preventDefault
       // if the shortcut notation is appropiate for the platform
-      event.preventDefault();
+      event.preventDefault()
 
       if (typeof actions === 'string') {
         dispatch({ type: actions, payload: {} })

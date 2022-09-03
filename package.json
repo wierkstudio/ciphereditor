@@ -6,7 +6,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "lint": "npm run lint -ws",
+    "test": "npm run processor-build && npm run test -ws",
     "app-web-build": "npm run processor-build && npm run build -w @ciphereditor/app-web",
     "app-web-start": "npm run start -w @ciphereditor/app-web",
     "app-web-preview": "npm run preview -w @ciphereditor/app-web",
