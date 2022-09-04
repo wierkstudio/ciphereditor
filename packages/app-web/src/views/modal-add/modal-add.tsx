@@ -15,8 +15,9 @@ import { getContributions } from '../../slices/directory/selectors'
 import { gridSize } from '../../hooks/useDragMove'
 import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
+import Icon from '../icon/icon'
 
-export default function AddModalView (props: AddModalPayload): JSX.Element {
+export default function AddModalView(props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
@@ -65,53 +66,76 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
         autoFocus
       />
       <ul>
-        {matchingContributions.map(contribution => (
-          <li key={contribution.name}>
+        <ButtonView modifiers={["large"]}>
+          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
+            Operations <Icon icon='chevronDown' />
+          </span>
+        </ButtonView>
+        <div style={{ paddingLeft: "1.125rem" }}>
+          {matchingContributions.map(contribution => (
+            <li key={contribution.name}>
+              <ButtonView
+                onClick={() => {
+                  // TODO: Remove magic numbers
+                  activeProgram !== undefined && dispatch(addOperationAction({
+                    programId: activeProgram.id,
+                    contribution,
+                    x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
+                    y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
+                  }))
+                  dispatch(popModalAction({}))
+                }}
+              >
+                {/* TODO: Needs translation */}
+                {contribution.label ?? capitalCase(contribution.name)}
+              </ButtonView>
+            </li>
+          ))}
+        </div>
+
+        <ButtonView modifiers={["large"]}>
+          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
+            Programs <Icon icon='chevronDown' />
+          </span>
+        </ButtonView>
+        <div style={{ paddingLeft: "1.125rem" }}>
+          <li key='empty-program'>
             <ButtonView
               onClick={() => {
-                // TODO: Remove magic numbers
-                activeProgram !== undefined && dispatch(addOperationAction({
+                activeProgram !== undefined && dispatch(addEmptyProgramAction({
                   programId: activeProgram.id,
-                  contribution,
-                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
-                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
+                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5) / gridSize) * gridSize,
+                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5) / gridSize) * gridSize
                 }))
                 dispatch(popModalAction({}))
               }}
             >
-              {/* TODO: Needs translation */}
-              {contribution.label ?? capitalCase(contribution.name)}
+              {t('New program')}
             </ButtonView>
           </li>
-        ))}
-        <li key='empty-operation'>
-          <ButtonView
-            onClick={() => {
-              activeProgram !== undefined && dispatch(addEmptyProgramAction({
-                programId: activeProgram.id,
-                x: Math.round((canvasOffset.x + canvasSize.width * 0.5) / gridSize) * gridSize,
-                y: Math.round((canvasOffset.y + canvasSize.height * 0.5) / gridSize) * gridSize
-              }))
-              dispatch(popModalAction({}))
-            }}
-          >
-            {t('New program')}
-          </ButtonView>
-        </li>
-        <li key='empty-control'>
-          <ButtonView
-            onClick={() => {
-              activeProgram !== undefined && dispatch(addControlAction({
-                programId: activeProgram.id,
-                x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
-                y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5) / gridSize) * gridSize
-              }))
-              dispatch(popModalAction({}))
-            }}
-          >
-            {t('Empty control')}
-          </ButtonView>
-        </li>
+        </div>
+
+        <ButtonView modifiers={["large"]}>
+          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
+            Controls <Icon icon='chevronDown' />
+          </span>
+        </ButtonView>
+        <div style={{ paddingLeft: "1.125rem" }}>
+          <li key='empty-control'>
+            <ButtonView
+              onClick={() => {
+                activeProgram !== undefined && dispatch(addControlAction({
+                  programId: activeProgram.id,
+                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
+                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5) / gridSize) * gridSize
+                }))
+                dispatch(popModalAction({}))
+              }}
+            >
+              {t('Empty control')}
+            </ButtonView>
+          </li>
+        </div>
       </ul>
     </ModalView>
   )
