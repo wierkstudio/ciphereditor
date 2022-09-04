@@ -2,8 +2,8 @@
 import { useEffect } from 'react'
 
 /**
- * Register a keydown event handler to the given element and hand over the
- * pressed key combinations using a shortcut notation.
+ * Listens to keyboard events, compiles the shortcut notation and calls the
+ * provided onShortcut
  */
 const useShortcutHandler = (
   element: Window | HTMLElement | null,

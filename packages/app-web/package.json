@@ -6,8 +6,7 @@
   "license": "MIT",
   "homepage": "https://ciphereditor.com/",
   "scripts": {
-    "lint": "ts-standard",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-standard && tsc --noEmit",
     "build": "vite build",
     "start": "vite --host",
     "preview": "vite preview"
@@ -46,5 +45,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "ts-standard": {
+    "ignore": "vite.config.ts"
   }
 }

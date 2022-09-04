@@ -22,3 +22,5 @@ npm-debug.log*
 
 # Workspaces
 /.devcontainer/ciphereditor.code-workspace
+
+.vercel

@@ -68,13 +68,20 @@ export default function AppView (): JSX.Element {
 
   useWindowLoadListener(onAppLoad)
 
-  // Shortcut handler
+  // Shortcut handler, receives shortcut notation from a function that calls it,
+  // this function looks up the shortcut notation in the shortcut "lookup" table
+  // and dispatches the action
   const onShortcut = useCallback((shortcut: string, event: KeyboardEvent) => {
     const actions = shortcutBindings[shortcut]
     if (actions !== undefined) {
+      // TODO: Somehow check for platform and dispatch shortcut/call preventDefault
+      // if the shortcut notation is appropiate for the platform
+      event.preventDefault()
+
       if (typeof actions === 'string') {
         dispatch({ type: actions, payload: {} })
       } else {
+        // Allow for dispatching multiple actions
         for (const action of actions) {
           dispatch({ type: action, payload: {} })
         }
