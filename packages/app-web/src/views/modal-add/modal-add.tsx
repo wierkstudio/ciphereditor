@@ -18,7 +18,7 @@ import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
 import LargeDropDownButtonView from '../large-dropdown-button/large-dropdown-button'
 
-export default function AddModalView(props: AddModalPayload): JSX.Element {
+export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
   const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
@@ -70,7 +70,7 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
         <LargeDropDownButtonView icon='chevronDown'>
           Operations
         </LargeDropDownButtonView>
-        <div style={{ paddingLeft: "1.125rem" }}>
+        <div style={{ paddingLeft: '1.125rem' }}>
           {matchingContributions.map(contribution => (
             <li key={contribution.name}>
               <ButtonView
@@ -95,7 +95,7 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
         <LargeDropDownButtonView icon='chevronDown'>
           Programs
         </LargeDropDownButtonView>
-        <div style={{ paddingLeft: "1.125rem" }}>
+        <div style={{ paddingLeft: '1.125rem' }}>
           <li key='empty-program'>
             <ButtonView
               onClick={() => {
@@ -115,7 +115,7 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
         <LargeDropDownButtonView icon='chevronDown'>
           Controls
         </LargeDropDownButtonView>
-        <div style={{ paddingLeft: "1.125rem" }}>
+        <div style={{ paddingLeft: '1.125rem' }}>
           <li key='empty-control'>
             <ButtonView
               onClick={() => {

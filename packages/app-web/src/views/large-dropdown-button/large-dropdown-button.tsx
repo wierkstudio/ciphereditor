@@ -1,8 +1,8 @@
 
 import './large-dropdown-button.scss'
-import { PropsWithChildren } from "react";
-import ButtonView from "../button/button";
-import IconView, { Icon } from "../../views/icon/icon";
+import { PropsWithChildren } from 'react'
+import ButtonView from '../button/button'
+import IconView, { Icon } from '../../views/icon/icon'
 
 interface LargeDropDownButtonPayload extends PropsWithChildren {
   /**
@@ -11,12 +11,12 @@ interface LargeDropDownButtonPayload extends PropsWithChildren {
   icon?: Icon
 }
 
-export default function LargeDropDownButtonView(props: LargeDropDownButtonPayload) {
+export default function LargeDropDownButtonView (props: LargeDropDownButtonPayload): JSX.Element {
   const { children, icon } = props
   return (
-    <ButtonView modifiers={["large"]}>
-      <span className="large-dropdown-button">
-        {children} {icon !== undefined ? <IconView icon={icon} /> : <></> }
+    <ButtonView modifiers={['large']}>
+      <span className='large-dropdown-button'>
+        {children} {icon !== undefined ? <IconView icon={icon} /> : <></>}
       </span>
     </ButtonView>
   )
