@@ -15,7 +15,7 @@ import { getContributions } from '../../slices/directory/selectors'
 import { gridSize } from '../../hooks/useDragMove'
 import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
-import Icon from '../icon/icon'
+import LargeDropDownButtonView from '../large-dropdown-button/large-dropdown-button'
 
 export default function AddModalView(props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
@@ -66,11 +66,9 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
         autoFocus
       />
       <ul>
-        <ButtonView modifiers={["large"]}>
-          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
-            Operations <Icon icon='chevronDown' />
-          </span>
-        </ButtonView>
+        <LargeDropDownButtonView icon='chevronDown'>
+          Operations
+        </LargeDropDownButtonView>
         <div style={{ paddingLeft: "1.125rem" }}>
           {matchingContributions.map(contribution => (
             <li key={contribution.name}>
@@ -93,11 +91,9 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
           ))}
         </div>
 
-        <ButtonView modifiers={["large"]}>
-          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
-            Programs <Icon icon='chevronDown' />
-          </span>
-        </ButtonView>
+        <LargeDropDownButtonView icon='chevronDown'>
+          Programs
+        </LargeDropDownButtonView>
         <div style={{ paddingLeft: "1.125rem" }}>
           <li key='empty-program'>
             <ButtonView
@@ -115,11 +111,9 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
           </li>
         </div>
 
-        <ButtonView modifiers={["large"]}>
-          <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
-            Controls <Icon icon='chevronDown' />
-          </span>
-        </ButtonView>
+        <LargeDropDownButtonView icon='chevronDown'>
+          Controls
+        </LargeDropDownButtonView>
         <div style={{ paddingLeft: "1.125rem" }}>
           <li key='empty-control'>
             <ButtonView
