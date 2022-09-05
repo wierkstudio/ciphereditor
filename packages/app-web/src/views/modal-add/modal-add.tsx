@@ -1,4 +1,5 @@
 
+import './modal-add.scss'
 import ButtonView from '../../views/button/button'
 import InputTextView from '../input-text/input-text'
 import ModalView, { ModalViewAction } from '../../views/modal/modal'
@@ -65,7 +66,7 @@ export default function AddModalView(props: AddModalPayload): JSX.Element {
         leadingIcon='search'
         autoFocus
       />
-      <ul>
+      <ul className='modal-add-content-area'>
         <LargeDropDownButtonView icon='chevronDown'>
           Operations
         </LargeDropDownButtonView>
