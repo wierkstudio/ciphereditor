@@ -1,4 +1,5 @@
 
+import './large-dropdown-button.scss'
 import { PropsWithChildren } from "react";
 import ButtonView from "../button/button";
 import IconView, { Icon } from "../../views/icon/icon";
@@ -14,7 +15,7 @@ export default function LargeDropDownButtonView(props: LargeDropDownButtonPayloa
   const { children, icon } = props
   return (
     <ButtonView modifiers={["large"]}>
-      <span style={{ fontSize: "1.5em", lineHeight: "2em", display: "flex", alignItems: "center" }}>
+      <span className="large-dropdown-button">
         {children} {icon !== undefined ? <IconView icon={icon} /> : <></> }
       </span>
     </ButtonView>
