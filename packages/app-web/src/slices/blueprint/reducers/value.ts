@@ -211,6 +211,12 @@ export const stringifyValue = (value: TypedValue): string => {
  * Return undefined, if no preview is available.
  */
 export const previewValue = (value: TypedValue): string => {
+  if (value.type === 'text' && value.data === '') {
+    return 'Empty text'
+  }
+  if (value.type === 'bytes' && value.data.byteLength === 0) {
+    return 'Zero bytes'
+  }
   if (value.type === 'bytes') {
     return bufferToHexString(value.data.slice(0, 15))
   }

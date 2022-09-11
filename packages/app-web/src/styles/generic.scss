@@ -6,23 +6,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-:focus {
-  outline: 1px solid $c-primary;
-}
-
-:focus:not(:focus-visible) {
-  outline: 0;
-}
-
-:focus-visible {
-  outline: 1px solid $c-primary;
-}
-
-::selection {
-  background: $c-primary;
-  color: $c-background;
-}
-
 html,
 body {
   min-height: 100%;
@@ -103,4 +86,36 @@ h6 {
 ul,
 li {
   list-style-type: none;
+}
+
+:focus {
+  outline: rem(1) solid $c-primary;
+}
+
+:focus:not(:focus-visible) {
+  outline: 0;
+}
+
+:focus-visible {
+  outline: rem(1) solid $c-primary;
+}
+
+::selection {
+  background: $c-primary;
+  color: $c-background;
+}
+
+::-webkit-input-placeholder {
+  color: $c-meta;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: $c-meta;
+  opacity: 1;
+}
+
+::placeholder {
+  color: $c-meta;
+  opacity: 1;
 }

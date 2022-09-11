@@ -4,7 +4,7 @@ import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, us
 import { BytesValue, TypedValue } from '@ciphereditor/types'
 import { ValueViewProps } from '../../views/value/value'
 import { bufferToHexString, hexStringToBuffer } from '../../lib/utils/binary'
-import { equalValues } from '../../slices/blueprint/reducers/value'
+import { equalValues, previewValue } from '../../slices/blueprint/reducers/value'
 import { isHexString } from '../../lib/utils/string'
 
 const valueToString = (value: TypedValue): string =>
@@ -12,6 +12,8 @@ const valueToString = (value: TypedValue): string =>
 
 const stringToValue = (string: string): TypedValue =>
   ({ type: 'bytes', data: hexStringToBuffer(string) })
+
+const emptyBytesData = new ArrayBuffer(0)
 
 export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.Element {
   const { onChange, onFocus, onBlur, value, readOnly = false } = props
@@ -51,6 +53,7 @@ export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.
         <InputTextView
           id={props.id}
           value={stringValue}
+          placeholder={previewValue({ type: 'bytes', data: emptyBytesData })}
           readOnly={readOnly}
           onFocus={onFocus}
           onBlur={onInputBlur}
