@@ -7,7 +7,7 @@ import {
 import { ControlNode } from '../types/control'
 import { TypedValue } from '@ciphereditor/types'
 import { VariableNode } from '../types/variable'
-import { equalValues, isTypeWithinTypes, previewValue } from '../reducers/value'
+import { equalValues, isTypeWithinTypes, previewMaskedValue, previewValue } from '../reducers/value'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
@@ -177,5 +177,9 @@ export const getControlPreview = (
   if (control.selectedChoiceIndex !== undefined) {
     return control.choices[control.selectedChoiceIndex].label
   }
-  return previewValue(control.value)
+  if (!control.maskPreview) {
+    return previewValue(control.value)
+  } else {
+    return previewMaskedValue(control.value)
+  }
 }

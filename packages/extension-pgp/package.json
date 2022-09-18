@@ -1,0 +1,24 @@
+{
+  "name": "@ciphereditor/extension-pgp",
+  "version": "1.0.0-alpha",
+  "description": "Extension providing operations related to the OpenPGP protocol",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-standard && tsc --noEmit",
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "dependencies": {
+    "openpgp": "^5.5.0"
+  },
+  "devDependencies": {
+    "@ciphereditor/types": "*",
+    "@rollup/plugin-node-resolve": "^14.0.1",
+    "@rollup/plugin-typescript": "^8.3.1",
+    "rollup": "^2.70.1",
+    "rollup-plugin-terser": "^7.0.2",
+    "ts-standard": "^11.0.0",
+    "typescript": "^4.6.4"
+  }
+}

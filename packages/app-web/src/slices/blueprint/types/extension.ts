@@ -18,6 +18,7 @@ export const operationContributionSchema: z.ZodType<OperationContribution> =
     description: z.string().optional(),
     url: z.string().optional(),
     keywords: z.array(z.string()).optional(),
+    reproducible: z.boolean().optional(),
     controls: z.array(controlSchema)
   })
 

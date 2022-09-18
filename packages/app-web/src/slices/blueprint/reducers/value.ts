@@ -206,19 +206,34 @@ export const stringifyValue = (value: TypedValue): string => {
   }
 }
 
+export const isValueEmpty = (value: TypedValue): boolean => {
+  return (
+    (value.type === 'text' && value.data === '') ||
+    (value.type === 'bytes' && value.data.byteLength === 0)
+  )
+}
+
 /**
  * Compose a preview string for the given value.
  * Return undefined, if no preview is available.
  */
 export const previewValue = (value: TypedValue): string => {
-  if (value.type === 'text' && value.data === '') {
-    return 'Empty text'
-  }
-  if (value.type === 'bytes' && value.data.byteLength === 0) {
-    return 'Zero bytes'
+  if (isValueEmpty(value)) {
+    return '(empty)'
   }
   if (value.type === 'bytes') {
     return bufferToHexString(value.data.slice(0, 15))
   }
   return stringifyValue(value).substring(0, 30)
+}
+
+/**
+ * Create a masked preview string
+ */
+export const previewMaskedValue = (value: TypedValue): string => {
+  if (isValueEmpty(value)) {
+    return '(empty)'
+  }
+  const string = previewValue(value)
+  return '•'.repeat(string.length)
 }

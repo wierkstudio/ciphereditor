@@ -31,6 +31,7 @@ export const addOperationNode = (
     label: operationContribution.label ?? capitalCase(operationContribution.name),
     childIds: [],
     state: OperationState.Ready,
+    reproducible: operationContribution.reproducible !== false,
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
@@ -82,11 +83,11 @@ export const setOperationState = (
   }
 }
 
-export const retryOperation = (state: BlueprintState, nodeId: BlueprintNodeId): void => {
+export const executeOperation = (state: BlueprintState, nodeId: BlueprintNodeId): void => {
   const node = getNode(state, nodeId)
-  // TODO: Handle retry on programs
+  // TODO: Handle retry/execute on programs
   if (node.type === BlueprintNodeType.Operation) {
-    if ((node as OperationNode).state === OperationState.Error) {
+    if ((node as OperationNode).state !== OperationState.Busy) {
       // Mark operation as busy to repeat operation request
       setOperationState(state, nodeId, OperationState.Busy)
     }

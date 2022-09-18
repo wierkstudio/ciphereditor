@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { Control } from '@ciphereditor/types'
-import { ControlChange, ControlChangeSource, ControlNode, ControlViewState } from '../types/control'
+import { ControlChange, ControlChangeSource, ControlNode } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
@@ -23,13 +23,15 @@ export const defaultControlNode: ControlNode = {
   childIds: [],
   name: '',
   label: 'Control',
+  description: undefined,
   types: allValueTypes,
   value: defaultValue,
   choices: [],
   enforceChoices: true,
-  viewState: ControlViewState.Collapsed,
+  visibility: 'collapsed',
   enabled: true,
   writable: true,
+  maskPreview: false,
   order: 0
 }
 
@@ -90,7 +92,8 @@ export const addOperationControlNode = (
     label: control.label ?? capitalCase(control.name),
     value,
     selectedChoiceIndex,
-    choices
+    choices,
+    visibility: control.initialVisibility ?? defaultControlNode.visibility
   }
   return addNode(state, controlNode)
 }

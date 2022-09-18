@@ -18,7 +18,7 @@ const contribution: Contribution = {
     },
     {
       name: 'key',
-      initialValue: 'cryptii',
+      initialValue: 'ciphereditor',
       types: ['text', 'bytes']
     },
     {

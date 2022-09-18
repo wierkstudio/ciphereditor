@@ -23,6 +23,7 @@ As a monorepo this repository contains multiple packages that share common depen
 - 📦 `types` - TypeScript types shared between packages and third-party extensions
 - 📦 `extension-essentials` - Extension providing essential operations
 - 📦 `extension-hash` - Extension providing operations related to cryptographic hash functions
+- 📦 `extension-pgp` - Extension providing operations related to the OpenPGP protocol
 
 ## Development setup
 

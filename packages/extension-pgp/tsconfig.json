@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "WebWorker"
+    ],
+    "sourceRoot": "./src/",
+    "sourceMap": true,
+    "skipLibCheck": true
+  },
+  "files": ["./src/index.ts"]
+}

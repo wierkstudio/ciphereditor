@@ -71,6 +71,11 @@ export interface LabeledImplicitTypedValue {
 }
 
 /**
+ * Control visibility
+ */
+export type ControlVisibility = 'collapsed' | 'expanded' | 'hidden'
+
+/**
  * Object describing a control.
  * Controls are the building blocks of operation and program interfaces.
  */
@@ -85,6 +90,11 @@ export interface Control {
    * Defaults to the capitalized name of the control
    */
   label?: string
+
+  /**
+   * Control description
+   */
+  description?: string
 
   /**
    * Accepted control value types
@@ -119,6 +129,17 @@ export interface Control {
    * Defaults to true
    */
   writable?: boolean
+
+  /**
+   * Wether to mask the preview of this control (e.g. passwords)
+   */
+  maskPreview?: boolean
+
+  /**
+   * Initial control visibility
+   * Defaults to Collapsed
+   */
+  initialVisibility?: ControlVisibility
 
   /**
    * The order number by which controls are ordered within their parent in
@@ -261,6 +282,12 @@ export interface OperationContribution extends AbstractContribution {
    * Keywords help people discover this contribution through search
    */
   keywords?: string[]
+
+  /**
+   * Wether the same inputs always return the same output
+   * Defaults to true
+   */
+  reproducible?: boolean
 
   /**
    * Array of controls

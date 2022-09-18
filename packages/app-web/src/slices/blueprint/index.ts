@@ -8,12 +8,12 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
-import { ControlChange, ControlChangeSource, ControlViewState } from './types/control'
+import { ControlChange, ControlChangeSource } from './types/control'
 import { OperationContribution, OperationRequest, OperationResult } from '@ciphereditor/types'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
-import { addOperationNode, retryOperation, setOperationState } from './reducers/operation'
+import { addOperationNode, executeOperation, setOperationState } from './reducers/operation'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
@@ -144,14 +144,14 @@ export const blueprintSlice = createSlice({
       detachControlFromVariable(state, payload.controlId, payload.variableId)
     },
 
-    toggleControlViewState: (state, { payload }: PayloadAction<{
+    toggleControlVisibility: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId
     }>) => {
       const control = getControlNode(state, payload.controlId)
-      if (control.viewState === ControlViewState.Collapsed) {
-        control.viewState = ControlViewState.Expanded
-      } else if (control.viewState === ControlViewState.Expanded) {
-        control.viewState = ControlViewState.Collapsed
+      if (control.visibility === 'collapsed') {
+        control.visibility = 'expanded'
+      } else if (control.visibility === 'expanded') {
+        control.visibility = 'collapsed'
       }
     },
 
@@ -216,10 +216,10 @@ export const blueprintSlice = createSlice({
       }
     },
 
-    retryOperationAction: (state, { payload }: PayloadAction<{
+    executeOperationAction: (state, { payload }: PayloadAction<{
       nodeId: BlueprintNodeId
     }>) => {
-      retryOperation(state, payload.nodeId)
+      executeOperation(state, payload.nodeId)
     },
 
     /**
@@ -298,11 +298,11 @@ export const {
   changeControlValueToTypeAction,
   attachControlToVariableAction,
   detachControlFromVariableAction,
-  toggleControlViewState,
+  toggleControlVisibility,
   addVariableFromControlAction,
   attachControlsAction,
   applyOperationResultAction,
-  retryOperationAction,
+  executeOperationAction,
   selectNodeAction,
   removeNodeAction,
   moveNodeAction,
@@ -322,7 +322,7 @@ export default undoable(blueprintSlice.reducer, {
     enterProgramAction.type,
     leaveProgramAction.type,
     selectNodeAction.type,
-    toggleControlViewState.type,
+    toggleControlVisibility.type,
     layoutNodeAction.type
   ]),
   groupBy: (action, currentState, previousHistory) => {

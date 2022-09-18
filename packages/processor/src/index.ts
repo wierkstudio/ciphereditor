@@ -38,7 +38,7 @@ type InitializeHandler = ((processorWorker: ProcessorWorker) => void | Promise<v
 type ResetHandler = ((processorWorker: ProcessorWorker, reason: unknown) => void | Promise<void>) | undefined
 
 const defaultIframeTimeout = 5000
-const defaultRequestTimeout = 5000
+const defaultRequestTimeout = 10000
 
 /**
  * Class managing a single sandboxed worker

@@ -849,6 +849,162 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-pgp/encryption',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      label: 'PGP Encryption',
+      description: 'Apply OpenPGP encryption and decryption on text or binary messages',
+      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      reproducible: false,
+      controls: [
+        {
+          name: 'message',
+          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'password',
+          initialValue: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'publicKey',
+          description: 'Either used as encryption key or as optional validation key',
+          initialValue: '',
+          types: ['text', 'binary']
+        },
+        {
+          name: 'privateKey',
+          description: 'Either used as optional siging key or as decryption key',
+          initialValue: '',
+          types: ['text', 'binary']
+        },
+        {
+          name: 'privateKeyPassphrase',
+          initialValue: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'encryptedMessage',
+          initialValue: '',
+          types: ['text', 'bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-pgp/generate-key',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      label: 'Generate PGP Key',
+      description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
+      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      reproducible: false,
+      controls: [
+        {
+          name: 'type',
+          initialValue: 'ecc',
+          types: ['text'],
+          choices: [
+            { value: 'ecc', label: 'ECC' },
+            { value: 'rsa', label: 'RSA' }
+          ]
+        },
+        {
+          name: 'eccCurve',
+          label: 'Curve',
+          initialValue: 'curve25519',
+          types: ['text'],
+          choices: [
+            { value: 'curve25519', label: 'curve25519' },
+            { value: 'ed25519', label: 'ed25519' },
+            { value: 'p256', label: 'p256' },
+            { value: 'p384', label: 'p384' },
+            { value: 'p521', label: 'p521' }
+          ]
+        },
+        {
+          name: 'rsaBits',
+          label: 'Bits',
+          initialValue: 4096,
+          types: ['number'],
+          choices: [
+            { value: 2048, label: '2048 bits' },
+            { value: 3072, label: '3072 bits' },
+            { value: 4096, label: '4096 bits' }
+          ],
+          enforceChoices: false
+        },
+        {
+          name: 'passphrase',
+          initialValue: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'armored',
+          description: 'Wether to use the armored text representation for keys',
+          initialValue: true,
+          types: ['boolean']
+        },
+        {
+          name: 'publicKey',
+          initialValue: '',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'privateKey',
+          initialValue: '',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-pgp/inspect-key',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      label: 'Inspect PGP Key',
+      description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
+      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      controls: [
+        {
+          name: 'key',
+          initialValue: '',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'fingerprint',
+          initialValue: '97c82fac489a31bd694cbce3103fe5948a2e073e',
+          types: ['text'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'private',
+          initialValue: false,
+          types: ['boolean'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'creationTime',
+          initialValue: '2022-09-18T15:48:24.000Z',
+          types: ['text'],
+          writable: false,
+          order: 1000
+        }
+      ]
     }
   ]
 }

@@ -1,18 +1,21 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
-import { Control, ImplicitTypedValue, NamedControlChange, TypedValue } from '@ciphereditor/types'
+import { Control, ControlVisibility, ImplicitTypedValue, NamedControlChange, TypedValue } from '@ciphereditor/types'
 import { z } from 'zod'
 
 export const controlSchema: z.ZodType<Control> = z.object({
   name: z.string(),
   label: z.string().optional(),
+  description: z.string().optional(),
   types: z.array(z.string()),
   initialValue: implicitTypedValueSchema,
   choices: z.array(labeledImplicitTypedValueSchema).optional(),
   enforceChoices: z.boolean().optional(),
   enabled: z.boolean().optional(),
   writable: z.boolean().optional(),
+  maskPreview: z.boolean().optional(),
+  initialVisibility: z.enum(['collapsed', 'expanded', 'hidden']).optional(),
   order: z.number().optional()
 })
 
@@ -43,16 +46,7 @@ export type NamedControlChanges = z.infer<typeof namedControlChangesSchema>
 export enum ControlChangeSource {
   Parent,
   UserInput,
-  Variable,
-}
-
-/**
- * Control view state
- */
-export enum ControlViewState {
-  Collapsed,
-  Expanded,
-  Hidden,
+  Variable
 }
 
 /**
@@ -74,6 +68,11 @@ export interface ControlNode extends BlueprintNode {
    * Control label
    */
   label: string
+
+  /**
+   * Control description
+   */
+  description: string | undefined
 
   /**
    * Accepted control value types
@@ -106,11 +105,6 @@ export interface ControlNode extends BlueprintNode {
   enforceChoices: boolean
 
   /**
-   * Control view state
-   */
-  viewState: ControlViewState
-
-  /**
    * Control enabled state
    */
   enabled: boolean
@@ -119,6 +113,16 @@ export interface ControlNode extends BlueprintNode {
    * Wether a new value can be set from outside the enclosing operation or program
    */
   writable: boolean
+
+  /**
+   * Wether to mask the preview of this control (e.g. passwords)
+   */
+  maskPreview: boolean
+
+  /**
+   * Control visibility
+   */
+  visibility: ControlVisibility
 
   /**
    * The order number by which controls are ordered within their parent in

@@ -10,14 +10,13 @@ import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useHighestIssueType from '../../hooks/useHighestIssueType'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
-import { ControlViewState } from '../../slices/blueprint/types/control'
 import { MouseEvent, useCallback, useEffect, useRef } from 'react'
 import { canAttachControls, getControlNode, getControlPreview } from '../../slices/blueprint/selectors/control'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { getWireDraft } from '../../slices/ui/selectors'
 import { renderClassName } from '../../lib/utils/dom'
 import { targetWireAction } from '../../slices/ui'
-import { toggleControlViewState } from '../../slices/blueprint'
+import { toggleControlVisibility } from '../../slices/blueprint'
 
 export default function ControlView (props: {
   controlId: BlueprintNodeId
@@ -50,7 +49,7 @@ export default function ControlView (props: {
 
   const dispatch = useAppDispatch()
   const onToggleClick = useCallback((event: MouseEvent) => {
-    dispatch(toggleControlViewState({ controlId }))
+    dispatch(toggleControlVisibility({ controlId }))
   }, [dispatch, controlId])
 
   useEffect(() => {
@@ -77,7 +76,7 @@ export default function ControlView (props: {
 
   // Compose modifiers
   const modifiers: string[] = []
-  if (control.viewState === ControlViewState.Expanded) {
+  if (control.visibility === 'expanded') {
     modifiers.push('expanded')
   }
   if (isWireTarget) {
@@ -90,8 +89,11 @@ export default function ControlView (props: {
   return (
     <div className={renderClassName('control', modifiers)}>
       <div className='control__header' ref={headerRef}>
-        {/* TODO: Remove title as soon as issues are accessible somewhere else */}
-        <MovableButtonView className='control__toggle' onClick={onToggleClick}>
+        <MovableButtonView
+          className='control__toggle'
+          onClick={onToggleClick}
+          title={control.description}
+        >
           <div className='control__pill'>
             <div className='control__chevron'>
               <IconView icon='chevronDown' />
@@ -105,7 +107,7 @@ export default function ControlView (props: {
               </div>
             )}
           </div>
-          {control.viewState === ControlViewState.Collapsed && valuePreview !== undefined && (
+          {control.visibility === 'collapsed' && valuePreview !== undefined && (
             <div className='control__preview'>
               <ChangingTextView>{valuePreview}</ChangingTextView>
             </div>
@@ -114,12 +116,12 @@ export default function ControlView (props: {
         <OutletView
           control={control}
           contextProgramId={contextProgramId}
-          expanded={control.viewState === ControlViewState.Expanded}
+          expanded={control.visibility === 'expanded'}
           onIndicatorClick={onToggleClick}
           indicatorRef={onOutletRef?.bind(null, controlId)}
         />
       </div>
-      {control.viewState === ControlViewState.Expanded && (
+      {control.visibility === 'expanded' && (
         <ControlDrawerView control={control} contextProgramId={contextProgramId} />
       )}
     </div>

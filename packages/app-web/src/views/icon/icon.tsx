@@ -112,6 +112,12 @@ const iconSVGMap = {
       <path fillRule='evenodd' clipRule='evenodd' d='M8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12ZM12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6Z' fill='currentColor' />
     </svg>
   ),
+  /** Icon by Iconic (https://iconic.app/play/) */
+  play: (props: SVGProps): JSX.Element => (
+    <svg {...props} width='24' height='24' viewBox='0 0 24 24'>
+      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M18.25 12L5.75 5.75V18.25L18.25 12Z' />
+    </svg>
+  ),
   /** Icon by Iconic (https://iconic.app/plus/) */
   plus: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24' fill='none'>

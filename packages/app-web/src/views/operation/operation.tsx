@@ -12,7 +12,7 @@ import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { OperationNode, OperationState } from '../../slices/blueprint/types/operation'
 import { ProgramNode } from '../../slices/blueprint/types/program'
-import { enterProgramAction, retryOperationAction } from '../../slices/blueprint'
+import { enterProgramAction, executeOperationAction } from '../../slices/blueprint'
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { pushModalAction } from '../../slices/ui'
@@ -52,6 +52,11 @@ export default function OperationView (props: {
     state = node.state
   }
 
+  const canExecute =
+    node.type === BlueprintNodeType.Operation &&
+    node.state !== OperationState.Busy &&
+    (!node.reproducible || node.state === OperationState.Error)
+
   // TODO: Right now, we assume that the last control conveys the 'result' of
   // the operation. Therefore we show the operation header above it. From a
   // semantic perspective the header contains the headline for the entire
@@ -90,11 +95,11 @@ export default function OperationView (props: {
           </MovableButtonView>
         </div>
         <div className='operation__header-end'>
-          {node.type === BlueprintNodeType.Operation && node.state === OperationState.Error && (
+          {canExecute && (
             <ButtonView
-              icon='refresh'
-              title={t('Retry')}
-              onClick={() => dispatch(retryOperationAction({ nodeId }))}
+              icon='play'
+              title={t('(Re-)execute operation')}
+              onClick={() => dispatch(executeOperationAction({ nodeId }))}
             />
           )}
           {node.type === BlueprintNodeType.Program && (

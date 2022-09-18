@@ -27,7 +27,7 @@ export default {
       )
     }),
     typescript(),
-    nodeResolve(),
+    nodeResolve({ browser: true }),
     terser()
   ]
 }

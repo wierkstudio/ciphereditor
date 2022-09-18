@@ -70,6 +70,11 @@ export interface OperationNode extends BlueprintNode {
   label: string
 
   /**
+   * Wether the same inputs always return the same output
+   */
+  reproducible: boolean
+
+  /**
    * Operation state
    */
   state: OperationState
