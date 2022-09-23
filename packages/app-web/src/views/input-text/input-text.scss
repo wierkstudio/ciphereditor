@@ -31,6 +31,7 @@
   &__textarea {
     outline: none;
     user-select: auto;
+    overflow: hidden;
   }
 
   &__field::after,
@@ -43,6 +44,9 @@
     @extend %t-value;
     white-space: pre-wrap;
     word-break: break-word;
+    overflow-wrap: anywhere;
+    line-break: anywhere;
+    line-break: after-white-space;
   }
 
   &--slim {
