@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+- name: Discuss and vote
+  url: https://github.com/wierkstudio/ciphereditor/discussions
+  about: Ask for help or share ideas for new features here
+- name: Community chat
+  url: https://discord.gg/v5wNewjdxm
+  about: Chat with like-minded people
