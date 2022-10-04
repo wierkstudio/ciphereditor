@@ -4,6 +4,8 @@
 .canvas {
   position: relative;
   z-index: $z-index-canvas;
+  user-select: none;
+  -webkit-user-select: none;
 
   @include with-canvas-mode(sequential) {
     min-height: rem(480);
@@ -18,9 +20,7 @@
   &--wire {
     cursor: grabbing;
     touch-action: none;
-    user-select: none;
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
   }
 
   &__content {

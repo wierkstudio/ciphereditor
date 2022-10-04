@@ -66,9 +66,15 @@ export const settingsSlice = createSlice({
     moveCanvasAction: (state, { payload }: PayloadAction<{
       x: number
       y: number
+      relative?: boolean
     }>) => {
-      state.canvasOffsetX = payload.x
-      state.canvasOffsetY = payload.y
+      if (payload.relative === true) {
+        state.canvasOffsetX += payload.x
+        state.canvasOffsetY += payload.y
+      } else {
+        state.canvasOffsetX = payload.x
+        state.canvasOffsetY = payload.y
+      }
     },
     updateCanvasSizeAction: (state, { payload }: PayloadAction<{
       width: number

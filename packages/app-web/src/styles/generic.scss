@@ -6,15 +6,22 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  overscroll-behavior: none;
+  overflow-x: none;
+  overflow-y: auto;
+}
+
 html,
 body {
   min-height: 100%;
   margin: 0;
   padding: 0;
   background: $c-muted;
-  overflow-x: none;
-  overflow-y: auto;
-  overscroll-behavior: none;
+}
+
+body {
+  overflow: hidden;
 }
 
 body.body-grabbing * {

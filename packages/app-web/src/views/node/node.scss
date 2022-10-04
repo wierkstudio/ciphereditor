@@ -21,14 +21,14 @@
     content: '';
     display: block;
     position: absolute;
-    top: rem(-10);
-    right: rem(-10);
-    bottom: rem(-10);
-    left: rem(-10);
-    z-index: -1;
-    border-radius: rem(16);
-    border: rem(2) solid $c-muted;
-    background: $c-muted;
+    top: rem(-1);
+    right: rem(-1);
+    bottom: rem(-1);
+    left: rem(-1);
+    z-index: 1;
+    border-radius: rem(8);
+    border: rem(2) solid transparent;
+    pointer-events: none;
   }
 
   &--selected {
@@ -36,6 +36,6 @@
   }
 
   &--selected::before {
-    border-color: $c-line;
+    border-color: $c-secondary;
   }
 }

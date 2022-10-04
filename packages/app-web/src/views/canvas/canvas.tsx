@@ -8,17 +8,18 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDragMove from '../../hooks/useDragMove'
+import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
+import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasMode, getCanvasOffset, getCanvasState, getWireDraft } from '../../slices/ui/selectors'
 import { getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
 import { renderClassName } from '../../lib/utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
-import { UICanvasMode } from '../../slices/ui/types'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -58,6 +59,15 @@ export default function CanvasView (): JSX.Element {
   }
 
   const { onPointerDown } = useDragMove(x, y, onDragMove, true)
+
+  useNormalizedWheel((event, wheelFacts) => {
+    event.preventDefault()
+    dispatch(moveCanvasAction({
+      x: wheelFacts.pixelX * 2,
+      y: wheelFacts.pixelY * 2,
+      relative: true
+    }))
+  }, canvasMode === UICanvasMode.Plane && canvasState === UICanvasState.Idle)
 
   /**
    * Handle blur events emitted by child nodes.
