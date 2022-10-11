@@ -4,16 +4,16 @@ import ControlView from '../../views/control/control'
 import OperationView from '../../views/operation/operation'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import useDragMove from '../../hooks/useDragMove'
+import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
+import { UICanvasMode } from '../../slices/ui/types'
 import { getCanvasMode } from '../../slices/ui/selectors'
 import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { UICanvasMode } from '../../slices/ui/types'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -92,11 +92,11 @@ export default function NodeView (props: {
     }
   })
 
-  const onDragMove = (newX: number, newY: number): void => {
-    dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
+  const onDragMove = (deltaX: number, deltaY: number): void => {
+    dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY, relative: true }))
   }
 
-  const onPointerDown = useDragMove(node.x ?? 0, node.y ?? 0, onDragMove)
+  const onPointerDown = usePointerDrag(onDragMove)
 
   const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()

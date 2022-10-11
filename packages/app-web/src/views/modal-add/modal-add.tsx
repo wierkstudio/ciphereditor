@@ -12,7 +12,6 @@ import { capitalCase } from 'change-case'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from '../../slices/ui/selectors'
 import { getContributions } from '../../slices/directory/selectors'
-import { gridSize } from '../../hooks/useDragMove'
 import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
 
@@ -73,8 +72,8 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
                 activeProgram !== undefined && dispatch(addOperationAction({
                   programId: activeProgram.id,
                   contribution,
-                  x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
-                  y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 80) / gridSize) * gridSize
+                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 80)
                 }))
                 dispatch(popModalAction({}))
               }}
@@ -89,8 +88,8 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
             onClick={() => {
               activeProgram !== undefined && dispatch(addEmptyProgramAction({
                 programId: activeProgram.id,
-                x: Math.round((canvasOffset.x + canvasSize.width * 0.5) / gridSize) * gridSize,
-                y: Math.round((canvasOffset.y + canvasSize.height * 0.5) / gridSize) * gridSize
+                x: Math.round(canvasOffset.x + canvasSize.width * 0.5),
+                y: Math.round(canvasOffset.y + canvasSize.height * 0.5)
               }))
               dispatch(popModalAction({}))
             }}
@@ -103,8 +102,8 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
             onClick={() => {
               activeProgram !== undefined && dispatch(addControlAction({
                 programId: activeProgram.id,
-                x: Math.round((canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5) / gridSize) * gridSize,
-                y: Math.round((canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5) / gridSize) * gridSize
+                x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+                y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5)
               }))
               dispatch(popModalAction({}))
             }}

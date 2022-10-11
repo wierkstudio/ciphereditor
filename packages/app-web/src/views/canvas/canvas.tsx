@@ -7,8 +7,8 @@ import WireView from '../../views/wire/wire'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import useDragMove from '../../hooks/useDragMove'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
+import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
@@ -63,11 +63,11 @@ export default function CanvasView (): JSX.Element {
   })
 
   // Move canvas interaction
-  const onDragMove = (newX: number, newY: number): void => {
-    dispatch(moveCanvasAction({ x: newX, y: newY }))
+  const onDragMove = (deltaX: number, deltaY: number): void => {
+    dispatch(moveCanvasAction({ x: deltaX, y: deltaY, relative: true }))
   }
 
-  const onPointerDown = useDragMove(viewportRect.x, viewportRect.y, onDragMove, true)
+  const onPointerDown = usePointerDrag(onDragMove, true)
 
   useNormalizedWheel((event, wheelFacts) => {
     event.preventDefault()
