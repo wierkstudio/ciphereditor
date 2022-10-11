@@ -148,7 +148,7 @@ export const moveNode = (
   nodeId: BlueprintNodeId,
   x: number,
   y: number,
-  relative: boolean = false
+  relative: boolean
 ): void => {
   if (relative && x === 0 && y === 0) {
     return

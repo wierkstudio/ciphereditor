@@ -9,6 +9,6 @@ export const getAccessibilitySettings = (state: SettingsState): {
   reducedMotionPreference: state.reducedMotionPreference
 })
 
-export const getShortcutBindings = (state: SettingsState): {
+export const getKeyBindings = (state: SettingsState): {
   [name: string]: string | string[]
-} => state.shortcutBindings
+} => state.keyBindings

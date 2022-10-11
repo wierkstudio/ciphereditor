@@ -251,12 +251,14 @@ export const blueprintSlice = createSlice({
     },
 
     moveNodeAction: (state, { payload }: PayloadAction<{
-      nodeId: BlueprintNodeId
+      nodeId?: BlueprintNodeId
       x: number
       y: number
-      relative?: boolean
     }>) => {
-      moveNode(state, payload.nodeId, payload.x, payload.y, payload.relative)
+      const nodeId = payload.nodeId ?? state.selectedNodeId
+      if (nodeId !== undefined) {
+        moveNode(state, nodeId, payload.x, payload.y, true)
+      }
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{

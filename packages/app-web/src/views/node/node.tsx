@@ -93,7 +93,7 @@ export default function NodeView (props: {
   })
 
   const onDragMove = (deltaX: number, deltaY: number): void => {
-    dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY, relative: true }))
+    dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY }))
   }
 
   const onPointerDown = usePointerDrag(onDragMove)

@@ -5,15 +5,16 @@ import CanvasView from '../canvas/canvas'
 import ModalStackView from '../../views/modal-stack/modal-stack'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
+import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
-import useShortcutHandler from '../../hooks/useShortcutHandler'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { EditorMessage, editorMessageSchema } from '../../lib/embed/types'
 import { UIEmbedType } from '../../slices/ui/types'
 import { configureEmbedAction } from '../../slices/ui'
-import { getAccessibilitySettings, getShortcutBindings } from '../../slices/settings/selectors'
+import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
 import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
+import { keyBindingTargetDispatchActions } from '../../slices/settings/key-bindings'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { postWebsiteMessage } from '../../lib/embed'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
@@ -28,7 +29,7 @@ export default function AppView (): JSX.Element {
   const embedMaximized = useUISelector(isEmbedMaximized)
   const canvasMode = useUISelector(getCanvasMode)
   const canvasState = useUISelector(getCanvasState)
-  const shortcutBindings = useSettingsSelector(getShortcutBindings)
+  const keyBindings = useSettingsSelector(getKeyBindings)
   const { theme, reducedMotionPreference } =
     useSettingsSelector(getAccessibilitySettings)
 
@@ -71,25 +72,21 @@ export default function AppView (): JSX.Element {
   // Shortcut handler, receives shortcut notation from a function that calls it,
   // this function looks up the shortcut notation in the shortcut "lookup" table
   // and dispatches the action
-  const onShortcut = useCallback((shortcut: string, event: KeyboardEvent) => {
-    const actions = shortcutBindings[shortcut]
-    if (actions !== undefined) {
-      // TODO: Somehow check for platform and dispatch shortcut/call preventDefault
-      // if the shortcut notation is appropiate for the platform
+  const onKeyCombination = useCallback((shortcut: string, event: KeyboardEvent) => {
+    const targets = keyBindings[shortcut]
+    if (targets !== undefined) {
       event.preventDefault()
-
-      if (typeof actions === 'string') {
-        dispatch({ type: actions, payload: {} })
-      } else {
-        // Allow for dispatching multiple actions
-        for (const action of actions) {
-          dispatch({ type: action, payload: {} })
+      for (const target of (Array.isArray(targets) ? targets : [targets])) {
+        const dispatchAction = keyBindingTargetDispatchActions[target]
+        if (dispatchAction === undefined) {
+          throw new Error(`Unexpected key binding target '${target}'`)
         }
+        dispatch(dispatchAction)
       }
     }
-  }, [shortcutBindings, dispatch])
+  }, [keyBindings, dispatch])
 
-  useShortcutHandler(window, onShortcut)
+  useKeyBindingHandler(window, onKeyCombination)
 
   // Modals modifier
   const hasModals = !useAppSelector(state => isModalStackEmpty(state.ui))

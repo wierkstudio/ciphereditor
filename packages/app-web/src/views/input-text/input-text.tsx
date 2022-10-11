@@ -2,7 +2,7 @@
 import './input-text.scss'
 import IconView, { Icon } from '../icon/icon'
 import React, { useRef, ChangeEvent } from 'react'
-import useShortcutHandler from '../../hooks/useShortcutHandler'
+import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 /**
@@ -34,7 +34,7 @@ export default function InputTextView (props: InputTextViewProps): JSX.Element {
   const { leadingIcon, value, onChange, modifiers, ...textareaProps } = props
   const textareaRef = useRef<HTMLTextAreaElement|null>(null)
 
-  useShortcutHandler(textareaRef.current, (shortcut, event) => {
+  useKeyBindingHandler(textareaRef.current, (shortcut, event) => {
     if (stopPropagationForShortcuts.includes(shortcut)) {
       event.stopPropagation()
     }
