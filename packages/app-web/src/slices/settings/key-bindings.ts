@@ -39,7 +39,7 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'arrowup': 'nudgeNodeUp',
   'backspace': 'removeNode',
   'control+b': 'toggleMaximized',
-  'control+k': 'toggleMaximized',
+  'control+k': 'toggleAddModal',
   'control+shift+z': 'redo',
   // Windows and Linux systems that use Cinnamon as a DE use Ctrl+Y for redo
   'control+y': 'redo',
@@ -66,7 +66,7 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'meta+arrowup': 'leaveProgram',
   'meta+b': 'toggleMaximized',
   'meta+enter': 'enterProgram',
-  'meta+k': 'toggleMaximized',
+  'meta+k': 'toggleAddModal',
   'meta+z': 'undo',
   'shift+meta+z': 'redo'
   /* eslint-enable quote-props */
