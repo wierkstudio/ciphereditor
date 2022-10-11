@@ -1,5 +1,6 @@
 
 import {
+  MouseEventHandler,
   PointerEvent as ReactPointerEvent,
   useCallback,
   useState
@@ -25,7 +26,7 @@ const useDragMove = (
   y: number,
   onDragMove: (newX: number, newY: number) => void,
   inverse: boolean = false
-): { onPointerDown: (event: ReactPointerEvent) => void } => {
+): MouseEventHandler => {
   const [state, setState] = useState<DragMoveState | undefined>(undefined)
 
   const onPointerDown = useCallback((event: ReactPointerEvent) => {
@@ -65,7 +66,7 @@ const useDragMove = (
   }, [state, setState])
 
   usePointerFollowUp(onPointerMove, onPointerEnd, state !== undefined)
-  return { onPointerDown }
+  return onPointerDown
 }
 
 export default useDragMove

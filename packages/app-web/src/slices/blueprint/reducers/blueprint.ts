@@ -6,11 +6,12 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { VariableNode } from '../types/variable'
-import { getControlNode } from '../selectors/control'
 import { ControlNode } from '../types/control'
-import { getVariableNode } from '../selectors/variable'
+import { VariableNode } from '../types/variable'
 import { arrayRemove } from '../../../lib/utils/array'
+import { getControlNode } from '../selectors/control'
+import { getVariableNode } from '../selectors/variable'
+import { updateProgramContentBounds } from './program'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -54,14 +55,19 @@ export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNod
   // Verify that the child node can be added to this parent node
   const parentNode = getNode(state, parentId)
   const parentType = parentNode.type
-  if (parentType === BlueprintNodeType.Program ||
-      (parentType === BlueprintNodeType.Operation &&
-        childType === BlueprintNodeType.Control)) {
-    parentNode.childIds.push(childId)
-    return childNode
-  } else {
+  if (parentType !== BlueprintNodeType.Program &&
+      (parentType !== BlueprintNodeType.Operation ||
+        childType !== BlueprintNodeType.Control)) {
     throw new Error(`Node type '${childType}' can't be added to '${parentType}'`)
   }
+
+  parentNode.childIds.push(childId)
+
+  if (parentNode.type === BlueprintNodeType.Program) {
+    updateProgramContentBounds(state, parentNode.id)
+  }
+
+  return childNode
 }
 
 /**
@@ -128,6 +134,55 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
 
   // Remove self from blueprint
   delete state.nodes[node.id] // eslint-disable-line
+
+  if (parentNode.type === BlueprintNodeType.Program) {
+    updateProgramContentBounds(state, parentNode.id)
+  }
+}
+
+/**
+ * Reposition the given node to the given absolute or relative coordinates.
+ */
+export const moveNode = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId,
+  x: number,
+  y: number,
+  relative: boolean = false
+): void => {
+  if (relative && x === 0 && y === 0) {
+    return
+  }
+
+  // Reposition node
+  const node = getNode(state, nodeId)
+  node.x = relative ? (node.x ?? 0) + x : x
+  node.y = relative ? (node.y ?? 0) + y : y
+
+  // Update program boundary
+  const parentNode = getNode(state, node.parentId)
+  if (parentNode.type === BlueprintNodeType.Program) {
+    updateProgramContentBounds(state, parentNode.id)
+  }
+}
+
+export const layoutNode = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId,
+  width: number,
+  height: number
+): void => {
+  const node = getNode(state, nodeId)
+  if (node.width !== width || node.height !== height) {
+    node.width = width
+    node.height = height
+
+    // Update program boundary
+    const parentNode = getNode(state, node.parentId)
+    if (parentNode.type === BlueprintNodeType.Program) {
+      updateProgramContentBounds(state, parentNode.id)
+    }
+  }
 }
 
 /**

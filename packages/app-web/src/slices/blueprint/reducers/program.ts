@@ -3,7 +3,7 @@ import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blu
 import { ProgramNode } from '../types/program'
 import { addNode, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
-import { getNodeChildren } from '../selectors/blueprint'
+import { getNode, getNodeChildren } from '../selectors/blueprint'
 
 /**
  * Default program node object
@@ -49,4 +49,51 @@ export const addEmptyProgramNode = (
     y
   }
   return addNode(state, programNode)
+}
+
+/**
+ * Update the `contentBounds` property on the given program based on the current
+ * layed out child nodes attached to it.
+ */
+export const updateProgramContentBounds = (
+  state: BlueprintState,
+  programId: BlueprintNodeId
+): void => {
+  const program = getNode(state, programId, BlueprintNodeType.Program) as ProgramNode
+  const children = getNodeChildren(state, programId)
+
+  let leadingX: number | undefined
+  let trailingX: number | undefined
+  let topY: number | undefined
+  let bottomY: number | undefined
+
+  for (const child of children) {
+    if (child.x !== undefined) {
+      if (leadingX === undefined || leadingX > child.x) {
+        leadingX = child.x
+      }
+      if (child.width !== undefined && (trailingX === undefined || trailingX < child.x + child.width)) {
+        trailingX = child.x + child.width
+      }
+    }
+    if (child.y !== undefined) {
+      if (topY === undefined || topY > child.y) {
+        topY = child.y
+      }
+      if (child.height !== undefined && (bottomY === undefined || bottomY < child.y + child.height)) {
+        bottomY = child.y + child.height
+      }
+    }
+  }
+
+  if (leadingX !== undefined && trailingX !== undefined && topY !== undefined && bottomY !== undefined) {
+    program.contentBounds = {
+      x: leadingX,
+      y: topY,
+      width: trailingX - leadingX,
+      height: bottomY - topY
+    }
+  } else {
+    program.contentBounds = undefined
+  }
 }

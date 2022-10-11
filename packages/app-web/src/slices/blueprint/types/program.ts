@@ -1,4 +1,5 @@
 
+import { Rect } from '../../../lib/utils/2d'
 import { BlueprintNode, BlueprintNodeType } from './blueprint'
 
 /**
@@ -16,4 +17,10 @@ export interface ProgramNode extends BlueprintNode {
    * Program label
    */
   label: string
+
+  /**
+   * Position and size of the boundary that includes all layed out child nodes.
+   * Set to `undefined` if no layed out child nodes are present.
+   */
+  contentBounds?: Rect
 }

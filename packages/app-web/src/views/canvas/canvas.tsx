@@ -13,13 +13,18 @@ import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
+import { ProgramNode } from '../../slices/blueprint/types/program'
 import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
-import { getCanvasMode, getCanvasOffset, getCanvasState, getWireDraft } from '../../slices/ui/selectors'
-import { getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
+import { getNode, getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { layoutScrollbars, ScrollbarsLayout } from '../../lib/utils/2d'
 import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
 import { renderClassName } from '../../lib/utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
+
+const scrollbarOffset = 8
+const scrollbarSize = 8
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -30,6 +35,10 @@ export default function CanvasView (): JSX.Element {
   if (contextProgramId === undefined) {
     throw new Error('Assertion error: Active program needs to be set')
   }
+
+  const program =
+    useBlueprintSelector(state =>
+      getNode(state, contextProgramId)) as ProgramNode
 
   const variableIds = useBlueprintSelector(state =>
     getNodeChildren(state, contextProgramId)
@@ -43,7 +52,7 @@ export default function CanvasView (): JSX.Element {
 
   const canvasState = useAppSelector(state => getCanvasState(state.ui))
   const wireDraft = useAppSelector(state => getWireDraft(state.ui))
-  const { x, y } = useAppSelector(state => getCanvasOffset(state.ui))
+  const viewportRect = useAppSelector(state => getViewportRect(state.ui))
 
   // Keep track of the canvas size
   useWindowResizeListener((): void => {
@@ -58,7 +67,7 @@ export default function CanvasView (): JSX.Element {
     dispatch(moveCanvasAction({ x: newX, y: newY }))
   }
 
-  const { onPointerDown } = useDragMove(x, y, onDragMove, true)
+  const onPointerDown = useDragMove(viewportRect.x, viewportRect.y, onDragMove, true)
 
   useNormalizedWheel((event, wheelFacts) => {
     event.preventDefault()
@@ -86,6 +95,11 @@ export default function CanvasView (): JSX.Element {
     }
   }
 
+  let scrollbarLayout: ScrollbarsLayout | undefined
+  if (canvasMode === UICanvasMode.Plane) {
+    scrollbarLayout = layoutScrollbars(viewportRect, program.contentBounds)
+  }
+
   // TODO: Make off-canvas nodes 'virtual' by not rendering them
 
   return (
@@ -99,7 +113,9 @@ export default function CanvasView (): JSX.Element {
         className='canvas__content'
         onFocus={event => { event.stopPropagation() }}
         onBlur={onBlur}
-        style={canvasMode === UICanvasMode.Plane ? { transform: `translate(${-x}px, ${-y}px)` } : {}}
+        style={canvasMode === UICanvasMode.Plane
+          ? { transform: `translate(${-viewportRect.x}px, ${-viewportRect.y}px)` }
+          : {}}
       >
         {canvasMode === UICanvasMode.Plane && variableIds.map(variableId => (
           <WireView
@@ -121,6 +137,54 @@ export default function CanvasView (): JSX.Element {
             wireDraft={wireDraft}
             contextProgramId={contextProgramId}
           />
+        </div>
+      )}
+      {scrollbarLayout !== undefined && (
+        <div className='canvas__scrollbars'>
+          <svg
+            className='canvas__scrollbars-svg'
+            preserveAspectRatio='xMidYMid meet'
+            viewBox={`0 0 ${viewportRect.width} ${viewportRect.height}`}
+          >
+            {scrollbarLayout.verticalSize < 1 && (
+              <rect
+                className='canvas__scrollbars-vertical'
+                x={viewportRect.width - scrollbarSize - scrollbarOffset}
+                y={
+                  scrollbarOffset +
+                  scrollbarLayout.verticalPosition *
+                  (1 - scrollbarLayout.verticalSize) *
+                  (viewportRect.height - scrollbarOffset * 3 - scrollbarSize)
+                }
+                rx={scrollbarSize * 0.5}
+                ry={scrollbarSize * 0.5}
+                width={scrollbarSize}
+                height={
+                  (viewportRect.height - scrollbarOffset * 3 - scrollbarSize) *
+                  scrollbarLayout.verticalSize
+                }
+              />
+            )}
+            {scrollbarLayout.horizontalSize < 1 && (
+              <rect
+                className='canvas__scrollbars-horizontal'
+                x={
+                  scrollbarOffset +
+                  scrollbarLayout.horizontalPosition *
+                  (1 - scrollbarLayout.horizontalSize) *
+                  (viewportRect.width - scrollbarOffset * 3 - scrollbarSize)
+                }
+                y={viewportRect.height - scrollbarSize - scrollbarOffset}
+                rx={scrollbarSize * 0.5}
+                ry={scrollbarSize * 0.5}
+                width={
+                  (viewportRect.width - scrollbarOffset * 3 - scrollbarSize) *
+                  scrollbarLayout.horizontalSize
+                }
+                height={scrollbarSize}
+              />
+            )}
+          </svg>
         </div>
       )}
       {childNodeIds.length === 0 && (

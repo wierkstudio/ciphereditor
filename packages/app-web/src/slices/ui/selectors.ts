@@ -1,4 +1,5 @@
 
+import { Rect } from '../../lib/utils/2d'
 import {
   ModalPayload,
   UICanvasMode,
@@ -37,6 +38,11 @@ export const getCanvasOffset = (state: UIState): { x: number, y: number } => {
 
 export const getCanvasSize = (state: UIState): { width: number, height: number } =>
   ({ width: state.canvasWidth, height: state.canvasHeight })
+
+export const getViewportRect = (state: UIState): Rect => {
+  const { x, y } = getCanvasOffset(state)
+  return { x, y, width: state.canvasWidth, height: state.canvasHeight }
+}
 
 export const getWireDraft = (state: UIState): UIWireDraft | undefined =>
   state.wireDraft

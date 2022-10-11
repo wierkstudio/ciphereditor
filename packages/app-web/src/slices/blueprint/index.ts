@@ -19,7 +19,7 @@ import { getControlNode, getNodeNamedControls } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { operationContributionSchema } from './types/extension'
-import { removeNode, selectNode } from './reducers/blueprint'
+import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -254,10 +254,9 @@ export const blueprintSlice = createSlice({
       nodeId: BlueprintNodeId
       x: number
       y: number
+      relative?: boolean
     }>) => {
-      const node = getNode(state, payload.nodeId)
-      node.x = payload.x
-      node.y = payload.y
+      moveNode(state, payload.nodeId, payload.x, payload.y, payload.relative)
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{
@@ -272,9 +271,9 @@ export const blueprintSlice = createSlice({
     }>) => {
       const { nodeId, width, height, outletPositions } = payload
 
-      const node = getNode(state, nodeId)
-      node.width = width
-      node.height = height
+      if (width !== undefined && height !== undefined) {
+        layoutNode(state, nodeId, width, height)
+      }
 
       if (outletPositions !== undefined) {
         outletPositions.forEach(position => {

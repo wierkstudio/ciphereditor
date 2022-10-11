@@ -96,7 +96,7 @@ export default function NodeView (props: {
     dispatch(moveNodeAction({ nodeId, x: newX, y: newY }))
   }
 
-  const { onPointerDown } = useDragMove(node.x ?? 0, node.y ?? 0, onDragMove)
+  const onPointerDown = useDragMove(node.x ?? 0, node.y ?? 0, onDragMove)
 
   const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()
