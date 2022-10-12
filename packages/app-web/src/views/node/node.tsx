@@ -92,11 +92,9 @@ export default function NodeView (props: {
     }
   })
 
-  const onDragMove = (deltaX: number, deltaY: number): void => {
+  const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
     dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY }))
-  }
-
-  const onPointerDown = usePointerDrag(onDragMove)
+  })
 
   const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()

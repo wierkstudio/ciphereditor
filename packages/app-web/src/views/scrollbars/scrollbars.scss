@@ -1,0 +1,13 @@
+
+@import '../../styles/shared';
+
+.scrollbars {
+  pointer-events: none;
+
+  &__knob-vertical,
+  &__knob-horizontal {
+    fill: $c-meta;
+    opacity: 0.4;
+    pointer-events: all;
+  }
+}

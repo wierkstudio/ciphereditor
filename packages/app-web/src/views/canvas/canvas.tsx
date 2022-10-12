@@ -2,6 +2,7 @@
 import './canvas.scss'
 import IconView from '../../views/icon/icon'
 import NodeView from '../../views/node/node'
+import ScrollbarsView from '../scrollbars/scrollbars'
 import WireDraftView from '../../views/wire-draft/wire-draft'
 import WireView from '../../views/wire/wire'
 import useAppDispatch from '../../hooks/useAppDispatch'
@@ -18,13 +19,9 @@ import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
 import { getNode, getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { layoutScrollbars, ScrollbarsLayout } from '../../lib/utils/2d'
 import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
 import { renderClassName } from '../../lib/utils/dom'
 import { selectNodeAction } from '../../slices/blueprint'
-
-const scrollbarOffset = 8
-const scrollbarSize = 8
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -63,20 +60,22 @@ export default function CanvasView (): JSX.Element {
   })
 
   // Move canvas interaction
-  const onDragMove = (deltaX: number, deltaY: number): void => {
-    dispatch(moveCanvasAction({ x: deltaX, y: deltaY, relative: true }))
-  }
-
-  const onPointerDown = usePointerDrag(onDragMove, true)
+  const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
+    dispatch(moveCanvasAction({ x: -deltaX, y: -deltaY, relative: true }))
+  })
 
   useNormalizedWheel((event, wheelFacts) => {
     event.preventDefault()
     dispatch(moveCanvasAction({
-      x: wheelFacts.pixelX * 2,
-      y: wheelFacts.pixelY * 2,
+      x: wheelFacts.pixelX,
+      y: wheelFacts.pixelY,
       relative: true
     }))
   }, canvasMode === UICanvasMode.Plane && canvasState === UICanvasState.Idle)
+
+  const onScroll = (deltaX: number, deltaY: number): void => {
+    dispatch(moveCanvasAction({ x: deltaX, y: deltaY, relative: true }))
+  }
 
   /**
    * Handle blur events emitted by child nodes.
@@ -93,11 +92,6 @@ export default function CanvasView (): JSX.Element {
     if (hasSelectedNode) {
       dispatch(selectNodeAction({ nodeId: undefined }))
     }
-  }
-
-  let scrollbarLayout: ScrollbarsLayout | undefined
-  if (canvasMode === UICanvasMode.Plane) {
-    scrollbarLayout = layoutScrollbars(viewportRect, program.contentBounds)
   }
 
   // TODO: Make off-canvas nodes 'virtual' by not rendering them
@@ -139,52 +133,13 @@ export default function CanvasView (): JSX.Element {
           />
         </div>
       )}
-      {scrollbarLayout !== undefined && (
+      {canvasMode === UICanvasMode.Plane && program.contentBounds !== undefined && (
         <div className='canvas__scrollbars'>
-          <svg
-            className='canvas__scrollbars-svg'
-            preserveAspectRatio='xMidYMid meet'
-            viewBox={`0 0 ${viewportRect.width} ${viewportRect.height}`}
-          >
-            {scrollbarLayout.verticalSize < 1 && (
-              <rect
-                className='canvas__scrollbars-vertical'
-                x={viewportRect.width - scrollbarSize - scrollbarOffset}
-                y={
-                  scrollbarOffset +
-                  scrollbarLayout.verticalPosition *
-                  (1 - scrollbarLayout.verticalSize) *
-                  (viewportRect.height - scrollbarOffset * 3 - scrollbarSize)
-                }
-                rx={scrollbarSize * 0.5}
-                ry={scrollbarSize * 0.5}
-                width={scrollbarSize}
-                height={
-                  (viewportRect.height - scrollbarOffset * 3 - scrollbarSize) *
-                  scrollbarLayout.verticalSize
-                }
-              />
-            )}
-            {scrollbarLayout.horizontalSize < 1 && (
-              <rect
-                className='canvas__scrollbars-horizontal'
-                x={
-                  scrollbarOffset +
-                  scrollbarLayout.horizontalPosition *
-                  (1 - scrollbarLayout.horizontalSize) *
-                  (viewportRect.width - scrollbarOffset * 3 - scrollbarSize)
-                }
-                y={viewportRect.height - scrollbarSize - scrollbarOffset}
-                rx={scrollbarSize * 0.5}
-                ry={scrollbarSize * 0.5}
-                width={
-                  (viewportRect.width - scrollbarOffset * 3 - scrollbarSize) *
-                  scrollbarLayout.horizontalSize
-                }
-                height={scrollbarSize}
-              />
-            )}
-          </svg>
+          <ScrollbarsView
+            viewportRect={viewportRect}
+            contentRect={program.contentBounds}
+            onScroll={onScroll}
+          />
         </div>
       )}
       {childNodeIds.length === 0 && (

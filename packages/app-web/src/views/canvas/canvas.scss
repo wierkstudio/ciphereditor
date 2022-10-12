@@ -78,10 +78,4 @@
     z-index: $z-index-canvas-scrollbars;
     pointer-events: none;
   }
-
-  &__scrollbars-vertical,
-  &__scrollbars-horizontal {
-    fill: $c-meta;
-    opacity: 0.4;
-  }
 }

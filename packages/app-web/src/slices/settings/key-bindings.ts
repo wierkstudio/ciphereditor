@@ -5,26 +5,26 @@ import { enterProgramAction, leaveProgramAction, moveNodeAction, redoAction, rem
 
 export type KeyBindingDispatchAction = Parameters<AppDispatch>[0]
 
-const nudgeAmount = 8
+const nudgeAmount = 16
 
 /**
  * Object mapping available key binding target names to dispatch actions that
  * will be triggered in Redux when a matching key combination is pressed.
  */
 export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchAction> = {
-  endWire: { type: endWireAction.type },
-  enterProgram: { type: enterProgramAction.type },
-  leaveProgram: { type: leaveProgramAction.type },
-  nudgeNodeDown: { type: moveNodeAction.type, payload: { x: 0, y: nudgeAmount } },
-  nudgeNodeLeft: { type: moveNodeAction.type, payload: { x: -nudgeAmount, y: 0 } },
-  nudgeNodeRight: { type: moveNodeAction.type, payload: { x: nudgeAmount, y: 0 } },
-  nudgeNodeUp: { type: moveNodeAction.type, payload: { x: 0, y: -nudgeAmount } },
-  popModal: { type: popModalAction.type },
-  redo: { type: redoAction.type },
-  removeNode: { type: removeNodeAction.type },
-  toggleAddModal: { type: toggleAddModalAction.type },
-  toggleMaximized: { type: toggleEmbedMaximizedAction.type },
-  undo: { type: undoAction.type }
+  endWire: endWireAction({}),
+  enterProgram: enterProgramAction({}),
+  leaveProgram: leaveProgramAction({}),
+  nudgeNodeDown: moveNodeAction({ x: 0, y: nudgeAmount }),
+  nudgeNodeLeft: moveNodeAction({ x: -nudgeAmount, y: 0 }),
+  nudgeNodeRight: moveNodeAction({ x: nudgeAmount, y: 0 }),
+  nudgeNodeUp: moveNodeAction({ x: 0, y: -nudgeAmount }),
+  popModal: popModalAction({}),
+  redo: redoAction(),
+  removeNode: removeNodeAction({}),
+  toggleAddModal: toggleAddModalAction({}),
+  toggleMaximized: toggleEmbedMaximizedAction({}),
+  undo: undoAction()
 }
 
 /**
