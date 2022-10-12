@@ -4,8 +4,9 @@ import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
 import { layoutScrollbars, Rect, ScrollbarsLayout } from '../../lib/utils/2d'
 import { useCallback, useState } from 'react'
 
-const scrollbarOffset = 8
-const scrollbarSize = 8
+// Magic numbers inspired by macOS scrollbars
+const scrollbarOffset = 2
+const scrollbarSize = 7
 
 export default function ScrollbarsView (props: {
   viewportRect: Rect
@@ -18,7 +19,8 @@ export default function ScrollbarsView (props: {
   const [draggingLayout, setDraggingLayout] =
     useState<ScrollbarsLayout | undefined>(undefined)
 
-  const verticalTrackHeight = viewportRect.height - scrollbarOffset * 3 - scrollbarSize
+  // TODO: Why is this off by one?
+  const verticalTrackHeight = viewportRect.height - scrollbarOffset * 3 - scrollbarSize - 1
   const horizontalTrackWidth = viewportRect.width - scrollbarOffset * 3 - scrollbarSize
 
   const onPointerDrag = useCallback((
@@ -91,7 +93,8 @@ export default function ScrollbarsView (props: {
             (1 - layout.horizontalSize) *
             horizontalTrackWidth
           }
-          y={viewportRect.height - scrollbarSize - scrollbarOffset}
+          // TODO: Why is this off by one?
+          y={viewportRect.height - scrollbarSize - scrollbarOffset - 1}
           rx={scrollbarSize * 0.5}
           ry={scrollbarSize * 0.5}
           width={horizontalTrackWidth * layout.horizontalSize}

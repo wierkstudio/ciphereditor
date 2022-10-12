@@ -183,11 +183,10 @@ const normalizeWheel = (event: MouseEvent | any): NormalizedWheelFacts => {
   if (pX === 0 && sX !== 0) { sX = (pX < 1) ? -1 : 1 }
   if (pY === 0 && sY !== 0) { sY = (pY < 1) ? -1 : 1 }
 
-  return {
-    spinX: sX,
-    spinY: sY,
-    pixelX: pX,
-    pixelY: pY
+  if (event.shiftKey !== true) {
+    return { spinX: sX, spinY: sY, pixelX: pX, pixelY: pY }
+  } else {
+    return { spinX: sY, spinY: sX, pixelX: pY, pixelY: pX }
   }
 }
 

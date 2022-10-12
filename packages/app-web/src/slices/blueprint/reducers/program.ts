@@ -68,25 +68,33 @@ export const updateProgramContentBounds = (
   let bottomY: number | undefined
 
   for (const child of children) {
-    if (child.x !== undefined) {
+    if (
+      child.x !== undefined &&
+      child.width !== undefined &&
+      child.y !== undefined &&
+      child.height !== undefined
+    ) {
       if (leadingX === undefined || leadingX > child.x) {
         leadingX = child.x
       }
-      if (child.width !== undefined && (trailingX === undefined || trailingX < child.x + child.width)) {
+      if (trailingX === undefined || trailingX < child.x + child.width) {
         trailingX = child.x + child.width
       }
-    }
-    if (child.y !== undefined) {
       if (topY === undefined || topY > child.y) {
         topY = child.y
       }
-      if (child.height !== undefined && (bottomY === undefined || bottomY < child.y + child.height)) {
+      if (bottomY === undefined || bottomY < child.y + child.height) {
         bottomY = child.y + child.height
       }
     }
   }
 
-  if (leadingX !== undefined && trailingX !== undefined && topY !== undefined && bottomY !== undefined) {
+  if (
+    leadingX !== undefined &&
+    trailingX !== undefined &&
+    topY !== undefined &&
+    bottomY !== undefined
+  ) {
     program.contentBounds = {
       x: leadingX,
       y: topY,

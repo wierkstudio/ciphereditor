@@ -12,6 +12,11 @@
   }
 
   @include with-canvas-mode(plane) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     height: 100vh;
     height: 100dvh;
     overflow: hidden;
@@ -77,5 +82,9 @@
     position: relative;
     z-index: $z-index-canvas-scrollbars;
     pointer-events: none;
+  }
+
+  &--modal &__scrollbars {
+    visibility: hidden;
   }
 }
