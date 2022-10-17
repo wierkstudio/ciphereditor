@@ -85,23 +85,29 @@ const execute: OperationExecuteExport = (request) => {
   const alphabet = stringToUnicodeCodePoints(alphabetString)
   if (alphabet.length <= 1) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must have a size of 2 characters or more'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must have a size of 2 characters or more'
+      }]
     }
   }
   if (Math.log2(alphabet.length) % 1 !== 0) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'As of now only alphabets with a size being a power of two (2, 4, 8, 16, …) are supported'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'As of now only alphabets with a size being a power of two (2, 4, 8, 16, …) are supported'
+      }]
     }
   }
   if (!hasUniqueElements(alphabet)) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must not contain duplicate characters'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must not contain duplicate characters'
+      }]
     }
   }
 
@@ -110,17 +116,21 @@ const execute: OperationExecuteExport = (request) => {
   const paddingSymbolCodePoints = stringToUnicodeCodePoints(paddingSymbolString)
   if (paddingSymbolCodePoints.length > 1) {
     return {
-      type: 'error',
-      controlName: 'paddingSymbol',
-      message: 'No more than one padding symbol is allowed'
+      issues: [{
+        level: 'error',
+        controlName: 'paddingSymbol',
+        message: 'No more than one padding symbol is allowed'
+      }]
     }
   }
   const paddingSymbolCodePoint = paddingSymbolCodePoints.at(0)
   if (paddingSymbolCodePoint !== undefined && alphabet.includes(paddingSymbolCodePoint)) {
     return {
-      type: 'error',
-      controlName: 'paddingSymbol',
-      message: 'The padding symbol must not be part of the alphabet'
+      issues: [{
+        level: 'error',
+        controlName: 'paddingSymbol',
+        message: 'The padding symbol must not be part of the alphabet'
+      }]
     }
   }
 

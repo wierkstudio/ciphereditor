@@ -70,9 +70,11 @@ const execute: OperationExecuteExport = async (request) => {
           : await openpgp.readKey({ binaryKey: new Uint8Array(rawPublicKey) })
     } catch (error: any) {
       return {
-        type: 'error',
-        message: 'Invalid PGP public key',
-        controlName: 'publicKey'
+        issues: [{
+          level: 'error',
+          message: 'Invalid PGP public key',
+          controlName: 'publicKey'
+        }]
       }
     }
   }
@@ -87,9 +89,11 @@ const execute: OperationExecuteExport = async (request) => {
           : await openpgp.readPrivateKey({ binaryKey: new Uint8Array(rawPrivateKey) })
     } catch (error: any) {
       return {
-        type: 'error',
-        message: 'Invalid PGP private key',
-        controlName: 'privateKey'
+        issues: [{
+          level: 'error',
+          message: 'Invalid PGP private key',
+          controlName: 'privateKey'
+        }]
       }
     }
   }
@@ -105,8 +109,10 @@ const execute: OperationExecuteExport = async (request) => {
   if (isEncrypt) {
     if (password === undefined && publicKey === undefined) {
       return {
-        type: 'error',
-        message: 'A password or public key is required to encrypt the given message'
+        issues: [{
+          level: 'error',
+          message: 'A password or public key is required to encrypt the given message'
+        }]
       }
     }
 
@@ -137,9 +143,11 @@ const execute: OperationExecuteExport = async (request) => {
       }
     } catch (error: unknown) {
       return {
-        type: 'error',
-        message: 'Error during encryption',
-        description: error instanceof Error ? error.message : undefined
+        issues: [{
+          level: 'error',
+          message: 'Error during encryption',
+          description: error instanceof Error ? error.message : undefined
+        }]
       }
     }
 
@@ -147,8 +155,10 @@ const execute: OperationExecuteExport = async (request) => {
   } else {
     if (password === undefined && privateKey === undefined) {
       return {
-        type: 'error',
-        message: 'A password or private key is required to decrypt the given encrypted message'
+        issues: [{
+          level: 'error',
+          message: 'A password or private key is required to decrypt the given encrypted message'
+        }]
       }
     }
 
@@ -179,9 +189,11 @@ const execute: OperationExecuteExport = async (request) => {
       }
     } catch (error: unknown) {
       return {
-        type: 'error',
-        message: 'Error during decryption',
-        description: error instanceof Error ? error.message : undefined
+        issues: [{
+          level: 'error',
+          message: 'Error during decryption',
+          description: error instanceof Error ? error.message : undefined
+        }]
       }
     }
 

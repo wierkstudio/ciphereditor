@@ -45,8 +45,10 @@ const execute: OperationExecuteExport = (request) => {
   }
 
   return {
-    type: 'error',
-    message: 'Both inputs must either be of type text or of type bytes'
+    issues: [{
+      level: 'error',
+      message: 'Both inputs must either be of type text or of type bytes'
+    }]
   }
 }
 

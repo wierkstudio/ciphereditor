@@ -32,8 +32,3 @@ export type OperationIssue = z.infer<typeof operationIssueSchema>
 export const operationIssueSchema = issueSchema.extend({
   targetControlNames: z.array(z.string()).optional()
 })
-
-export type ErrorOperationIssue = z.infer<typeof errorOperationIssueSchema>
-export const errorOperationIssueSchema = issueSchema.extend({
-  type: z.literal('error')
-})

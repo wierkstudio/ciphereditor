@@ -166,17 +166,21 @@ const execute: OperationExecuteExport = async (request) => {
 
   if (source.length > 1000) {
     return {
-      type: 'error',
-      controlName: sourceControl,
-      message: 'The translation source must not exceed 1,000 characters'
+      issues: [{
+        level: 'error',
+        controlName: sourceControl,
+        message: 'The translation source must not exceed 1,000 characters'
+      }]
     }
   }
 
   if (target === '') {
     return {
-      type: 'error',
-      controlName: targetControl,
-      message: 'The target language cannot be detected'
+      issues: [{
+        level: 'error',
+        controlName: targetControl,
+        message: 'The target language cannot be detected'
+      }]
     }
   }
 
@@ -199,9 +203,11 @@ const execute: OperationExecuteExport = async (request) => {
     translatedText = data.data.translations[0].translatedText
   } catch (err: any) {
     return {
-      type: 'error',
-      message: 'Error while contacting the Google Translate service',
-      description: 'Please check your internet connection or try again later'
+      issues: [{
+        level: 'error',
+        message: 'Error while contacting the Google Translate service',
+        description: 'Please check your internet connection or try again later'
+      }]
     }
   }
 

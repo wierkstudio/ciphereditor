@@ -59,9 +59,11 @@ const execute: OperationExecuteExport = async (request) => {
           : await openpgp.readPrivateKey({ binaryKey: new Uint8Array(rawKey) })
       } catch (error: unknown) {
         return {
-          type: 'error',
-          message: 'Invalid PGP key',
-          controlName: 'key'
+          issues: [{
+            level: 'error',
+            message: 'Invalid PGP key',
+            controlName: 'key'
+          }]
         }
       }
     }

@@ -1,7 +1,7 @@
 
 import z from 'zod'
 import { controlChangeSchema, controlSchema } from '../control/schema'
-import { errorOperationIssueSchema, operationIssueSchema } from '../issue/schema'
+import { operationIssueSchema } from '../issue/schema'
 import { valueSchema } from '../value/schema'
 
 /**
@@ -95,7 +95,7 @@ export const operationResultSchema = z.object({
    * Issues encountered during the execution of the operation
    */
   issues: z.array(operationIssueSchema).optional()
-})
+}).strict()
 
 /**
  * Will be called when an operation execution is requested
@@ -104,8 +104,8 @@ export type OperationExecuteExport = z.infer<typeof operationExecuteExportSchema
 export const operationExecuteExportSchema = z.function()
   .args(operationRequestSchema)
   .returns(z.union([
-    z.promise(z.union([errorOperationIssueSchema, operationResultSchema])),
-    z.union([errorOperationIssueSchema, operationResultSchema])
+    z.promise(operationResultSchema),
+    operationResultSchema
   ]))
 
 /**

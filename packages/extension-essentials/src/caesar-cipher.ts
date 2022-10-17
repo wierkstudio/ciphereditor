@@ -57,17 +57,21 @@ const execute: OperationExecuteExport = (request) => {
   // Validate alphabet
   if (alphabetCodePoints.length <= 1) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must have a size of 2 characters or more'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must have a size of 2 characters or more'
+      }]
     }
   }
 
   if (!hasUniqueElements(alphabetCodePoints)) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must not contain duplicate characters'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must not contain duplicate characters'
+      }]
     }
   }
 

@@ -48,17 +48,21 @@ const execute: OperationExecuteExport = (request) => {
 
   if (alphabet.length <= 1) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must have a size of 2 characters or more'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must have a size of 2 characters or more'
+      }]
     }
   }
 
   if (!hasUniqueElements(alphabet)) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must not contain duplicate characters'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must not contain duplicate characters'
+      }]
     }
   }
 
@@ -69,9 +73,11 @@ const execute: OperationExecuteExport = (request) => {
   const separatorString = values.separator as string
   if (separatorString.length === 0) {
     return {
-      type: 'error',
-      controlName: 'separator',
-      message: 'The separator must be at least one character long'
+      issues: [{
+        level: 'error',
+        controlName: 'separator',
+        message: 'The separator must be at least one character long'
+      }]
     }
   }
 

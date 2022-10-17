@@ -89,17 +89,21 @@ const execute: OperationExecuteExport = (request) => {
   // Validate alphabet
   if (alphabetCodePoints.length <= 1) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must have a size of 2 characters or more'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must have a size of 2 characters or more'
+      }]
     }
   }
 
   if (!hasUniqueElements(alphabetCodePoints)) {
     return {
-      type: 'error',
-      controlName: 'alphabet',
-      message: 'The alphabet must not contain duplicate characters'
+      issues: [{
+        level: 'error',
+        controlName: 'alphabet',
+        message: 'The alphabet must not contain duplicate characters'
+      }]
     }
   }
 
@@ -121,17 +125,21 @@ const execute: OperationExecuteExport = (request) => {
   // Validate key
   if (keyCodePoints.length === 0) {
     return {
-      type: 'error',
-      controlName: 'key',
-      message: 'The key must have a size of 1 character or more'
+      issues: [{
+        level: 'error',
+        controlName: 'key',
+        message: 'The key must have a size of 1 character or more'
+      }]
     }
   }
 
   if (!keyCodePoints.every(codePoint => alphabetCodePoints.includes(codePoint))) {
     return {
-      type: 'error',
-      controlName: 'key',
-      message: 'The key must only contain characters from the alphabet'
+      issues: [{
+        level: 'error',
+        controlName: 'key',
+        message: 'The key must only contain characters from the alphabet'
+      }]
     }
   }
 
