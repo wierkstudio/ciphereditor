@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -39,7 +39,7 @@ const contribution: Contribution = {
 }
 
 const execute: OperationExecuteExport = (request) => {
-  const text = request.values.text.data as string
+  const text = request.values.text as string
 
   const characters = Array.from(text.normalize())
   const words = text.split(/\s+/)

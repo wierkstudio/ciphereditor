@@ -1,5 +1,5 @@
 
-import { Contribution, NamedControlChange, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, ControlChange, OperationExecuteExport } from '@ciphereditor/library'
 
 // TODO: Create proxy service with rate limiting and origin check
 const apiKey = process.env.GOOGLE_CLOUD_TRANSLATION_API_KEY ?? 'unknown'
@@ -134,13 +134,13 @@ const contribution: Contribution = {
       name: 'sourceLanguage',
       initialValue: 'en',
       types: ['text'],
-      choices: languageOptions
+      options: languageOptions
     },
     {
       name: 'targetLanguage',
       initialValue: 'de',
       types: ['text'],
-      choices: languageOptions
+      options: languageOptions
     },
     {
       name: 'target',
@@ -160,9 +160,9 @@ const execute: OperationExecuteExport = async (request) => {
   const sourceControl = forward ? 'sourceLanguage' : 'targetLanguage'
   const targetControl = forward ? 'targetLanguage' : 'sourceLanguage'
 
-  const text = values[textControl].data as string
-  const source = values[sourceControl].data as string
-  const target = values[targetControl].data as string
+  const text = values[textControl] as string
+  const source = values[sourceControl] as string
+  const target = values[targetControl] as string
 
   if (source.length > 1000) {
     return {
@@ -205,7 +205,7 @@ const execute: OperationExecuteExport = async (request) => {
     }
   }
 
-  const changes: NamedControlChange[] = []
+  const changes: ControlChange[] = []
   changes.push({
     name: forward ? 'target' : 'source',
     value: translatedText

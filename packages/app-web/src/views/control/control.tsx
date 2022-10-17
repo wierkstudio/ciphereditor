@@ -8,10 +8,10 @@ import OutletView from '../../views/outlet/outlet'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import useHighestIssueType from '../../hooks/useHighestIssueType'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { MouseEvent, useCallback, useEffect, useRef } from 'react'
 import { canAttachControls, getControlNode, getControlPreview } from '../../slices/blueprint/selectors/control'
+import { chooseMostImportantIssue } from '@ciphereditor/library'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 import { getWireDraft } from '../../slices/ui/selectors'
 import { renderClassName } from '../../lib/utils/dom'
@@ -32,7 +32,7 @@ export default function ControlView (props: {
     getControlPreview(state, controlId))
 
   const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
-  const highestIssueType = useHighestIssueType(issues)
+  const highestIssueLevel = chooseMostImportantIssue(issues)?.level
 
   const isWireTarget = useAppSelector(state => getWireDraft(state.ui)?.targetControlId === controlId)
   const isWireTargetable = useAppSelector(state => {
@@ -101,9 +101,9 @@ export default function ControlView (props: {
             <h4 className='control__name'>
               {control.label}
             </h4>
-            {highestIssueType !== undefined && (
-              <div className={'control__issue control__issue--' + highestIssueType}>
-                <IconView icon={highestIssueType} />
+            {highestIssueLevel !== undefined && (
+              <div className={'control__issue control__issue--' + String(highestIssueLevel)}>
+                <IconView icon={highestIssueLevel} />
               </div>
             )}
           </div>

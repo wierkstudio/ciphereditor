@@ -9,7 +9,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/caesar-cipher',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Caesar cipher',
       description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
       url: 'https://ciphereditor.com/operations/caesar-cipher',
@@ -29,7 +29,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
-          choices: [
+          options: [
             {
               value: 'abcdefghijklmnopqrstuvwxyz',
               label: 'Latin alphabet (a-z)'
@@ -47,7 +47,7 @@ const defaultDirectoryState: DirectoryState = {
               label: 'Uppercase Greek alphabet (Α-Ω)'
             }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'ciphertext',
@@ -60,7 +60,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/rot13',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'ROT13',
       description: 'Method in which each letter in a text is rotated by 13 places.',
       url: 'https://ciphereditor.com/operations/rot13',
@@ -75,7 +75,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'variant',
           initialValue: 'rot13',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'rot5', label: 'ROT5 (0-9)' },
             { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
             { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
@@ -93,7 +93,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/letter-number-cipher',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Letter number cipher',
       description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
       url: 'https://ciphereditor.com/operations/letter-number-cipher',
@@ -108,7 +108,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
-          choices: [
+          options: [
             {
               value: 'abcdefghijklmnopqrstuvwxyz',
               label: 'Latin alphabet (a-z)'
@@ -126,13 +126,13 @@ const defaultDirectoryState: DirectoryState = {
               label: 'Uppercase Greek alphabet (Α-Ω)'
             }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'separator',
           initialValue: ' ',
           types: ['text'],
-          choices: [
+          options: [
             { value: ' ', label: 'Space' },
             { value: ',', label: 'Comma (,)' },
             { value: ';', label: 'Semicolon (;)' },
@@ -141,7 +141,7 @@ const defaultDirectoryState: DirectoryState = {
             { value: '\n', label: 'Newline (LF)' },
             { value: '\r\n', label: 'Newline (CR LF)' }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'numbers',
@@ -154,7 +154,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/word-counter',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Word counter',
       description: 'Operation for counting the number of characters, words and lines that appear in a text.',
       url: 'https://ciphereditor.com/operations/word-counter',
@@ -191,7 +191,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/case-transform',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Case transform',
       description: 'Transform text to lower case, upper case, capitalize, alternating case or inverse case',
       keywords: [],
@@ -205,7 +205,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'transform',
           initialValue: 'upperCase',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'lowerCase', label: 'Lower case' },
             { value: 'upperCase', label: 'Upper case' },
             { value: 'capitalize', label: 'Capitalize' },
@@ -226,7 +226,7 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-essentials/vigenere-cipher',
       label: 'Vigenère cipher',
       description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       keywords: ['substitution cipher', 'shift', 'vigenere', 'key', 'beaufort', 'trithemius'],
       controls: [
         {
@@ -238,7 +238,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'variant',
           initialValue: 'vigenere',
           types: ['text'],
-          choices: [
+          options: [
             {
               value: 'vigenere',
               label: 'Vigenère cipher'
@@ -266,7 +266,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'keyMode',
           initialValue: 'repeat',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'repeat', label: 'Repeat' },
             { value: 'autoKey', label: 'Auto-key' }
           ]
@@ -275,7 +275,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
-          choices: [
+          options: [
             {
               value: 'abcdefghijklmnopqrstuvwxyz',
               label: 'Latin alphabet (a-z)'
@@ -293,7 +293,7 @@ const defaultDirectoryState: DirectoryState = {
               label: 'Uppercase Greek alphabet (Α-Ω)'
             }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'ciphertext',
@@ -306,7 +306,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/concatenate',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Concatenate',
       description: 'Concatenate text or byte inputs',
       keywords: ['append', 'join'],
@@ -336,7 +336,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/binary-to-text',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Binary to text encoding',
       description: 'Operation for commonly used base64, base32, base16, hex, and binary encoding schemes.',
       url: 'https://ciphereditor.com/operations/binary-to-text',
@@ -351,7 +351,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'alphabet',
           initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
           types: ['text'],
-          choices: [
+          options: [
             {
               value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
               label: 'base64'
@@ -385,17 +385,17 @@ const defaultDirectoryState: DirectoryState = {
               label: 'base2, binary'
             }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'padding',
           initialValue: '=',
           types: ['text'],
-          choices: [
+          options: [
             { value: '', label: 'None' },
             { value: '=', label: 'Equals sign (=)' }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'encodedData',
@@ -408,7 +408,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-hash/hash',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
       label: 'Hash function',
       description: 'Map data of arbitrary size to hashes of fixed size',
       url: 'https://ciphereditor.com/operations/cryptographic-hash-function',
@@ -423,7 +423,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'algorithm',
           initialValue: 'sha1',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'adler32', label: 'Adler-32' },
             { value: 'crc32', label: 'CRC32' },
             { value: 'crc32c', label: 'CRC32C' },
@@ -458,7 +458,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-hash/hmac',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
       label: 'HMAC function',
       description: 'The hash-based message authentication code (HMAC) is used to verify both the data integrity and the authentication of a message.',
       url: 'https://ciphereditor.com/operations/hmac',
@@ -478,7 +478,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'algorithm',
           initialValue: 'sha1',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'adler32', label: 'Adler-32' },
             { value: 'crc32', label: 'CRC32' },
             { value: 'crc32c', label: 'CRC32C' },
@@ -513,7 +513,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-not',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical NOT',
       description: 'Takes truth to falsity and vice versa',
       url: 'https://ciphereditor.com/operations/logical-and-or-not',
@@ -537,7 +537,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-and',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical AND',
       description: 'Output true if and only if all the operands are true',
       url: 'https://ciphereditor.com/operations/logical-and-or-not',
@@ -568,7 +568,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-or',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical OR',
       description: 'Output true if and only if one or more of its operands is true',
       url: 'https://ciphereditor.com/operations/logical-and-or-not',
@@ -599,7 +599,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/google-translate',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha/extension.js?v=2',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Google Translate',
       description: 'Translate content between languages using the Google Cloud Translation API',
       url: 'https://ciphereditor.com/operations/google-translate',
@@ -614,7 +614,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'sourceLanguage',
           initialValue: 'en',
           types: ['text'],
-          choices: [
+          options: [
             { value: '', label: 'Detect' },
             { value: 'af', label: 'Afrikaans' },
             { value: 'sq', label: 'Albanian' },
@@ -730,7 +730,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'targetLanguage',
           initialValue: 'de',
           types: ['text'],
-          choices: [
+          options: [
             { value: '', label: 'Detect' },
             { value: 'af', label: 'Afrikaans' },
             { value: 'sq', label: 'Albanian' },
@@ -853,7 +853,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-pgp/encryption',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'PGP Encryption',
       description: 'Apply OpenPGP encryption and decryption on text or binary messages',
       url: 'https://ciphereditor.com/operations/pgp-encryption',
@@ -875,13 +875,13 @@ const defaultDirectoryState: DirectoryState = {
           name: 'publicKey',
           description: 'Either used as encryption key or as optional validation key',
           initialValue: '',
-          types: ['text', 'binary']
+          types: ['text', 'bytes']
         },
         {
           name: 'privateKey',
           description: 'Either used as optional siging key or as decryption key',
           initialValue: '',
-          types: ['text', 'binary']
+          types: ['text', 'bytes']
         },
         {
           name: 'privateKeyPassphrase',
@@ -900,7 +900,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-pgp/generate-key',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'Generate PGP Key',
       description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
       url: 'https://ciphereditor.com/operations/pgp-encryption',
@@ -911,7 +911,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'type',
           initialValue: 'ecc',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'ecc', label: 'ECC' },
             { value: 'rsa', label: 'RSA' }
           ]
@@ -921,7 +921,7 @@ const defaultDirectoryState: DirectoryState = {
           label: 'Curve',
           initialValue: 'curve25519',
           types: ['text'],
-          choices: [
+          options: [
             { value: 'curve25519', label: 'curve25519' },
             { value: 'ed25519', label: 'ed25519' },
             { value: 'p256', label: 'p256' },
@@ -934,12 +934,12 @@ const defaultDirectoryState: DirectoryState = {
           label: 'Bits',
           initialValue: 4096,
           types: ['number'],
-          choices: [
+          options: [
             { value: 2048, label: '2048 bits' },
             { value: 3072, label: '3072 bits' },
             { value: 4096, label: '4096 bits' }
           ],
-          enforceChoices: false
+          enforceOptions: false
         },
         {
           name: 'passphrase',
@@ -972,7 +972,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-pgp/inspect-key',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha/extension.js?v=1',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'Inspect PGP Key',
       description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
       url: 'https://ciphereditor.com/operations/pgp-encryption',

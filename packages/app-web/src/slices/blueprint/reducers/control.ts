@@ -1,12 +1,11 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { Control } from '@ciphereditor/types'
-import { ControlChange, ControlChangeSource, ControlNode } from '../types/control'
+import { ControlNode, ControlNodeChange, ControlNodeChangeSource } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
-import { allValueTypes, equalValues, createValue, defaultValue, castValue, resolveImplicitTypedValue, resolveLabeledImplicitTypedValue } from './value'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
+import { availableValueTypes, castSerializedValue, compareSerializedValues, Control, createEmptyValue, identifySerializedValueType, serializeValue } from '@ciphereditor/library'
 import { capitalCase } from 'change-case'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getControlNode } from '../selectors/control'
@@ -24,10 +23,10 @@ export const defaultControlNode: ControlNode = {
   name: '',
   label: 'Control',
   description: undefined,
-  types: allValueTypes,
-  value: defaultValue,
-  choices: [],
-  enforceChoices: true,
+  types: availableValueTypes,
+  value: serializeValue(createEmptyValue()),
+  options: [],
+  enforceOptions: true,
   visibility: 'collapsed',
   enabled: true,
   writable: true,
@@ -80,10 +79,11 @@ export const addOperationControlNode = (
   operationId: BlueprintNodeId,
   control: Control
 ): ControlNode => {
-  const value = resolveImplicitTypedValue(control.initialValue)
-  const choices = control.choices?.map(resolveLabeledImplicitTypedValue) ?? []
-  const index = choices.findIndex(x => equalValues(x.value, value))
-  const selectedChoiceIndex = index !== -1 ? index : undefined
+  const value = control.initialValue
+  const options = control.options ?? []
+  const index = options.findIndex(option =>
+    compareSerializedValues(option.value, value))
+  const selectedOptionIndex = index !== -1 ? index : undefined
   const controlNode: ControlNode = {
     ...defaultControlNode,
     ...control,
@@ -91,8 +91,8 @@ export const addOperationControlNode = (
     parentId: operationId,
     label: control.label ?? capitalCase(control.name),
     value,
-    selectedChoiceIndex,
-    choices,
+    selectedOptionIndex,
+    options: options,
     visibility: control.initialVisibility ?? defaultControlNode.visibility
   }
   return addNode(state, controlNode)
@@ -104,8 +104,8 @@ export const addOperationControlNode = (
 export const changeControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  change: ControlChange,
-  source: ControlChangeSource,
+  change: ControlNodeChange,
+  source: ControlNodeChangeSource,
   sourceVariableId?: BlueprintNodeId
 ): void => {
   const control = getControlNode(state, controlId)
@@ -115,21 +115,18 @@ export const changeControl = (
   control.enabled = change.enabled ?? control.enabled
   control.order = change.order ?? control.order
 
-  if (change.choices !== undefined) {
-    control.choices = change.choices?.map(resolveLabeledImplicitTypedValue) ?? []
+  if (change.options !== undefined) {
+    control.options = change.options
   }
 
   const oldValue = control.value
-  const newValue =
-    change.value !== undefined
-      ? resolveImplicitTypedValue(change.value)
-      : oldValue
-  const equal = equalValues(oldValue, newValue)
+  const newValue = change.value !== undefined ? change.value : oldValue
+  const equal: boolean = compareSerializedValues(oldValue, newValue)
 
   // If a choice is selected, update it when choices or value change
-  if (control.selectedChoiceIndex !== undefined && (change.choices !== undefined || !equal)) {
-    const index = control.choices.findIndex(x => equalValues(x.value, newValue))
-    control.selectedChoiceIndex = index !== -1 ? index : undefined
+  if (control.selectedOptionIndex !== undefined && (change.options !== undefined || !equal)) {
+    const index = control.options.findIndex(options => compareSerializedValues(options.value, newValue))
+    control.selectedOptionIndex = index !== -1 ? index : undefined
   }
 
   // Bail out early, if the value doesn't change
@@ -145,7 +142,7 @@ export const changeControl = (
   switch (parent.type) {
     case BlueprintNodeType.Operation:
       operation = parent as OperationNode
-      if (source !== ControlChangeSource.Parent) {
+      if (source !== ControlNodeChangeSource.Parent) {
         // Change is not originating from the operation, so mark it busy
         setOperationState(state, operation.id, OperationState.Busy)
         // Increment the request version every time a control changes
@@ -156,13 +153,13 @@ export const changeControl = (
         operation.priorityControlIds =
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
       }
-      if (source !== ControlChangeSource.Variable) {
+      if (source !== ControlNodeChangeSource.Variable) {
         propagateChange(state, control.id, parent.parentId)
       }
       break
 
     case BlueprintNodeType.Program:
-      if (source === ControlChangeSource.Variable) {
+      if (source === ControlNodeChangeSource.Variable) {
         if (sourceVariableId === control.attachedInternVariableId) {
           // Propagate change outside the program (if not root)
           if (state.rootProgramId !== parent.id) {
@@ -172,7 +169,7 @@ export const changeControl = (
           // Propagate change inside the program
           propagateChange(state, control.id, parent.id)
         }
-      } else if (source === ControlChangeSource.UserInput) {
+      } else if (source === ControlNodeChangeSource.UserInput) {
         propagateChange(state, control.id, parent.parentId)
         propagateChange(state, control.id, parent.id)
       }
@@ -186,12 +183,12 @@ export const changeControl = (
 export const changeControlValueToChoice = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  choiceIndex: number
+  optionIndex: number
 ): void => {
   const control = getControlNode(state, controlId)
-  const value = control.choices[choiceIndex].value
-  changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
-  control.selectedChoiceIndex = choiceIndex
+  const value = control.options[optionIndex].value
+  changeControl(state, controlId, { value }, ControlNodeChangeSource.UserInput)
+  control.selectedOptionIndex = optionIndex
 }
 
 /**
@@ -200,16 +197,17 @@ export const changeControlValueToChoice = (
 export const changeControlValueToType = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  valueType: string
+  type: string
 ): void => {
   const control = getControlNode(state, controlId)
-  control.selectedChoiceIndex = undefined
-  if (control.value.type !== valueType) {
-    let value = castValue(control.value, valueType)
+  control.selectedOptionIndex = undefined
+  const valueType = identifySerializedValueType(control.value)
+  if (valueType !== type) {
+    let value = castSerializedValue(control.value, type)
     if (value === undefined) {
-      value = createValue(valueType)
+      value = serializeValue(createEmptyValue(type))
     }
-    changeControl(state, controlId, { value }, ControlChangeSource.UserInput)
+    changeControl(state, controlId, { value }, ControlNodeChangeSource.UserInput)
   }
 }
 

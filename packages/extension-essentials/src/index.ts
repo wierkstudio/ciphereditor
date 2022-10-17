@@ -11,7 +11,7 @@ import logicalOr from './logical-or'
 import rot13 from './rot13'
 import vigenereCipher from './vigenere-cipher'
 import wordCounter from './word-counter'
-import { ExtensionActivateExport } from '@ciphereditor/types'
+import { ExtensionActivateExport } from '@ciphereditor/library'
 
 export const activate: ExtensionActivateExport = (context) => [
   binaryToText,

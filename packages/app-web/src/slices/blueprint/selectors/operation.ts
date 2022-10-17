@@ -5,8 +5,8 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { OperationIssue, OperationRequest } from '@ciphereditor/types'
 import { OperationNode, OperationState } from '../types/operation'
+import { extractValue, OperationIssue, OperationRequest, Value } from '@ciphereditor/library'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, hasNode } from './blueprint'
 
@@ -44,7 +44,14 @@ export const getOpenOperationRequest = (
     return undefined
   }
 
-  const values = getNodeControlValues(state, operation.id)
+  // Prepare values by extracting them
+  const serializedValues = getNodeControlValues(state, operation.id)
+  const values: Record<string, Value> = {}
+  for (const key in serializedValues) {
+    values[key] = extractValue(serializedValues[key])
+  }
+
+  // Retrieve control priorities
   const controlPriorities =
     operation.priorityControlIds
       .map(id => getControlNode(state, id).name)
@@ -70,7 +77,8 @@ export const getOperationIssues = (
       parentNode = getNode(state, node.parentId)
       if (parentNode.type === BlueprintNodeType.Operation) {
         const operationIssues = getOperationIssues(state, parentNode.id)
-        return operationIssues.filter(issue => issue.controlName === control.name)
+        return operationIssues.filter(issue =>
+          issue.targetControlNames?.includes(control.name))
       }
   }
   return []

@@ -6,12 +6,12 @@ import IconView from '../../views/icon/icon'
 import MovableButtonView from '../movable-button/movable-button'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import useHighestIssueType from '../../hooks/useHighestIssueType'
 import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
 import { OperationNode, OperationState } from '../../slices/blueprint/types/operation'
 import { ProgramNode } from '../../slices/blueprint/types/program'
+import { chooseMostImportantIssue } from '@ciphereditor/library'
 import { enterProgramAction, executeOperationAction } from '../../slices/blueprint'
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
@@ -45,7 +45,7 @@ export default function OperationView (props: {
     controls.find(control => control.order >= 1000) !== undefined
 
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
-  const highestIssueType = useHighestIssueType(issues)
+  const highestIssueLevel = chooseMostImportantIssue(issues)?.level
 
   let state = OperationState.Ready
   if (node.type === BlueprintNodeType.Operation) {
@@ -87,9 +87,9 @@ export default function OperationView (props: {
               {/* TODO: Needs translation */}
               {node.label}
             </h3>
-            {highestIssueType !== undefined && (
-              <div className={'operation__issue operation__issue--' + highestIssueType}>
-                <IconView icon={highestIssueType} />
+            {highestIssueLevel !== undefined && (
+              <div className={'operation__issue operation__issue--' + String(highestIssueLevel)}>
+                <IconView icon={highestIssueLevel} />
               </div>
             )}
           </MovableButtonView>

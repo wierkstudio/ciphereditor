@@ -8,17 +8,16 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
-import { ControlChange, ControlChangeSource } from './types/control'
-import { OperationContribution, OperationRequest, OperationResult } from '@ciphereditor/types'
+import { ControlNodeChange, ControlNodeChangeSource } from './types/control'
+import { OperationContribution, operationContributionSchema, OperationIssue } from '@ciphereditor/library'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, executeOperation, setOperationState } from './reducers/operation'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
-import { getControlNode, getNodeNamedControls } from './selectors/control'
+import { getControlNode } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
-import { operationContributionSchema } from './types/extension'
 import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
@@ -175,9 +174,9 @@ export const blueprintSlice = createSlice({
      */
     changeControlAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId
-      change: ControlChange
+      change: ControlNodeChange
     }>) => {
-      changeControl(state, payload.controlId, payload.change, ControlChangeSource.UserInput)
+      changeControl(state, payload.controlId, payload.change, ControlNodeChangeSource.UserInput)
     },
 
     /**
@@ -186,10 +185,11 @@ export const blueprintSlice = createSlice({
     applyOperationResultAction: (state, { payload }: PayloadAction<{
       operationId: BlueprintNodeId
       requestVersion: number
-      request: OperationRequest
-      result: OperationResult
+      changes: ControlNodeChange[]
+      changeControlIds: BlueprintNodeId[]
+      issues: OperationIssue[]
     }>) => {
-      const { operationId, requestVersion, result } = payload
+      const { operationId, requestVersion, changes, changeControlIds, issues } = payload
       if (!hasNode(state, operationId)) {
         // Operation node has been removed while being busy
         return
@@ -205,14 +205,19 @@ export const blueprintSlice = createSlice({
       }
 
       // A result bearing no issues of type 'error' is considered successful
-      const success = result.issues?.find(issue => issue.type === 'error') === undefined
+      const success = issues?.find(issue => issue.level === 'error') === undefined
       if (success) {
-        const namedControls = getNodeNamedControls(state, operationId)
-        result.changes?.forEach(change => changeControl(
-          state, namedControls[change.name].id, change, ControlChangeSource.Parent))
-        setOperationState(state, operation.id, OperationState.Ready, result.issues)
+        for (let i = 0; i < changes.length; i++) {
+          changeControl(
+            state,
+            changeControlIds[i],
+            changes[i],
+            ControlNodeChangeSource.Parent
+          )
+        }
+        setOperationState(state, operation.id, OperationState.Ready, issues)
       } else {
-        setOperationState(state, operation.id, OperationState.Error, result.issues)
+        setOperationState(state, operation.id, OperationState.Error, issues)
       }
     },
 

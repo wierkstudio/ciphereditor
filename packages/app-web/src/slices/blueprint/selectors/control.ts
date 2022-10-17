@@ -5,13 +5,12 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { TypedValue } from '@ciphereditor/types'
+import { UICanvasMode } from '../../ui/types'
 import { VariableNode } from '../types/variable'
-import { equalValues, isTypeWithinTypes, previewMaskedValue, previewValue } from '../reducers/value'
+import { compareSerializedValues, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
-import { UICanvasMode } from '../../ui/types'
 
 /**
  * Find a control node by the given node id.
@@ -36,11 +35,12 @@ export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNod
 /**
  * Return an object mapping control names to values, embedded in the given node.
  */
-export const getNodeControlValues = (state: BlueprintState, nodeId: BlueprintNodeId): {
-  [name: string]: TypedValue
-} => {
+export const getNodeControlValues = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): Record<string, SerializedValue> => {
   const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[]
-  const namedValues: { [name: string]: TypedValue } = {}
+  const namedValues: Record<string, SerializedValue> = {}
   for (let i = 0; i < controls.length; i++) {
     namedValues[controls[i].name] = controls[i].value
   }
@@ -152,13 +152,13 @@ export const canAttachControls = (
   }
 
   // Check if source value type is within the value types supported by the target
-  if (!isTypeWithinTypes(sourceControl.value.type, targetControl.types)) {
+  if (!isTypeCompatibleToValueTypes(identifySerializedValueType(sourceControl.value), targetControl.types)) {
     return false
   }
 
   // Check if the source value is a valid choice among the target choices
-  if (targetControl.enforceChoices && targetControl.choices.length > 0) {
-    if (targetControl.choices.find(choice => equalValues(choice.value, sourceControl.value)) === undefined) {
+  if (targetControl.enforceOptions && targetControl.options.length > 0) {
+    if (targetControl.options.find(option => compareSerializedValues(option.value, sourceControl.value)) === undefined) {
       return false
     }
   }
@@ -172,14 +172,14 @@ export const canAttachControls = (
 export const getControlPreview = (
   state: BlueprintState,
   controlId: BlueprintNodeId
-): string|undefined => {
+): string | undefined => {
   const control = getControlNode(state, controlId)
-  if (control.selectedChoiceIndex !== undefined) {
-    return control.choices[control.selectedChoiceIndex].label
+  if (control.selectedOptionIndex !== undefined) {
+    return control.options[control.selectedOptionIndex].label ?? previewSerializedValue(control.value)
   }
   if (!control.maskPreview) {
-    return previewValue(control.value)
+    return previewSerializedValue(control.value)
   } else {
-    return previewMaskedValue(control.value)
+    return previewMaskedSerializedValue(control.value)
   }
 }

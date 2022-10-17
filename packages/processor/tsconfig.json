@@ -1,18 +1,18 @@
 {
-    "extends": "../../tsconfig",
-    "compilerOptions": {
-      "lib": [
-        "ESNext",
-        "DOM",
-        "DOM.Iterable",
-        "WebWorker"
-      ],
-      "sourceRoot": "./src/",
-      "sourceMap": true,
-      "skipLibCheck": true,
-      "declaration": true
-    },
-    "include": [
-      "src"
-    ]
-  }
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable",
+      "WebWorker"
+    ],
+    "sourceRoot": "./src/",
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "declaration": true
+  },
+  "include": [
+    "src"
+  ]
+}

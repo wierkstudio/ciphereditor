@@ -1,7 +1,7 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 import { bufferToHexString } from './lib/binary'
-import { getAlgorithmChoices, createDigest } from './lib/digest'
+import { getAlgorithmOptions, createDigest } from './lib/digest'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -20,7 +20,7 @@ const contribution: Contribution = {
       name: 'algorithm',
       initialValue: 'sha1',
       types: ['text'],
-      choices: getAlgorithmChoices()
+      options: getAlgorithmOptions()
     },
     {
       name: 'hash',
@@ -32,11 +32,10 @@ const contribution: Contribution = {
 }
 
 const execute: OperationExecuteExport = async (request) => {
-  const message = request.values.message.data as string | ArrayBuffer
-  const messageType = request.values.message.type
-  const algorithm = request.values.algorithm.data as string
+  const message = request.values.message as string | ArrayBuffer
+  const algorithm = request.values.algorithm as string
   const rawHash = await createDigest(algorithm, message)
-  const hash = messageType === 'bytes' ? rawHash : bufferToHexString(rawHash)
+  const hash = message instanceof ArrayBuffer ? rawHash : bufferToHexString(rawHash)
   return { changes: [{ name: 'hash', value: hash }] }
 }
 

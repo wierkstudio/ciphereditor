@@ -1,53 +1,6 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { implicitTypedValueSchema, labeledImplicitTypedValueSchema, LabeledTypedValue } from './value'
-import { Control, ControlVisibility, ImplicitTypedValue, NamedControlChange, TypedValue } from '@ciphereditor/types'
-import { z } from 'zod'
-
-export const controlSchema: z.ZodType<Control> = z.object({
-  name: z.string(),
-  label: z.string().optional(),
-  description: z.string().optional(),
-  types: z.array(z.string()),
-  initialValue: implicitTypedValueSchema,
-  choices: z.array(labeledImplicitTypedValueSchema).optional(),
-  enforceChoices: z.boolean().optional(),
-  enabled: z.boolean().optional(),
-  writable: z.boolean().optional(),
-  maskPreview: z.boolean().optional(),
-  initialVisibility: z.enum(['collapsed', 'expanded', 'hidden']).optional(),
-  order: z.number().optional()
-})
-
-export const controlChangeSchema = z.object({
-  label: z.string().optional(),
-  value: implicitTypedValueSchema.optional(),
-  choices: z.array(labeledImplicitTypedValueSchema).optional(),
-  enabled: z.boolean().optional(),
-  order: z.number().optional()
-})
-
-/**
- * Structured changes targeted to a control node
- */
-export type ControlChange = z.infer<typeof controlChangeSchema>
-
-export const namedControlChangeSchema: z.ZodType<NamedControlChange> =
-  controlChangeSchema.extend({
-    name: z.string()
-  })
-
-export const namedControlChangesSchema = z.array(namedControlChangeSchema)
-export type NamedControlChanges = z.infer<typeof namedControlChangesSchema>
-
-/**
- * Control change source
- */
-export enum ControlChangeSource {
-  Parent,
-  UserInput,
-  Variable
-}
+import { ControlVisibility, SerializedValue } from '@ciphereditor/library'
 
 /**
  * Control node
@@ -82,27 +35,27 @@ export interface ControlNode extends BlueprintNode {
   /**
    * Initial control value
    */
-  initialValue?: ImplicitTypedValue
+  initialValue?: SerializedValue
 
   /**
    * Current value
    */
-  value: TypedValue
+  value: SerializedValue
 
   /**
-   * Index of the currently selected choice
+   * Index of the currently selected option
    */
-  selectedChoiceIndex?: number
+  selectedOptionIndex?: number
 
   /**
-   * Control value choices
+   * Control option values
    */
-  choices: LabeledTypedValue[]
+  options: Array<{ value: SerializedValue, label?: string }>
 
   /**
-   * Wether the value is restricted to control choices (if not empty)
+   * Wether the value is restricted to control options (if not empty)
    */
-  enforceChoices: boolean
+  enforceOptions: boolean
 
   /**
    * Control enabled state
@@ -149,4 +102,21 @@ export interface ControlNode extends BlueprintNode {
    * Number of pixels between the top side of the node and the outlet
    */
   nodeOutletY?: number
+}
+
+/**
+ * Control change source
+ */
+export enum ControlNodeChangeSource {
+  Parent,
+  UserInput,
+  Variable
+}
+
+export interface ControlNodeChange {
+  label?: string
+  value?: SerializedValue
+  options?: Array<{ value: SerializedValue, label?: string }>
+  enabled?: boolean
+  order?: number
 }

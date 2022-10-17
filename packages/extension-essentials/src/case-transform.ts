@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
 const contribution: Contribution = {
@@ -18,7 +18,7 @@ const contribution: Contribution = {
       name: 'transform',
       initialValue: 'upperCase',
       types: ['text'],
-      choices: [
+      options: [
         { value: 'lowerCase', label: 'Lower case' },
         { value: 'upperCase', label: 'Upper case' },
         { value: 'capitalize', label: 'Capitalize' },
@@ -38,9 +38,9 @@ const contribution: Contribution = {
 const reversableTransforms = ['inverseCase']
 
 const execute: OperationExecuteExport = (request) => {
-  const source = request.values.source.data as string
-  const transform = request.values.transform.data as string
-  const transformed = request.values.transformed.data as string
+  const source = request.values.source as string
+  const transform = request.values.transform as string
+  const transformed = request.values.transformed as string
 
   const controlPriorities = request.controlPriorities
   const forward = controlPriorities.indexOf('source') < controlPriorities.indexOf('transformed')

@@ -1,26 +1,23 @@
 
 import InputTextView from '../../views/input-text/input-text'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react'
-import { BytesValue, TypedValue } from '@ciphereditor/types'
 import { ValueViewProps } from '../../views/value/value'
 import { bufferToHexString, hexStringToBuffer } from '../../lib/utils/binary'
-import { equalValues, previewValue } from '../../slices/blueprint/reducers/value'
+import { compareSerializedValues, extractValue, SerializedValue, serializeValue } from '@ciphereditor/library'
 import { isHexString } from '../../lib/utils/string'
 
-const valueToString = (value: TypedValue): string =>
-  bufferToHexString(value.data as ArrayBuffer)
+const valueToString = (value: SerializedValue): string =>
+  bufferToHexString(extractValue(value) as ArrayBuffer)
 
-const stringToValue = (string: string): TypedValue =>
-  ({ type: 'bytes', data: hexStringToBuffer(string) })
+const stringToValue = (string: string): SerializedValue =>
+  (serializeValue(hexStringToBuffer(string)))
 
-const emptyBytesData = new ArrayBuffer(0)
-
-export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.Element {
+export default function ValueBytesView (props: ValueViewProps<SerializedValue>): JSX.Element {
   const { onChange, onFocus, onBlur, value, readOnly = false } = props
 
   const [stringValue, setStringValue] = useState(valueToString(value))
 
-  const onValueChange = (value: TypedValue, event: BaseSyntheticEvent): void => {
+  const onValueChange = (value: SerializedValue, event: BaseSyntheticEvent): void => {
     if (onChange !== undefined) {
       onChange(value, event)
     }
@@ -30,7 +27,7 @@ export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.
     setStringValue(string)
     if (isHexString(string)) {
       const newValue = stringToValue(string)
-      if (!equalValues(value, newValue)) {
+      if (!compareSerializedValues(value, newValue)) {
         onValueChange(newValue, event)
       }
     }
@@ -53,7 +50,7 @@ export default function ValueBytesView (props: ValueViewProps<BytesValue>): JSX.
         <InputTextView
           id={props.id}
           value={stringValue}
-          placeholder={previewValue({ type: 'bytes', data: emptyBytesData })}
+          placeholder='(empty)'
           readOnly={readOnly}
           onFocus={onFocus}
           onBlur={onInputBlur}

@@ -20,7 +20,7 @@ As a monorepo this repository contains multiple packages that share common depen
 - 🚀 [`app-desktop`](packages/app-desktop/README.md) - Desktop application source built on the web app and Electron
 - 🚀 [`website`](packages/website/README.md) - Website the web app is embedded in providing content pages (closed source)
 - 📦 [`processor`](packages/processor/README.md) - JavaScript sandbox for Browser environments where extensions are executed in
-- 📦 `types` - TypeScript types shared between packages and third-party extensions
+- 📦 `library` - Logic and types shared between packages and third-party extensions
 - 📦 `extension-essentials` - Extension providing essential operations
 - 📦 `extension-hash` - Extension providing operations related to cryptographic hash functions
 - 📦 `extension-pgp` - Extension providing operations related to the OpenPGP protocol

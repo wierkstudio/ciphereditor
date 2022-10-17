@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
 const contribution: Contribution = {
@@ -19,7 +19,7 @@ const contribution: Contribution = {
       name: 'variant',
       initialValue: 'rot13',
       types: ['text'],
-      choices: [
+      options: [
         { value: 'rot5', label: 'ROT5 (0-9)' },
         { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
         { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
@@ -37,9 +37,9 @@ const contribution: Contribution = {
 
 const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
-  const variant = values.variant.data
+  const variant = values.variant as 'rot5' | 'rot13' | 'rot18' | 'rot47'
   const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
-  const string = (forward ? values.plaintext.data : values.ciphertext.data) as string
+  const string = (forward ? values.plaintext : values.ciphertext) as string
 
   const codePoints = stringToUnicodeCodePoints(string)
   const ouputCodePoints = codePoints.map(codePoint => {

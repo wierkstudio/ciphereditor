@@ -10,7 +10,7 @@
     "watch": "rollup -c -w"
   },
   "devDependencies": {
-    "@ciphereditor/types": "*",
+    "@ciphereditor/library": "*",
     "@next/env": "^12.2.2",
     "@rollup/plugin-node-resolve": "^14.0.1",
     "@rollup/plugin-replace": "^4.0.0",

@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
 import { hasUniqueElements } from './lib/array'
 import { lcm } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
@@ -22,7 +22,7 @@ const contribution: Contribution = {
       name: 'alphabet',
       initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
       types: ['text'],
-      choices: [
+      options: [
         {
           value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
           label: 'base64'
@@ -56,17 +56,17 @@ const contribution: Contribution = {
           label: 'base2, binary'
         }
       ],
-      enforceChoices: false
+      enforceOptions: false
     },
     {
       name: 'padding',
       initialValue: '=',
       types: ['text'],
-      choices: [
+      options: [
         { value: '', label: 'None' },
         { value: '=', label: 'Equals sign (=)' }
       ],
-      enforceChoices: false
+      enforceOptions: false
     },
     {
       name: 'encodedData',
@@ -81,7 +81,7 @@ const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
 
   // Read and validate alphabet
-  const alphabetString = values.alphabet.data as string
+  const alphabetString = values.alphabet as string
   const alphabet = stringToUnicodeCodePoints(alphabetString)
   if (alphabet.length <= 1) {
     return {
@@ -106,7 +106,7 @@ const execute: OperationExecuteExport = (request) => {
   }
 
   // Read and validate padding symbol
-  const paddingSymbolString = values.padding.data as string
+  const paddingSymbolString = values.padding as string
   const paddingSymbolCodePoints = stringToUnicodeCodePoints(paddingSymbolString)
   if (paddingSymbolCodePoints.length > 1) {
     return {
@@ -133,9 +133,9 @@ const execute: OperationExecuteExport = (request) => {
   if (encode) {
     // Read data
     const units = Array.from(new Uint8Array(
-      values.data.type === 'bytes'
-        ? values.data.data
-        : stringToBuffer(values.data.data as string)
+      values.data instanceof ArrayBuffer
+        ? values.data
+        : stringToBuffer(values.data as string)
     ))
 
     // Transform unit size (encode)
@@ -166,7 +166,7 @@ const execute: OperationExecuteExport = (request) => {
     }
 
     // Read encoded data
-    const encodedDataString = values.encodedData.data as string
+    const encodedDataString = values.encodedData as string
     const encodedCodePoints = stringToUnicodeCodePoints(
       caseSensitivity ? encodedDataString : encodedDataString.toLowerCase())
 
@@ -192,14 +192,14 @@ const execute: OperationExecuteExport = (request) => {
     const issues: OperationIssue[] = []
     if (encounteredForeignCharacters) {
       issues.push({
-        type: 'warn',
-        controlName: 'encodedData',
+        level: 'warn',
+        targetControlNames: ['encodedData'],
         message: 'The value contains characters that are not part of the alphabet and thus get ignored'
       })
     }
 
     // If the original data is text-based, try to keep it that way
-    if (values.data.type === 'text') {
+    if (typeof values.data === 'string') {
       const string = bufferToString(buffer)
       if (string !== undefined) {
         return {

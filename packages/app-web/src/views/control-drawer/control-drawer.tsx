@@ -1,23 +1,22 @@
 
 import './control-drawer.scss'
-import ButtonView from '../../views/button/button'
-import React, { BaseSyntheticEvent, MouseEvent, useCallback } from 'react'
-import SelectView, { SelectViewElement } from '../../views/select/select'
-import ValueView from '../../views/value/value'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import useTranslation from '../../hooks/useTranslation'
 import {
   changeControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction
 } from '../../slices/blueprint'
+import ButtonView from '../../views/button/button'
+import IssueListView from '../issue-list/issue-list'
+import React, { BaseSyntheticEvent, MouseEvent, useCallback } from 'react'
+import SelectView, { SelectViewElement } from '../../views/select/select'
+import ValueView from '../../views/value/value'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNode } from '../../slices/blueprint/types/control'
-import { TypedValue } from '@ciphereditor/types'
-import { labelType, stringifyValue } from '../../slices/blueprint/reducers/value'
-import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import { extractValue, identifySerializedValueType, labelType, previewSerializedValue, SerializedValue, stringifyValue } from '@ciphereditor/library'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
-import IssueListView from '../issue-list/issue-list'
 
 export default function ControlDrawerView (props: {
   control: ControlNode
@@ -31,13 +30,13 @@ export default function ControlDrawerView (props: {
 
   const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
 
-  const onValueChange = useCallback((value: TypedValue, event?: BaseSyntheticEvent) => {
+  const onValueChange = useCallback((value: SerializedValue, event?: BaseSyntheticEvent) => {
     dispatch(changeControlAction({ controlId, change: { value } }))
   }, [dispatch, controlId])
 
   const onValueCopy = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     // TODO: Make it visible to the user that they just copied the value
-    void navigator.clipboard.writeText(stringifyValue(value))
+    void navigator.clipboard.writeText(stringifyValue(extractValue(value)))
   }, [value])
 
   const onSelectChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -63,27 +62,27 @@ export default function ControlDrawerView (props: {
   const selectElements: SelectViewElement[] = []
   let selectValue
   let selectLabel
-  let choicesCount = 0
+  let optionsCount = 0
 
-  if (control.choices.length > 0) {
+  if (control.options.length > 0) {
     selectElements.push({
       type: 'group',
       label: t('Known value'),
-      elements: control.choices.map((choice, index) => ({
+      elements: control.options.map((option, index) => ({
         type: 'option',
         value: `c${index}`,
-        label: choice.label
+        label: option.label ?? previewSerializedValue(option.value)
       }))
     })
-    choicesCount += control.choices.length
-    if (control.selectedChoiceIndex !== undefined) {
-      selectValue = `c${control.selectedChoiceIndex}`
-      selectLabel = control.choices[control.selectedChoiceIndex].label
+    optionsCount += control.options.length
+    if (control.selectedOptionIndex !== undefined) {
+      selectValue = `c${control.selectedOptionIndex}`
+      selectLabel = control.options[control.selectedOptionIndex].label
     }
   }
 
   // TODO: Translate label type
-  if (!control.enforceChoices || control.choices.length === 0) {
+  if (!control.enforceOptions || control.options.length === 0) {
     selectElements.push({
       type: 'group',
       label: t('Custom value'),
@@ -93,9 +92,9 @@ export default function ControlDrawerView (props: {
         label: labelType(type)
       }))
     })
-    choicesCount += control.types.length
+    optionsCount += control.types.length
     if (selectValue === undefined) {
-      const typeIndex = control.types.findIndex(t => control.value.type === t)
+      const typeIndex = control.types.findIndex(t => identifySerializedValueType(control.value) === t)
       if (typeIndex !== -1) {
         selectValue = `t${typeIndex}`
         selectLabel = labelType(control.types[typeIndex])
@@ -104,8 +103,8 @@ export default function ControlDrawerView (props: {
   }
 
   const showValue =
-    control.selectedChoiceIndex === undefined ||
-    control.choices.length === 0
+    control.selectedOptionIndex === undefined ||
+    control.options.length === 0
 
   return (
     <div
@@ -129,7 +128,7 @@ export default function ControlDrawerView (props: {
       )}
       <div className='control-drawer__footer'>
         <div className='control-drawer__footer-start'>
-          {(control.writable && choicesCount > 1)
+          {(control.writable && optionsCount > 1)
             ? (
               <SelectView
                 elements={selectElements}
@@ -142,7 +141,8 @@ export default function ControlDrawerView (props: {
             : (
               <ButtonView disabled modifiers={['meta']}>
                 {/* TODO: Needs translation */}
-                {labelType(control.value.type) + (!control.writable ? ' (read only)' : '')}
+                {labelType(identifySerializedValueType(control.value)) +
+                  (!control.writable ? ' (read only)' : '')}
               </ButtonView>
               )}
         </div>

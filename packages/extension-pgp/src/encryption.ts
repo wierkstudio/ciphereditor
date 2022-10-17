@@ -1,6 +1,6 @@
 
 import * as openpgp from 'openpgp'
-import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
 import { isStringOrArrayBufferEmpty } from './lib/shared'
 
 const contribution: Contribution = {
@@ -27,13 +27,13 @@ const contribution: Contribution = {
       name: 'publicKey',
       description: 'Either used as encryption key or as optional validation key',
       initialValue: '',
-      types: ['text', 'binary']
+      types: ['text', 'bytes']
     },
     {
       name: 'privateKey',
       description: 'Either used as optional siging key or as decryption key',
       initialValue: '',
-      types: ['text', 'binary']
+      types: ['text', 'bytes']
     },
     {
       name: 'privateKeyPassphrase',
@@ -55,10 +55,10 @@ const execute: OperationExecuteExport = async (request) => {
 
   // Gather facts
   const isEncrypt = controlPriorities.indexOf('message') < controlPriorities.indexOf('encryptedMessage')
-  const password = values.password.data !== '' ? values.password.data as string : undefined
-  const rawPublicKey = values.publicKey.data as string | ArrayBuffer
-  const rawPrivateKey = values.privateKey.data as string | ArrayBuffer
-  const privateKeyPassphrase = values.privateKeyPassphrase.data as string
+  const password = values.password !== '' ? values.password as string : undefined
+  const rawPublicKey = values.publicKey as string | ArrayBuffer
+  const rawPrivateKey = values.privateKey as string | ArrayBuffer
+  const privateKeyPassphrase = values.privateKeyPassphrase as string
 
   // Read binary or armored public key
   let publicKey: openpgp.PublicKey | undefined
@@ -110,7 +110,7 @@ const execute: OperationExecuteExport = async (request) => {
       }
     }
 
-    const rawMessage = values.message.data as string | ArrayBuffer
+    const rawMessage = values.message as string | ArrayBuffer
     let encryptedMessage
     try {
       // Maintain the value type to make it predictable and controllable
@@ -152,7 +152,7 @@ const execute: OperationExecuteExport = async (request) => {
       }
     }
 
-    const rawEncryptedMessage = values.encryptedMessage.data as string | ArrayBuffer
+    const rawEncryptedMessage = values.encryptedMessage as string | ArrayBuffer
     let decryptResult: openpgp.DecryptMessageResult
     try {
       // Maintain the value type to make it predictable and controllable
@@ -194,16 +194,16 @@ const execute: OperationExecuteExport = async (request) => {
       try {
         await signature.verified
         issues.push({
-          type: 'info',
+          level: 'info',
           message: `Found verified signature by key ${signature.keyID.toHex()}`,
-          controlName: 'message'
+          targetControlNames: ['message']
         })
       } catch (error: unknown) {
         issues.push({
-          type: 'warn',
+          level: 'warn',
           message: `Found signature by key ${signature.keyID.toHex()} that could not be verified`,
           description: error instanceof Error ? error.message : undefined,
-          controlName: 'message'
+          targetControlNames: ['message']
         })
       }
     }

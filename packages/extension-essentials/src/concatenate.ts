@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -32,8 +32,8 @@ const contribution: Contribution = {
 }
 
 const execute: OperationExecuteExport = (request) => {
-  const a = request.values.a.data as string | ArrayBuffer
-  const b = request.values.b.data as string | ArrayBuffer
+  const a = request.values.a as string | ArrayBuffer
+  const b = request.values.b as string | ArrayBuffer
 
   if (typeof a === 'string' && typeof b === 'string') {
     return { changes: [{ name: 'ab', value: a + b }] }

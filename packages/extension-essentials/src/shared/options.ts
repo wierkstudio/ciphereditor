@@ -1,7 +1,12 @@
 
-import { LabeledImplicitTypedValue } from '@ciphereditor/types'
+import { SerializedValue } from '@ciphereditor/library'
 
-export const alphabetTextChoices: LabeledImplicitTypedValue[] = [
+interface LabeledSerializedValue {
+  value: SerializedValue
+  label: string
+}
+
+export const alphabetTextChoices: LabeledSerializedValue[] = [
   {
     value: 'abcdefghijklmnopqrstuvwxyz',
     label: 'Latin alphabet (a-z)'
@@ -20,7 +25,7 @@ export const alphabetTextChoices: LabeledImplicitTypedValue[] = [
   }
 ]
 
-export const separatorTextChoices: LabeledImplicitTypedValue[] = [
+export const separatorTextChoices: LabeledSerializedValue[] = [
   { value: ' ', label: 'Space' },
   { value: ',', label: 'Comma (,)' },
   { value: ';', label: 'Semicolon (;)' },

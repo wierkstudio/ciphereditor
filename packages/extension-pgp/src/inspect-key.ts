@@ -1,6 +1,6 @@
 
 import * as openpgp from 'openpgp'
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 import { isStringOrArrayBufferEmpty } from './lib/shared'
 
 const contribution: Contribution = {
@@ -43,7 +43,7 @@ const contribution: Contribution = {
 const execute: OperationExecuteExport = async (request) => {
   const { values } = request
 
-  const rawKey = values.key.data as string | ArrayBuffer
+  const rawKey = values.key as string | ArrayBuffer
   let key: openpgp.PublicKey | openpgp.PrivateKey | undefined
   if (!isStringOrArrayBufferEmpty(rawKey)) {
     try {

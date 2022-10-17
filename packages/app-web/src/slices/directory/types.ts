@@ -1,5 +1,5 @@
 
-import { Contribution } from '@ciphereditor/types'
+import { Contribution } from '@ciphereditor/library'
 
 /**
  * Directory state

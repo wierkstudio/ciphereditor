@@ -1,11 +1,11 @@
 
+import { SerializedValue } from '@ciphereditor/library'
 import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
 import { ControlNode } from '../types/control'
-import { TypedValue } from '@ciphereditor/types'
 import { VariableNode } from '../types/variable'
 import { getNode, getNodeChildren } from './blueprint'
 import { getControlNode, isControlInternVariable } from './control'
@@ -71,7 +71,7 @@ export const getVariableAttachedControls = (
 /**
  * Return the current value for the given variable.
  */
-export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId): TypedValue =>
+export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId): SerializedValue =>
   getVariableControl(state, variableId).value
 
 /**

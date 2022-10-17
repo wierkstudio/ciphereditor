@@ -1,5 +1,5 @@
 
-import { Contribution, OperationContribution } from '@ciphereditor/types'
+import { Contribution, OperationContribution } from '@ciphereditor/library'
 import { DirectoryState } from './types'
 
 export const getContributions = (state: DirectoryState): Contribution[] =>

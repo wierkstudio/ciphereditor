@@ -127,7 +127,7 @@ const createAlgorithmHashFunction = async (algorithm: string): Promise<IHasher> 
   return await lastUsedHashFunction
 }
 
-export const getAlgorithmChoices = (): Array<{ value: string, label: string }> => {
+export const getAlgorithmOptions = (): Array<{ value: string, label: string }> => {
   return Object.keys(algorithms).map((name: string) => ({
     value: name,
     label: algorithms[name].label

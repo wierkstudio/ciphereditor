@@ -6,17 +6,20 @@
     "./packages/*"
   ],
   "scripts": {
-    "test": "npm run processor-build && npm run test -ws",
-    "app-web-build": "npm run processor-build && npm run build -w @ciphereditor/app-web",
+    "test": "npm run library-build && npm run processor-build && npm run test -ws",
+    "app-web-build": "npm run library-build && npm run processor-build && npm run build -w @ciphereditor/app-web",
     "app-web-start": "npm run start -w @ciphereditor/app-web",
     "app-web-preview": "npm run preview -w @ciphereditor/app-web",
     "app-desktop-start": "npm run start -w @ciphereditor/app-desktop",
     "app-desktop-pack": "npm run pack -w @ciphereditor/app-desktop",
+    "library-build": "npm run build -w @ciphereditor/library",
+    "library-watch": "npm run watch -w @ciphereditor/library",
     "processor-build": "npm run build -w @ciphereditor/processor",
     "processor-watch": "npm run watch -w @ciphereditor/processor",
     "extension-essentials-build": "npm run build -w @ciphereditor/extension-essentials",
     "extension-essentials-watch": "npm run watch -w @ciphereditor/extension-essentials",
-    "extension-hash-build": "npm run build -w @ciphereditor/extension-hash"
+    "extension-hash-build": "npm run build -w @ciphereditor/extension-hash",
+    "extension-pgp-build": "npm run build -w @ciphereditor/extension-pgp"
   },
   "devDependencies": {
     "ts-standard": "^11.0.0"

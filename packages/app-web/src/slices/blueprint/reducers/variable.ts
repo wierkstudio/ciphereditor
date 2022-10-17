@@ -1,12 +1,12 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { ControlChangeSource } from '../types/control'
+import { ControlNodeChangeSource } from '../types/control'
 import { VariableNode } from '../types/variable'
+import { addNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'
 import { canAttachControls, getControlNode } from '../selectors/control'
-import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
-import { addNode, nextNodeId, removeNode } from './blueprint'
 import { changeControl } from './control'
+import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 
 /**
  * Create new variable within the given program and attach it to a control.
@@ -170,7 +170,7 @@ export const propagateChange = (
         state,
         variable.attachmentIds[i],
         { value: control.value },
-        ControlChangeSource.Variable,
+        ControlNodeChangeSource.Variable,
         variable.id
       )
     }

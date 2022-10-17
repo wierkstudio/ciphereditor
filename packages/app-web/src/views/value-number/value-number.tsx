@@ -2,19 +2,18 @@
 import './value-number.scss'
 import ButtonView from '../../views/button/button'
 import InputTextView from '../../views/input-text/input-text'
+import useTranslation from '../../hooks/useTranslation'
 import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from '../../views/value/value'
 import { isNumericString } from '../../lib/utils/string'
-import { IntegerValue, NumberValue, TypedValue } from '@ciphereditor/types'
-import useTranslation from '../../hooks/useTranslation'
 
-export default function ValueNumberView (props: ValueViewProps<NumberValue | IntegerValue>): JSX.Element {
+export default function ValueNumberView (props: ValueViewProps<number>): JSX.Element {
   const { onChange, onBlur, value, readOnly = false } = props
 
   const [t] = useTranslation()
-  const [stringValue, setStringValue] = useState(value.data.toString())
+  const [stringValue, setStringValue] = useState(value.toString())
 
-  const onValueChange = (value: TypedValue, event: BaseSyntheticEvent): void => {
+  const onValueChange = (value: number, event: BaseSyntheticEvent): void => {
     if (onChange !== undefined) {
       onChange(value, event)
     }
@@ -23,29 +22,27 @@ export default function ValueNumberView (props: ValueViewProps<NumberValue | Int
   const onInputChange = (value: string, event: ChangeEvent): void => {
     setStringValue(value)
     if (isNumericString(value)) {
-      const valueNumber = parseFloat(value)
-      const valueType = Number.isInteger(valueNumber) ? 'integer' : 'number'
-      onValueChange({ type: valueType, data: valueNumber }, event)
+      onValueChange(parseFloat(value), event)
     }
   }
 
   const onInputBlur = useCallback((event: FocusEvent) => {
-    setStringValue(value.data.toString())
+    setStringValue(value.toString())
     if (onBlur !== undefined) {
       onBlur(event)
     }
   }, [value, setStringValue, onBlur])
 
   const onMinusClick = (event: MouseEvent): void => {
-    onValueChange({ type: value.type, data: value.data - 1 }, event)
+    onValueChange(value - 1, event)
   }
 
   const onPlusClick = (event: MouseEvent): void => {
-    onValueChange({ type: value.type, data: value.data + 1 }, event)
+    onValueChange(value + 1, event)
   }
 
   useEffect(() => {
-    setStringValue(value.data.toString())
+    setStringValue(value.toString())
   }, [value])
 
   return (

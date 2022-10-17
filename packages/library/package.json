@@ -1,0 +1,18 @@
+{
+  "name": "@ciphereditor/library",
+  "version": "1.0.0-alpha",
+  "description": "Logic and types shared between packages and third-party extensions",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-standard && tsc --noEmit",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "base64-arraybuffer": "^1.0.2",
+    "zod": "^3.14.4"
+  },
+  "main": "build/index.js",
+  "types": "build/index.d.ts"
+}

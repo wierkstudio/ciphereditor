@@ -1,5 +1,6 @@
-import { Contribution, NamedControlChange, OperationExecuteExport, OperationIssue } from '@ciphereditor/types'
-import { alphabetTextChoices } from './shared/choices'
+
+import { Contribution, ControlChange, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
+import { alphabetTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { mod } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
@@ -21,7 +22,7 @@ const contribution: Contribution = {
       name: 'variant',
       initialValue: 'vigenere',
       types: ['text'],
-      choices: [
+      options: [
         {
           value: 'vigenere',
           label: 'Vigenère cipher'
@@ -49,7 +50,7 @@ const contribution: Contribution = {
       name: 'keyMode',
       initialValue: 'repeat',
       types: ['text'],
-      choices: [
+      options: [
         { value: 'repeat', label: 'Repeat' },
         { value: 'autoKey', label: 'Auto-key' }
       ]
@@ -58,8 +59,8 @@ const contribution: Contribution = {
       name: 'alphabet',
       initialValue: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
-      choices: alphabetTextChoices,
-      enforceChoices: false
+      options: alphabetTextChoices,
+      enforceOptions: false
     },
     {
       name: 'ciphertext',
@@ -72,17 +73,17 @@ const contribution: Contribution = {
 
 const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
-  const changes: NamedControlChange[] = []
+  const changes: ControlChange[] = []
   const issues: OperationIssue[] = []
 
   const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
   const inputControl = forward ? 'plaintext' : 'ciphertext'
 
-  const input = values[inputControl].data as string
+  const input = values[inputControl] as string
   const inputCodePoints = stringToUnicodeCodePoints(input)
 
   // Prepare alphabet
-  const alphabet = (values.alphabet.data as string).toLowerCase()
+  const alphabet = (values.alphabet as string).toLowerCase()
   const alphabetCodePoints = stringToUnicodeCodePoints(alphabet)
 
   // Validate alphabet
@@ -106,10 +107,10 @@ const execute: OperationExecuteExport = (request) => {
   const uppercaseAlphabetCodePoints = stringToUnicodeCodePoints(alphabet.toUpperCase())
 
   // Prepare key
-  let keyMode = values.keyMode.data as string
-  let key = (values.key.data as string).toLowerCase()
+  let keyMode = values.keyMode as string
+  let key = (values.key as string).toLowerCase()
   // Correct for variants
-  const variant = values.variant.data as string
+  const variant = values.variant as string
   if (variant === 'trithemius') {
     // TODO: Disable the key and key mode controls.
     key = alphabet
@@ -203,8 +204,8 @@ const execute: OperationExecuteExport = (request) => {
   // Key-index not incremented implies no characters appear in the alphabet
   if (k === 0) {
     issues.push({
-      type: 'warn',
-      controlName: inputControl,
+      level: 'warn',
+      targetControlNames: [inputControl],
       message: 'None of the characters are part of the alphabet and they all get ignored'
     })
   }

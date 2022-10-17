@@ -1,5 +1,5 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -29,11 +29,11 @@ const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
   const forward = controlPriorities.indexOf('a') < controlPriorities.indexOf('notA')
   if (forward) {
-    const a = values.a.data as boolean
+    const a = values.a as boolean
     const result = !a
     return { changes: [{ name: 'notA', value: result }] }
   } else {
-    const notA = values.notA.data as boolean
+    const notA = values.notA as boolean
     const result = !notA
     return { changes: [{ name: 'a', value: result }] }
   }

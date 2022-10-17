@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "sourceRoot": "./src/",
+    "outDir": "build",
+    "sourceMap": true,
+    "declaration": true
+  },
+  "include": [
+    "src"
+  ]
+}

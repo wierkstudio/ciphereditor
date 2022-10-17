@@ -78,7 +78,7 @@ Additional rules:
 
 Naming conventions:
 
-- When dealing with [Zod](https://github.com/colinhacks/zod) schema objects use the naming pattern `${typeName}Schema` with a lowercase first character. Example: The Zod schema for the TypeScript type `TypedValue` is called `typedValueSchema`. Instances of `TypedValue` may be called `typedValue`.
+- When dealing with [Zod](https://github.com/colinhacks/zod) schema objects use the naming pattern `${typeName}Schema` with a lowercase first character. Example: The Zod schema for the TypeScript type `BlueprintValue` is called `blueprintValueSchema`. Instances of `BlueprintValue` may be called `blueprintValue`.
 - Use a `View` suffix when naming React components to avoid mixing them up with equally named object types (`OperationView` instead of `Operation`)
 
 ### Sass Styleguide

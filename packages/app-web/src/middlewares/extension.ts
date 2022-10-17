@@ -1,12 +1,12 @@
 
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from '../slices/blueprint/types/blueprint'
-import { ContributionExports, ExtensionContext, OperationIssue, OperationResult } from '@ciphereditor/types'
+import { ContributionExports, contributionExportsSchema, ExtensionContext, OperationIssue, OperationResult, serializeValue } from '@ciphereditor/library'
+import { ControlNodeChange } from '../slices/blueprint/types/control'
 import { OperationState } from '../slices/blueprint/types/operation'
 import { ProcessorWorker } from '@ciphereditor/processor'
 import { RootState } from '../slices'
 import { applyOperationResultAction } from '../slices/blueprint'
-import { contributionExportsSchema } from '../slices/blueprint/types/extension'
 import { getBusyOperationIds, getOpenOperationRequest, getOperationNode } from '../slices/blueprint/selectors/operation'
 import { getNodeNamedControls } from '../slices/blueprint/selectors/control'
 import { hasNode } from '../slices/blueprint/selectors/blueprint'
@@ -65,7 +65,7 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
   } catch (error: any) {
     result = {
       issues: [{
-        type: 'error',
+        level: 'error',
         message: 'An unexpected error occurred',
         description: error.toString()
       }]
@@ -76,32 +76,46 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
 
   // Validate the result and gather issues
   const resultErrors: OperationIssue[] = []
+  const resultChanges: ControlNodeChange[] = []
+  const resultChangeControlIds: BlueprintNodeId[] = []
 
-  // Validate control references in changes
-  if (result.changes !== undefined) {
-    for (const change of result.changes) {
-      if (namedControls[change.name] === undefined) {
-        resultErrors.push({
-          type: 'error',
-          message: 'Received an unexpected result',
-          description:
-            `A change for an unknown control named '${change.name}' was received.`
-        })
+  for (const change of result.changes ?? []) {
+    // Identify the target control
+    const control = namedControls[change.name]
+    if (control !== undefined) {
+      // Serialize the change object to a control change object
+      const { name, value, options, ...remainingChanges } = change
+      const serializedChange = {
+        ...remainingChanges,
+        value: value !== undefined ? serializeValue(value) : undefined,
+        options: options?.map(option => ({
+          value: serializeValue(option.value),
+          label: option.label
+        }))
       }
+      resultChanges.push(serializedChange)
+      resultChangeControlIds.push(control.id)
+    } else {
+      resultErrors.push({
+        level: 'error',
+        message: 'Received an unexpected result',
+        description:
+          `A change for an unknown control named '${String(change.name)}' was received.`
+      })
     }
   }
 
   // Validate control references in issues
-  if (result.issues !== undefined) {
-    for (const issue of result.issues) {
-      if (issue.controlName !== undefined) {
-        if (namedControls[issue.controlName] === undefined) {
+  for (const issue of result.issues ?? []) {
+    if (issue.targetControlNames !== undefined) {
+      for (const targetControlName of issue.targetControlNames) {
+        if (namedControls[targetControlName] === undefined) {
           resultErrors.push({
-            type: 'error',
+            level: 'error',
             message: 'Received an unexpected result',
             description:
-              `An issue of type '${issue.type}' for an unknown control ` +
-              `named '${issue.controlName}' was received.`
+              `An issue of type '${String(issue.level)}' for an unknown control ` +
+              `named '${String(targetControlName)}' was received.`
           })
         }
       }
@@ -109,12 +123,23 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
   }
 
   // Dispatch action to propagate operation task result
-  store.dispatch(applyOperationResultAction({
-    operationId,
-    requestVersion: operation.requestVersion ?? 0,
-    request,
-    result: resultErrors.length === 0 ? result : { issues: resultErrors }
-  }))
+  if (resultErrors.length === 0) {
+    store.dispatch(applyOperationResultAction({
+      operationId,
+      requestVersion: operation.requestVersion ?? 0,
+      changes: resultChanges,
+      changeControlIds: resultChangeControlIds,
+      issues: result.issues ?? []
+    }))
+  } else {
+    store.dispatch(applyOperationResultAction({
+      operationId,
+      requestVersion: operation.requestVersion ?? 0,
+      changes: [],
+      changeControlIds: [],
+      issues: resultErrors
+    }))
+  }
 
   // If the operation stays busy after dispatching the task result, we need to
   // repeat the process as control values seem to have changed in the meantime

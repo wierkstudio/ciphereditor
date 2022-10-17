@@ -1,34 +1,6 @@
 
 import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { ErrorOperationIssue, OperationIssue, OperationRequest, OperationResult } from '@ciphereditor/types'
-import { namedControlChangesSchema } from './control'
-import { typedValueSchema } from './value'
-import { z } from 'zod'
-
-export const operationIssueSchema: z.ZodType<OperationIssue> = z.object({
-  type: z.enum(['error', 'warn', 'info']),
-  controlName: z.string().optional(),
-  message: z.string(),
-  description: z.string().optional()
-})
-
-export const errorOperationIssueSchema: z.ZodType<ErrorOperationIssue> =
-  z.object({
-    type: z.literal('error'),
-    controlName: z.string().optional(),
-    message: z.string(),
-    description: z.string().optional()
-  })
-
-export const operationResultSchema: z.ZodType<OperationResult> = z.object({
-  changes: namedControlChangesSchema.optional(),
-  issues: z.array(operationIssueSchema).optional()
-})
-
-export const operationRequestSchema: z.ZodType<OperationRequest> = z.object({
-  values: z.record(typedValueSchema),
-  controlPriorities: z.array(z.string())
-})
+import { OperationIssue } from '@ciphereditor/library'
 
 /**
  * Operation state

@@ -1,6 +1,6 @@
 
-import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/types'
-import { alphabetTextChoices, separatorTextChoices } from './shared/choices'
+import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
+import { alphabetTextChoices, separatorTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
@@ -21,15 +21,15 @@ const contribution: Contribution = {
       name: 'alphabet',
       initialValue: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
-      choices: alphabetTextChoices,
-      enforceChoices: false
+      options: alphabetTextChoices,
+      enforceOptions: false
     },
     {
       name: 'separator',
       initialValue: ' ',
       types: ['text'],
-      choices: separatorTextChoices,
-      enforceChoices: false
+      options: separatorTextChoices,
+      enforceOptions: false
     },
     {
       name: 'numbers',
@@ -43,7 +43,7 @@ const contribution: Contribution = {
 const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
 
-  const alphabetString = values.alphabet.data as string
+  const alphabetString = values.alphabet as string
   const alphabet = stringToUnicodeCodePoints(alphabetString)
 
   if (alphabet.length <= 1) {
@@ -66,7 +66,7 @@ const execute: OperationExecuteExport = (request) => {
   const issues: OperationIssue[] = []
 
   // Read and validate separator
-  const separatorString = values.separator.data as string
+  const separatorString = values.separator as string
   if (separatorString.length === 0) {
     return {
       type: 'error',
@@ -76,7 +76,7 @@ const execute: OperationExecuteExport = (request) => {
   }
 
   if (forward) {
-    const letters = values.letters.data as string
+    const letters = values.letters as string
     const letterCodePoints = stringToUnicodeCodePoints(letters)
 
     // Infer case sensitivity from alphabet
@@ -97,8 +97,8 @@ const execute: OperationExecuteExport = (request) => {
     const rawNumbers = decodeCodePoints.map(codePoint => reverseMap.get(codePoint))
     if (rawNumbers.findIndex(e => e === undefined) !== -1) {
       issues.push({
-        type: 'warn',
-        controlName: 'letters',
+        level: 'warn',
+        targetControlNames: ['letters'],
         message: 'The value contains characters that are not part of the alphabet and thus get ignored'
       })
     }
@@ -110,7 +110,7 @@ const execute: OperationExecuteExport = (request) => {
     return { changes: [{ name: 'numbers', value: numbers }], issues }
   } else {
     // Parse numbers from string
-    const numbersString = values.numbers.data as string
+    const numbersString = values.numbers as string
     const numbers = Array.from(numbersString.matchAll(/[0-9]+/g))
       .map(match => parseInt(match[0]))
       .filter(number => !isNaN(number))
@@ -119,8 +119,8 @@ const execute: OperationExecuteExport = (request) => {
     const rawLetterCodePoints = numbers.map(number => alphabet[number - 1] as number | undefined)
     if (rawLetterCodePoints.findIndex(e => e === undefined) !== -1) {
       issues.push({
-        type: 'warn',
-        controlName: 'numbers',
+        level: 'warn',
+        targetControlNames: ['numbers'],
         message: 'The value contains numbers that are out of range and thus being ignored'
       })
     }

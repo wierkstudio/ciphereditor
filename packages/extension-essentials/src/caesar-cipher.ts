@@ -1,6 +1,6 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/types'
-import { alphabetTextChoices } from './shared/choices'
+import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
+import { alphabetTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { mod } from './lib/math'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
@@ -27,8 +27,8 @@ const contribution: Contribution = {
       name: 'alphabet',
       initialValue: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
-      choices: alphabetTextChoices,
-      enforceChoices: false
+      options: alphabetTextChoices,
+      enforceOptions: false
     },
     {
       name: 'ciphertext',
@@ -42,16 +42,16 @@ const contribution: Contribution = {
 const execute: OperationExecuteExport = (request) => {
   const { values, controlPriorities } = request
 
-  const shift = values.shift.data as number
+  const shift = values.shift as number
 
   const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
   const inputControl = forward ? 'plaintext' : 'ciphertext'
 
-  const input = values[inputControl].data as string
+  const input = values[inputControl] as string
   const inputCodePoints = stringToUnicodeCodePoints(input)
 
   // Prepare alphabet
-  const alphabet = (values.alphabet.data as string).toLowerCase()
+  const alphabet = (values.alphabet as string).toLowerCase()
   const alphabetCodePoints = stringToUnicodeCodePoints(alphabet)
 
   // Validate alphabet
