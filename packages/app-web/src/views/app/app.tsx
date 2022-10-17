@@ -46,11 +46,17 @@ export default function AppView (): JSX.Element {
     }
   }, [dispatch])
 
-  // Editor message handler
+  // Handler for messages from the parent window via the postMessage API
   useEffect(() => {
     const onMessage = (event: MessageEvent): void => {
       if (event.source === window.parent) {
-        onEditorMessage(editorMessageSchema.parse(event.data))
+        const result = editorMessageSchema.safeParse(event.data)
+        if (result.success) {
+          onEditorMessage(result.data)
+        } else {
+          // Messages that do not match the expected schema are silently ignored
+          // as they may be posted by third party websites or browser extensions
+        }
       }
     }
     window.addEventListener('message', onMessage)
