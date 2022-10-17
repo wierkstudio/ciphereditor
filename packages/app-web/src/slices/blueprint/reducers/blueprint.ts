@@ -154,12 +154,17 @@ export const moveNode = (
     return
   }
 
-  // Reposition node
   const node = getNode(state, nodeId)
-  node.x = relative ? (node.x ?? 0) + x : x
-  node.y = relative ? (node.y ?? 0) + y : y
+  if (node.frame === undefined) {
+    // Nodes without frames are not movable
+    return
+  }
 
-  // Update program boundary
+  // Update node frame
+  node.frame.x = relative ? node.frame.x + x : x
+  node.frame.y = relative ? node.frame.y + y : y
+
+  // Update parent program boundary
   const parentNode = getNode(state, node.parentId)
   if (parentNode.type === BlueprintNodeType.Program) {
     updateProgramContentBounds(state, parentNode.id)
@@ -173,15 +178,23 @@ export const layoutNode = (
   height: number
 ): void => {
   const node = getNode(state, nodeId)
-  if (node.width !== width || node.height !== height) {
-    node.width = width
-    node.height = height
+  if (node.frame === undefined) {
+    // Nodes without frames can't be layed out
+    return
+  }
 
-    // Update program boundary
-    const parentNode = getNode(state, node.parentId)
-    if (parentNode.type === BlueprintNodeType.Program) {
-      updateProgramContentBounds(state, parentNode.id)
-    }
+  if (node.frame.width === width && node.frame.height === height) {
+    return
+  }
+
+  // Update node frame
+  node.frame.width = width
+  node.frame.height = height
+
+  // Update program boundary
+  const parentNode = getNode(state, node.parentId)
+  if (parentNode.type === BlueprintNodeType.Program) {
+    updateProgramContentBounds(state, parentNode.id)
   }
 }
 

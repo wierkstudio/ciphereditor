@@ -106,21 +106,18 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
         : getNode(state, control.parentId)
 
     if (
-      node.x !== undefined &&
-      node.y !== undefined &&
-      node.width !== undefined &&
-      node.height !== undefined &&
+      node.frame !== undefined &&
       control.nodeOutletX !== undefined &&
       control.nodeOutletY !== undefined
     ) {
       waypoints.push({
         push: i === 0,
-        x: node.x + control.nodeOutletX,
-        y: node.y + control.nodeOutletY,
-        nodeX: node.x,
-        nodeY: node.y,
-        nodeWidth: node.width,
-        nodeHeight: node.height
+        x: node.frame.x + control.nodeOutletX,
+        y: node.frame.y + control.nodeOutletY,
+        nodeX: node.frame.x,
+        nodeY: node.frame.y,
+        nodeWidth: node.frame.width,
+        nodeHeight: node.frame.height
       })
     }
   }

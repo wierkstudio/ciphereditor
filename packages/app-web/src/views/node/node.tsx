@@ -54,7 +54,7 @@ export default function NodeView (props: {
     // run when actual changes are applied to the DOM
     // TODO: Optimization: This should NOT be called when the node gets moved
     const nodeElement = nodeRef.current
-    if (nodeElement !== null) {
+    if (node.frame !== undefined && nodeElement !== null) {
       const outletPositions: Array<{
         controlId: BlueprintNodeId
         x: number | undefined
@@ -86,11 +86,15 @@ export default function NodeView (props: {
         }
       }
 
-      if (node.width !== width || node.height !== height || outletPositions.length > 0) {
+      if (
+        node.frame.width !== width ||
+        node.frame.height !== height ||
+        outletPositions.length > 0
+      ) {
         dispatch(layoutNodeAction({ nodeId, width, height, outletPositions }))
       }
     }
-  })
+  }, [nodeRef, outletRefs, node, controls])
 
   const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
     dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY }))
@@ -110,7 +114,9 @@ export default function NodeView (props: {
       ref={nodeRef}
       className={renderClassName('node', modifiers)}
       role='region'
-      style={canvasMode === UICanvasMode.Plane ? { transform: `translate(${node.x ?? 0}px, ${node.y ?? 0}px)` } : {}}
+      style={canvasMode === UICanvasMode.Plane && node.frame !== undefined
+        ? { transform: `translate(${node.frame.x}px, ${node.frame.y}px)` }
+        : {}}
       tabIndex={0}
       onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
       onFocus={onFocus}

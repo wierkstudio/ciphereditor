@@ -21,9 +21,7 @@ export const addVariable = (
     id: nextNodeId(state),
     parentId: programId,
     childIds: [],
-    attachmentIds: [controlId],
-    x: 0,
-    y: 0
+    attachmentIds: [controlId]
   }
   addNode(state, variable)
   attachControlToVariable(state, controlId, variable.id, false)

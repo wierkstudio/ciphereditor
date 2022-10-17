@@ -12,6 +12,12 @@ export interface VariableNode extends BlueprintNode {
   type: BlueprintNodeType.Variable
 
   /**
+   * Variables do not have an own frame. Their positioning depends
+   * on the attachments.
+   */
+  frame?: undefined
+
+  /**
    * Node ids of attached controls in order of propagation;
    * The first element points to the control a value last propagated from.
    */

@@ -1,4 +1,6 @@
 
+import { Rect } from '../../../lib/utils/2d'
+
 export type BlueprintNodeId = number
 
 export enum BlueprintNodeType {
@@ -34,24 +36,9 @@ export interface BlueprintNode {
   childIds: BlueprintNodeId[]
 
   /**
-   * Position on x-axis (if applicable)
+   * Size and position of the node, if applicable
    */
-  x?: number
-
-  /**
-   * Position on y-axis (if applicable)
-   */
-  y?: number
-
-  /**
-   * Width (once layed out)
-   */
-  width?: number
-
-  /**
-   * Height (once layed out)
-   */
-  height?: number
+  frame?: Rect
 }
 
 /**

@@ -2,6 +2,7 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ControlNode, ControlNodeChange, ControlNodeChangeSource } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
+import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -36,16 +37,11 @@ export const defaultControlNode: ControlNode = {
 
 /**
  * Add an empty control to the given program node id.
- * @param state Blueprint state
- * @param programId Program node id
- * @param control Control to be added
- * @returns New control node
  */
 export const addControlNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  x: number,
-  y: number,
+  frame: Rect,
   label?: string
 ): ControlNode => {
   const id = nextNodeId(state)
@@ -61,8 +57,7 @@ export const addControlNode = (
     id,
     name: `control${id}`,
     label: uniqueLabel,
-    x,
-    y
+    frame
   }
   return addNode(state, controlNode)
 }

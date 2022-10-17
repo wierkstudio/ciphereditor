@@ -65,8 +65,8 @@ export const getNodePosition = (
 ): { x: number, y: number } | undefined => {
   const node = getNode(state, nodeId)
   if (canvasMode === UICanvasMode.Plane) {
-    if (node.x !== undefined && node.y !== undefined) {
-      return { x: node.x, y: node.y }
+    if (node.frame !== undefined) {
+      return { x: node.frame.x, y: node.frame.y }
     }
   } else if (canvasMode === UICanvasMode.Sequential) {
     // TODO: Evacuate magic numbers
@@ -74,8 +74,8 @@ export const getNodePosition = (
     // We sum up the heights and margins of the nodes situated above
     const siblings = getNodeChildren(state, node.parentId)
     for (const sibling of siblings) {
-      if (sibling.id !== nodeId) {
-        y += (sibling.height ?? 0) + 24 // Node margin at S-M
+      if (sibling.frame !== undefined && sibling.id !== nodeId) {
+        y += (sibling.frame.height ?? 0) + 24 // Node margin at S-M
       } else {
         break
       }

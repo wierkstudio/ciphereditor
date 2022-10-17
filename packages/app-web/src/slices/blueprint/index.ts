@@ -19,6 +19,7 @@ import { getControlNode } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
+import { Rect } from '../../lib/utils/2d'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -40,12 +41,11 @@ export const blueprintSlice = createSlice({
     addOperationAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
       contribution: OperationContribution | unknown
-      x: number
-      y: number
+      frame: Rect
     }>) => {
-      const { programId, x, y } = payload
+      const { programId, frame } = payload
       const contribution = operationContributionSchema.parse(payload.contribution)
-      const operation = addOperationNode(state, programId, contribution, x, y)
+      const operation = addOperationNode(state, programId, contribution, frame)
       state.selectedNodeId = operation.id
     },
 
@@ -55,12 +55,11 @@ export const blueprintSlice = createSlice({
      */
     addEmptyProgramAction: (state, { payload }: PayloadAction<{
       programId?: BlueprintNodeId
-      x: number
-      y: number
+      frame: Rect
     }>) => {
       // TODO: Handle no active program
-      const { programId, x, y } = payload
-      const program = addEmptyProgramNode(state, programId ?? state.activeProgramId, x, y)
+      const { programId, frame } = payload
+      const program = addEmptyProgramNode(state, programId ?? state.activeProgramId, frame)
       state.selectedNodeId = program.id
     },
 
@@ -69,12 +68,11 @@ export const blueprintSlice = createSlice({
      */
     addControlAction: (state, { payload }: PayloadAction<{
       programId: BlueprintNodeId
-      x: number
-      y: number
+      frame: Rect
       label?: string
       sourceControlId?: BlueprintNodeId
     }>) => {
-      const { programId, sourceControlId, x, y } = payload
+      const { programId, sourceControlId, frame } = payload
 
       let label = payload.label
       if (label === undefined && sourceControlId !== undefined) {
@@ -82,7 +80,7 @@ export const blueprintSlice = createSlice({
         label = sourceControl.label
       }
 
-      const control = addControlNode(state, programId, x, y, label)
+      const control = addControlNode(state, programId, frame, label)
       state.selectedNodeId = control.id
 
       if (sourceControlId !== undefined) {

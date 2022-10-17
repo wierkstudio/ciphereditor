@@ -1,6 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ProgramNode } from '../types/program'
+import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getNode, getNodeChildren } from '../selectors/blueprint'
@@ -14,8 +15,7 @@ export const defaultProgramNode: ProgramNode = {
   parentId: 1,
   childIds: [],
   label: 'Program',
-  x: 0,
-  y: 0
+  frame: { x: 0, y: 0, width: 320, height: 48 }
 }
 
 /**
@@ -27,8 +27,7 @@ export const defaultProgramNode: ProgramNode = {
 export const addEmptyProgramNode = (
   state: BlueprintState,
   parentId: BlueprintNodeId | undefined,
-  x: number,
-  y: number,
+  frame: Rect,
   label?: string
 ): ProgramNode => {
   const id = nextNodeId(state)
@@ -45,8 +44,7 @@ export const addEmptyProgramNode = (
     id,
     parentId: parentId ?? id,
     label: uniqueLabel,
-    x,
-    y
+    frame
   }
   return addNode(state, programNode)
 }
@@ -68,23 +66,18 @@ export const updateProgramContentBounds = (
   let bottomY: number | undefined
 
   for (const child of children) {
-    if (
-      child.x !== undefined &&
-      child.width !== undefined &&
-      child.y !== undefined &&
-      child.height !== undefined
-    ) {
-      if (leadingX === undefined || leadingX > child.x) {
-        leadingX = child.x
+    if (child.frame !== undefined) {
+      if (leadingX === undefined || leadingX > child.frame.x) {
+        leadingX = child.frame.x
       }
-      if (trailingX === undefined || trailingX < child.x + child.width) {
-        trailingX = child.x + child.width
+      if (trailingX === undefined || trailingX < child.frame.x + child.frame.width) {
+        trailingX = child.frame.x + child.frame.width
       }
-      if (topY === undefined || topY > child.y) {
-        topY = child.y
+      if (topY === undefined || topY > child.frame.y) {
+        topY = child.frame.y
       }
-      if (bottomY === undefined || bottomY < child.y + child.height) {
-        bottomY = child.y + child.height
+      if (bottomY === undefined || bottomY < child.frame.y + child.frame.height) {
+        bottomY = child.frame.y + child.frame.height
       }
     }
   }

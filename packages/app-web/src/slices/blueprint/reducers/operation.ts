@@ -2,6 +2,7 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { OperationContribution, OperationIssue } from '@ciphereditor/library'
 import { OperationNode, OperationState } from '../types/operation'
+import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
@@ -20,8 +21,7 @@ export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
   operationContribution: OperationContribution,
-  x: number,
-  y: number
+  frame: Rect
 ): OperationNode => {
   const operationNode: OperationNode = {
     id: nextNodeId(state),
@@ -35,8 +35,7 @@ export const addOperationNode = (
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
-    x,
-    y
+    frame
   }
 
   addNode(state, operationNode)

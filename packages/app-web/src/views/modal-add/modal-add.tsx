@@ -72,8 +72,12 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
                 activeProgram !== undefined && dispatch(addOperationAction({
                   programId: activeProgram.id,
                   contribution,
-                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 80)
+                  frame: {
+                    x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+                    y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 320 * 0.5),
+                    width: 320,
+                    height: 320
+                  }
                 }))
                 dispatch(popModalAction({}))
               }}
@@ -88,8 +92,12 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
             onClick={() => {
               activeProgram !== undefined && dispatch(addEmptyProgramAction({
                 programId: activeProgram.id,
-                x: Math.round(canvasOffset.x + canvasSize.width * 0.5),
-                y: Math.round(canvasOffset.y + canvasSize.height * 0.5)
+                frame: {
+                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 48 * 0.5),
+                  width: 320,
+                  height: 48
+                }
               }))
               dispatch(popModalAction({}))
             }}
@@ -102,8 +110,12 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
             onClick={() => {
               activeProgram !== undefined && dispatch(addControlAction({
                 programId: activeProgram.id,
-                x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-                y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 64 * 0.5)
+                frame: {
+                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 48 * 0.5),
+                  width: 320,
+                  height: 48
+                }
               }))
               dispatch(popModalAction({}))
             }}
