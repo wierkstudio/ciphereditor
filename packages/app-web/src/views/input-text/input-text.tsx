@@ -10,13 +10,17 @@ import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
  * (i.e. triggering for both the text input and the application)
  */
 const stopPropagationForShortcuts = [
+  'arrowdown',
+  'arrowleft',
+  'arrowright',
+  'arrowup',
   'backspace',
   'control+shift+z',
+  'control+y',
   'control+z',
   'delete',
   'meta+z',
-  'shift+meta+z',
-  'control+y'
+  'shift+meta+z'
 ]
 
 type InputTextViewProps =
