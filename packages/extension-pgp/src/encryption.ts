@@ -73,7 +73,7 @@ const execute: OperationExecuteExport = async (request) => {
         issues: [{
           level: 'error',
           message: 'Invalid PGP public key',
-          controlName: 'publicKey'
+          targetControlNames: ['publicKey']
         }]
       }
     }
@@ -92,7 +92,7 @@ const execute: OperationExecuteExport = async (request) => {
         issues: [{
           level: 'error',
           message: 'Invalid PGP private key',
-          controlName: 'privateKey'
+          targetControlNames: ['privateKey']
         }]
       }
     }

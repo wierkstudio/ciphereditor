@@ -168,7 +168,7 @@ const execute: OperationExecuteExport = async (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: sourceControl,
+        targetControlNames: [sourceControl],
         message: 'The translation source must not exceed 1,000 characters'
       }]
     }
@@ -178,7 +178,7 @@ const execute: OperationExecuteExport = async (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: targetControl,
+        targetControlNames: [targetControl],
         message: 'The target language cannot be detected'
       }]
     }

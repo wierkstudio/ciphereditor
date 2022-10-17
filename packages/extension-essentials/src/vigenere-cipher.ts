@@ -91,7 +91,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must have a size of 2 characters or more'
       }]
     }
@@ -101,7 +101,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must not contain duplicate characters'
       }]
     }
@@ -127,7 +127,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'key',
+        targetControlNames: ['key'],
         message: 'The key must have a size of 1 character or more'
       }]
     }
@@ -137,7 +137,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'key',
+        targetControlNames: ['key'],
         message: 'The key must only contain characters from the alphabet'
       }]
     }

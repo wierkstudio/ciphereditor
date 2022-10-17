@@ -87,7 +87,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must have a size of 2 characters or more'
       }]
     }
@@ -96,7 +96,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'As of now only alphabets with a size being a power of two (2, 4, 8, 16, …) are supported'
       }]
     }
@@ -105,7 +105,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must not contain duplicate characters'
       }]
     }
@@ -118,7 +118,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'paddingSymbol',
+        targetControlNames: ['paddingSymbol'],
         message: 'No more than one padding symbol is allowed'
       }]
     }
@@ -128,7 +128,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'paddingSymbol',
+        targetControlNames: ['paddingSymbol'],
         message: 'The padding symbol must not be part of the alphabet'
       }]
     }

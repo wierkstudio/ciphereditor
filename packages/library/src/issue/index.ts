@@ -12,7 +12,7 @@ export const chooseMostImportantIssue = (
     return undefined
   }
   let mostImportantIssue: Issue | undefined
-  let mostImportantIssueLevelIndex = 0
+  let mostImportantIssueLevelIndex = -1
   for (const issue of issues) {
     const issueLevelIndex = issueLevels.indexOf(issue.level)
     if (issueLevelIndex > mostImportantIssueLevelIndex) {

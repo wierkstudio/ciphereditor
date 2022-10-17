@@ -50,7 +50,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must have a size of 2 characters or more'
       }]
     }
@@ -60,7 +60,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'alphabet',
+        targetControlNames: ['alphabet'],
         message: 'The alphabet must not contain duplicate characters'
       }]
     }
@@ -75,7 +75,7 @@ const execute: OperationExecuteExport = (request) => {
     return {
       issues: [{
         level: 'error',
-        controlName: 'separator',
+        targetControlNames: ['separator'],
         message: 'The separator must be at least one character long'
       }]
     }

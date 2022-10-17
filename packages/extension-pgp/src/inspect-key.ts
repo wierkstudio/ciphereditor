@@ -62,7 +62,7 @@ const execute: OperationExecuteExport = async (request) => {
           issues: [{
             level: 'error',
             message: 'Invalid PGP key',
-            controlName: 'key'
+            targetControlNames: ['key']
           }]
         }
       }

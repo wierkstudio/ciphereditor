@@ -55,7 +55,6 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
       throw new Error(`Contribution '${contributionName}' was expected to be of type operation but found '${contributionType}'`)
     }
     const returnValue = await contributionExports.body.execute(request)
-    console.log('returnValue', returnValue)
     if (!('type' in returnValue)) {
       // Resolved return value to `OperationResult`
       result = returnValue
