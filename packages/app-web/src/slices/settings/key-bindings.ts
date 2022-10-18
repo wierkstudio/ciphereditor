@@ -1,6 +1,6 @@
 
 import { AppDispatch } from '../../store'
-import { endWireAction, popModalAction, toggleAddModalAction, toggleEmbedMaximizedAction } from '../ui'
+import { endWireAction, popModalAction, pushDeadEndModalAction, pushModalAction, toggleAddModalAction, toggleEmbedMaximizedAction } from '../ui'
 import { enterProgramAction, leaveProgramAction, moveNodeAction, redoAction, removeNodeAction, undoAction } from '../blueprint'
 
 export type KeyBindingDispatchAction = Parameters<AppDispatch>[0]
@@ -19,9 +19,12 @@ export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchA
   nudgeNodeLeft: moveNodeAction({ x: -nudgeAmount, y: 0 }),
   nudgeNodeRight: moveNodeAction({ x: nudgeAmount, y: 0 }),
   nudgeNodeUp: moveNodeAction({ x: 0, y: -nudgeAmount }),
-  popModal: popModalAction({}),
+  closeModal: popModalAction({}),
   redo: redoAction(),
   removeNode: removeNodeAction({}),
+  // TODO: Replace by share modal (when it becomes available)
+  shareBlueprint: pushDeadEndModalAction({}),
+  showSettings: pushModalAction({ payload: { type: 'settings' } }),
   toggleAddModal: toggleAddModalAction({}),
   toggleMaximized: toggleEmbedMaximizedAction({}),
   undo: undoAction()
@@ -33,6 +36,7 @@ export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchA
  */
 export const defaultKeyBindings: Record<string, string | string[]> = {
   /* eslint-disable quote-props */
+  'alt+arrowup': 'leaveProgram',
   'arrowdown': 'nudgeNodeDown',
   'arrowleft': 'nudgeNodeLeft',
   'arrowright': 'nudgeNodeRight',
@@ -40,12 +44,14 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'backspace': 'removeNode',
   'control+b': 'toggleMaximized',
   'control+k': 'toggleAddModal',
+  'control+s': 'shareBlueprint',
   'control+shift+z': 'redo',
   // Windows and Linux systems that use Cinnamon as a DE use Ctrl+Y for redo
   'control+y': 'redo',
   'control+z': 'undo',
+  'control+,': 'showSettings',
   'delete': 'removeNode',
-  'escape': ['popModal', 'endWire']
+  'escape': ['closeModal', 'endWire']
   /* eslint-enable quote-props */
 }
 
@@ -62,12 +68,14 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'arrowup': 'nudgeNodeUp',
   'backspace': 'removeNode',
   'delete': 'removeNode',
-  'escape': ['popModal', 'endWire'],
+  'escape': ['closeModal', 'endWire'],
   'meta+arrowup': 'leaveProgram',
   'meta+b': 'toggleMaximized',
   'meta+enter': 'enterProgram',
   'meta+k': 'toggleAddModal',
+  'meta+s': 'shareBlueprint',
   'meta+z': 'undo',
+  'meta+,': 'showSettings',
   'shift+meta+z': 'redo'
   /* eslint-enable quote-props */
 }

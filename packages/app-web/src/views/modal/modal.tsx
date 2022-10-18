@@ -2,14 +2,17 @@
 import './modal.scss'
 import ButtonView from '../../views/button/button'
 import useAppDispatch from '../../hooks/useAppDispatch'
+import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import { Icon } from '../icon/icon'
 import { MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react'
+import { getKeyCombination } from '../../slices/settings/selectors'
 import { popModalAction } from '../../slices/ui'
 
 export interface ModalViewAction {
   title: string
   icon: Icon
+  keyCombination?: string
   onClick: MouseEventHandler<HTMLButtonElement>
 }
 
@@ -24,6 +27,9 @@ export default function ModalView (props: {
   const onCloseClick = useCallback((event: MouseEvent) => {
     dispatch(popModalAction({}))
   }, [dispatch])
+
+  const closeModalKeyCombination = useSettingsSelector(state =>
+    getKeyCombination(state, 'closeModal'))
 
   return (
     <div className='modal'>
@@ -41,6 +47,7 @@ export default function ModalView (props: {
             title={t('Close')}
             icon='close'
             modifiers='large'
+            keyCombination={closeModalKeyCombination}
             onClick={onCloseClick}
           />
         </div>
