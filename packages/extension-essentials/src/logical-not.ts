@@ -12,13 +12,13 @@ const contribution: Contribution = {
     {
       name: 'a',
       label: 'A',
-      initialValue: false,
+      value: false,
       types: ['boolean']
     },
     {
       name: 'notA',
       label: 'NOT A',
-      initialValue: true,
+      value: true,
       types: ['boolean'],
       order: 1000
     }

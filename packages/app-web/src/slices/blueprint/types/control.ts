@@ -58,11 +58,6 @@ export interface ControlNode extends BlueprintNode {
   enforceOptions: boolean
 
   /**
-   * Control enabled state
-   */
-  enabled: boolean
-
-  /**
    * Wether a new value can be set from outside the enclosing operation or program
    */
   writable: boolean
@@ -105,18 +100,16 @@ export interface ControlNode extends BlueprintNode {
 }
 
 /**
- * Control change source
+ * Changes that can be applied to a control node
  */
-export enum ControlNodeChangeSource {
-  Parent,
-  UserInput,
-  Variable
-}
-
 export interface ControlNodeChange {
-  label?: string
+  /**
+   * Id of the node the change originates from, needed for propagation
+   */
+  sourceNodeId: BlueprintNodeId
+
+  /**
+   * New value, if changing
+   */
   value?: SerializedValue
-  options?: Array<{ value: SerializedValue, label?: string }>
-  enabled?: boolean
-  order?: number
 }

@@ -17,17 +17,17 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'plaintext',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text']
         },
         {
           name: 'shift',
-          initialValue: 7,
+          value: 7,
           types: ['integer']
         },
         {
           name: 'alphabet',
-          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          value: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
           options: [
             {
@@ -51,7 +51,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'ciphertext',
-          initialValue: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
+          value: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
           types: ['text'],
           order: 1000
         }
@@ -68,12 +68,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'plaintext',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text']
         },
         {
           name: 'variant',
-          initialValue: 'rot13',
+          value: 'rot13',
           types: ['text'],
           options: [
             { value: 'rot5', label: 'ROT5 (0-9)' },
@@ -84,7 +84,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'ciphertext',
-          initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+          value: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
           types: ['text'],
           order: 1000
         }
@@ -101,12 +101,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'letters',
-          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          value: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text']
         },
         {
           name: 'alphabet',
-          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          value: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
           options: [
             {
@@ -130,7 +130,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'separator',
-          initialValue: ' ',
+          value: ' ',
           types: ['text'],
           options: [
             { value: ' ', label: 'Space' },
@@ -145,7 +145,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'numbers',
-          initialValue: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
+          value: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
           types: ['text'],
           order: 1000
         }
@@ -162,26 +162,26 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'text',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text']
         },
         {
           name: 'characterCount',
-          initialValue: 44,
+          value: 44,
           types: ['integer'],
           writable: false,
           order: 1000
         },
         {
           name: 'wordCount',
-          initialValue: 9,
+          value: 9,
           types: ['integer'],
           writable: false,
           order: 1000
         },
         {
           name: 'lineCount',
-          initialValue: 1,
+          value: 1,
           types: ['integer'],
           writable: false,
           order: 1000
@@ -198,12 +198,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'source',
-          initialValue: 'Hello World',
+          value: 'Hello World',
           types: ['text']
         },
         {
           name: 'transform',
-          initialValue: 'upperCase',
+          value: 'upperCase',
           types: ['text'],
           options: [
             { value: 'lowerCase', label: 'Lower case' },
@@ -215,7 +215,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'transformed',
-          initialValue: 'HELLO WORLD',
+          value: 'HELLO WORLD',
           types: ['text'],
           order: 1000
         }
@@ -231,12 +231,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'plaintext',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text']
         },
         {
           name: 'variant',
-          initialValue: 'vigenere',
+          value: 'vigenere',
           types: ['text'],
           options: [
             {
@@ -259,12 +259,12 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'key',
-          initialValue: 'ciphereditor',
+          value: 'ciphereditor',
           types: ['text']
         },
         {
           name: 'keyMode',
-          initialValue: 'repeat',
+          value: 'repeat',
           types: ['text'],
           options: [
             { value: 'repeat', label: 'Repeat' },
@@ -273,7 +273,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'alphabet',
-          initialValue: 'abcdefghijklmnopqrstuvwxyz',
+          value: 'abcdefghijklmnopqrstuvwxyz',
           types: ['text'],
           options: [
             {
@@ -297,7 +297,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'ciphertext',
-          initialValue: 'Vpt xyzgn jkcnp nde nlqsa hjvt bwl prdb lhu.',
+          value: 'Vpt xyzgn jkcnp nde nlqsa hjvt bwl prdb lhu.',
           types: ['text'],
           order: 1000
         }
@@ -314,19 +314,19 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'a',
           label: 'A',
-          initialValue: 'foo',
+          value: 'foo',
           types: ['text', 'bytes']
         },
         {
           name: 'b',
           label: 'B',
-          initialValue: 'bar',
+          value: 'bar',
           types: ['text', 'bytes']
         },
         {
           name: 'ab',
           label: 'AB',
-          initialValue: 'foobar',
+          value: 'foobar',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
@@ -344,12 +344,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'data',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['bytes', 'text']
         },
         {
           name: 'alphabet',
-          initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+          value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
           types: ['text'],
           options: [
             {
@@ -389,7 +389,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'padding',
-          initialValue: '=',
+          value: '=',
           types: ['text'],
           options: [
             { value: '', label: 'None' },
@@ -399,7 +399,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'encodedData',
-          initialValue: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
+          value: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
           types: ['text'],
           order: 1000
         }
@@ -416,12 +416,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'message',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text', 'bytes']
         },
         {
           name: 'algorithm',
-          initialValue: 'sha1',
+          value: 'sha1',
           types: ['text'],
           options: [
             { value: 'adler32', label: 'Adler-32' },
@@ -448,7 +448,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'hash',
-          initialValue: '408d94384216f890ff7a0c3528e8bed1e0b01621',
+          value: '408d94384216f890ff7a0c3528e8bed1e0b01621',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
@@ -466,17 +466,17 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'message',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text', 'bytes']
         },
         {
           name: 'key',
-          initialValue: 'ciphereditor',
+          value: 'ciphereditor',
           types: ['text', 'bytes']
         },
         {
           name: 'algorithm',
-          initialValue: 'sha1',
+          value: 'sha1',
           types: ['text'],
           options: [
             { value: 'adler32', label: 'Adler-32' },
@@ -503,7 +503,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'hash',
-          initialValue: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
+          value: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
@@ -522,13 +522,13 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'a',
           label: 'A',
-          initialValue: false,
+          value: false,
           types: ['boolean']
         },
         {
           name: 'notA',
           label: 'NOT A',
-          initialValue: true,
+          value: true,
           types: ['boolean'],
           order: 1000
         }
@@ -546,19 +546,19 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'a',
           label: 'A',
-          initialValue: false,
+          value: false,
           types: ['boolean']
         },
         {
           name: 'b',
           label: 'B',
-          initialValue: false,
+          value: false,
           types: ['boolean']
         },
         {
           name: 'aAndB',
           label: 'A AND B',
-          initialValue: false,
+          value: false,
           types: ['boolean'],
           writable: false,
           order: 1000
@@ -577,19 +577,19 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'a',
           label: 'A',
-          initialValue: false,
+          value: false,
           types: ['boolean']
         },
         {
           name: 'b',
           label: 'B',
-          initialValue: false,
+          value: false,
           types: ['boolean']
         },
         {
           name: 'aOrB',
           label: 'A OR B',
-          initialValue: false,
+          value: false,
           types: ['boolean'],
           writable: false,
           order: 1000
@@ -607,12 +607,12 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'source',
-          initialValue: 'Hello, World.',
+          value: 'Hello, World.',
           types: ['text']
         },
         {
           name: 'sourceLanguage',
-          initialValue: 'en',
+          value: 'en',
           types: ['text'],
           options: [
             { value: '', label: 'Detect' },
@@ -728,7 +728,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'targetLanguage',
-          initialValue: 'de',
+          value: 'de',
           types: ['text'],
           options: [
             { value: '', label: 'Detect' },
@@ -844,7 +844,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'target',
-          initialValue: 'Hallo Welt.',
+          value: 'Hallo Welt.',
           types: ['text'],
           order: 1000
         }
@@ -862,36 +862,36 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'message',
-          initialValue: 'The quick brown fox jumps over the lazy dog.',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text', 'bytes']
         },
         {
           name: 'password',
-          initialValue: '',
+          value: '',
           types: ['text'],
           maskPreview: true
         },
         {
           name: 'publicKey',
           description: 'Either used as encryption key or as optional validation key',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes']
         },
         {
           name: 'privateKey',
           description: 'Either used as optional siging key or as decryption key',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes']
         },
         {
           name: 'privateKeyPassphrase',
-          initialValue: '',
+          value: '',
           types: ['text'],
           maskPreview: true
         },
         {
           name: 'encryptedMessage',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes'],
           order: 1000
         }
@@ -909,7 +909,7 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'type',
-          initialValue: 'ecc',
+          value: 'ecc',
           types: ['text'],
           options: [
             { value: 'ecc', label: 'ECC' },
@@ -919,7 +919,7 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'eccCurve',
           label: 'Curve',
-          initialValue: 'curve25519',
+          value: 'curve25519',
           types: ['text'],
           options: [
             { value: 'curve25519', label: 'curve25519' },
@@ -932,7 +932,7 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'rsaBits',
           label: 'Bits',
-          initialValue: 4096,
+          value: 4096,
           types: ['number'],
           options: [
             { value: 2048, label: '2048 bits' },
@@ -943,26 +943,26 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'passphrase',
-          initialValue: '',
+          value: '',
           types: ['text'],
           maskPreview: true
         },
         {
           name: 'armored',
           description: 'Wether to use the armored text representation for keys',
-          initialValue: true,
+          value: true,
           types: ['boolean']
         },
         {
           name: 'publicKey',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
         },
         {
           name: 'privateKey',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
@@ -980,26 +980,26 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'key',
-          initialValue: '',
+          value: '',
           types: ['text', 'bytes']
         },
         {
           name: 'fingerprint',
-          initialValue: '97c82fac489a31bd694cbce3103fe5948a2e073e',
+          value: '97c82fac489a31bd694cbce3103fe5948a2e073e',
           types: ['text'],
           writable: false,
           order: 1000
         },
         {
           name: 'private',
-          initialValue: false,
+          value: false,
           types: ['boolean'],
           writable: false,
           order: 1000
         },
         {
           name: 'creationTime',
-          initialValue: '2022-09-18T15:48:24.000Z',
+          value: '2022-09-18T15:48:24.000Z',
           types: ['text'],
           writable: false,
           order: 1000

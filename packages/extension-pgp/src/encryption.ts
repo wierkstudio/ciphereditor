@@ -14,36 +14,36 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'message',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text', 'bytes']
     },
     {
       name: 'password',
-      initialValue: '',
+      value: '',
       types: ['text'],
       maskPreview: true
     },
     {
       name: 'publicKey',
       description: 'Either used as encryption key or as optional validation key',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes']
     },
     {
       name: 'privateKey',
       description: 'Either used as optional siging key or as decryption key',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes']
     },
     {
       name: 'privateKeyPassphrase',
-      initialValue: '',
+      value: '',
       types: ['text'],
       maskPreview: true
     },
     {
       name: 'encryptedMessage',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes'],
       order: 1000
     }

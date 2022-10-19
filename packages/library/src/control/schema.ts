@@ -41,7 +41,7 @@ export const controlSchema = z.object({
   /**
    * Initial control value
    */
-  initialValue: serializedValueSchema,
+  value: serializedValueSchema,
 
   /**
    * Value control options
@@ -78,7 +78,7 @@ export const controlSchema = z.object({
    * Initial control visibility
    * Defaults to `collapsed`
    */
-  initialVisibility: controlVisibilitySchema.optional(),
+  visibility: controlVisibilitySchema.optional(),
 
   /**
    * The order number by which controls are ordered within their parent in
@@ -98,30 +98,7 @@ export const controlChangeSchema = z.object({
   name: z.string(),
 
   /**
-   * New label, if changing
-   */
-  label: z.string().optional(),
-
-  /**
    * New value, if changing
    */
-  value: valueSchema.optional(),
-
-  /**
-   * New value options, if changing
-   */
-  options: z.array(z.object({
-    value: valueSchema,
-    label: z.string()
-  })).optional(),
-
-  /**
-   * New enabled state, if changing
-   */
-  enabled: z.boolean().optional(),
-
-  /**
-   * New order value, if changing
-   */
-  order: z.number().optional()
+  value: valueSchema.optional()
 })

@@ -84,14 +84,11 @@ const executeOperation = async (store: any, operationId: BlueprintNodeId): Promi
     const control = namedControls[change.name]
     if (control !== undefined) {
       // Serialize the change object to a control change object
-      const { name, value, options, ...remainingChanges } = change
-      const serializedChange = {
+      const { name, value, ...remainingChanges } = change
+      const serializedChange: ControlNodeChange = {
+        sourceNodeId: operation.id,
         ...remainingChanges,
-        value: value !== undefined ? serializeValue(value) : undefined,
-        options: options?.map(option => ({
-          value: serializeValue(option.value),
-          label: option.label
-        }))
+        value: value !== undefined ? serializeValue(value) : undefined
       }
       resultChanges.push(serializedChange)
       resultChangeControlIds.push(control.id)

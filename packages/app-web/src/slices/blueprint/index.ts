@@ -8,10 +8,11 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
-import { ControlNodeChange, ControlNodeChangeSource } from './types/control'
+import { ControlNodeChange } from './types/control'
 import { OperationContribution, operationContributionSchema, OperationIssue } from '@ciphereditor/library'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
+import { Rect } from '../../lib/utils/2d'
 import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
 import { addOperationNode, executeOperation, setOperationState } from './reducers/operation'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
@@ -19,7 +20,6 @@ import { getControlNode } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
-import { Rect } from '../../lib/utils/2d'
 
 const defaultBlueprintState: BlueprintState = {
   title: 'New Blueprint',
@@ -174,7 +174,7 @@ export const blueprintSlice = createSlice({
       controlId: BlueprintNodeId
       change: ControlNodeChange
     }>) => {
-      changeControl(state, payload.controlId, payload.change, ControlNodeChangeSource.UserInput)
+      changeControl(state, payload.controlId, payload.change)
     },
 
     /**
@@ -206,12 +206,7 @@ export const blueprintSlice = createSlice({
       const success = issues?.find(issue => issue.level === 'error') === undefined
       if (success) {
         for (let i = 0; i < changes.length; i++) {
-          changeControl(
-            state,
-            changeControlIds[i],
-            changes[i],
-            ControlNodeChangeSource.Parent
-          )
+          changeControl(state, changeControlIds[i], changes[i])
         }
         setOperationState(state, operation.id, OperationState.Ready, issues)
       } else {
@@ -245,7 +240,10 @@ export const blueprintSlice = createSlice({
         // Check wether removal is allowed
         const node = getNode(state, nodeId)
         const parent = getNode(state, node.parentId)
-        if (node.type === BlueprintNodeType.Control && parent.type === BlueprintNodeType.Operation) {
+        if (
+          node.type === BlueprintNodeType.Control &&
+          parent.type === BlueprintNodeType.Operation
+        ) {
           return
         }
 

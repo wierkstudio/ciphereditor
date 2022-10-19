@@ -11,26 +11,26 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'text',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text']
     },
     {
       name: 'characterCount',
-      initialValue: 44,
+      value: 44,
       types: ['integer'],
       writable: false,
       order: 1000
     },
     {
       name: 'wordCount',
-      initialValue: 9,
+      value: 9,
       types: ['integer'],
       writable: false,
       order: 1000
     },
     {
       name: 'lineCount',
-      initialValue: 1,
+      value: 1,
       types: ['integer'],
       writable: false,
       order: 1000

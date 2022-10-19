@@ -11,12 +11,12 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'source',
-      initialValue: 'Hello World',
+      value: 'Hello World',
       types: ['text']
     },
     {
       name: 'transform',
-      initialValue: 'upperCase',
+      value: 'upperCase',
       types: ['text'],
       options: [
         { value: 'lowerCase', label: 'Lower case' },
@@ -28,7 +28,7 @@ const contribution: Contribution = {
     },
     {
       name: 'transformed',
-      initialValue: 'HELLO WORLD',
+      value: 'HELLO WORLD',
       types: ['text'],
       order: 1000
     }

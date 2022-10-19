@@ -12,12 +12,12 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'plaintext',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text']
     },
     {
       name: 'variant',
-      initialValue: 'rot13',
+      value: 'rot13',
       types: ['text'],
       options: [
         { value: 'rot5', label: 'ROT5 (0-9)' },
@@ -28,7 +28,7 @@ const contribution: Contribution = {
     },
     {
       name: 'ciphertext',
-      initialValue: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+      value: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
       types: ['text'],
       order: 1000
     }

@@ -14,26 +14,26 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'letters',
-      initialValue: 'abcdefghijklmnopqrstuvwxyz',
+      value: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text']
     },
     {
       name: 'alphabet',
-      initialValue: 'abcdefghijklmnopqrstuvwxyz',
+      value: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
       options: alphabetTextChoices,
       enforceOptions: false
     },
     {
       name: 'separator',
-      initialValue: ' ',
+      value: ' ',
       types: ['text'],
       options: separatorTextChoices,
       enforceOptions: false
     },
     {
       name: 'numbers',
-      initialValue: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
+      value: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
       types: ['text'],
       order: 1000
     }

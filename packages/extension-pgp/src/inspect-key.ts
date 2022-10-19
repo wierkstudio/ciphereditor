@@ -13,26 +13,26 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'key',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes']
     },
     {
       name: 'fingerprint',
-      initialValue: '97c82fac489a31bd694cbce3103fe5948a2e073e',
+      value: '97c82fac489a31bd694cbce3103fe5948a2e073e',
       types: ['text'],
       writable: false,
       order: 1000
     },
     {
       name: 'private',
-      initialValue: false,
+      value: false,
       types: ['boolean'],
       writable: false,
       order: 1000
     },
     {
       name: 'creationTime',
-      initialValue: '2022-09-18T15:48:24.000Z',
+      value: '2022-09-18T15:48:24.000Z',
       types: ['text'],
       writable: false,
       order: 1000

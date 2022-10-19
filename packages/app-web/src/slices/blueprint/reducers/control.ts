@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { ControlNode, ControlNodeChange, ControlNodeChangeSource } from '../types/control'
+import { ControlNode, ControlNodeChange } from '../types/control'
 import { OperationNode, OperationState } from '../types/operation'
 import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
@@ -29,7 +29,6 @@ export const defaultControlNode: ControlNode = {
   options: [],
   enforceOptions: true,
   visibility: 'collapsed',
-  enabled: true,
   writable: true,
   maskPreview: false,
   order: 0
@@ -74,7 +73,7 @@ export const addOperationControlNode = (
   operationId: BlueprintNodeId,
   control: Control
 ): ControlNode => {
-  const value = control.initialValue
+  const value = control.value
   const options = control.options ?? []
   const index = options.findIndex(option =>
     compareSerializedValues(option.value, value))
@@ -85,10 +84,11 @@ export const addOperationControlNode = (
     id: nextNodeId(state),
     parentId: operationId,
     label: control.label ?? capitalCase(control.name),
+    initialValue: value,
     value,
     selectedOptionIndex,
     options: options,
-    visibility: control.initialVisibility ?? defaultControlNode.visibility
+    visibility: control.visibility ?? defaultControlNode.visibility
   }
   return addNode(state, controlNode)
 }
@@ -99,30 +99,12 @@ export const addOperationControlNode = (
 export const changeControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  change: ControlNodeChange,
-  source: ControlNodeChangeSource,
-  sourceVariableId?: BlueprintNodeId
+  change: ControlNodeChange
 ): void => {
   const control = getControlNode(state, controlId)
-
-  // Apply changes not related to the value
-  control.label = change.label ?? control.label
-  control.enabled = change.enabled ?? control.enabled
-  control.order = change.order ?? control.order
-
-  if (change.options !== undefined) {
-    control.options = change.options
-  }
-
   const oldValue = control.value
   const newValue = change.value !== undefined ? change.value : oldValue
   const equal: boolean = compareSerializedValues(oldValue, newValue)
-
-  // If a choice is selected, update it when choices or value change
-  if (control.selectedOptionIndex !== undefined && (change.options !== undefined || !equal)) {
-    const index = control.options.findIndex(options => compareSerializedValues(options.value, newValue))
-    control.selectedOptionIndex = index !== -1 ? index : undefined
-  }
 
   // Bail out early, if the value doesn't change
   if (equal) {
@@ -134,10 +116,11 @@ export const changeControl = (
 
   let operation: OperationNode
   const parent = getNode(state, control.parentId)
+  const source = getNode(state, change.sourceNodeId)
   switch (parent.type) {
-    case BlueprintNodeType.Operation:
+    case BlueprintNodeType.Operation: {
       operation = parent as OperationNode
-      if (source !== ControlNodeChangeSource.Parent) {
+      if (source.type !== BlueprintNodeType.Operation) {
         // Change is not originating from the operation, so mark it busy
         setOperationState(state, operation.id, OperationState.Busy)
         // Increment the request version every time a control changes
@@ -148,14 +131,14 @@ export const changeControl = (
         operation.priorityControlIds =
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
       }
-      if (source !== ControlNodeChangeSource.Variable) {
+      if (source.type !== BlueprintNodeType.Variable) {
         propagateChange(state, control.id, parent.parentId)
       }
       break
-
-    case BlueprintNodeType.Program:
-      if (source === ControlNodeChangeSource.Variable) {
-        if (sourceVariableId === control.attachedInternVariableId) {
+    }
+    case BlueprintNodeType.Program: {
+      if (source.type === BlueprintNodeType.Variable) {
+        if (source.id === control.attachedInternVariableId) {
           // Propagate change outside the program (if not root)
           if (state.rootProgramId !== parent.id) {
             propagateChange(state, control.id, parent.parentId)
@@ -164,11 +147,12 @@ export const changeControl = (
           // Propagate change inside the program
           propagateChange(state, control.id, parent.id)
         }
-      } else if (source === ControlNodeChangeSource.UserInput) {
+      } else if (source.id === control.id) {
         propagateChange(state, control.id, parent.parentId)
         propagateChange(state, control.id, parent.id)
       }
       break
+    }
   }
 }
 
@@ -182,7 +166,7 @@ export const changeControlValueToChoice = (
 ): void => {
   const control = getControlNode(state, controlId)
   const value = control.options[optionIndex].value
-  changeControl(state, controlId, { value }, ControlNodeChangeSource.UserInput)
+  changeControl(state, controlId, { sourceNodeId: control.id, value })
   control.selectedOptionIndex = optionIndex
 }
 
@@ -202,7 +186,7 @@ export const changeControlValueToType = (
     if (value === undefined) {
       value = serializeValue(createEmptyValue(type))
     }
-    changeControl(state, controlId, { value }, ControlNodeChangeSource.UserInput)
+    changeControl(state, controlId, { sourceNodeId: control.id, value })
   }
 }
 

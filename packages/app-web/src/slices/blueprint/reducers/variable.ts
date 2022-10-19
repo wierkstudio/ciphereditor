@@ -1,6 +1,5 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { ControlNodeChangeSource } from '../types/control'
 import { VariableNode } from '../types/variable'
 import { addNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -164,13 +163,10 @@ export const propagateChange = (
     variable.attachmentIds = arrayUniqueUnshift(variable.attachmentIds, controlId)
     // Propagate through controls other than the source
     for (let i = 1; i < variable.attachmentIds.length; i++) {
-      changeControl(
-        state,
-        variable.attachmentIds[i],
-        { value: control.value },
-        ControlNodeChangeSource.Variable,
-        variable.id
-      )
+      changeControl(state, variable.attachmentIds[i], {
+        sourceNodeId: variable.id,
+        value: control.value
+      })
     }
   }
 }

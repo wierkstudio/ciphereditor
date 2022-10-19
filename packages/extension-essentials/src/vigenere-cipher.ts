@@ -15,12 +15,12 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'plaintext',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text']
     },
     {
       name: 'variant',
-      initialValue: 'vigenere',
+      value: 'vigenere',
       types: ['text'],
       options: [
         {
@@ -43,12 +43,12 @@ const contribution: Contribution = {
     },
     {
       name: 'key',
-      initialValue: 'ciphereditor',
+      value: 'ciphereditor',
       types: ['text']
     },
     {
       name: 'keyMode',
-      initialValue: 'repeat',
+      value: 'repeat',
       types: ['text'],
       options: [
         { value: 'repeat', label: 'Repeat' },
@@ -57,14 +57,14 @@ const contribution: Contribution = {
     },
     {
       name: 'alphabet',
-      initialValue: 'abcdefghijklmnopqrstuvwxyz',
+      value: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
       options: alphabetTextChoices,
       enforceOptions: false
     },
     {
       name: 'ciphertext',
-      initialValue: 'Vpt xyzgn jkcnp nde nlqsa hjvt bwl prdb lhu.',
+      value: 'Vpt xyzgn jkcnp nde nlqsa hjvt bwl prdb lhu.',
       types: ['text'],
       order: 1000
     }

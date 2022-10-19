@@ -13,23 +13,23 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'message',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text', 'bytes']
     },
     {
       name: 'key',
-      initialValue: 'ciphereditor',
+      value: 'ciphereditor',
       types: ['text', 'bytes']
     },
     {
       name: 'algorithm',
-      initialValue: 'sha1',
+      value: 'sha1',
       types: ['text'],
       options: getAlgorithmOptions()
     },
     {
       name: 'hash',
-      initialValue: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
+      value: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
       types: ['text', 'bytes'],
       writable: false
     }

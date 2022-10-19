@@ -13,18 +13,18 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'message',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text', 'bytes']
     },
     {
       name: 'algorithm',
-      initialValue: 'sha1',
+      value: 'sha1',
       types: ['text'],
       options: getAlgorithmOptions()
     },
     {
       name: 'hash',
-      initialValue: '408d94384216f890ff7a0c3528e8bed1e0b01621',
+      value: '408d94384216f890ff7a0c3528e8bed1e0b01621',
       types: ['text', 'bytes'],
       writable: false
     }

@@ -127,24 +127,24 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'source',
-      initialValue: 'Hello, World.',
+      value: 'Hello, World.',
       types: ['text']
     },
     {
       name: 'sourceLanguage',
-      initialValue: 'en',
+      value: 'en',
       types: ['text'],
       options: languageOptions
     },
     {
       name: 'targetLanguage',
-      initialValue: 'de',
+      value: 'de',
       types: ['text'],
       options: languageOptions
     },
     {
       name: 'target',
-      initialValue: 'Hallo Welt.',
+      value: 'Hallo Welt.',
       types: ['text'],
       order: 1000
     }

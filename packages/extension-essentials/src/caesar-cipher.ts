@@ -15,24 +15,24 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'plaintext',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['text']
     },
     {
       name: 'shift',
-      initialValue: 7,
+      value: 7,
       types: ['integer']
     },
     {
       name: 'alphabet',
-      initialValue: 'abcdefghijklmnopqrstuvwxyz',
+      value: 'abcdefghijklmnopqrstuvwxyz',
       types: ['text'],
       options: alphabetTextChoices,
       enforceOptions: false
     },
     {
       name: 'ciphertext',
-      initialValue: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
+      value: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
       types: ['text'],
       order: 1000
     }

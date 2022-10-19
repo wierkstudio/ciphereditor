@@ -12,19 +12,19 @@ const contribution: Contribution = {
     {
       name: 'a',
       label: 'A',
-      initialValue: false,
+      value: false,
       types: ['boolean']
     },
     {
       name: 'b',
       label: 'B',
-      initialValue: false,
+      value: false,
       types: ['boolean']
     },
     {
       name: 'aOrB',
       label: 'A OR B',
-      initialValue: false,
+      value: false,
       types: ['boolean'],
       writable: false,
       order: 1000

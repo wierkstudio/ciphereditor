@@ -31,7 +31,10 @@ export default function ControlDrawerView (props: {
   const issues = useBlueprintSelector(state => getOperationIssues(state, controlId))
 
   const onValueChange = useCallback((value: SerializedValue, event?: BaseSyntheticEvent) => {
-    dispatch(changeControlAction({ controlId, change: { value } }))
+    dispatch(changeControlAction({
+      controlId,
+      change: { sourceNodeId: controlId, value }
+    }))
   }, [dispatch, controlId])
 
   const onValueCopy = useCallback((event: MouseEvent<HTMLButtonElement>) => {

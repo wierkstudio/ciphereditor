@@ -11,19 +11,19 @@ const contribution: Contribution = {
     {
       name: 'a',
       label: 'A',
-      initialValue: 'foo',
+      value: 'foo',
       types: ['text', 'bytes']
     },
     {
       name: 'b',
       label: 'B',
-      initialValue: 'bar',
+      value: 'bar',
       types: ['text', 'bytes']
     },
     {
       name: 'ab',
       label: 'AB',
-      initialValue: 'foobar',
+      value: 'foobar',
       types: ['text', 'bytes'],
       writable: false,
       order: 1000

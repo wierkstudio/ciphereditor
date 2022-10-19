@@ -13,7 +13,7 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'type',
-      initialValue: 'ecc',
+      value: 'ecc',
       types: ['text'],
       options: [
         { value: 'ecc', label: 'ECC' },
@@ -23,7 +23,7 @@ const contribution: Contribution = {
     {
       name: 'eccCurve',
       label: 'Curve',
-      initialValue: 'curve25519',
+      value: 'curve25519',
       types: ['text'],
       options: [
         { value: 'curve25519', label: 'curve25519' },
@@ -36,7 +36,7 @@ const contribution: Contribution = {
     {
       name: 'rsaBits',
       label: 'Bits',
-      initialValue: 4096,
+      value: 4096,
       types: ['number'],
       options: [
         { value: 2048, label: '2048 bits' },
@@ -47,26 +47,26 @@ const contribution: Contribution = {
     },
     {
       name: 'passphrase',
-      initialValue: '',
+      value: '',
       types: ['text'],
       maskPreview: true
     },
     {
       name: 'armored',
       description: 'Wether to use the armored text representation for keys',
-      initialValue: true,
+      value: true,
       types: ['boolean']
     },
     {
       name: 'publicKey',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes'],
       writable: false,
       order: 1000
     },
     {
       name: 'privateKey',
-      initialValue: '',
+      value: '',
       types: ['text', 'bytes'],
       writable: false,
       order: 1000

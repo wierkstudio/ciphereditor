@@ -15,12 +15,12 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'data',
-      initialValue: 'The quick brown fox jumps over the lazy dog.',
+      value: 'The quick brown fox jumps over the lazy dog.',
       types: ['bytes', 'text']
     },
     {
       name: 'alphabet',
-      initialValue: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+      value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
       types: ['text'],
       options: [
         {
@@ -60,7 +60,7 @@ const contribution: Contribution = {
     },
     {
       name: 'padding',
-      initialValue: '=',
+      value: '=',
       types: ['text'],
       options: [
         { value: '', label: 'None' },
@@ -70,7 +70,7 @@ const contribution: Contribution = {
     },
     {
       name: 'encodedData',
-      initialValue: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
+      value: 'VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZy4=',
       types: ['text'],
       order: 1000
     }
