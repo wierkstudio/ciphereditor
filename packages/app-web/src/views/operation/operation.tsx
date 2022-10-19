@@ -8,9 +8,9 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
-import { ControlNode } from '../../slices/blueprint/types/control'
-import { OperationNode, OperationState } from '../../slices/blueprint/types/operation'
-import { ProgramNode } from '../../slices/blueprint/types/program'
+import { ControlNodeState } from '../../slices/blueprint/types/control'
+import { OperationNodeState, OperationState } from '../../slices/blueprint/types/operation'
+import { ProgramNodeState } from '../../slices/blueprint/types/program'
 import { chooseMostImportantIssue } from '@ciphereditor/library'
 import { enterProgramAction, executeOperationAction } from '../../slices/blueprint'
 import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
@@ -31,11 +31,11 @@ export default function OperationView (props: {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
   const node = useBlueprintSelector(state =>
-    getNode(state, nodeId) as ProgramNode | OperationNode)
+    getNode(state, nodeId) as ProgramNodeState | OperationNodeState)
 
   // Retrieve sorted control ids and order numbers
   const controls = useBlueprintSelector(state =>
-    (getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[])
+    (getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNodeState[])
       .slice()
       .sort((a, b) => a.order - b.order)
       .map(control => ({ id: control.id, order: control.order }))

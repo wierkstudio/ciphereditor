@@ -14,7 +14,7 @@ import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
-import { ProgramNode } from '../../slices/blueprint/types/program'
+import { ProgramNodeState } from '../../slices/blueprint/types/program'
 import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
@@ -35,7 +35,7 @@ export default function CanvasView (): JSX.Element {
 
   const program =
     useBlueprintSelector(state =>
-      getNode(state, contextProgramId)) as ProgramNode
+      getNode(state, contextProgramId)) as ProgramNodeState
 
   const variableIds = useBlueprintSelector(state =>
     getNodeChildren(state, contextProgramId)

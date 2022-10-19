@@ -4,9 +4,9 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { ControlNode } from '../types/control'
+import { ControlNodeState } from '../types/control'
 import { UICanvasMode } from '../../ui/types'
-import { VariableNode } from '../types/variable'
+import { VariableNodeState } from '../types/variable'
 import { compareSerializedValues, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
@@ -20,17 +20,17 @@ import { mapNamedObjects } from '../../../lib/utils/map'
  * @throws If the node type does not match the expected type
  * @returns Control node
  */
-export const getControlNode = (state: BlueprintState, id: BlueprintNodeId): ControlNode =>
-  getNode(state, id, BlueprintNodeType.Control) as ControlNode
+export const getControlNode = (state: BlueprintState, id: BlueprintNodeId): ControlNodeState =>
+  getNode(state, id, BlueprintNodeType.Control) as ControlNodeState
 
 /**
  * Get an object mapping control names to control nodes.
  */
 export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNodeId): {
-  [name: string]: ControlNode
+  [name: string]: ControlNodeState
 } =>
   mapNamedObjects(getNodeChildren(
-    state, nodeId, BlueprintNodeType.Control) as ControlNode[])
+    state, nodeId, BlueprintNodeType.Control) as ControlNodeState[])
 
 /**
  * Return an object mapping control names to values, embedded in the given node.
@@ -39,7 +39,7 @@ export const getNodeControlValues = (
   state: BlueprintState,
   nodeId: BlueprintNodeId
 ): Record<string, SerializedValue> => {
-  const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNode[]
+  const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNodeState[]
   const namedValues: Record<string, SerializedValue> = {}
   for (let i = 0; i < controls.length; i++) {
     namedValues[controls[i].name] = controls[i].value
@@ -97,13 +97,13 @@ export const getControlVariableOptions = (
   controlId: BlueprintNodeId,
   contextProgramId: BlueprintNodeId
 ): {
-  pushOptions: VariableNode[]
-  pullOptions: VariableNode[]
+  pushOptions: VariableNodeState[]
+  pullOptions: VariableNodeState[]
 } => {
   const variables = getProgramVariables(state, contextProgramId)
 
-  const pushOptions: VariableNode[] = []
-  const pullOptions: VariableNode[] = []
+  const pushOptions: VariableNodeState[] = []
+  const pullOptions: VariableNodeState[] = []
 
   for (let i = 0; i < variables.length; i++) {
     const variable = variables[i]

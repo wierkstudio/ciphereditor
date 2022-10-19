@@ -1,13 +1,13 @@
 
 import { getNode, hasNode } from '../selectors/blueprint'
 import {
-  BlueprintNode,
+  BlueprintNodeState,
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { ControlNode } from '../types/control'
-import { VariableNode } from '../types/variable'
+import { ControlNodeState } from '../types/control'
+import { VariableNodeState } from '../types/variable'
 import { arrayRemove } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
 import { getVariableNode } from '../selectors/variable'
@@ -31,7 +31,7 @@ export const nextNodeId = (state: BlueprintState): number => {
  * @param childNode Child node to be added
  * @returns Child node
  */
-export const addNode = <T extends BlueprintNode>(state: BlueprintState, childNode: T): T => {
+export const addNode = <T extends BlueprintNodeState>(state: BlueprintState, childNode: T): T => {
   const childId = childNode.id
   const childType = childNode.type
   const parentId = childNode.parentId
@@ -93,7 +93,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
   let variableIds: Array<BlueprintNodeId | undefined>
   switch (node.type) {
     case BlueprintNodeType.Variable:
-      variable = node as VariableNode
+      variable = node as VariableNodeState
       variable.attachmentIds.forEach(attachmentId => {
         const control = getControlNode(state, attachmentId)
         if (control.attachedInternVariableId === nodeId) {
@@ -105,7 +105,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
       break
 
     case BlueprintNodeType.Control:
-      control = node as ControlNode
+      control = node as ControlNodeState
       variableIds = [control.attachedInternVariableId, control.attachedVariableId]
       for (let i = 0; i < variableIds.length; i++) {
         const variableId = variableIds[i]

@@ -1,7 +1,7 @@
 
 import { UICanvasMode } from '../../ui/types'
 import {
-  BlueprintNode,
+  BlueprintNodeState,
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
@@ -16,7 +16,7 @@ import {
  * @throws If the node type does not match the expected type
  * @returns Node object
  */
-export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType?: BlueprintNodeType): BlueprintNode => {
+export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType?: BlueprintNodeType): BlueprintNodeState => {
   const node = state.nodes[id]
   if (node === undefined) {
     throw new Error(`Node id ${id} is not part of the blueprint`)
@@ -30,7 +30,7 @@ export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType
 /**
  * Find a node by the given id or return undefined.
  */
-export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | undefined): BlueprintNode | undefined =>
+export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | undefined): BlueprintNodeState | undefined =>
   id !== undefined ? state.nodes[id] : undefined
 
 /**
@@ -39,7 +39,7 @@ export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | und
 export const hasNode = (state: BlueprintState, id: BlueprintNodeId): boolean =>
   state.nodes[id] !== undefined
 
-export const getSelectedNode = (state: BlueprintState): BlueprintNode | undefined =>
+export const getSelectedNode = (state: BlueprintState): BlueprintNodeState | undefined =>
   state.selectedNodeId !== undefined ? getNode(state, state.selectedNodeId) : undefined
 
 export const isSelectedNode = (state: BlueprintState, nodeId: BlueprintNodeId): boolean =>
@@ -49,7 +49,7 @@ export const getNodeChildren = (
   state: BlueprintState,
   parentId: BlueprintNodeId,
   type?: BlueprintNodeType
-): BlueprintNode[] =>
+): BlueprintNodeState[] =>
   getNode(state, parentId)
     .childIds
     .map(id => getNode(state, id))

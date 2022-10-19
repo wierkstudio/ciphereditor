@@ -7,7 +7,7 @@ import {
   attachControlToVariableAction,
   detachControlFromVariableAction
 } from '../../slices/blueprint'
-import { ControlNode } from '../../slices/blueprint/types/control'
+import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from '../../slices/blueprint/selectors/control'
 import { useCallback } from 'react'
@@ -15,7 +15,7 @@ import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import useTranslation from '../../hooks/useTranslation'
 
 export default function OutletSelectView (props: {
-  control: ControlNode
+  control: ControlNodeState
   contextProgramId: BlueprintNodeId
 }): JSX.Element {
   const dispatch = useAppDispatch()

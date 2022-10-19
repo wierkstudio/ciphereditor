@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { ControlNode, ControlNodeChange } from '../types/control'
-import { OperationNode, OperationState } from '../types/operation'
+import { ControlNodeState, ControlNodeChange } from '../types/control'
+import { OperationNodeState, OperationState } from '../types/operation'
 import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
@@ -16,7 +16,7 @@ import { setOperationState } from './operation'
 /**
  * Default control node object
  */
-export const defaultControlNode: ControlNode = {
+export const defaultControlNode: ControlNodeState = {
   id: -1,
   type: BlueprintNodeType.Control,
   parentId: -1,
@@ -42,15 +42,15 @@ export const addControlNode = (
   programId: BlueprintNodeId,
   frame: Rect,
   label?: string
-): ControlNode => {
+): ControlNodeState => {
   const id = nextNodeId(state)
 
   // Choose unique control label
-  const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNode[]
+  const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNodeState[]
   const usedLabels = controls.map(control => control.label)
   const uniqueLabel = deriveUniqueName(label ?? defaultControlNode.label, usedLabels)
 
-  const controlNode: ControlNode = {
+  const controlNode: ControlNodeState = {
     ...defaultControlNode,
     parentId: programId,
     id,
@@ -72,13 +72,13 @@ export const addOperationControlNode = (
   state: BlueprintState,
   operationId: BlueprintNodeId,
   control: Control
-): ControlNode => {
+): ControlNodeState => {
   const value = control.value
   const options = control.options ?? []
   const index = options.findIndex(option =>
     compareSerializedValues(option.value, value))
   const selectedOptionIndex = index !== -1 ? index : undefined
-  const controlNode: ControlNode = {
+  const controlNode: ControlNodeState = {
     ...defaultControlNode,
     ...control,
     id: nextNodeId(state),
@@ -114,12 +114,12 @@ export const changeControl = (
   // Update value
   control.value = newValue
 
-  let operation: OperationNode
+  let operation: OperationNodeState
   const parent = getNode(state, control.parentId)
   const source = getNode(state, change.sourceNodeId)
   switch (parent.type) {
     case BlueprintNodeType.Operation: {
-      operation = parent as OperationNode
+      operation = parent as OperationNodeState
       if (source.type !== BlueprintNodeType.Operation) {
         // Change is not originating from the operation, so mark it busy
         setOperationState(state, operation.id, OperationState.Busy)

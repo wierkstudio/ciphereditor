@@ -7,7 +7,7 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
-import { ControlNode } from '../../slices/blueprint/types/control'
+import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
 import { UICanvasMode } from '../../slices/ui/types'
 import { getCanvasMode } from '../../slices/ui/selectors'
@@ -30,8 +30,8 @@ export default function NodeView (props: {
   const controls = useBlueprintSelector(state => {
     const controlNodes =
       node.type === BlueprintNodeType.Control
-        ? [node as ControlNode]
-        : getNodeChildren(state, node.id, BlueprintNodeType.Control) as ControlNode[]
+        ? [node as ControlNodeState]
+        : getNodeChildren(state, node.id, BlueprintNodeType.Control) as ControlNodeState[]
     return controlNodes.map(control => ({
       id: control.id,
       nodeOutletX: control.nodeOutletX,

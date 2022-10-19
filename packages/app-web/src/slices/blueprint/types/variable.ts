@@ -1,11 +1,11 @@
 
-import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 
 /**
  * Variable node
  * Variables are the connections between two or more controls within a program
  */
-export interface VariableNode extends BlueprintNode {
+export interface VariableNodeState extends BlueprintNodeState {
   /**
    * Node type
    */

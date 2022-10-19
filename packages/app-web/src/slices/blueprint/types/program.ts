@@ -1,13 +1,13 @@
 
 import { Rect } from '../../../lib/utils/2d'
-import { BlueprintNode, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeType } from './blueprint'
 
 /**
  * Program node
  * A program contains operations, controls and variables connecting all of
  * them together.
  */
-export interface ProgramNode extends BlueprintNode {
+export interface ProgramNodeState extends BlueprintNodeState {
   /**
    * Node type
    */

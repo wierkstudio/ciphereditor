@@ -6,7 +6,7 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
-import { ControlNode } from '../../slices/blueprint/types/control'
+import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
 import { getWireDraft } from '../../slices/ui/selectors'
@@ -14,7 +14,7 @@ import { releaseOptionalPointerCapture, renderClassName } from '../../lib/utils/
 import { startWireAction } from '../../slices/ui'
 
 export default function OutletView (props: {
-  control: ControlNode
+  control: ControlNodeState
   contextProgramId: BlueprintNodeId
   expanded: boolean
   onIndicatorClick?: MouseEventHandler<HTMLDivElement>

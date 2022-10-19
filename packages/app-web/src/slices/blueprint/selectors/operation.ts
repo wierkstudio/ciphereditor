@@ -4,8 +4,8 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { ControlNode } from '../types/control'
-import { OperationNode, OperationState } from '../types/operation'
+import { ControlNodeState } from '../types/control'
+import { OperationNodeState, OperationState } from '../types/operation'
 import { extractValue, OperationIssue, OperationRequest, Value } from '@ciphereditor/library'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, hasNode } from './blueprint'
@@ -18,8 +18,8 @@ import { getNode, hasNode } from './blueprint'
  * @throws If the node type does not match the expected type
  * @returns Operation node
  */
-export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId): OperationNode =>
-  getNode(state, id, BlueprintNodeType.Operation) as OperationNode
+export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId): OperationNodeState =>
+  getNode(state, id, BlueprintNodeType.Operation) as OperationNodeState
 
 /**
  * Return node ids of operations that are currently busy.
@@ -67,13 +67,13 @@ export const getOperationIssues = (
   nodeId: BlueprintNodeId
 ): OperationIssue[] => {
   const node = getNode(state, nodeId)
-  let control: ControlNode, parentNode
+  let control: ControlNodeState, parentNode
   switch (node.type) {
     // TODO: Include programs here
     case BlueprintNodeType.Operation:
-      return (node as OperationNode).issues
+      return (node as OperationNodeState).issues
     case BlueprintNodeType.Control:
-      control = node as ControlNode
+      control = node as ControlNodeState
       parentNode = getNode(state, node.parentId)
       if (parentNode.type === BlueprintNodeType.Operation) {
         const operationIssues = getOperationIssues(state, parentNode.id)

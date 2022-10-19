@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { OperationContribution, OperationIssue } from '@ciphereditor/library'
-import { OperationNode, OperationState } from '../types/operation'
+import { OperationNodeState, OperationState } from '../types/operation'
 import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
@@ -22,8 +22,8 @@ export const addOperationNode = (
   programId: BlueprintNodeId,
   operationContribution: OperationContribution,
   frame: Rect
-): OperationNode => {
-  const operationNode: OperationNode = {
+): OperationNodeState => {
+  const operationNode: OperationNodeState = {
     id: nextNodeId(state),
     parentId: programId,
     type: BlueprintNodeType.Operation,
@@ -86,7 +86,7 @@ export const executeOperation = (state: BlueprintState, nodeId: BlueprintNodeId)
   const node = getNode(state, nodeId)
   // TODO: Handle retry/execute on programs
   if (node.type === BlueprintNodeType.Operation) {
-    if ((node as OperationNode).state !== OperationState.Busy) {
+    if ((node as OperationNodeState).state !== OperationState.Busy) {
       // Mark operation as busy to repeat operation request
       setOperationState(state, nodeId, OperationState.Busy)
     }

@@ -5,8 +5,8 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { ControlNode } from '../types/control'
-import { VariableNode } from '../types/variable'
+import { ControlNodeState } from '../types/control'
+import { VariableNodeState } from '../types/variable'
 import { getNode, getNodeChildren } from './blueprint'
 import { getControlNode, isControlInternVariable } from './control'
 
@@ -18,8 +18,8 @@ import { getControlNode, isControlInternVariable } from './control'
  * @throws If the node type does not match the expected type
  * @returns Variable node
  */
-export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId): VariableNode =>
-  getNode(state, id, BlueprintNodeType.Variable) as VariableNode
+export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId): VariableNodeState =>
+  getNode(state, id, BlueprintNodeType.Variable) as VariableNodeState
 
 /**
  * Return the variable currently attached to the given control within a program
@@ -29,7 +29,7 @@ export const getControlVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
   programId?: BlueprintNodeId
-): VariableNode | undefined => {
+): VariableNodeState | undefined => {
   const intern = isControlInternVariable(state, controlId, programId)
   const control = getControlNode(state, controlId)
   const variableId = intern ? control.attachedInternVariableId : control.attachedVariableId
@@ -39,8 +39,8 @@ export const getControlVariable = (
 /**
  * Return variables from the given program.
  */
-export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId): VariableNode[] =>
-  getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNode[]
+export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId): VariableNodeState[] =>
+  getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNodeState[]
 
 /**
  * Return the control that last propagated to a given variable.
@@ -48,7 +48,7 @@ export const getProgramVariables = (state: BlueprintState, programId: BlueprintN
 export const getVariableControl = (
   state: BlueprintState,
   variableId: BlueprintNodeId
-): ControlNode => {
+): ControlNodeState => {
   const variable = getVariableNode(state, variableId)
   // Assertion: Variable attachment ids are ordered by when they propagated
   if (variable.attachmentIds.length === 0) {
@@ -63,7 +63,7 @@ export const getVariableControl = (
 export const getVariableAttachedControls = (
   state: BlueprintState,
   variableId: BlueprintNodeId
-): ControlNode[] =>
+): ControlNodeState[] =>
   getVariableNode(state, variableId)
     .attachmentIds
     .map(controlId => getControlNode(state, controlId))

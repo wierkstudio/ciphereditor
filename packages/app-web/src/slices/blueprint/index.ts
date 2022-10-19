@@ -22,7 +22,6 @@ import { getOperationNode } from './selectors/operation'
 import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
 
 const defaultBlueprintState: BlueprintState = {
-  title: 'New Blueprint',
   nodes: { 1: defaultProgramNode },
   lastInsertNodeId: 1,
   selectedNodeId: undefined,

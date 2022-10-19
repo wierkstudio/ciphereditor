@@ -7,7 +7,7 @@ import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { OperationContribution } from '@ciphereditor/library'
 import { OperationModalPayload } from '../../slices/ui/types'
-import { OperationNode } from '../../slices/blueprint/types/operation'
+import { OperationNodeState } from '../../slices/blueprint/types/operation'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
 import { openUrlAction, popModalAction } from '../../slices/ui'
@@ -29,7 +29,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
   )
   let contribution: OperationContribution | undefined
   if (node.type === BlueprintNodeType.Operation) {
-    const operation = node as OperationNode
+    const operation = node as OperationNodeState
     // TODO: Needs translation
     title = `Configure ${operation.label}`
     contribution = useDirectorySelector(state => getOperationContribution(state, operation.contributionName))

@@ -1,12 +1,11 @@
 
-import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { ControlVisibility, SerializedValue } from '@ciphereditor/library'
 
 /**
- * Control node
- * Controls are the building blocks of operation and program interfaces.
+ * Control node within the blueprint state
  */
-export interface ControlNode extends BlueprintNode {
+export interface ControlNodeState extends BlueprintNodeState {
   /**
    * Node type
    */

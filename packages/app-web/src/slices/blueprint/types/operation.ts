@@ -1,5 +1,5 @@
 
-import { BlueprintNode, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { OperationIssue } from '@ciphereditor/library'
 
 /**
@@ -25,7 +25,7 @@ export enum OperationState {
 /**
  * Operation node
  */
-export interface OperationNode extends BlueprintNode {
+export interface OperationNodeState extends BlueprintNodeState {
   /**
    * Node type
    */

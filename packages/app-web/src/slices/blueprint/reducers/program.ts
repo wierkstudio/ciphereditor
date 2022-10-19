@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { ProgramNode } from '../types/program'
+import { ProgramNodeState } from '../types/program'
 import { Rect } from '../../../lib/utils/2d'
 import { addNode, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
@@ -9,7 +9,7 @@ import { getNode, getNodeChildren } from '../selectors/blueprint'
 /**
  * Default program node object
  */
-export const defaultProgramNode: ProgramNode = {
+export const defaultProgramNode: ProgramNodeState = {
   id: 1,
   type: BlueprintNodeType.Program,
   parentId: 1,
@@ -29,17 +29,17 @@ export const addEmptyProgramNode = (
   parentId: BlueprintNodeId | undefined,
   frame: Rect,
   label?: string
-): ProgramNode => {
+): ProgramNodeState => {
   const id = nextNodeId(state)
 
   // Choose unique program label
   const programs = parentId !== undefined
-    ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNode[]
+    ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNodeState[]
     : []
   const usedLabels = programs.map(program => program.label)
   const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
 
-  const programNode: ProgramNode = {
+  const programNode: ProgramNodeState = {
     ...defaultProgramNode,
     id,
     parentId: parentId ?? id,
@@ -57,7 +57,7 @@ export const updateProgramContentBounds = (
   state: BlueprintState,
   programId: BlueprintNodeId
 ): void => {
-  const program = getNode(state, programId, BlueprintNodeType.Program) as ProgramNode
+  const program = getNode(state, programId, BlueprintNodeType.Program) as ProgramNodeState
   const children = getNodeChildren(state, programId)
 
   let leadingX: number | undefined

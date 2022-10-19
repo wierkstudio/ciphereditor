@@ -11,9 +11,9 @@ export enum BlueprintNodeType {
 }
 
 /**
- * Blueprint node
+ * Abstract node within the blueprint state
  */
-export interface BlueprintNode {
+export interface BlueprintNodeState {
   /**
    * Node id unique within a blueprint
    */
@@ -42,18 +42,13 @@ export interface BlueprintNode {
 }
 
 /**
- * The document tree-shaped state of the application.
+ * The tree-shaped document state of the application
  */
 export interface BlueprintState {
   /**
-   * Blueprint title
-   */
-  title: string
-
-  /**
    * Object mapping ids to nodes
    */
-  nodes: Record<number, BlueprintNode>
+  nodes: Record<number, BlueprintNodeState>
 
   /**
    * Last insert node id (used for id generation)
