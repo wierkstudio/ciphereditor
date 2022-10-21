@@ -4,6 +4,7 @@ import AddModalView from '../../views/modal-add/modal-add'
 import OperationModalView from '../modal-operation/modal-operation'
 import ReportModalView from '../../views/modal-report/modal-report'
 import SettingsModalView from '../../views/modal-settings/modal-settings'
+import ShareModalView from '../modal-share/modal-share'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import { MouseEvent, useCallback } from 'react'
@@ -12,9 +13,10 @@ import { popModalAction } from '../../slices/ui'
 
 const modalViewMap = {
   add: AddModalView,
-  settings: SettingsModalView,
+  operation: OperationModalView,
   report: ReportModalView,
-  operation: OperationModalView
+  settings: SettingsModalView,
+  share: ShareModalView
 }
 
 export default function ModalStackView (): JSX.Element {

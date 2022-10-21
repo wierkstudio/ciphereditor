@@ -4,11 +4,15 @@ import IconView, { Icon } from '../../views/icon/icon'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { labelKeyCombination } from '../../lib/utils/keyboard'
 
-type ButtonViewProps = Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> & {
-  icon?: Icon
-  modifiers?: ViewModifiers
-  keyCombination?: string
-}
+type ButtonViewProps =
+  Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> &
+  Omit<React.ComponentPropsWithoutRef<'a'>, 'className'> &
+  {
+    as?: 'button' | 'a'
+    icon?: Icon
+    modifiers?: ViewModifiers
+    keyCombination?: string
+  }
 
 /**
  * Button component with an optional icon and label (via children).
@@ -37,12 +41,8 @@ export default function ButtonView (props: ButtonViewProps): JSX.Element {
     }
   }
 
-  return (
-    <button
-      className={renderClassName('button', buttonModifiers)}
-      title={titleWithKeyCombination}
-      {...buttonProps}
-    >
+  const inner = (
+    <>
       {icon !== undefined && (
         <div className='button__icon'>
           <IconView icon={icon} />
@@ -53,6 +53,28 @@ export default function ButtonView (props: ButtonViewProps): JSX.Element {
           {children}
         </span>
       )}
-    </button>
+    </>
   )
+
+  if (props.as === 'a') {
+    return (
+      <a
+        className={renderClassName('button', buttonModifiers)}
+        title={titleWithKeyCombination}
+        {...buttonProps}
+      >
+        {inner}
+      </a>
+    )
+  } else {
+    return (
+      <button
+        className={renderClassName('button', buttonModifiers)}
+        title={titleWithKeyCombination}
+        {...buttonProps}
+      >
+        {inner}
+      </button>
+    )
+  }
 }

@@ -58,3 +58,22 @@ export const bufferToBase64String = (buffer: ArrayBuffer): string =>
  */
 export const base64StringToBuffer = (base64String: string): ArrayBuffer =>
   base64Decode(base64String)
+
+/**
+ * Encode a binary buffer to a base64url string
+ */
+export const bufferToBase64urlString = (buffer: ArrayBuffer): string =>
+  bufferToBase64String(buffer)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=/g, '')
+
+/**
+ * Decode a base64url string to a binary buffer
+ */
+export const base64urlStringToBuffer = (base64urlString: string): ArrayBuffer =>
+  base64StringToBuffer(
+    base64urlString
+      .replace(/-/g, '+')
+      .replace(/_/g, '/')
+  )

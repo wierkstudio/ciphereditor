@@ -112,8 +112,16 @@ export interface OperationModalPayload {
   nodeId: BlueprintNodeId
 }
 
+/**
+ * Share modal state
+ */
+export interface ShareModalPayload {
+  type: 'share'
+}
+
 export type ModalPayload =
   AddModalPayload |
-  SettingsModalPayload |
+  OperationModalPayload |
   ReportModalPayload |
-  OperationModalPayload
+  SettingsModalPayload |
+  ShareModalPayload

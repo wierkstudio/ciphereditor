@@ -64,6 +64,11 @@ button {
   cursor: pointer;
 }
 
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
+
 input[type='number'] {
   -moz-appearance: textfield;
 }

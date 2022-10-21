@@ -14,6 +14,11 @@ export interface ProgramNodeState extends BlueprintNodeState {
   type: BlueprintNodeType.Program
 
   /**
+   * Size and position of the node
+   */
+  frame: Rect
+
+  /**
    * Program label
    */
   label: string

@@ -1,5 +1,6 @@
 
-import { SerializedValue } from '@ciphereditor/library'
+import { SerializedValue, VariableNode } from '@ciphereditor/library'
+import { DirectoryState } from '../../directory/types'
 import {
   BlueprintNodeId,
   BlueprintNodeType,
@@ -123,4 +124,19 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
   }
 
   return waypoints
+}
+
+export const serializeVariable = (
+  state: BlueprintState,
+  directory: DirectoryState,
+  variableId: BlueprintNodeId
+): VariableNode | undefined => {
+  const variable = getVariableNode(state, variableId)
+  if (variable.attachmentIds.length < 2) {
+    return undefined
+  }
+  return {
+    type: 'variable',
+    attachments: variable.attachmentIds.map(id => id.toString())
+  }
 }

@@ -1,6 +1,7 @@
 
 import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
 import { OperationIssue } from '@ciphereditor/library'
+import { Rect } from '../../../lib/utils/2d'
 
 /**
  * Operation state
@@ -30,6 +31,11 @@ export interface OperationNodeState extends BlueprintNodeState {
    * Node type
    */
   type: BlueprintNodeType.Operation
+
+  /**
+   * Size and position of the node
+   */
+  frame: Rect
 
   /**
    * Operation contribution name

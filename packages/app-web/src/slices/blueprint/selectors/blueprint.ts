@@ -1,11 +1,14 @@
 
-import { UICanvasMode } from '../../ui/types'
 import {
   BlueprintNodeState,
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
+import { BlueprintNode } from '@ciphereditor/library'
+import { UICanvasMode } from '../../ui/types'
+import { serializeProgram } from './program'
+import { DirectoryState } from '../../directory/types'
 
 /**
  * Find a node by the given node id.
@@ -83,4 +86,14 @@ export const getNodePosition = (
     return { x: 0, y }
   }
   return undefined
+}
+
+export const serializeBlueprint = (
+  state: BlueprintState,
+  directory: DirectoryState
+): BlueprintNode => {
+  return {
+    type: 'blueprint',
+    program: serializeProgram(state, directory, state.rootProgramId)
+  }
 }

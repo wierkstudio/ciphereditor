@@ -7,10 +7,11 @@ import {
 import { ControlNodeState } from '../types/control'
 import { UICanvasMode } from '../../ui/types'
 import { VariableNodeState } from '../types/variable'
-import { compareSerializedValues, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
+import { compareSerializedValues, ControlNode, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
+import { DirectoryState } from '../../directory/types'
 
 /**
  * Find a control node by the given node id.
@@ -182,4 +183,24 @@ export const getControlPreview = (
   } else {
     return previewMaskedSerializedValue(control.value)
   }
+}
+
+export const serializeControl = (
+  state: BlueprintState,
+  directory: DirectoryState,
+  controlId: BlueprintNodeId
+): ControlNode => {
+  const control = getControlNode(state, controlId)
+  if (control.frame === undefined) {
+    throw new Error('Logic error: Trying to export a control without frame')
+  }
+  const serializedControl: ControlNode = {
+    type: 'control',
+    id: control.id.toString(),
+    label: control.label,
+    value: control.value,
+    visibility: control.visibility,
+    frame: control.frame
+  }
+  return serializedControl
 }

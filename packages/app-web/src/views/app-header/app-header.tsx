@@ -14,7 +14,7 @@ import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
 import { getKeyCombination } from '../../slices/settings/selectors'
 import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
-import { openUrlAction, pushDeadEndModalAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
+import { openUrlAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -80,7 +80,7 @@ export default function AppHeaderView (): JSX.Element {
             keyCombination={shareBlueprintKeyCombination}
             icon='share'
             modifiers='large'
-            onClick={() => dispatch(pushDeadEndModalAction({}))}
+            onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
           />
           {program !== undefined && program.parentId !== program.id && (
             <ButtonView
