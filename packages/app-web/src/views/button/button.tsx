@@ -6,9 +6,7 @@ import { labelKeyCombination } from '../../lib/utils/keyboard'
 
 type ButtonViewProps =
   Omit<React.ComponentPropsWithoutRef<'button'>, 'className'> &
-  Omit<React.ComponentPropsWithoutRef<'a'>, 'className'> &
   {
-    as?: 'button' | 'a'
     icon?: Icon
     modifiers?: ViewModifiers
     keyCombination?: string
@@ -41,8 +39,12 @@ export default function ButtonView (props: ButtonViewProps): JSX.Element {
     }
   }
 
-  const inner = (
-    <>
+  return (
+    <button
+      className={renderClassName('button', buttonModifiers)}
+      title={titleWithKeyCombination}
+      {...buttonProps}
+    >
       {icon !== undefined && (
         <div className='button__icon'>
           <IconView icon={icon} />
@@ -53,28 +55,6 @@ export default function ButtonView (props: ButtonViewProps): JSX.Element {
           {children}
         </span>
       )}
-    </>
+    </button>
   )
-
-  if (props.as === 'a') {
-    return (
-      <a
-        className={renderClassName('button', buttonModifiers)}
-        title={titleWithKeyCombination}
-        {...buttonProps}
-      >
-        {inner}
-      </a>
-    )
-  } else {
-    return (
-      <button
-        className={renderClassName('button', buttonModifiers)}
-        title={titleWithKeyCombination}
-        {...buttonProps}
-      >
-        {inner}
-      </button>
-    )
-  }
 }

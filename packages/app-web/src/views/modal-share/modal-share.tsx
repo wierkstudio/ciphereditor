@@ -15,12 +15,25 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
   const serializedBlueprint = useBlueprintSelector(state => serializeBlueprint(state, directory))
 
   const documentText = JSON.stringify(serializedBlueprint)
-  const documentBlob = URL.createObjectURL(new Blob([documentText], { type: 'application/vnd.ciphereditor.blueprint' }))
 
   const onCopyShareUrl = (): void => {
-    const documentFragment = bufferToBase64urlString(stringToBuffer(documentText)) as string
+    const documentFragment = bufferToBase64urlString(stringToBuffer(documentText))
     const url = location.href + '#blueprint=' + documentFragment
     void navigator.clipboard.writeText(url)
+  }
+
+  const onDownloadBlueprint = (): void => {
+    // Initiate download via anchor element
+    const documentBlob = URL.createObjectURL(new Blob(
+      [documentText],
+      { type: 'application/vnd.ciphereditor.blueprint' }
+    ))
+    const anchorElement = document.createElement('a')
+    anchorElement.download = 'Blueprint.ciphereditor'
+    anchorElement.href = documentBlob
+    document.body.appendChild(anchorElement)
+    anchorElement.click()
+    document.body.removeChild(anchorElement)
   }
 
   return (
@@ -31,13 +44,7 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
         </ButtonView>
       </ModalView.SectionView>
       <ModalView.SectionView headline={t('Save as a file')}>
-        <ButtonView
-          as='a'
-          icon='arrowUp'
-          onClick={onCopyShareUrl}
-          download='Blueprint.ciphereditor'
-          href={documentBlob}
-        >
+        <ButtonView icon='arrowUp' onClick={onDownloadBlueprint}>
           {t('Download blueprint')}
         </ButtonView>
       </ModalView.SectionView>
