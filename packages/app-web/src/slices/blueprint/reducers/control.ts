@@ -3,10 +3,10 @@ import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blu
 import { ControlNodeState, ControlNodeChange } from '../types/control'
 import { OperationNodeState, OperationState } from '../types/operation'
 import { Rect } from '../../../lib/utils/2d'
-import { addNode, nextNodeId } from './blueprint'
+import { addChildNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
-import { availableValueTypes, castSerializedValue, compareSerializedValues, Control, createEmptyValue, identifySerializedValueType, serializeValue } from '@ciphereditor/library'
+import { availableValueTypes, castSerializedValue, compareSerializedValues, Control, ControlNode, createEmptyValue, identifySerializedValueType, serializeValue } from '@ciphereditor/library'
 import { capitalCase } from 'change-case'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getControlNode } from '../selectors/control'
@@ -40,25 +40,33 @@ export const defaultControlNode: ControlNodeState = {
 export const addControlNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  frame: Rect,
-  label?: string
+  controlNode: ControlNode,
+  defaultFrame: Rect,
+  refIdMap?: Record<string, BlueprintNodeId>
 ): ControlNodeState => {
   const id = nextNodeId(state)
 
   // Choose unique control label
   const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNodeState[]
   const usedLabels = controls.map(control => control.label)
-  const uniqueLabel = deriveUniqueName(label ?? defaultControlNode.label, usedLabels)
+  const uniqueLabel = deriveUniqueName(controlNode.label ?? defaultControlNode.label, usedLabels)
 
-  const controlNode: ControlNodeState = {
+  const control: ControlNodeState = {
     ...defaultControlNode,
     parentId: programId,
     id,
     name: `control${id}`,
     label: uniqueLabel,
-    frame
+    frame: controlNode.frame ?? defaultFrame,
+    value: controlNode.value,
+    visibility: controlNode.visibility ?? defaultControlNode.visibility
   }
-  return addNode(state, controlNode)
+
+  if (refIdMap !== undefined && controlNode.id !== undefined) {
+    refIdMap[controlNode.id] = id
+  }
+
+  return addChildNode(state, control)
 }
 
 /**
@@ -90,7 +98,7 @@ export const addOperationControlNode = (
     options: options,
     visibility: control.visibility ?? defaultControlNode.visibility
   }
-  return addNode(state, controlNode)
+  return addChildNode(state, controlNode)
 }
 
 /**

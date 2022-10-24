@@ -1,32 +1,47 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
-import { OperationContribution, OperationIssue } from '@ciphereditor/library'
+import { ControlNodeState } from '../types/control'
+import { DirectoryState } from '../../directory/types'
+import { OperationIssue, OperationNode } from '@ciphereditor/library'
 import { OperationNodeState, OperationState } from '../types/operation'
 import { Rect } from '../../../lib/utils/2d'
-import { addNode, nextNodeId } from './blueprint'
+import { addChildNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
 import { capitalCase } from 'change-case'
 import { getNode } from '../selectors/blueprint'
+import { getOperationContribution } from '../../directory/selectors'
 import { getOperationNode } from '../selectors/operation'
 
 /**
- * Add an operation node to the given program.
+ * Add the given operation to a program.
  * @param state Blueprint state
- * @param programId Program node id
- * @param operationContribution Operation contribution to be used
- * @returns New operation node
+ * @param programId Program the node should be added to
+ * @param operationNode Operation to be added
+ * @param defaultFrame Frame to use if not defined by the operation
+ * @param directory Directory state to retrieve operation contribution meta data from
+ * @param refIdMap Object mapping node ids to ids in the blueprint state
  */
 export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
-  operationContribution: OperationContribution,
-  frame: Rect
+  operationNode: OperationNode,
+  defaultFrame: Rect,
+  directory?: DirectoryState,
+  refIdMap?: Record<string, BlueprintNodeId>
 ): OperationNodeState => {
-  const operationNode: OperationNodeState = {
+  const operationContribution =
+    directory !== undefined
+      ? getOperationContribution(directory, operationNode.name)
+      : undefined
+  if (operationContribution === undefined) {
+    throw new Error('Needs implementation: Placeholder operation nodes')
+  }
+
+  const operation: OperationNodeState = {
+    type: BlueprintNodeType.Operation,
     id: nextNodeId(state),
     parentId: programId,
-    type: BlueprintNodeType.Operation,
     contributionName: operationContribution.name,
     label: operationContribution.label ?? capitalCase(operationContribution.name),
     childIds: [],
@@ -35,21 +50,35 @@ export const addOperationNode = (
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
-    frame
+    frame: operationNode.frame ?? defaultFrame
   }
 
-  addNode(state, operationNode)
+  addChildNode(state, operation)
 
-  // Add operation controls
-  operationNode.childIds =
-  operationContribution.controls
-    .map(addOperationControlNode.bind(null, state, operationNode.id))
-    .map(node => node.id)
+  const nameControlMap: Record<string, ControlNodeState> = {}
+  const controls = operationContribution.controls.map(controlContribution => {
+    const control = addOperationControlNode(state, operation.id, controlContribution)
+    const overrides = operationNode.controls?.[control.name]
+    if (overrides !== undefined) {
+      if (refIdMap !== undefined && overrides.id !== undefined) {
+        refIdMap[overrides.id] = control.id
+      }
+      control.value = overrides.value ?? control.value
+      control.visibility = overrides.visibility ?? control.visibility
+    }
+    nameControlMap[control.name] = control
+    return control
+  })
 
-  // Set initial priority to control order
-  operationNode.priorityControlIds = operationNode.childIds.slice()
+  operation.childIds = controls.map(node => node.id)
 
-  return operationNode
+  // TODO: Use stable sort here
+  controls.sort((a, b) =>
+    (operationNode.priorityControlNames?.indexOf(b.name) ?? -1) -
+    (operationNode.priorityControlNames?.indexOf(a.name) ?? -1))
+
+  operation.priorityControlIds = operation.childIds.slice()
+  return operation
 }
 
 export const setOperationState = (

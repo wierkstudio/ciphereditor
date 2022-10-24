@@ -18,5 +18,5 @@ export const operationNodeSchema = z.object({
     value: serializedValueSchema.optional(),
     visibility: controlVisibilitySchema.optional()
   })).optional(),
-  frame: rectSchema
+  frame: rectSchema.optional()
 })

@@ -111,8 +111,8 @@ export type ControlNode = z.infer<typeof controlNodeSchema>
 export const controlNodeSchema = z.object({
   type: z.literal('control'),
   id: z.string().optional(),
-  label: z.string(),
+  label: z.string().optional(),
   value: serializedValueSchema,
   visibility: controlVisibilitySchema.optional(),
-  frame: rectSchema
+  frame: rectSchema.optional()
 })

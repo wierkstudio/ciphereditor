@@ -1,7 +1,7 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { VariableNodeState } from '../types/variable'
-import { addNode, nextNodeId, removeNode } from './blueprint'
+import { addChildNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'
 import { canAttachControls, getControlNode } from '../selectors/control'
 import { changeControl } from './control'
@@ -22,7 +22,7 @@ export const addVariable = (
     childIds: [],
     attachmentIds: [controlId]
   }
-  addNode(state, variable)
+  addChildNode(state, variable)
   attachControlToVariable(state, controlId, variable.id, false)
   return variable
 }

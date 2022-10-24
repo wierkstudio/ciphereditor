@@ -1,5 +1,5 @@
 
-import { WebsiteMessage } from './types'
+import { WebsiteMessage } from '@ciphereditor/library'
 
 /**
  * Post the given message to the website window

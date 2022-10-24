@@ -65,9 +65,15 @@ export const serializeProgram = (
     }
   }
 
-  return {
+  const serializedProgram: ProgramNode = {
     type: 'program',
     label: program.label,
-    children: serializedChildren
+    frame: program.frame
   }
+
+  if (serializedChildren.length > 0) {
+    serializedProgram.children = serializedChildren
+  }
+
+  return serializedProgram
 }

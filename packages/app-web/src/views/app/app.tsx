@@ -5,12 +5,14 @@ import CanvasView from '../canvas/canvas'
 import ModalStackView from '../../views/modal-stack/modal-stack'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
+import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
-import { EditorMessage, editorMessageSchema } from '../../lib/embed/types'
 import { UIEmbedType } from '../../slices/ui/types'
+import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
+import { base64urlStringToBuffer, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
 import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
@@ -33,14 +35,29 @@ export default function AppView (): JSX.Element {
   const { theme, reducedMotionPreference } =
     useSettingsSelector(getAccessibilitySettings)
 
+  const directory = useDirectorySelector(state => state)
+
+  // TODO: Remove magic numbers
+  const defaultFrame = { x: 0, y: 0, width: 320, height: 80 }
+
   const onEditorMessage = useCallback((message: EditorMessage): void => {
     const messageType = message.type
     switch (messageType) {
       case 'configure': {
-        dispatch(configureEmbedAction({
-          embedType: message.embedType as UIEmbedType | undefined,
-          maximizable: message.maximizable
-        }))
+        const embedType = message.embedType as UIEmbedType | undefined
+        const maximizable = message.maximizable
+        const shareBaseUrl = message.shareBaseUrl
+        dispatch(configureEmbedAction({ embedType, maximizable, shareBaseUrl }))
+        break
+      }
+      case 'loadBlueprint': {
+        const blueprint = message.blueprint
+        dispatch(loadBlueprintAction({ blueprint, directory }))
+        break
+      }
+      case 'addNodes': {
+        const nodes = message.nodes
+        dispatch(addNodesAction({ nodes, defaultFrame, directory }))
         break
       }
     }
@@ -70,6 +87,16 @@ export default function AppView (): JSX.Element {
   const onAppLoad = useCallback(() => {
     if (window.parent !== window) {
       postWebsiteMessage({ type: 'initiated' })
+    }
+
+    const searchParams = new URLSearchParams(location.hash.substring(1))
+    const blueprintParameter = searchParams.get('blueprint')
+    if (blueprintParameter !== null) {
+      const documentText = bufferToString(base64urlStringToBuffer(blueprintParameter))
+      if (documentText !== undefined) {
+        const blueprint = JSON.parse(documentText)
+        dispatch(loadBlueprintAction({ blueprint, directory }))
+      }
     }
   }, [])
 

@@ -1,27 +1,27 @@
 
 import undoable, { excludeAction } from 'redux-undo'
 import {
-  addControlNode,
   addVariableFromControl,
   changeControl,
   changeControlValueToChoice,
   changeControlValueToType
 } from './reducers/control'
+import { Blueprint, BlueprintNode, OperationIssue } from '@ciphereditor/library'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
-import { OperationContribution, operationContributionSchema, OperationIssue } from '@ciphereditor/library'
+import { DirectoryState } from '../directory/types'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { Rect } from '../../lib/utils/2d'
-import { addEmptyProgramNode, defaultProgramNode } from './reducers/program'
-import { addOperationNode, executeOperation, setOperationState } from './reducers/operation'
+import { addNodes, layoutNode, loadBlueprint, moveNode, removeNode, selectNode } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
+import { defaultProgramNode } from './reducers/program'
+import { executeOperation, setOperationState } from './reducers/operation'
 import { getControlNode } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
-import { layoutNode, moveNode, removeNode, selectNode } from './reducers/blueprint'
 
-const defaultBlueprintState: BlueprintState = {
+export const defaultBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
   lastInsertNodeId: 1,
   selectedNodeId: undefined,
@@ -35,55 +35,36 @@ export const blueprintSlice = createSlice({
   initialState: defaultBlueprintState,
   reducers: {
     /**
-     * Instantiate a operation and add it to the target program
+     * Load the given blueprint
      */
-    addOperationAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId
-      contribution: OperationContribution | unknown
-      frame: Rect
+    loadBlueprintAction: (state, { payload }: PayloadAction<{
+      blueprint: Blueprint
+      directory?: DirectoryState
     }>) => {
-      const { programId, frame } = payload
-      const contribution = operationContributionSchema.parse(payload.contribution)
-      const operation = addOperationNode(state, programId, contribution, frame)
-      state.selectedNodeId = operation.id
+      loadBlueprint(state, payload.blueprint, payload.directory)
     },
 
     /**
-     * Add an empty program to the target program
-     * If no program is given, it will be added to the active program
+     * Add the given operation to a program
      */
-    addEmptyProgramAction: (state, { payload }: PayloadAction<{
+    addNodesAction: (state, { payload }: PayloadAction<{
       programId?: BlueprintNodeId
-      frame: Rect
+      nodes: BlueprintNode[]
+      defaultFrame: Rect
+      directory?: DirectoryState
     }>) => {
-      // TODO: Handle no active program
-      const { programId, frame } = payload
-      const program = addEmptyProgramNode(state, programId ?? state.activeProgramId, frame)
-      state.selectedNodeId = program.id
-    },
-
-    /**
-     * Add an empty control node to the given program.
-     */
-    addControlAction: (state, { payload }: PayloadAction<{
-      programId: BlueprintNodeId
-      frame: Rect
-      label?: string
-      sourceControlId?: BlueprintNodeId
-    }>) => {
-      const { programId, sourceControlId, frame } = payload
-
-      let label = payload.label
-      if (label === undefined && sourceControlId !== undefined) {
-        const sourceControl = getControlNode(state, sourceControlId)
-        label = sourceControl.label
-      }
-
-      const control = addControlNode(state, programId, frame, label)
-      state.selectedNodeId = control.id
-
-      if (sourceControlId !== undefined) {
-        attachControls(state, sourceControlId, control.id, programId)
+      const programId = payload.programId ?? state.activeProgramId
+      if (programId !== undefined) {
+        // Add the nodes
+        const nodes = addNodes(
+          state,
+          programId,
+          payload.nodes,
+          payload.defaultFrame,
+          payload.directory
+        )
+        // Select the last node added
+        state.selectedNodeId = nodes.at(-1)?.id
       }
     },
 
@@ -289,11 +270,10 @@ export const blueprintSlice = createSlice({
 })
 
 export const {
-  addOperationAction,
-  addEmptyProgramAction,
+  loadBlueprintAction,
+  addNodesAction,
   enterProgramAction,
   leaveProgramAction,
-  addControlAction,
   changeControlAction,
   changeControlValueToChoiceAction,
   changeControlValueToTypeAction,

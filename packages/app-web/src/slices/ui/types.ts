@@ -10,6 +10,8 @@ export interface UIState {
   embedMaximizable: boolean
   embedMaximized: boolean
 
+  shareBaseUrl: string
+
   canvasMode: UICanvasMode
   canvasState: UICanvasState
   canvasOffsetX: number

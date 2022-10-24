@@ -191,9 +191,6 @@ export const serializeControl = (
   controlId: BlueprintNodeId
 ): ControlNode => {
   const control = getControlNode(state, controlId)
-  if (control.frame === undefined) {
-    throw new Error('Logic error: Trying to export a control without frame')
-  }
   const serializedControl: ControlNode = {
     type: 'control',
     id: control.id.toString(),

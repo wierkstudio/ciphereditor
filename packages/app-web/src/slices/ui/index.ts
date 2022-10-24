@@ -16,7 +16,8 @@ const detectDefaultState = (): Partial<UIState> => {
       embedType:
         window.parent === window
           ? UIEmbedType.Standalone
-          : UIEmbedType.Embed
+          : UIEmbedType.Embed,
+      shareBaseUrl: location.href
     }
   }
 }
@@ -26,6 +27,8 @@ const defaultUIState: UIState = {
   embedEnv: 'chrome',
   embedMaximizable: false,
   embedMaximized: false,
+
+  shareBaseUrl: 'https://app.ciphereditor.com/',
 
   canvasMode: UICanvasMode.Plane,
   canvasState: UICanvasState.Idle,
@@ -46,7 +49,11 @@ export const settingsSlice = createSlice({
     configureEmbedAction: (state, { payload }: PayloadAction<{
       embedType?: UIEmbedType
       maximizable?: boolean
+      shareBaseUrl?: string
     }>) => {
+      if (payload.shareBaseUrl !== undefined) {
+        state.shareBaseUrl = payload.shareBaseUrl
+      }
       if (payload.embedType !== undefined) {
         state.embedType = payload.embedType
         if (state.embedType !== UIEmbedType.Website) {

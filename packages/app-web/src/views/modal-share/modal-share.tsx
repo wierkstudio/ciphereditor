@@ -4,6 +4,7 @@ import ModalView from '../../views/modal/modal'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
+import useUISelector from '../../hooks/useUISelector'
 import { SettingsModalPayload } from '../../slices/ui/types'
 import { bufferToBase64urlString, stringToBuffer } from '@ciphereditor/library'
 import { serializeBlueprint } from '../../slices/blueprint/selectors/blueprint'
@@ -14,15 +15,17 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
   const directory = useDirectorySelector(state => state)
   const serializedBlueprint = useBlueprintSelector(state => serializeBlueprint(state, directory))
 
+  const shareBaseUrl = useUISelector(state => state.shareBaseUrl)
+
   const documentText = JSON.stringify(serializedBlueprint)
 
   const onCopyShareUrl = (): void => {
-    const documentFragment = bufferToBase64urlString(stringToBuffer(documentText))
-    const url = location.href + '#blueprint=' + documentFragment
+    const blueprintParameter = bufferToBase64urlString(stringToBuffer(documentText))
+    const url = shareBaseUrl + '#blueprint=' + blueprintParameter
     void navigator.clipboard.writeText(url)
   }
 
-  const onDownloadBlueprint = (): void => {
+  const onSaveBlueprint = (): void => {
     // Initiate download via anchor element
     const documentBlob = URL.createObjectURL(new Blob(
       [documentText],
@@ -44,8 +47,8 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
         </ButtonView>
       </ModalView.SectionView>
       <ModalView.SectionView headline={t('Save as a file')}>
-        <ButtonView icon='arrowUp' onClick={onDownloadBlueprint}>
-          {t('Download blueprint')}
+        <ButtonView icon='save' onClick={onSaveBlueprint}>
+          {t('Save blueprint locally')}
         </ButtonView>
       </ModalView.SectionView>
     </ModalView>

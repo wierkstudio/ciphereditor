@@ -1,8 +1,10 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import { DirectoryState } from '../../directory/types'
+import { ProgramNode } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { Rect } from '../../../lib/utils/2d'
-import { addNode, nextNodeId } from './blueprint'
+import { addChildNode, addNodes, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getNode, getNodeChildren } from '../selectors/blueprint'
 
@@ -19,16 +21,15 @@ export const defaultProgramNode: ProgramNodeState = {
 }
 
 /**
- * Add an empty program to the given parent program.
- * @param state Blueprint state
- * @param parentId Parent program node id
- * @returns New program node
+ * Add the given program
  */
-export const addEmptyProgramNode = (
+export const addProgramNode = (
   state: BlueprintState,
   parentId: BlueprintNodeId | undefined,
-  frame: Rect,
-  label?: string
+  programNode: ProgramNode,
+  defaultFrame: Rect,
+  directory?: DirectoryState,
+  refIdMap?: Record<string, BlueprintNodeId>
 ): ProgramNodeState => {
   const id = nextNodeId(state)
 
@@ -37,16 +38,25 @@ export const addEmptyProgramNode = (
     ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNodeState[]
     : []
   const usedLabels = programs.map(program => program.label)
+  const label = programNode.label
   const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
 
-  const programNode: ProgramNodeState = {
+  const program: ProgramNodeState = {
     ...defaultProgramNode,
     id,
     parentId: parentId ?? id,
+    childIds: [],
     label: uniqueLabel,
-    frame
+    frame: programNode.frame ?? defaultFrame
   }
-  return addNode(state, programNode)
+
+  addChildNode(state, program)
+
+  if (programNode.children !== undefined) {
+    addNodes(state, program.id, programNode.children, defaultFrame, directory, refIdMap)
+  }
+
+  return program
 }
 
 /**

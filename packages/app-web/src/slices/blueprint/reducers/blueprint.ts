@@ -1,17 +1,22 @@
 
 import { getNode, hasNode } from '../selectors/blueprint'
 import {
-  BlueprintNodeState,
   BlueprintNodeId,
+  BlueprintNodeState,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
+import { Blueprint, BlueprintNode, Rect } from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
+import { DirectoryState } from '../../directory/types'
 import { VariableNodeState } from '../types/variable'
+import { addControlNode } from './control'
+import { addOperationNode } from './operation'
+import { addProgramNode, updateProgramContentBounds } from './program'
+import { addVariable, attachControlToVariable } from './variable'
 import { arrayRemove } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
 import { getVariableNode } from '../selectors/variable'
-import { updateProgramContentBounds } from './program'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -26,12 +31,12 @@ export const nextNodeId = (state: BlueprintState): number => {
 }
 
 /**
- * Add the given node to the blueprint.
+ * Add the given node as a child to the blueprint tree.
  * @param state Blueprint state
  * @param childNode Child node to be added
  * @returns Child node
  */
-export const addNode = <T extends BlueprintNodeState>(state: BlueprintState, childNode: T): T => {
+export const addChildNode = <T extends BlueprintNodeState>(state: BlueprintState, childNode: T): T => {
   const childId = childNode.id
   const childType = childNode.type
   const parentId = childNode.parentId
@@ -50,6 +55,9 @@ export const addNode = <T extends BlueprintNodeState>(state: BlueprintState, chi
     childNode.childIds.push(previousRootNode.id)
     previousRootNode.parentId = childNode.id
     state.rootProgramId = childNode.id
+    if (state.activeProgramId === previousRootNode.id) {
+      state.activeProgramId = childNode.id
+    }
   }
 
   // Verify that the child node can be added to this parent node
@@ -61,13 +69,65 @@ export const addNode = <T extends BlueprintNodeState>(state: BlueprintState, chi
     throw new Error(`Node type '${childType}' can't be added to '${parentType}'`)
   }
 
-  parentNode.childIds.push(childId)
+  if (childId !== parentId) {
+    parentNode.childIds.push(childId)
+  }
 
   if (parentNode.type === BlueprintNodeType.Program) {
     updateProgramContentBounds(state, parentNode.id)
   }
 
   return childNode
+}
+
+export const addNodes = (
+  state: BlueprintState,
+  programId: BlueprintNodeId,
+  nodes: BlueprintNode[],
+  defaultFrame: Rect,
+  directory?: DirectoryState,
+  refIdMap: Record<string, BlueprintNodeId> = {}
+): BlueprintNodeState[] => {
+  // TODO: Make sure variables are added last (as we need attachment ids)
+  // TODO: Move the default frame when it was used
+  return nodes.map((node): BlueprintNodeState => {
+    const nodeType = node.type
+    switch (nodeType) {
+      case 'operation': {
+        return addOperationNode(state, programId, node, defaultFrame, directory, refIdMap)
+      }
+      case 'control': {
+        return addControlNode(state, programId, node, defaultFrame, refIdMap)
+      }
+      case 'program': {
+        return addProgramNode(state, programId, node, defaultFrame, directory, refIdMap)
+      }
+      case 'variable': {
+        // TODO: Make sure the push/pull controls are maintained
+        // TODO: Throw if at least one ref id can't be resolved
+        const attachmentIds = node.attachments.map(refId => {
+          const nodeId = refIdMap[refId]
+          if (nodeId === undefined) {
+            throw new Error(`Reference id ${refId} cannot be resolved to a node id`)
+          }
+          return nodeId
+        })
+        if (attachmentIds.length === 0) {
+          throw new Error('Variable must have at least one attachment')
+        }
+
+        const [firstControlId, ...remainingControlIds] = attachmentIds
+        const variable = addVariable(state, programId, firstControlId)
+        for (const controlId of remainingControlIds) {
+          attachControlToVariable(state, controlId, variable.id)
+        }
+        return variable
+      }
+      default: {
+        throw new Error(`Node with type '${nodeType as string}' cannot be added`)
+      }
+    }
+  })
 }
 
 /**
@@ -205,4 +265,19 @@ export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | unde
   if (state.selectedNodeId !== nodeId) {
     state.selectedNodeId = nodeId
   }
+}
+
+export const loadBlueprint = (
+  state: BlueprintState,
+  data: Blueprint,
+  directory: DirectoryState | undefined
+): void => {
+  // TODO: Derive default frame from current canvas position
+  const defaultFrame = { x: 0, y: 0, width: 320, height: 320 }
+
+  const previousRootProgramId = state.rootProgramId
+  const program = addProgramNode(state, undefined, data.program, defaultFrame, directory)
+  state.rootProgramId = program.id
+  state.activeProgramId = program.id
+  removeNode(state, previousRootProgramId)
 }

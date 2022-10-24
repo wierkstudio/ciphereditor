@@ -5,7 +5,7 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { BlueprintNode } from '@ciphereditor/library'
+import { Blueprint } from '@ciphereditor/library'
 import { UICanvasMode } from '../../ui/types'
 import { serializeProgram } from './program'
 import { DirectoryState } from '../../directory/types'
@@ -91,7 +91,7 @@ export const getNodePosition = (
 export const serializeBlueprint = (
   state: BlueprintState,
   directory: DirectoryState
-): BlueprintNode => {
+): Blueprint => {
   return {
     type: 'blueprint',
     program: serializeProgram(state, directory, state.rootProgramId)

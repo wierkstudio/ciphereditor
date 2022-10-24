@@ -5,9 +5,11 @@ import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
 import { AddModalPayload } from '../../slices/ui/types'
-import { addControlAction, addEmptyProgramAction, addOperationAction } from '../../slices/blueprint'
+import { BlueprintNode, createEmptyValue, serializeValue } from '@ciphereditor/library'
+import { addNodesAction } from '../../slices/blueprint'
 import { capitalCase } from 'change-case'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasOffset, getCanvasSize } from '../../slices/ui/selectors'
@@ -22,6 +24,8 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
   const contributions = useAppSelector(state => getContributions(state.directory))
   const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
   const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
+
+  const directory = useDirectorySelector(state => state)
 
   const [searchQuery, setSearchQuery] = useState('')
   const searchKeywords = searchQuery.toLowerCase().split(/\s+/g)
@@ -51,6 +55,26 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
     }
   }
 
+  // TODO: Remove magic numbers
+  const defaultFrame = {
+    x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
+    y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 80 * 0.5),
+    width: 320,
+    height: 80
+  }
+
+  const addNode = (node: BlueprintNode): void => {
+    if (activeProgram !== undefined) {
+      dispatch(addNodesAction({
+        programId: activeProgram.id,
+        nodes: [node],
+        defaultFrame,
+        directory
+      }))
+      dispatch(popModalAction({}))
+    }
+  }
+
   return (
     <ModalView
       title={t('Add a new operation')}
@@ -67,20 +91,10 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
         {matchingContributions.map(contribution => (
           <li key={contribution.name}>
             <ButtonView
-              onClick={() => {
-                // TODO: Remove magic numbers
-                activeProgram !== undefined && dispatch(addOperationAction({
-                  programId: activeProgram.id,
-                  contribution,
-                  frame: {
-                    x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-                    y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 320 * 0.5),
-                    width: 320,
-                    height: 320
-                  }
-                }))
-                dispatch(popModalAction({}))
-              }}
+              onClick={() => addNode({
+                type: 'operation',
+                name: contribution.name
+              })}
             >
               {/* TODO: Needs translation */}
               {contribution.label ?? capitalCase(contribution.name)}
@@ -88,36 +102,15 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
           </li>
         ))}
         <li key='empty-operation'>
-          <ButtonView
-            onClick={() => {
-              activeProgram !== undefined && dispatch(addEmptyProgramAction({
-                programId: activeProgram.id,
-                frame: {
-                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 48 * 0.5),
-                  width: 320,
-                  height: 48
-                }
-              }))
-              dispatch(popModalAction({}))
-            }}
-          >
+          <ButtonView onClick={() => addNode({ type: 'program' })}>
             {t('New program')}
           </ButtonView>
         </li>
         <li key='empty-control'>
           <ButtonView
             onClick={() => {
-              activeProgram !== undefined && dispatch(addControlAction({
-                programId: activeProgram.id,
-                frame: {
-                  x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-                  y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 48 * 0.5),
-                  width: 320,
-                  height: 48
-                }
-              }))
-              dispatch(popModalAction({}))
+              const emptyValue = serializeValue(createEmptyValue('text'))
+              addNode({ type: 'control', value: emptyValue })
             }}
           >
             {t('Empty control')}

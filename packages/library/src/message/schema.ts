@@ -1,6 +1,11 @@
 
 import { z } from 'zod'
+import { blueprintNodeSchema, blueprintSchema } from '../blueprint/schema'
 
+/**
+ * Message targeted to the website
+ */
+export type WebsiteMessage = z.infer<typeof websiteMessageSchema>
 export const websiteMessageSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('initiated')
@@ -25,23 +30,22 @@ export const websiteMessageSchema = z.discriminatedUnion('type', [
 ])
 
 /**
- * Message targeted to the website
+ * Message targeted to the app
  */
-export type WebsiteMessage = z.infer<typeof websiteMessageSchema>
-
+export type EditorMessage = z.infer<typeof editorMessageSchema>
 export const editorMessageSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('configure'),
     embedType: z.enum(['standalone', 'website', 'electron', 'embed']).optional(),
-    maximizable: z.boolean().optional()
+    maximizable: z.boolean().optional(),
+    shareBaseUrl: z.string().optional()
   }),
   z.object({
-    // TODO: Finalize embed API to add nodes to the blueprint
-    type: z.literal('add')
+    type: z.literal('loadBlueprint'),
+    blueprint: blueprintSchema
+  }),
+  z.object({
+    type: z.literal('addNodes'),
+    nodes: z.array(blueprintNodeSchema)
   })
 ])
-
-/**
- * Message targeted to the app
- */
-export type EditorMessage = z.infer<typeof editorMessageSchema>
