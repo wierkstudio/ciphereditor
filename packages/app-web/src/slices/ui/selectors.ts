@@ -31,10 +31,10 @@ export const getCanvasSize = (state: UIState): { width: number, height: number }
   state.canvasSize
 
 export const getViewportRect = (state: UIState, offset: Point): Rect => ({
-  x: offset.x - state.canvasSize.width * 0.5,
-  y: offset.y - state.canvasSize.height * 0.5,
-  width: state.canvasSize.width,
-  height: state.canvasSize.height
+  x: Math.round(offset.x - state.canvasSize.width * 0.5),
+  y: Math.round(offset.y - state.canvasSize.height * 0.5),
+  width: Math.round(state.canvasSize.width),
+  height: Math.round(state.canvasSize.height)
 })
 
 export const getWireDraft = (state: UIState): UIWireDraft | undefined =>

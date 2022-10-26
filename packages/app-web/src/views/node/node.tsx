@@ -14,6 +14,7 @@ import { getCanvasMode } from '../../slices/ui/selectors'
 import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
+import { roundRect } from '@ciphereditor/library'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -23,6 +24,7 @@ export default function NodeView (props: {
   const dispatch = useAppDispatch()
 
   const node = useBlueprintSelector(state => getNode(state, nodeId))
+  const frame = node.frame !== undefined ? roundRect(node.frame) : undefined
   const isSelected = useBlueprintSelector(state => isSelectedNode(state, nodeId))
   const canvasMode = useUISelector(getCanvasMode)
 
@@ -53,7 +55,7 @@ export default function NodeView (props: {
     // run when actual changes are applied to the DOM
     // TODO: Optimization: This should NOT be called when the node gets moved
     const nodeElement = nodeRef.current
-    if (node.frame !== undefined && nodeElement !== null) {
+    if (frame !== undefined && nodeElement !== null) {
       const outletPositions: Array<{
         controlId: BlueprintNodeId
         x: number | undefined
@@ -86,14 +88,14 @@ export default function NodeView (props: {
       }
 
       if (
-        node.frame.width !== width ||
-        node.frame.height !== height ||
+        frame.width !== width ||
+        frame.height !== height ||
         outletPositions.length > 0
       ) {
         dispatch(layoutNodeAction({ nodeId, width, height, outletPositions }))
       }
     }
-  }, [nodeRef, outletRefs, node, controls])
+  }, [nodeRef, outletRefs, frame, controls])
 
   const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
     dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY }))
@@ -113,8 +115,8 @@ export default function NodeView (props: {
       ref={nodeRef}
       className={renderClassName('node', modifiers)}
       role='region'
-      style={canvasMode === UICanvasMode.Plane && node.frame !== undefined
-        ? { transform: `translate(${node.frame.x}px, ${node.frame.y}px)` }
+      style={canvasMode === UICanvasMode.Plane && frame !== undefined
+        ? { transform: `translate(${frame.x}px, ${frame.y}px)` }
         : {}}
       tabIndex={0}
       onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
