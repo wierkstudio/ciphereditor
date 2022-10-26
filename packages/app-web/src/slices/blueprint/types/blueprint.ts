@@ -1,5 +1,5 @@
 
-import { Rect } from '../../../lib/utils/2d'
+import { Point, Rect } from '@ciphereditor/library'
 
 export type BlueprintNodeId = number
 
@@ -58,7 +58,7 @@ export interface BlueprintState {
   /**
    * Selected node id
    */
-  selectedNodeId?: BlueprintNodeId
+  selectedNodeId: BlueprintNodeId | undefined
 
   /**
    * Root program node id
@@ -67,8 +67,14 @@ export interface BlueprintState {
 
   /**
    * Active program node id
+   * Set to undefined when leaving the root program
    */
-  activeProgramId?: BlueprintNodeId
+  activeProgramId: BlueprintNodeId | undefined
+
+  /**
+   * Canvas offset/position when leaving the root program
+   */
+  rootOffset: Point
 
   /**
    * Busy operation node ids

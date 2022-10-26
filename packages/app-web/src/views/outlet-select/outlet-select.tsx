@@ -1,33 +1,32 @@
 
-import SelectView, { SelectViewElement, SelectViewOptionElement } from '../../views/select/select'
-import useAppDispatch from '../../hooks/useAppDispatch'
-import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import {
   addVariableFromControlAction,
   attachControlToVariableAction,
   detachControlFromVariableAction
 } from '../../slices/blueprint'
+import SelectView, { SelectViewElement, SelectViewOptionElement } from '../../views/select/select'
+import useAppDispatch from '../../hooks/useAppDispatch'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useTranslation from '../../hooks/useTranslation'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from '../../slices/blueprint/selectors/control'
 import { useCallback } from 'react'
-import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
-import useTranslation from '../../hooks/useTranslation'
 
 export default function OutletSelectView (props: {
   control: ControlNodeState
-  contextProgramId: BlueprintNodeId
+  outward: boolean
 }): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
-  const { control, contextProgramId } = props
+  const { control, outward } = props
   const controlId = control.id
 
   const { pushOptions, pullOptions } = useBlueprintSelector(state =>
-    getControlVariableOptions(state, props.control.id, contextProgramId))
+    getControlVariableOptions(state, props.control.id, outward))
 
   const attachedVariable = useBlueprintSelector(state =>
-    getControlVariable(state, props.control.id, contextProgramId))
+    getControlVariable(state, props.control.id, outward))
   const attachedVariableSourceControl = useBlueprintSelector(state =>
     attachedVariable !== undefined ? getVariableControl(state, attachedVariable.id) : undefined)
   const attachedVariableId = attachedVariable?.id
@@ -62,7 +61,7 @@ export default function OutletSelectView (props: {
         // Push to a new variable
         dispatch(addVariableFromControlAction({
           controlId,
-          programId: contextProgramId
+          outward
         }))
         break
       case 'l':
@@ -77,7 +76,7 @@ export default function OutletSelectView (props: {
         }
         break
     }
-  }, [dispatch, pullOptions, pushOptions, controlId, attachedVariableId, contextProgramId])
+  }, [dispatch, pullOptions, pushOptions, controlId, attachedVariableId, outward])
 
   const isUnused = attachedVariable === undefined
   const isPushing = attachedVariableSourceControl !== undefined && attachedVariableSourceControl.id === control.id

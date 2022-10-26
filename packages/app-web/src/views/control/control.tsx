@@ -20,10 +20,10 @@ import { toggleControlVisibility } from '../../slices/blueprint'
 
 export default function ControlView (props: {
   controlId: BlueprintNodeId
-  contextProgramId: BlueprintNodeId
+  outward?: boolean
   onOutletRef?: (controlId: number, element: HTMLDivElement | null) => void
 }): JSX.Element {
-  const { controlId, contextProgramId, onOutletRef } = props
+  const { controlId, outward = false, onOutletRef } = props
 
   const headerRef = useRef<HTMLDivElement | null>(null)
 
@@ -43,7 +43,7 @@ export default function ControlView (props: {
       state.blueprint.present,
       state.ui.wireDraft.sourceControlId,
       controlId,
-      contextProgramId
+      outward
     )
   })
 
@@ -115,14 +115,14 @@ export default function ControlView (props: {
         </MovableButtonView>
         <OutletView
           control={control}
-          contextProgramId={contextProgramId}
+          outward={outward}
           expanded={control.visibility === 'expanded'}
           onIndicatorClick={onToggleClick}
           indicatorRef={onOutletRef?.bind(null, controlId)}
         />
       </div>
       {control.visibility === 'expanded' && (
-        <ControlDrawerView control={control} contextProgramId={contextProgramId} />
+        <ControlDrawerView control={control} outward={outward} />
       )}
     </div>
   )

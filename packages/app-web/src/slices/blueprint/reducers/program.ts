@@ -1,12 +1,16 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
-import { ProgramNode } from '@ciphereditor/library'
+import { Point, ProgramNode, Rect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
-import { Rect } from '../../../lib/utils/2d'
 import { addChildNode, addNodes, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
+import { getNextProgramChildFrame } from '../selectors/program'
 import { getNode, getNodeChildren } from '../selectors/blueprint'
+import { movePointBy } from '../../../lib/utils/2d'
+
+// TODO: Move to a constants file
+const defaultNodeSize = { width: 320, height: 96 }
 
 /**
  * Default program node object
@@ -17,7 +21,13 @@ export const defaultProgramNode: ProgramNodeState = {
   parentId: 1,
   childIds: [],
   label: 'Program',
-  frame: { x: 0, y: 0, width: 320, height: 48 }
+  offset: { x: 0, y: 0 },
+  frame: {
+    x: -defaultNodeSize.width * 0.5,
+    y: -defaultNodeSize.height * 0.5,
+    width: defaultNodeSize.width,
+    height: defaultNodeSize.height
+  }
 }
 
 /**
@@ -27,7 +37,6 @@ export const addProgramNode = (
   state: BlueprintState,
   parentId: BlueprintNodeId | undefined,
   programNode: ProgramNode,
-  defaultFrame: Rect,
   directory?: DirectoryState,
   refIdMap?: Record<string, BlueprintNodeId>
 ): ProgramNodeState => {
@@ -41,19 +50,28 @@ export const addProgramNode = (
   const label = programNode.label
   const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
 
+  // Choose program frame
+  let frame: Rect | undefined = programNode.frame
+  if (frame === undefined && parentId !== undefined) {
+    frame = getNextProgramChildFrame(state, parentId)
+  } else if (frame === undefined) {
+    frame = defaultProgramNode.frame
+  }
+
   const program: ProgramNodeState = {
     ...defaultProgramNode,
     id,
     parentId: parentId ?? id,
     childIds: [],
     label: uniqueLabel,
-    frame: programNode.frame ?? defaultFrame
+    offset: programNode.offset ?? defaultProgramNode.offset,
+    frame
   }
 
   addChildNode(state, program)
 
   if (programNode.children !== undefined) {
-    addNodes(state, program.id, programNode.children, defaultFrame, directory, refIdMap)
+    addNodes(state, programNode.children, id, directory, refIdMap)
   }
 
   return program
@@ -106,5 +124,22 @@ export const updateProgramContentBounds = (
     }
   } else {
     program.contentBounds = undefined
+  }
+}
+
+/**
+ * Set the current canvas offset/position depending on the active program
+ */
+export const moveOffset = (
+  state: BlueprintState,
+  offset: Point,
+  relative: boolean
+): void => {
+  // TODO: Round points
+  if (state.activeProgramId === undefined) {
+    state.rootOffset = relative ? movePointBy(state.rootOffset, offset) : offset
+  } else {
+    const program = getNode(state, state.activeProgramId, BlueprintNodeType.Program) as ProgramNodeState
+    program.offset = relative ? movePointBy(program.offset, offset) : offset
   }
 }

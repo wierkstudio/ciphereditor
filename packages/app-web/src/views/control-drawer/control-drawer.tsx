@@ -13,14 +13,13 @@ import ValueView from '../../views/value/value'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useTranslation from '../../hooks/useTranslation'
-import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { extractValue, identifySerializedValueType, labelType, previewSerializedValue, SerializedValue, stringifyValue } from '@ciphereditor/library'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
 
 export default function ControlDrawerView (props: {
   control: ControlNodeState
-  contextProgramId: BlueprintNodeId
+  outward?: boolean
 }): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()

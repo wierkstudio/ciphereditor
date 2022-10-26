@@ -1,7 +1,6 @@
 
 import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
-import { OperationIssue } from '@ciphereditor/library'
-import { Rect } from '../../../lib/utils/2d'
+import { OperationIssue, Rect } from '@ciphereditor/library'
 
 /**
  * Operation state

@@ -1,6 +1,6 @@
 
-import { Rect } from '../../../lib/utils/2d'
 import { BlueprintNodeState, BlueprintNodeType } from './blueprint'
+import { Point, Rect } from '@ciphereditor/library'
 
 /**
  * Program node
@@ -22,6 +22,11 @@ export interface ProgramNodeState extends BlueprintNodeState {
    * Program label
    */
   label: string
+
+  /**
+   * Canvas offset/position
+   */
+  offset: Point
 
   /**
    * Position and size of the boundary that includes all layed out child nodes.

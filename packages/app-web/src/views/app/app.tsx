@@ -37,9 +37,6 @@ export default function AppView (): JSX.Element {
 
   const directory = useDirectorySelector(state => state)
 
-  // TODO: Remove magic numbers
-  const defaultFrame = { x: 0, y: 0, width: 320, height: 80 }
-
   const onEditorMessage = useCallback((message: EditorMessage): void => {
     const messageType = message.type
     switch (messageType) {
@@ -57,7 +54,7 @@ export default function AppView (): JSX.Element {
       }
       case 'addNodes': {
         const nodes = message.nodes
-        dispatch(addNodesAction({ nodes, defaultFrame, directory }))
+        dispatch(addNodesAction({ nodes, directory }))
         break
       }
     }

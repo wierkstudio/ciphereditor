@@ -118,8 +118,8 @@ export const serializeOperation = (
     // Include the `id` attribute only when a variable is attached that is
     // serialized, too (i.e. having two or more attachments)
     if (
-      control.attachedVariableId !== undefined &&
-      serializeVariable(state, directory, control.attachedVariableId) !== undefined
+      control.attachedOutwardVariableId !== undefined &&
+      serializeVariable(state, directory, control.attachedOutwardVariableId) !== undefined
     ) {
       serializedControl.id = control.id.toString()
     }

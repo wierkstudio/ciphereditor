@@ -72,20 +72,20 @@ export interface ControlNodeState extends BlueprintNodeState {
   visibility: ControlVisibility
 
   /**
-   * The order number by which controls are ordered within their parent in
-   * ascending order. Order numbers 1000 or larger are placed below the header.
-   */
-  order: number
-
-  /**
-   * Name of program/operation extern variable node attached to this control
+   * Name of program intern variable node attached to this program control
    */
   attachedVariableId?: BlueprintNodeId
 
   /**
-   * Name of program intern variable node attached to this program control
+   * Name of program/operation outward variable node attached to this control
    */
-  attachedInternVariableId?: BlueprintNodeId
+  attachedOutwardVariableId?: BlueprintNodeId
+
+  /**
+   * The order number by which controls are ordered within their parent in
+   * ascending order. Order numbers 1000 or larger are placed below the header.
+   */
+  order: number
 
   /**
    * Number of pixels between the left side of the node and the outlet

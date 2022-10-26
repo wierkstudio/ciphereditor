@@ -4,11 +4,11 @@ import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
 import { OperationIssue, OperationNode } from '@ciphereditor/library'
 import { OperationNodeState, OperationState } from '../types/operation'
-import { Rect } from '../../../lib/utils/2d'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
 import { capitalCase } from 'change-case'
+import { getNextProgramChildFrame } from '../selectors/program'
 import { getNode } from '../selectors/blueprint'
 import { getOperationContribution } from '../../directory/selectors'
 import { getOperationNode } from '../selectors/operation'
@@ -18,7 +18,6 @@ import { getOperationNode } from '../selectors/operation'
  * @param state Blueprint state
  * @param programId Program the node should be added to
  * @param operationNode Operation to be added
- * @param defaultFrame Frame to use if not defined by the operation
  * @param directory Directory state to retrieve operation contribution meta data from
  * @param refIdMap Object mapping node ids to ids in the blueprint state
  */
@@ -26,7 +25,6 @@ export const addOperationNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
   operationNode: OperationNode,
-  defaultFrame: Rect,
   directory?: DirectoryState,
   refIdMap?: Record<string, BlueprintNodeId>
 ): OperationNodeState => {
@@ -37,6 +35,8 @@ export const addOperationNode = (
   if (operationContribution === undefined) {
     throw new Error('Needs implementation: Placeholder operation nodes')
   }
+
+  const frame = operationNode.frame ?? getNextProgramChildFrame(state, programId)
 
   const operation: OperationNodeState = {
     type: BlueprintNodeType.Operation,
@@ -50,7 +50,7 @@ export const addOperationNode = (
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
-    frame: operationNode.frame ?? defaultFrame
+    frame
   }
 
   addChildNode(state, operation)

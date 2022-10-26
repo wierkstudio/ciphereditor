@@ -5,13 +5,13 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
+import { DirectoryState } from '../../directory/types'
 import { UICanvasMode } from '../../ui/types'
 import { VariableNodeState } from '../types/variable'
 import { compareSerializedValues, ControlNode, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
-import { DirectoryState } from '../../directory/types'
 
 /**
  * Find a control node by the given node id.
@@ -54,14 +54,11 @@ export const getNodeControlValues = (
 export const getOutletPosition = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId | undefined,
+  outward: boolean,
   canvasMode: UICanvasMode = UICanvasMode.Plane
 ): { x: number, y: number } | undefined => {
   const control = getControlNode(state, controlId)
-  const node =
-    control.parentId === contextProgramId
-      ? control
-      : getNode(state, control.parentId)
+  const node = outward ? getNode(state, control.parentId) : control
   const nodePosition = getNodePosition(state, node.id, canvasMode)
   if (
     nodePosition !== undefined &&
@@ -76,17 +73,21 @@ export const getOutletPosition = (
   return undefined
 }
 
-/**
- * For the given control and program context decide wether the intern control
- * variable should be used. By default, the active program context is used.
- */
-export const isControlInternVariable = (
+export const getControlProgramId = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId?: BlueprintNodeId
-): boolean => {
+  outward: boolean = false
+): BlueprintNodeId => {
   const control = getControlNode(state, controlId)
-  return (programId ?? state.activeProgramId) === control.parentId
+  const parent = getNode(state, control.parentId)
+
+  if (parent.type === BlueprintNodeType.Operation) {
+    // The program of an operation control is always the parent of the operation
+    return parent.parentId
+  }
+
+  // If the parent is not an operation, assume it to be a program
+  return outward ? parent.parentId : parent.id
 }
 
 /**
@@ -96,12 +97,13 @@ export const isControlInternVariable = (
 export const getControlVariableOptions = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId
+  outward: boolean
 ): {
   pushOptions: VariableNodeState[]
   pullOptions: VariableNodeState[]
 } => {
-  const variables = getProgramVariables(state, contextProgramId)
+  const programId = getControlProgramId(state, controlId, outward)
+  const variables = getProgramVariables(state, programId)
 
   const pushOptions: VariableNodeState[] = []
   const pullOptions: VariableNodeState[] = []
@@ -110,12 +112,12 @@ export const getControlVariableOptions = (
     const variable = variables[i]
     const variableControl = getVariableControl(state, variable.id)
 
-    if (canAttachControls(state, variableControl.id, controlId, contextProgramId)) {
+    if (canAttachControls(state, variableControl.id, controlId, outward)) {
       pullOptions.push(variable)
     }
 
     if (variableControl.id === controlId ||
-        canAttachControls(state, controlId, variableControl.id, contextProgramId)) {
+        canAttachControls(state, controlId, variableControl.id, outward)) {
       pushOptions.push(variable)
     }
   }
@@ -130,7 +132,7 @@ export const canAttachControls = (
   state: BlueprintState,
   sourceControlId: BlueprintNodeId,
   targetControlId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId
+  outward: boolean
 ): boolean => {
   const sourceControl = getControlNode(state, sourceControlId)
   const targetControl = getControlNode(state, targetControlId)
@@ -143,7 +145,7 @@ export const canAttachControls = (
   }
 
   // A control can't connect to a control in the same operation
-  if (sourceControl.parentId === targetControl.parentId && sourceControl.parentId !== contextProgramId) {
+  if (outward && sourceControl.parentId === targetControl.parentId) {
     return false
   }
 

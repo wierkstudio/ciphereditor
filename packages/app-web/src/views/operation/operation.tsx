@@ -23,10 +23,9 @@ export default function OperationView (props: {
    * Operation or program node id
    */
   nodeId: BlueprintNodeId
-  contextProgramId: BlueprintNodeId
   onOutletRef?: (controlId: number, element: HTMLDivElement | null) => void
 }): JSX.Element {
-  const { nodeId, contextProgramId, onOutletRef } = props
+  const { nodeId, onOutletRef } = props
 
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
@@ -119,8 +118,8 @@ export default function OperationView (props: {
         >
           <ControlView
             controlId={control.id}
-            contextProgramId={contextProgramId}
             onOutletRef={onOutletRef}
+            outward
           />
         </div>
       ))}

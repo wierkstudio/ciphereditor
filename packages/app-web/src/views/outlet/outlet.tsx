@@ -5,7 +5,6 @@ import OutletSelectView from '../../views/outlet-select/outlet-select'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { MouseEventHandler, PointerEvent as ReactPointerEvent } from 'react'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
@@ -15,16 +14,16 @@ import { startWireAction } from '../../slices/ui'
 
 export default function OutletView (props: {
   control: ControlNodeState
-  contextProgramId: BlueprintNodeId
+  outward: boolean
   expanded: boolean
   onIndicatorClick?: MouseEventHandler<HTMLDivElement>
   indicatorRef?: (element: HTMLDivElement) => void
 }): JSX.Element {
-  const { control, contextProgramId, indicatorRef } = props
+  const { control, outward, indicatorRef } = props
 
   const dispatch = useAppDispatch()
   const attachedVariable = useBlueprintSelector(state =>
-    getControlVariable(state, props.control.id, contextProgramId))
+    getControlVariable(state, control.id, outward))
   const attachedVariableSourceControl = useBlueprintSelector(state =>
     attachedVariable !== undefined ? getVariableControl(state, attachedVariable.id) : undefined)
 
@@ -49,7 +48,7 @@ export default function OutletView (props: {
     <div className={renderClassName('outlet', modifiers)}>
       {props.expanded && (
         <div className='outlet__select'>
-          <OutletSelectView control={control} contextProgramId={contextProgramId} />
+          <OutletSelectView control={control} outward={outward} />
         </div>
       )}
       <button

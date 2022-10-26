@@ -6,16 +6,15 @@ import {
   changeControlValueToChoice,
   changeControlValueToType
 } from './reducers/control'
-import { Blueprint, BlueprintNode, OperationIssue } from '@ciphereditor/library'
+import { Blueprint, BlueprintNode, OperationIssue, Point } from '@ciphereditor/library'
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
 import { OperationState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
-import { Rect } from '../../lib/utils/2d'
 import { addNodes, layoutNode, loadBlueprint, moveNode, removeNode, selectNode } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
-import { defaultProgramNode } from './reducers/program'
+import { defaultProgramNode, moveOffset } from './reducers/program'
 import { executeOperation, setOperationState } from './reducers/operation'
 import { getControlNode } from './selectors/control'
 import { getNode, hasNode } from './selectors/blueprint'
@@ -27,6 +26,7 @@ export const defaultBlueprintState: BlueprintState = {
   selectedNodeId: undefined,
   rootProgramId: 1,
   activeProgramId: 1,
+  rootOffset: { x: 0, y: 0 },
   busyOperationIds: []
 }
 
@@ -48,23 +48,21 @@ export const blueprintSlice = createSlice({
      * Add the given operation to a program
      */
     addNodesAction: (state, { payload }: PayloadAction<{
-      programId?: BlueprintNodeId
       nodes: BlueprintNode[]
-      defaultFrame: Rect
+      programId?: BlueprintNodeId
       directory?: DirectoryState
     }>) => {
       const programId = payload.programId ?? state.activeProgramId
-      if (programId !== undefined) {
-        // Add the nodes
-        const nodes = addNodes(
-          state,
-          programId,
-          payload.nodes,
-          payload.defaultFrame,
-          payload.directory
-        )
-        // Select the last node added
+      // Add the nodes
+      const nodes = addNodes(state, payload.nodes, programId, payload.directory)
+      // Select the last node added, if it is in the currently active program
+      const lastNode = nodes.at(-1)
+      if (programId === undefined || programId === lastNode?.parentId) {
         state.selectedNodeId = nodes.at(-1)?.id
+      }
+      // If a program has been created to add the node, enter into it
+      if (programId === undefined && state.activeProgramId === undefined) {
+        state.activeProgramId = state.rootProgramId
       }
     },
 
@@ -85,9 +83,13 @@ export const blueprintSlice = createSlice({
      * Move a level up, changing the active program to its parent program.
      */
     leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.activeProgramId !== undefined && state.activeProgramId !== state.rootProgramId) {
+      if (state.activeProgramId !== undefined) {
         state.selectedNodeId = state.activeProgramId
-        state.activeProgramId = getNode(state, state.activeProgramId).parentId
+        if (state.rootProgramId !== state.activeProgramId) {
+          state.activeProgramId = getNode(state, state.activeProgramId).parentId
+        } else {
+          state.activeProgramId = undefined
+        }
       }
     },
 
@@ -134,17 +136,18 @@ export const blueprintSlice = createSlice({
 
     addVariableFromControlAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId
-      programId: BlueprintNodeId
+      outward: boolean
     }>) => {
-      addVariableFromControl(state, payload.controlId, payload.programId)
+      addVariableFromControl(state, payload.controlId, payload.outward)
     },
 
     attachControlsAction: (state, { payload }: PayloadAction<{
       sourceControlId: BlueprintNodeId
       targetControlId: BlueprintNodeId
-      contextProgramId: BlueprintNodeId
+      outward: boolean
     }>) => {
-      attachControls(state, payload.sourceControlId, payload.targetControlId, payload.contextProgramId)
+      const { sourceControlId, targetControlId, outward } = payload
+      attachControls(state, sourceControlId, targetControlId, outward)
     },
 
     /**
@@ -231,6 +234,16 @@ export const blueprintSlice = createSlice({
       }
     },
 
+    /**
+     * Move the canvas offset/position of the active program
+     */
+    moveOffsetAction: (state, { payload }: PayloadAction<{
+      offset: Point
+      relative?: boolean
+    }>) => {
+      moveOffset(state, payload.offset, payload.relative ?? false)
+    },
+
     moveNodeAction: (state, { payload }: PayloadAction<{
       nodeId?: BlueprintNodeId
       x: number
@@ -286,6 +299,7 @@ export const {
   executeOperationAction,
   selectNodeAction,
   removeNodeAction,
+  moveOffsetAction,
   moveNodeAction,
   layoutNodeAction
 } = blueprintSlice.actions

@@ -17,9 +17,8 @@ import { renderClassName } from '../../lib/utils/dom'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
-  contextProgramId: BlueprintNodeId
 }): JSX.Element {
-  const { nodeId, contextProgramId } = props
+  const nodeId = props.nodeId
 
   const dispatch = useAppDispatch()
 
@@ -122,18 +121,10 @@ export default function NodeView (props: {
       onFocus={onFocus}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
-        <OperationView
-          nodeId={nodeId}
-          contextProgramId={contextProgramId}
-          onOutletRef={onOutletRef}
-        />
+        <OperationView nodeId={nodeId} onOutletRef={onOutletRef} />
       )}
       {node.type === BlueprintNodeType.Control && (
-        <ControlView
-          controlId={nodeId}
-          contextProgramId={contextProgramId}
-          onOutletRef={onOutletRef}
-        />
+        <ControlView controlId={nodeId} onOutletRef={onOutletRef} />
       )}
     </div>
   )

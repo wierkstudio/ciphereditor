@@ -6,75 +6,59 @@ import ScrollbarsView from '../scrollbars/scrollbars'
 import WireDraftView from '../../views/wire-draft/wire-draft'
 import WireView from '../../views/wire/wire'
 import useAppDispatch from '../../hooks/useAppDispatch'
-import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
-import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
-import { ProgramNodeState } from '../../slices/blueprint/types/program'
 import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
-import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
-import { getNode, getNodeChildren, getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { moveCanvasAction, updateCanvasSizeAction } from '../../slices/ui'
+import { getContentBounds, getOffset, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
+import { getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { moveOffsetAction, selectNodeAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { selectNodeAction } from '../../slices/blueprint'
+import { updateCanvasSizeAction } from '../../slices/ui'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
 
   const canvasMode = useUISelector(getCanvasMode)
   const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
-  const contextProgramId = useBlueprintSelector(state => getActiveProgram(state)?.id)
-  if (contextProgramId === undefined) {
-    throw new Error('Assertion error: Active program needs to be set')
-  }
 
-  const program =
-    useBlueprintSelector(state =>
-      getNode(state, contextProgramId)) as ProgramNodeState
+  const contentBounds = useBlueprintSelector(getContentBounds)
 
-  const variableIds = useBlueprintSelector(state =>
-    getNodeChildren(state, contextProgramId)
-      .filter(node => node.type === BlueprintNodeType.Variable)
-      .map(node => node.id))
+  const childNodeIds = useBlueprintSelector(getVisibleNodeIds)
+  const variableIds = useBlueprintSelector(getVisibleVariableIds)
 
-  const childNodeIds = useBlueprintSelector(state =>
-    getNodeChildren(state, contextProgramId)
-      .filter(node => node.type !== BlueprintNodeType.Variable)
-      .map(node => node.id))
+  const canvasState = useUISelector(getCanvasState)
+  const wireDraft = useUISelector(getWireDraft)
 
-  const canvasState = useAppSelector(state => getCanvasState(state.ui))
-  const wireDraft = useAppSelector(state => getWireDraft(state.ui))
-  const viewportRect = useAppSelector(state => getViewportRect(state.ui))
+  // Compose viewport rect
+  const offset = useBlueprintSelector(getOffset)
+  const viewportRect = useUISelector(state => getViewportRect(state, offset))
 
   // Keep track of the canvas size
   useWindowResizeListener((): void => {
-    dispatch(updateCanvasSizeAction({
-      width: window.innerWidth,
-      height: window.innerHeight
-    }))
+    const size = { width: window.innerWidth, height: window.innerHeight }
+    dispatch(updateCanvasSizeAction({ size }))
   })
 
   // Move canvas interaction
   const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
-    dispatch(moveCanvasAction({ x: -deltaX, y: -deltaY, relative: true }))
+    const deltaOffset = { x: -deltaX, y: -deltaY }
+    dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
   })
 
   useNormalizedWheel((event, wheelFacts) => {
     event.preventDefault()
-    dispatch(moveCanvasAction({
-      x: wheelFacts.pixelX,
-      y: wheelFacts.pixelY,
-      relative: true
-    }))
+    const deltaOffset = { x: wheelFacts.pixelX, y: wheelFacts.pixelY }
+    dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
   }, canvasMode === UICanvasMode.Plane && canvasState === UICanvasState.Idle)
 
   const onScroll = (deltaX: number, deltaY: number): void => {
-    dispatch(moveCanvasAction({ x: deltaX, y: deltaY, relative: true }))
+    const deltaOffset = { x: deltaX, y: deltaY }
+    dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
   }
 
   /**
@@ -112,32 +96,22 @@ export default function CanvasView (): JSX.Element {
           : {}}
       >
         {canvasMode === UICanvasMode.Plane && variableIds.map(variableId => (
-          <WireView
-            key={variableId}
-            variableId={variableId}
-          />
+          <WireView key={variableId} variableId={variableId} />
         ))}
         {childNodeIds.map(nodeId => (
-          <NodeView
-            key={nodeId}
-            nodeId={nodeId}
-            contextProgramId={contextProgramId}
-          />
+          <NodeView key={nodeId} nodeId={nodeId} />
         ))}
       </div>
       {wireDraft !== undefined && (
         <div className='canvas__wire-draft'>
-          <WireDraftView
-            wireDraft={wireDraft}
-            contextProgramId={contextProgramId}
-          />
+          <WireDraftView wireDraft={wireDraft} />
         </div>
       )}
-      {canvasMode === UICanvasMode.Plane && program.contentBounds !== undefined && (
+      {canvasMode === UICanvasMode.Plane && contentBounds !== undefined && (
         <div className='canvas__scrollbars'>
           <ScrollbarsView
             viewportRect={viewportRect}
-            contentRect={program.contentBounds}
+            contentRect={contentBounds}
             onScroll={onScroll}
           />
         </div>

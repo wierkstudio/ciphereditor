@@ -52,7 +52,6 @@ export default function AppHeaderView (): JSX.Element {
             keyCombination={toggleAddModalKeyCombination}
             icon='plus'
             modifiers='large'
-            disabled={program === undefined}
             onClick={() => dispatch(pushModalAction({
               payload: { type: 'add' }
             }))}
@@ -82,16 +81,14 @@ export default function AppHeaderView (): JSX.Element {
             modifiers='large'
             onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
           />
-          {program !== undefined && program.parentId !== program.id && (
-            <ButtonView
-              title={t('Leave program')}
-              keyCombination={leaveProgramKeyCombination}
-              icon='arrowUp'
-              modifiers='large'
-              onClick={() => dispatch(leaveProgramAction({}))}
-              disabled={program === undefined || program.parentId === program.id}
-            />
-          )}
+          <ButtonView
+            title={t('Leave program')}
+            keyCombination={leaveProgramKeyCombination}
+            icon='arrowUp'
+            modifiers='large'
+            onClick={() => dispatch(leaveProgramAction({}))}
+            disabled={program === undefined}
+          />
         </ToolbarView>
       </div>
       <div className='app-header__end'>

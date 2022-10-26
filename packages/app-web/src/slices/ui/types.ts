@@ -1,5 +1,6 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
+import { Size } from '@ciphereditor/library'
 
 /**
  * UI state
@@ -14,10 +15,7 @@ export interface UIState {
 
   canvasMode: UICanvasMode
   canvasState: UICanvasState
-  canvasOffsetX: number
-  canvasOffsetY: number
-  canvasWidth: number
-  canvasHeight: number
+  canvasSize: Size
 
   wireDraft?: UIWireDraft
 

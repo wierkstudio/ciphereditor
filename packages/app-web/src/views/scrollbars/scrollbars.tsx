@@ -1,7 +1,8 @@
 
 import './scrollbars.scss'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
-import { layoutScrollbars, Rect, ScrollbarsLayout } from '../../lib/utils/2d'
+import { Rect } from '@ciphereditor/library'
+import { layoutScrollbars, ScrollbarsLayout } from '../../lib/utils/2d'
 import { useCallback, useState } from 'react'
 
 // Magic numbers inspired by macOS scrollbars

@@ -4,15 +4,12 @@ import InputTextView from '../input-text/input-text'
 import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
-import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
 import { AddModalPayload } from '../../slices/ui/types'
 import { BlueprintNode, createEmptyValue, serializeValue } from '@ciphereditor/library'
 import { addNodesAction } from '../../slices/blueprint'
 import { capitalCase } from 'change-case'
-import { getActiveProgram } from '../../slices/blueprint/selectors/program'
-import { getCanvasOffset, getCanvasSize } from '../../slices/ui/selectors'
 import { getContributions } from '../../slices/directory/selectors'
 import { openUrlAction, popModalAction } from '../../slices/ui'
 import { useState } from 'react'
@@ -20,10 +17,7 @@ import { useState } from 'react'
 export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
-  const activeProgram = useBlueprintSelector(state => getActiveProgram(state))
   const contributions = useAppSelector(state => getContributions(state.directory))
-  const canvasSize = useAppSelector(state => getCanvasSize(state.ui))
-  const canvasOffset = useAppSelector(state => getCanvasOffset(state.ui))
 
   const directory = useDirectorySelector(state => state)
 
@@ -55,24 +49,12 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
     }
   }
 
-  // TODO: Remove magic numbers
-  const defaultFrame = {
-    x: Math.round(canvasOffset.x + canvasSize.width * 0.5 - 320 * 0.5),
-    y: Math.round(canvasOffset.y + canvasSize.height * 0.5 - 80 * 0.5),
-    width: 320,
-    height: 80
-  }
-
   const addNode = (node: BlueprintNode): void => {
-    if (activeProgram !== undefined) {
-      dispatch(addNodesAction({
-        programId: activeProgram.id,
-        nodes: [node],
-        defaultFrame,
-        directory
-      }))
-      dispatch(popModalAction({}))
-    }
+    dispatch(addNodesAction({
+      nodes: [node],
+      directory
+    }))
+    dispatch(popModalAction({}))
   }
 
   return (

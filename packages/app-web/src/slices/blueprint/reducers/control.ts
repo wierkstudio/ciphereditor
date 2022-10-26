@@ -2,7 +2,6 @@
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { ControlNodeState, ControlNodeChange } from '../types/control'
 import { OperationNodeState, OperationState } from '../types/operation'
-import { Rect } from '../../../lib/utils/2d'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -10,6 +9,7 @@ import { availableValueTypes, castSerializedValue, compareSerializedValues, Cont
 import { capitalCase } from 'change-case'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getControlNode } from '../selectors/control'
+import { getNextProgramChildFrame } from '../selectors/program'
 import { getNode, getNodeChildren } from '../selectors/blueprint'
 import { setOperationState } from './operation'
 
@@ -41,7 +41,6 @@ export const addControlNode = (
   state: BlueprintState,
   programId: BlueprintNodeId,
   controlNode: ControlNode,
-  defaultFrame: Rect,
   refIdMap?: Record<string, BlueprintNodeId>
 ): ControlNodeState => {
   const id = nextNodeId(state)
@@ -51,13 +50,16 @@ export const addControlNode = (
   const usedLabels = controls.map(control => control.label)
   const uniqueLabel = deriveUniqueName(controlNode.label ?? defaultControlNode.label, usedLabels)
 
+  // Choose frame
+  const frame = controlNode.frame ?? getNextProgramChildFrame(state, programId)
+
   const control: ControlNodeState = {
     ...defaultControlNode,
     parentId: programId,
     id,
     name: `control${id}`,
     label: uniqueLabel,
-    frame: controlNode.frame ?? defaultFrame,
+    frame,
     value: controlNode.value,
     visibility: controlNode.visibility ?? defaultControlNode.visibility
   }
@@ -140,24 +142,24 @@ export const changeControl = (
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
       }
       if (source.type !== BlueprintNodeType.Variable) {
-        propagateChange(state, control.id, parent.parentId)
+        propagateChange(state, control.id, true)
       }
       break
     }
     case BlueprintNodeType.Program: {
       if (source.type === BlueprintNodeType.Variable) {
-        if (source.id === control.attachedInternVariableId) {
+        if (source.id === control.attachedVariableId) {
           // Propagate change outside the program (if not root)
           if (state.rootProgramId !== parent.id) {
-            propagateChange(state, control.id, parent.parentId)
+            propagateChange(state, control.id, true)
           }
         } else {
           // Propagate change inside the program
-          propagateChange(state, control.id, parent.id)
+          propagateChange(state, control.id, false)
         }
       } else if (source.id === control.id) {
-        propagateChange(state, control.id, parent.parentId)
-        propagateChange(state, control.id, parent.id)
+        propagateChange(state, control.id, true)
+        propagateChange(state, control.id, false)
       }
       break
     }
@@ -204,8 +206,8 @@ export const changeControlValueToType = (
 export const addVariableFromControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId
+  outward: boolean
 ): void => {
   // TODO: Detach currently attached variable
-  addVariable(state, programId, controlId)
+  addVariable(state, controlId, outward)
 }

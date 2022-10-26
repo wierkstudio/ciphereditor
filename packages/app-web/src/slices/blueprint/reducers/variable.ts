@@ -3,7 +3,7 @@ import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blu
 import { VariableNodeState } from '../types/variable'
 import { addChildNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'
-import { canAttachControls, getControlNode } from '../selectors/control'
+import { canAttachControls, getControlNode, getControlProgramId } from '../selectors/control'
 import { changeControl } from './control'
 import { getControlVariable, getVariableControl, getVariableNode } from '../selectors/variable'
 
@@ -12,13 +12,13 @@ import { getControlVariable, getVariableControl, getVariableNode } from '../sele
  */
 export const addVariable = (
   state: BlueprintState,
-  programId: BlueprintNodeId,
-  controlId: BlueprintNodeId
+  controlId: BlueprintNodeId,
+  outward: boolean
 ): VariableNodeState => {
   const variable: VariableNodeState = {
     type: BlueprintNodeType.Variable,
     id: nextNodeId(state),
-    parentId: programId,
+    parentId: getControlProgramId(state, controlId, outward),
     childIds: [],
     attachmentIds: [controlId]
   }
@@ -34,19 +34,19 @@ export const attachControls = (
   state: BlueprintState,
   sourceControlId: BlueprintNodeId,
   targetControlId: BlueprintNodeId,
-  contextProgramId: BlueprintNodeId
+  outward: boolean
 ): void => {
   const sourceControl = getControlNode(state, sourceControlId)
   const targetControl = getControlNode(state, targetControlId)
 
   // Check if attachment is available
-  if (!canAttachControls(state, sourceControlId, targetControlId, contextProgramId)) {
+  if (!canAttachControls(state, sourceControlId, targetControlId, outward)) {
     return
   }
 
   // Retrieve attached variables
-  let sourceVariable = getControlVariable(state, sourceControl.id, contextProgramId)
-  let targetVariable = getControlVariable(state, targetControl.id, contextProgramId)
+  let sourceVariable = getControlVariable(state, sourceControl.id, outward)
+  let targetVariable = getControlVariable(state, targetControl.id, outward)
 
   // If both controls are already linked up, there's nothing to be done
   if (sourceVariable !== undefined && sourceVariable.id === targetVariable?.id) {
@@ -58,7 +58,7 @@ export const attachControls = (
   if (sourceVariable === undefined && targetVariable === undefined) {
     // 1. Both controls are not attached to any variable
     // Create a new variable and attach both controls to it
-    sourceVariable = addVariable(state, contextProgramId, sourceControl.id)
+    sourceVariable = addVariable(state, sourceControl.id, outward)
     attachControlToVariable(state, targetControl.id, sourceVariable.id)
   } else if (sourceVariable !== undefined && targetVariable !== undefined) {
     // 2. Both controls are already attached to a variable each
@@ -79,7 +79,7 @@ export const attachControls = (
   }
 
   // Propagate change from source within the program scope
-  propagateChange(state, sourceControl.id, contextProgramId)
+  propagateChange(state, sourceControl.id, outward)
 }
 
 /**
@@ -95,31 +95,32 @@ export const attachControlToVariable = (
 ): void => {
   const control = getControlNode(state, controlId)
   const variable = getVariableNode(state, variableId)
-  const intern = control.parentId === variable.parentId
+  const outward = control.parentId !== variable.parentId
   // Break up before entering a new connection
-  if (intern && control.attachedInternVariableId !== undefined) {
-    detachControlFromVariable(state, controlId, control.attachedInternVariableId)
-  } else if (!intern && control.attachedVariableId !== undefined) {
+  if (!outward && control.attachedVariableId !== undefined) {
     detachControlFromVariable(state, controlId, control.attachedVariableId)
+  } else if (outward && control.attachedOutwardVariableId !== undefined) {
+    detachControlFromVariable(state, controlId, control.attachedOutwardVariableId)
   }
   // Add reference to control to the variable
   variable.attachmentIds = arrayUniquePush(variable.attachmentIds, control.id)
   // Add reference to the variable to the control
-  if (intern) {
-    control.attachedInternVariableId = variable.id
+  if (outward) {
+    control.attachedOutwardVariableId = variable.id
   } else {
     control.attachedVariableId = variable.id
   }
   // Propagate if requested
   if (propagate) {
+    const outward = control.parentId !== variable.parentId
     if (push) {
       // Propagate the value from this control
-      propagateChange(state, control.id, variable.parentId)
+      propagateChange(state, control.id, outward)
     } else {
       // Propagate from the current variable source control (pulling the value
       // into this control)
       const sourceControl = getVariableControl(state, variableId)
-      propagateChange(state, sourceControl.id, variable.parentId)
+      propagateChange(state, sourceControl.id, outward)
     }
   }
 }
@@ -136,10 +137,10 @@ export const detachControlFromVariable = (
   const variable = getVariableNode(state, variableId)
   // Detach from each other
   variable.attachmentIds = arrayRemove(variable.attachmentIds, controlId)
-  if (control.attachedInternVariableId === variableId) {
-    control.attachedInternVariableId = undefined
-  } else if (control.attachedVariableId === variableId) {
+  if (control.attachedVariableId === variableId) {
     control.attachedVariableId = undefined
+  } else if (control.attachedOutwardVariableId === variableId) {
+    control.attachedOutwardVariableId = undefined
   }
   // Clean up dangling variable
   if (variable.attachmentIds.length === 0) {
@@ -153,11 +154,11 @@ export const detachControlFromVariable = (
 export const propagateChange = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId: BlueprintNodeId
+  outward: boolean
 ): void => {
   // Retrieve attached variable, if any
   const control = getControlNode(state, controlId)
-  const variable = getControlVariable(state, controlId, programId)
+  const variable = getControlVariable(state, controlId, outward)
   if (variable !== undefined) {
     // Move the control a value was last propagated from to the front
     variable.attachmentIds = arrayUniqueUnshift(variable.attachmentIds, controlId)

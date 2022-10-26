@@ -1,15 +1,15 @@
 
-import { SerializedValue, VariableNode } from '@ciphereditor/library'
-import { DirectoryState } from '../../directory/types'
 import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
+import { DirectoryState } from '../../directory/types'
+import { SerializedValue, VariableNode } from '@ciphereditor/library'
 import { VariableNodeState } from '../types/variable'
+import { getControlNode } from './control'
 import { getNode, getNodeChildren } from './blueprint'
-import { getControlNode, isControlInternVariable } from './control'
 
 /**
  * Find a variable node by the given node id.
@@ -23,17 +23,15 @@ export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId): Var
   getNode(state, id, BlueprintNodeType.Variable) as VariableNodeState
 
 /**
- * Return the variable currently attached to the given control within a program
- * context. By default, the active program context is used.
+ * Return the variable currently attached to a control (inward or outward)
  */
 export const getControlVariable = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  programId?: BlueprintNodeId
+  outward: boolean
 ): VariableNodeState | undefined => {
-  const intern = isControlInternVariable(state, controlId, programId)
   const control = getControlNode(state, controlId)
-  const variableId = intern ? control.attachedInternVariableId : control.attachedVariableId
+  const variableId = outward ? control.attachedOutwardVariableId : control.attachedVariableId
   return variableId !== undefined ? getVariableNode(state, variableId) : undefined
 }
 
@@ -78,7 +76,10 @@ export const getVariableValue = (state: BlueprintState, variableId: BlueprintNod
 /**
  * Return wire waypoints and their respective node rects for the given variable.
  */
-export const getVariableWireWaypoints = (state: BlueprintState, variableId: BlueprintNodeId): Array<{
+export const getVariableWireWaypoints = (
+  state: BlueprintState,
+  variableId: BlueprintNodeId
+): Array<{
   push: boolean
   x: number
   y: number
@@ -88,7 +89,6 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
   nodeHeight: number
 }> => {
   const variable = getVariableNode(state, variableId)
-  const contextProgramId = variable.parentId
   const waypoints: Array<{
     push: boolean
     x: number
@@ -101,11 +101,8 @@ export const getVariableWireWaypoints = (state: BlueprintState, variableId: Blue
 
   for (let i = 0; i < variable.attachmentIds.length; i++) {
     const control = getControlNode(state, variable.attachmentIds[i])
-    const node =
-      control.parentId === contextProgramId
-        ? control
-        : getNode(state, control.parentId)
-
+    const outward = control.parentId !== variable.parentId
+    const node = outward ? getNode(state, control.parentId) : control
     if (
       node.frame !== undefined &&
       control.nodeOutletX !== undefined &&

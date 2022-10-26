@@ -1,14 +1,14 @@
 
-import { getNode, hasNode } from '../selectors/blueprint'
 import {
   BlueprintNodeId,
   BlueprintNodeState,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { Blueprint, BlueprintNode, Rect } from '@ciphereditor/library'
+import { Blueprint, BlueprintNode } from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
+import { ProgramNodeState } from '../types/program'
 import { VariableNodeState } from '../types/variable'
 import { addControlNode } from './control'
 import { addOperationNode } from './operation'
@@ -16,6 +16,7 @@ import { addProgramNode, updateProgramContentBounds } from './program'
 import { addVariable, attachControlToVariable } from './variable'
 import { arrayRemove } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
+import { getNode, hasNode } from '../selectors/blueprint'
 import { getVariableNode } from '../selectors/variable'
 
 /**
@@ -51,6 +52,10 @@ export const addChildNode = <T extends BlueprintNodeState>(state: BlueprintState
     }
 
     // Add previous root node as a child to the new root node
+    const childProgram = (childNode as any) as ProgramNodeState
+    childProgram.offset = state.rootOffset
+    state.rootOffset = { x: 0, y: 0 }
+
     const previousRootNode = getNode(state, state.rootProgramId)
     childNode.childIds.push(previousRootNode.id)
     previousRootNode.parentId = childNode.id
@@ -82,25 +87,29 @@ export const addChildNode = <T extends BlueprintNodeState>(state: BlueprintState
 
 export const addNodes = (
   state: BlueprintState,
-  programId: BlueprintNodeId,
   nodes: BlueprintNode[],
-  defaultFrame: Rect,
+  programId?: BlueprintNodeId,
   directory?: DirectoryState,
   refIdMap: Record<string, BlueprintNodeId> = {}
 ): BlueprintNodeState[] => {
+  const parentId =
+    programId ??
+    state.activeProgramId ??
+    // Create a new program and install it as the new root
+    addProgramNode(state, undefined, { type: 'program' }).id
+
   // TODO: Make sure variables are added last (as we need attachment ids)
-  // TODO: Move the default frame when it was used
   return nodes.map((node): BlueprintNodeState => {
     const nodeType = node.type
     switch (nodeType) {
       case 'operation': {
-        return addOperationNode(state, programId, node, defaultFrame, directory, refIdMap)
+        return addOperationNode(state, parentId, node, directory, refIdMap)
       }
       case 'control': {
-        return addControlNode(state, programId, node, defaultFrame, refIdMap)
+        return addControlNode(state, parentId, node, refIdMap)
       }
       case 'program': {
-        return addProgramNode(state, programId, node, defaultFrame, directory, refIdMap)
+        return addProgramNode(state, parentId, node, directory, refIdMap)
       }
       case 'variable': {
         // TODO: Make sure the push/pull controls are maintained
@@ -117,7 +126,9 @@ export const addNodes = (
         }
 
         const [firstControlId, ...remainingControlIds] = attachmentIds
-        const variable = addVariable(state, programId, firstControlId)
+        const firstControl = getControlNode(state, firstControlId)
+        const outward = firstControl.parentId !== parentId
+        const variable = addVariable(state, firstControlId, outward)
         for (const controlId of remainingControlIds) {
           attachControlToVariable(state, controlId, variable.id)
         }
@@ -156,17 +167,17 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
       variable = node as VariableNodeState
       variable.attachmentIds.forEach(attachmentId => {
         const control = getControlNode(state, attachmentId)
-        if (control.attachedInternVariableId === nodeId) {
-          control.attachedInternVariableId = undefined
-        } else if (control.attachedVariableId === nodeId) {
+        if (control.attachedVariableId === nodeId) {
           control.attachedVariableId = undefined
+        } else if (control.attachedOutwardVariableId === nodeId) {
+          control.attachedOutwardVariableId = undefined
         }
       })
       break
 
     case BlueprintNodeType.Control:
       control = node as ControlNodeState
-      variableIds = [control.attachedInternVariableId, control.attachedVariableId]
+      variableIds = [control.attachedVariableId, control.attachedOutwardVariableId]
       for (let i = 0; i < variableIds.length; i++) {
         const variableId = variableIds[i]
         if (variableId !== undefined) {
@@ -272,11 +283,8 @@ export const loadBlueprint = (
   data: Blueprint,
   directory: DirectoryState | undefined
 ): void => {
-  // TODO: Derive default frame from current canvas position
-  const defaultFrame = { x: 0, y: 0, width: 320, height: 320 }
-
   const previousRootProgramId = state.rootProgramId
-  const program = addProgramNode(state, undefined, data.program, defaultFrame, directory)
+  const program = addProgramNode(state, undefined, data.program, directory)
   state.rootProgramId = program.id
   state.activeProgramId = program.id
   removeNode(state, previousRootProgramId)

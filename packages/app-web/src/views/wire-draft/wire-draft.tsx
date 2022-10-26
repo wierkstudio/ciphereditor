@@ -5,31 +5,34 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useCallbackRef from '../../hooks/useCallbackRef'
 import usePointerFollowUp from '../../hooks/usePointerFollowUp'
 import useUISelector from '../../hooks/useUISelector'
-import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { UIWireDraft } from '../../slices/ui/types'
 import { attachControlsAction } from '../../slices/blueprint'
 import { endWireAction } from '../../slices/ui'
-import { getCanvasMode, getCanvasOffset } from '../../slices/ui/selectors'
-import { getOutletPosition } from '../../slices/blueprint/selectors/control'
+import { getCanvasMode, getViewportRect } from '../../slices/ui/selectors'
+import { getControlNode, getOutletPosition } from '../../slices/blueprint/selectors/control'
+import { getOffset } from '../../slices/blueprint/selectors/program'
 import { useState } from 'react'
 
 export default function WireDraftView (props: {
   wireDraft: UIWireDraft
-  contextProgramId: BlueprintNodeId
 }): JSX.Element {
-  const { wireDraft, contextProgramId } = props
+  const wireDraft = props.wireDraft
 
   const dispatch = useAppDispatch()
 
   // TODO: Handle source control node deletion while wiring
   const canvasMode = useUISelector(getCanvasMode)
-  const sourcePosition = useBlueprintSelector(state => getOutletPosition(
-    state,
-    wireDraft.sourceControlId,
-    contextProgramId,
-    canvasMode
-  ))
-  const canvasOffset = useUISelector(getCanvasOffset)
+  const activeProgramId = useBlueprintSelector(state => state.activeProgramId)
+
+  const sourceControl = useBlueprintSelector(state =>
+    getControlNode(state, wireDraft.sourceControlId))
+  const outward = sourceControl.parentId !== activeProgramId
+
+  const sourcePosition = useBlueprintSelector(state =>
+    getOutletPosition(state, sourceControl.id, outward, canvasMode))
+  const offset = useBlueprintSelector(getOffset)
+  const viewportRect = useUISelector(state => getViewportRect(state, offset))
+
   const [targetPosition, setTargetPosition] =
     useState<{ x: number, y: number } | undefined>(undefined)
 
@@ -43,11 +46,11 @@ export default function WireDraftView (props: {
       dispatch(attachControlsAction({
         sourceControlId: wireDraft.sourceControlId,
         targetControlId: wireDraft.targetControlId,
-        contextProgramId
+        outward
       }))
     }
     dispatch(endWireAction({}))
-  }, [dispatch, wireDraft, contextProgramId])
+  }, [dispatch, wireDraft, outward])
 
   usePointerFollowUp(onWireMove, onWireEnd)
 
@@ -55,7 +58,7 @@ export default function WireDraftView (props: {
   let pathD = ''
   if (sourcePosition !== undefined && targetPosition !== undefined) {
     pathD =
-      `M ${sourcePosition.x - canvasOffset.x},${sourcePosition.y - canvasOffset.y} ` +
+      `M ${sourcePosition.x - viewportRect.x},${sourcePosition.y - viewportRect.y} ` +
       `L ${targetPosition.x},${targetPosition.y} `
   }
 

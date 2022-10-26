@@ -1,6 +1,7 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
 import { ModalPayload, UICanvasMode, UICanvasState, UIEmbedType, UIState } from './types'
+import { Size } from '@ciphereditor/library'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushModal } from './reducers'
 import { postWebsiteMessage } from '../../lib/embed'
@@ -32,10 +33,7 @@ const defaultUIState: UIState = {
 
   canvasMode: UICanvasMode.Plane,
   canvasState: UICanvasState.Idle,
-  canvasOffsetX: 0,
-  canvasOffsetY: 0,
-  canvasWidth: 1,
-  canvasHeight: 1,
+  canvasSize: { width: 1, height: 1 },
 
   modalStack: [],
 
@@ -70,31 +68,17 @@ export const settingsSlice = createSlice({
         state.embedMaximized = !state.embedMaximized
       }
     },
-    moveCanvasAction: (state, { payload }: PayloadAction<{
-      x: number
-      y: number
-      relative?: boolean
-    }>) => {
-      if (payload.relative === true) {
-        state.canvasOffsetX += payload.x
-        state.canvasOffsetY += payload.y
-      } else {
-        state.canvasOffsetX = payload.x
-        state.canvasOffsetY = payload.y
-      }
-    },
     updateCanvasSizeAction: (state, { payload }: PayloadAction<{
-      width: number
-      height: number
+      size: Size
     }>) => {
-      const previousWidth = state.canvasWidth
-      state.canvasWidth = payload.width
-      state.canvasHeight = payload.height
+      const newSize = payload.size
+      const previousSize = state.canvasSize
+      state.canvasSize = payload.size
 
-      if (previousWidth !== payload.width) {
+      if (previousSize.width !== newSize.width) {
         // TODO: Move magic numbers
         const newCanvasMode =
-          payload.width > 719
+          newSize.width > 719
             ? UICanvasMode.Plane
             : UICanvasMode.Sequential
         if (state.canvasMode !== newCanvasMode) {
@@ -185,7 +169,6 @@ export const settingsSlice = createSlice({
 export const {
   configureEmbedAction,
   toggleEmbedMaximizedAction,
-  moveCanvasAction,
   updateCanvasSizeAction,
   startWireAction,
   targetWireAction,

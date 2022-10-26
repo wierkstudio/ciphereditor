@@ -4,13 +4,16 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { ProgramNode } from '@ciphereditor/library'
+import { DirectoryState } from '../../directory/types'
+import { Point, ProgramNode, Rect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { getNode, getNodeChildren } from './blueprint'
 import { serializeControl } from './control'
 import { serializeOperation } from './operation'
 import { serializeVariable } from './variable'
-import { DirectoryState } from '../../directory/types'
+
+// TODO: Move to a constants file
+const defaultNodeSize = { width: 320, height: 96 }
 
 /**
  * Find a program node by the given node id.
@@ -28,6 +31,68 @@ export const getProgramNode = (state: BlueprintState, id: BlueprintNodeId): Prog
  */
 export const getActiveProgram = (state: BlueprintState): ProgramNodeState | undefined =>
   state.activeProgramId !== undefined ? getProgramNode(state, state.activeProgramId) : undefined
+
+/**
+ * Return the current canvas offset/position depending on the active program
+ */
+export const getOffset = (state: BlueprintState): Point => {
+  if (state.activeProgramId === undefined) {
+    return state.rootOffset
+  }
+  const program = getNode(state, state.activeProgramId, BlueprintNodeType.Program) as ProgramNodeState
+  return program.offset
+}
+
+/**
+ * Return the current canvas content bounds used to layout scrollbars
+ */
+export const getContentBounds = (state: BlueprintState): Rect | undefined => {
+  if (state.activeProgramId !== undefined) {
+    const activeProgram = getProgramNode(state, state.activeProgramId)
+    return activeProgram.contentBounds
+  } else {
+    const rootProgram = getProgramNode(state, state.rootProgramId)
+    return rootProgram.frame
+  }
+}
+
+/**
+ * Return the ids of non-variable nodes that are currently visible on the canvas
+ */
+export const getVisibleNodeIds = (state: BlueprintState): BlueprintNodeId[] => {
+  if (state.activeProgramId !== undefined) {
+    return getNodeChildren(state, state.activeProgramId)
+      .filter(node => node.type !== BlueprintNodeType.Variable)
+      .map(node => node.id)
+  } else {
+    // Outside the root program you can only see the root program itself
+    return [state.rootProgramId]
+  }
+}
+
+/**
+ * Return the ids of variable nodes that are currently visible on the canvas
+ */
+export const getVisibleVariableIds = (state: BlueprintState): BlueprintNodeId[] => {
+  if (state.activeProgramId !== undefined) {
+    return getNodeChildren(state, state.activeProgramId)
+      .filter(node => node.type === BlueprintNodeType.Variable)
+      .map(node => node.id)
+  } else {
+    // Outside the root program there are no variables or wires
+    return []
+  }
+}
+
+export const getNextProgramChildFrame = (state: BlueprintState, programId: BlueprintNodeId): Rect => {
+  const program = getProgramNode(state, programId)
+  return {
+    x: program.offset.x - defaultNodeSize.width * 0.5,
+    y: program.offset.y - defaultNodeSize.height * 0.5,
+    width: defaultNodeSize.width,
+    height: defaultNodeSize.height
+  }
+}
 
 export const serializeProgram = (
   state: BlueprintState,
@@ -68,6 +133,7 @@ export const serializeProgram = (
   const serializedProgram: ProgramNode = {
     type: 'program',
     label: program.label,
+    offset: program.offset,
     frame: program.frame
   }
 

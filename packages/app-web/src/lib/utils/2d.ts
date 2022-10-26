@@ -1,10 +1,5 @@
 
-export interface Rect {
-  x: number
-  y: number
-  width: number
-  height: number
-}
+import { Point, Rect } from '@ciphereditor/library'
 
 export interface ScrollbarsLayout {
   verticalScope: number
@@ -67,5 +62,12 @@ export const layoutScrollbars = (
     horizontalPosition: viewboxRect.width > viewportRect.width
       ? ((viewportRect.x - viewboxRect.x) / horizontalScope)
       : 0
+  }
+}
+
+export const movePointBy = (point: Point, delta: Point): Point => {
+  return {
+    x: point.x + delta.x,
+    y: point.y + delta.y
   }
 }
