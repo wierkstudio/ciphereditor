@@ -7,21 +7,25 @@ import WireDraftView from '../../views/wire-draft/wire-draft'
 import WireView from '../../views/wire/wire'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
+import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
-import { FocusEvent } from 'react'
+import { DragEvent, FocusEvent, useCallback } from 'react'
 import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
+import { blueprintSchema } from '@ciphereditor/library'
 import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
 import { getContentBounds, getOffset, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
 import { getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { moveOffsetAction, selectNodeAction } from '../../slices/blueprint'
+import { loadBlueprintAction, moveOffsetAction, selectNodeAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
 import { updateCanvasSizeAction } from '../../slices/ui'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
+
+  const directory = useDirectorySelector(state => state)
 
   const canvasMode = useUISelector(getCanvasMode)
   const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
@@ -61,6 +65,32 @@ export default function CanvasView (): JSX.Element {
     dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
   }
 
+  const onCanvasDrag = useCallback((event: DragEvent): void => {
+    // TODO: Show visual clue that things can be dropped here
+    // Prevent file from being opened by the browser
+    event.preventDefault()
+  }, [])
+
+  const onCanvasDrop = useCallback((event: DragEvent): void => {
+    // TODO: Decide wether a blueprint file is being dropped and if it is not,
+    // add the content of the drop as a new control to the blueprint
+    event.preventDefault()
+    // Only consider the first item dragged on the canvas
+    const item = Array.from(event.dataTransfer.items).at(0)
+    if (item?.kind === 'file') {
+      const file = item.getAsFile()
+      if (file !== null) {
+        void file.text().then((content: string): void => {
+          const blueprint = blueprintSchema.parse(JSON.parse(content))
+          dispatch(loadBlueprintAction({
+            blueprint,
+            directory
+          }))
+        })
+      }
+    }
+  }, [directory])
+
   /**
    * Handle blur events emitted by child nodes.
    */
@@ -86,6 +116,8 @@ export default function CanvasView (): JSX.Element {
       tabIndex={0}
       onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
       onFocus={onCanvasFocus}
+      onDragOver={onCanvasDrag}
+      onDrop={onCanvasDrop}
     >
       <div
         className='canvas__content'

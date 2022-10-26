@@ -48,8 +48,9 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
       </ModalView.SectionView>
       <ModalView.SectionView headline={t('Save as a file')}>
         <ButtonView icon='save' onClick={onSaveBlueprint}>
-          {t('Save blueprint locally')}
+          {t('Save blueprint')}
         </ButtonView>
+        <p>{t('You may load a blueprint by dragging and dropping the file on the canvas.')}</p>
       </ModalView.SectionView>
     </ModalView>
   )
