@@ -1,8 +1,8 @@
 
 import z from 'zod'
-import { controlChangeSchema, controlSchema } from '../control/schema'
-import { operationIssueSchema } from '../issue/schema'
-import { valueSchema } from '../value/schema'
+import { controlChangeSchema, controlSchema } from '../schema/control'
+import { operationIssueSchema } from '../schema/issue'
+import { valueSchema } from '../schema/value'
 
 /**
  * Operation contribution entity

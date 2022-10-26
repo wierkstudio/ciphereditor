@@ -75,19 +75,19 @@ export default function AppHeaderView (): JSX.Element {
             />
           </ToolbarView.GroupView>
           <ButtonView
-            title={t('Share')}
-            keyCombination={shareBlueprintKeyCombination}
-            icon='share'
-            modifiers='large'
-            onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
-          />
-          <ButtonView
             title={t('Leave program')}
             keyCombination={leaveProgramKeyCombination}
             icon='arrowUp'
             modifiers='large'
             onClick={() => dispatch(leaveProgramAction({}))}
             disabled={program === undefined}
+          />
+          <ButtonView
+            title={t('Share')}
+            keyCombination={shareBlueprintKeyCombination}
+            icon='share'
+            modifiers='large'
+            onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
           />
         </ToolbarView>
       </div>

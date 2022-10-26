@@ -1,13 +1,12 @@
 
 import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
-import { Point, ProgramNode, Rect } from '@ciphereditor/library'
+import { movePointBy, Point, ProgramNode, Rect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { addChildNode, addNodes, nextNodeId } from './blueprint'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getNextProgramChildFrame } from '../selectors/program'
 import { getNode, getNodeChildren } from '../selectors/blueprint'
-import { movePointBy } from '../../../lib/utils/2d'
 
 // TODO: Move to a constants file
 const defaultNodeSize = { width: 320, height: 96 }

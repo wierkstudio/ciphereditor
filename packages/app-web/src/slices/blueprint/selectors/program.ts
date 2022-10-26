@@ -5,7 +5,7 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
-import { Point, ProgramNode, Rect } from '@ciphereditor/library'
+import { Point, ProgramNode, Rect, roundPoint, roundRect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { getNode, getNodeChildren } from './blueprint'
 import { serializeControl } from './control'
@@ -106,7 +106,7 @@ export const serializeProgram = (
   for (const child of children) {
     switch (child.type) {
       case BlueprintNodeType.Control: {
-        serializedChildren.push(serializeControl(state, directory, child.id))
+        serializedChildren.push(serializeControl(state, child.id))
         break
       }
       case BlueprintNodeType.Operation: {
@@ -133,8 +133,8 @@ export const serializeProgram = (
   const serializedProgram: ProgramNode = {
     type: 'program',
     label: program.label,
-    offset: program.offset,
-    frame: program.frame
+    offset: roundPoint(program.offset),
+    frame: roundRect(program.frame)
   }
 
   if (serializedChildren.length > 0) {

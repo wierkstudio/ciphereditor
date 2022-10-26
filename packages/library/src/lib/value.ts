@@ -1,5 +1,5 @@
 
-import { SerializedValue, Value } from './schema'
+import { SerializedValue, Value } from '../schema/value'
 import { base64StringToBuffer, bufferToBase64String, bufferToHexString, bufferToString, stringToBuffer } from '../lib/binary'
 import { labelType } from './type'
 

@@ -5,14 +5,14 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
+import { DirectoryState } from '../../directory/types'
 import { OperationNodeState, OperationState } from '../types/operation'
-import { compareSerializedValues, extractValue, OperationIssue, OperationNode, OperationRequest, Value } from '@ciphereditor/library'
+import { compareSerializedValues, extractValue, OperationIssue, OperationNode, OperationRequest, roundRect, Value } from '@ciphereditor/library'
+import { defaultControlNode } from '../reducers/control'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, getNodeChildren, hasNode } from './blueprint'
-import { DirectoryState } from '../../directory/types'
 import { getOperationContribution } from '../../directory/selectors'
 import { serializeVariable } from './variable'
-import { defaultControlNode } from '../reducers/control'
 
 /**
  * Find a variable node by the given node id.
@@ -147,7 +147,7 @@ export const serializeOperation = (
     extensionUrl: operation.extensionUrl,
     priorityControlNames: operation.priorityControlIds.map(controlId =>
       getControlNode(state, controlId).name),
-    frame: operation.frame
+    frame: roundRect(operation.frame)
   }
 
   // Include controls object if at least one control is added

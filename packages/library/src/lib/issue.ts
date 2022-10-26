@@ -1,5 +1,5 @@
 
-import { Issue, issueLevels } from './schema'
+import { Issue, issueLevels } from '../schema/issue'
 
 /**
  * Choose the most important issue among the given ones. Returns the first issue

@@ -2,7 +2,7 @@
 import { z } from 'zod'
 
 /**
- * Point object
+ * 2D Point object
  */
 export type Point = z.infer<typeof pointSchema>
 export const pointSchema = z.object({
@@ -11,7 +11,7 @@ export const pointSchema = z.object({
 })
 
 /**
- * Size object
+ * 2D Size object
  */
 export type Size = z.infer<typeof sizeSchema>
 export const sizeSchema = z.object({
@@ -20,7 +20,7 @@ export const sizeSchema = z.object({
 })
 
 /**
- * Rect object
+ * 2D Rect object
  */
 export type Rect = z.infer<typeof rectSchema>
 export const rectSchema = pointSchema.merge(sizeSchema)

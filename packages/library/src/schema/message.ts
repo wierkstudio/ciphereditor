@@ -1,6 +1,6 @@
 
 import { z } from 'zod'
-import { blueprintNodeSchema, blueprintSchema } from '../blueprint/schema'
+import { blueprintNodeSchema, blueprintSchema } from '../schema/blueprint'
 
 /**
  * Message targeted to the website

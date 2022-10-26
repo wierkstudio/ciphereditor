@@ -1,9 +1,9 @@
 
-import { ControlNode } from '../control/schema'
-import { OperationNode } from '../operation/schema'
-import { Point, pointSchema, Rect, rectSchema } from '../common/schema'
-import { VariableNode } from '../variable/schema'
-import { blueprintNodeSchema } from '../blueprint/schema'
+import { ControlNode } from '../schema/control'
+import { OperationNode } from '../schema/operation'
+import { Point, pointSchema, Rect, rectSchema } from './2d'
+import { VariableNode } from '../schema/variable'
+import { blueprintNodeSchema } from '../schema/blueprint'
 import { z } from 'zod'
 
 export interface ProgramNode {

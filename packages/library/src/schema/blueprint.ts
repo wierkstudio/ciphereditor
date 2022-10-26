@@ -1,9 +1,9 @@
 
+import { controlNodeSchema } from '../schema/control'
+import { operationNodeSchema } from '../schema/operation'
+import { programNodeSchema } from '../schema/program'
+import { variableNodeSchema } from '../schema/variable'
 import { z } from 'zod'
-import { controlNodeSchema } from '../control/schema'
-import { operationNodeSchema } from '../operation/schema'
-import { programNodeSchema } from '../program/schema'
-import { variableNodeSchema } from '../variable/schema'
 
 /**
  * Serialized blueprint document

@@ -1,7 +1,7 @@
 
-import { controlVisibilitySchema } from '../control/schema'
-import { rectSchema } from '../common/schema'
-import { serializedValueSchema } from '../value/schema'
+import { controlVisibilitySchema } from '../schema/control'
+import { rectSchema } from './2d'
+import { serializedValueSchema } from '../schema/value'
 import { z } from 'zod'
 
 /**

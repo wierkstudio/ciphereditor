@@ -1,9 +1,17 @@
 
 import './scrollbars.scss'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
-import { Rect } from '@ciphereditor/library'
-import { layoutScrollbars, ScrollbarsLayout } from '../../lib/utils/2d'
+import { expandRect, mergeRects, Rect } from '@ciphereditor/library'
 import { useCallback, useState } from 'react'
+
+export interface ScrollbarsLayout {
+  verticalScope: number
+  verticalSize: number
+  verticalPosition: number
+  horizontalScope: number
+  horizontalSize: number
+  horizontalPosition: number
+}
 
 // Magic numbers inspired by macOS scrollbars
 const scrollbarOffset = 2
@@ -105,4 +113,30 @@ export default function ScrollbarsView (props: {
       )}
     </svg>
   )
+}
+
+/**
+ * Compute vertical and horizontal scrollbar sizes and positions (percentages).
+ * @param viewportRect Rect of the visible area
+ * @param contentRect Rect of the content limits, if any
+ */
+export const layoutScrollbars = (
+  viewportRect: Rect,
+  contentRect: Rect
+): ScrollbarsLayout => {
+  const viewboxRect = mergeRects(viewportRect, expandRect(contentRect, 32))
+  const verticalScope = viewboxRect.height - viewportRect.height
+  const horizontalScope = viewboxRect.width - viewportRect.width
+  return {
+    verticalScope,
+    verticalSize: Math.min(viewportRect.height / viewboxRect.height, 1),
+    verticalPosition: viewboxRect.height > viewportRect.height
+      ? ((viewportRect.y - viewboxRect.y) / verticalScope)
+      : 0,
+    horizontalScope,
+    horizontalSize: Math.min(viewportRect.width / viewboxRect.width, 1),
+    horizontalPosition: viewboxRect.width > viewportRect.width
+      ? ((viewportRect.x - viewboxRect.x) / horizontalScope)
+      : 0
+  }
 }

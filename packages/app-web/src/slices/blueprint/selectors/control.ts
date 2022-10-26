@@ -5,10 +5,9 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
-import { DirectoryState } from '../../directory/types'
 import { UICanvasMode } from '../../ui/types'
 import { VariableNodeState } from '../types/variable'
-import { compareSerializedValues, ControlNode, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, SerializedValue } from '@ciphereditor/library'
+import { compareSerializedValues, ControlNode, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, roundRect, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
@@ -189,7 +188,6 @@ export const getControlPreview = (
 
 export const serializeControl = (
   state: BlueprintState,
-  directory: DirectoryState,
   controlId: BlueprintNodeId
 ): ControlNode => {
   const control = getControlNode(state, controlId)
@@ -199,7 +197,7 @@ export const serializeControl = (
     label: control.label,
     value: control.value,
     visibility: control.visibility,
-    frame: control.frame
+    frame: control.frame !== undefined ? roundRect(control.frame) : undefined
   }
   return serializedControl
 }
