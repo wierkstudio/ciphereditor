@@ -18,7 +18,9 @@ const detectDefaultState = (): Partial<UIState> => {
         window.parent === window
           ? UIEmbedType.Standalone
           : UIEmbedType.Embed,
-      shareBaseUrl: location.href
+      shareBaseUrl:
+        // Use current location without hash
+        location.href.substring(0, location.href.length - location.hash.length)
     }
   }
 }

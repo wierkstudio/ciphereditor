@@ -12,7 +12,7 @@ import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { UIEmbedType } from '../../slices/ui/types'
 import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
-import { base64urlStringToBuffer, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
+import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
 import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
@@ -91,7 +91,7 @@ export default function AppView (): JSX.Element {
     if (blueprintParameter !== null) {
       const documentText = bufferToString(base64urlStringToBuffer(blueprintParameter))
       if (documentText !== undefined) {
-        const blueprint = JSON.parse(documentText)
+        const blueprint = blueprintSchema.parse(JSON.parse(documentText))
         dispatch(loadBlueprintAction({ blueprint, directory }))
       }
     }
