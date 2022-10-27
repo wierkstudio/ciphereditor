@@ -26,6 +26,11 @@ export const websiteMessageSchema = z.discriminatedUnion('type', [
   z.object({
     type: z.literal('open'),
     url: z.string()
+  }),
+  z.object({
+    type: z.literal('track'),
+    name: z.string(),
+    value: z.number().optional()
   })
 ])
 
