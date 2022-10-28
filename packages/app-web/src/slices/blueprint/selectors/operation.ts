@@ -1,5 +1,14 @@
 
 import {
+  compareSerializedValues,
+  extractValue,
+  OperationIssue,
+  OperationNode,
+  OperationRequest,
+  roundRect,
+  Value
+} from '@ciphereditor/library'
+import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
@@ -7,7 +16,6 @@ import {
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
 import { OperationNodeState, OperationState } from '../types/operation'
-import { compareSerializedValues, extractValue, OperationIssue, OperationNode, OperationRequest, roundRect, Value } from '@ciphereditor/library'
 import { defaultControlNode } from '../reducers/control'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, getNodeChildren, hasNode } from './blueprint'
@@ -88,10 +96,19 @@ export const getOperationIssues = (
   return []
 }
 
+/**
+ * Export an operation from the blueprint state to a JSON serializable object.
+ * The resulting object may be extracted using `addOperationNode`.
+ * @param state Blueprint state slice
+ * @param operationId Id of the operation node to be serialized
+ * @param directory Directory state slice used to retrieve operation meta data
+ * necessary to serialize the operation
+ * @returns JSON serializable object representing the operation node
+ */
 export const serializeOperation = (
   state: BlueprintState,
-  directory: DirectoryState,
-  operationId: BlueprintNodeId
+  operationId: BlueprintNodeId,
+  directory: DirectoryState
 ): OperationNode => {
   const operation = getOperationNode(state, operationId)
   const controls = getNodeChildren(state, operationId, BlueprintNodeType.Control) as ControlNodeState[]

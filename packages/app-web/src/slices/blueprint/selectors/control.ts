@@ -1,5 +1,15 @@
 
 import {
+  compareSerializedValues,
+  ControlNode,
+  identifySerializedValueType,
+  isTypeCompatibleToValueTypes,
+  previewMaskedSerializedValue,
+  previewSerializedValue,
+  roundRect,
+  SerializedValue
+} from '@ciphereditor/library'
+import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
@@ -7,7 +17,6 @@ import {
 import { ControlNodeState } from '../types/control'
 import { UICanvasMode } from '../../ui/types'
 import { VariableNodeState } from '../types/variable'
-import { compareSerializedValues, ControlNode, identifySerializedValueType, isTypeCompatibleToValueTypes, previewMaskedSerializedValue, previewSerializedValue, roundRect, SerializedValue } from '@ciphereditor/library'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
 import { mapNamedObjects } from '../../../lib/utils/map'
@@ -186,6 +195,13 @@ export const getControlPreview = (
   }
 }
 
+/**
+ * Export a control from the blueprint state to a JSON serializable object.
+ * The resulting object may be extracted using `addControlNode`.
+ * @param state Blueprint state slice
+ * @param controlId Id of the control node to be serialized
+ * @returns JSON serializable object representing the control node
+ */
 export const serializeControl = (
   state: BlueprintState,
   controlId: BlueprintNodeId

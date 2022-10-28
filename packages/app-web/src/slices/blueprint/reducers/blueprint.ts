@@ -21,8 +21,8 @@ import { getVariableNode } from '../selectors/variable'
 
 /**
  * Generate a new node id that has not been assigned, yet.
- * @param state Blueprint state
- * @returns New node id
+ * @param state Blueprint state slice
+ * @returns New unique node id
  */
 export const nextNodeId = (state: BlueprintState): number => {
   do {
@@ -32,12 +32,15 @@ export const nextNodeId = (state: BlueprintState): number => {
 }
 
 /**
- * Add the given node as a child to the blueprint tree.
- * @param state Blueprint state
+ * Add the given node as a child to the blueprint state tree.
+ * @param state Blueprint state slice
  * @param childNode Child node to be added
  * @returns Child node
  */
-export const addChildNode = <T extends BlueprintNodeState>(state: BlueprintState, childNode: T): T => {
+export const addChildNode = <T extends BlueprintNodeState>(
+  state: BlueprintState,
+  childNode: T
+): T => {
   const childId = childNode.id
   const childType = childNode.type
   const parentId = childNode.parentId
@@ -85,6 +88,19 @@ export const addChildNode = <T extends BlueprintNodeState>(state: BlueprintState
   return childNode
 }
 
+/**
+ * Add the given nodes to the state
+ * @param state Blueprint state slice
+ * @param nodes Nodes to be added
+ * @param programId Parent program id or `undefined`, if the currently active
+ * program should be used. If the active program is `undefined` the given nodes
+ * are added next to the previous root program (creating a new root).
+ * @param directory Directory state slice used to instanciate operations.
+ * If set to `undefined` placeholder operation nodes will be added, instead.
+ * @param refIdMap Object mapping serialized ids to instanciated ids found
+ * while adding nodes. Tracking these ids is necessary to resolve variable
+ * attachments in the parent program.
+ */
 export const addNodes = (
   state: BlueprintState,
   nodes: BlueprintNode[],
@@ -96,20 +112,20 @@ export const addNodes = (
     programId ??
     state.activeProgramId ??
     // Create a new program and install it as the new root
-    addProgramNode(state, undefined, { type: 'program' }).id
+    addProgramNode(state, { type: 'program' }, undefined).id
 
   // TODO: Make sure variables are added last (as we need attachment ids)
   return nodes.map((node): BlueprintNodeState => {
     const nodeType = node.type
     switch (nodeType) {
       case 'operation': {
-        return addOperationNode(state, parentId, node, directory, refIdMap)
+        return addOperationNode(state, node, parentId, directory, refIdMap)
       }
       case 'control': {
-        return addControlNode(state, parentId, node, refIdMap)
+        return addControlNode(state, node, parentId, refIdMap)
       }
       case 'program': {
-        return addProgramNode(state, parentId, node, directory, refIdMap)
+        return addProgramNode(state, node, parentId, directory, refIdMap)
       }
       case 'variable': {
         // TODO: Make sure the push/pull controls are maintained
@@ -142,11 +158,14 @@ export const addNodes = (
 }
 
 /**
- * Remove a node and its children from the blueprint.
- * @param state Blueprint state
+ * Safely remove a node and its children from the blueprint.
+ * @param state Blueprint state slice
  * @param nodeId Id of node to be removed
  */
-export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void => {
+export const removeNode = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): void => {
   if (!hasNode(state, nodeId)) {
     return
   }
@@ -160,11 +179,9 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
   node.childIds.forEach(removeNode.bind(null, state))
 
   // Clean up relationships between nodes (other than parent-child)
-  let variable, control
-  let variableIds: Array<BlueprintNodeId | undefined>
   switch (node.type) {
-    case BlueprintNodeType.Variable:
-      variable = node as VariableNodeState
+    case BlueprintNodeType.Variable: {
+      const variable = node as VariableNodeState
       variable.attachmentIds.forEach(attachmentId => {
         const control = getControlNode(state, attachmentId)
         if (control.attachedVariableId === nodeId) {
@@ -174,10 +191,11 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
         }
       })
       break
-
-    case BlueprintNodeType.Control:
-      control = node as ControlNodeState
-      variableIds = [control.attachedVariableId, control.attachedOutwardVariableId]
+    }
+    case BlueprintNodeType.Control: {
+      const control = node as ControlNodeState
+      const variableIds =
+        [control.attachedVariableId, control.attachedOutwardVariableId]
       for (let i = 0; i < variableIds.length; i++) {
         const variableId = variableIds[i]
         if (variableId !== undefined) {
@@ -189,6 +207,7 @@ export const removeNode = (state: BlueprintState, nodeId: BlueprintNodeId): void
         }
       }
       break
+    }
   }
 
   // Remove blueprint references
@@ -272,19 +291,40 @@ export const layoutNode = (
 /**
  * Select a node or clear the selection.
  */
-export const selectNode = (state: BlueprintState, nodeId: BlueprintNodeId | undefined): void => {
+export const selectNode = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId | undefined
+): void => {
   if (state.selectedNodeId !== nodeId) {
     state.selectedNodeId = nodeId
   }
 }
 
+/**
+ * Load the given blueprint into the state, replacing existing nodes.
+ * @param state Blueprint state slice
+ * @param blueprint Blueprint to be loaded
+ * @param directory Directory state slice used to instanciate operations.
+ * If set to `undefined` placeholder operation nodes will be added, instead
+ */
 export const loadBlueprint = (
   state: BlueprintState,
-  data: Blueprint,
-  directory: DirectoryState | undefined
+  blueprint: Blueprint,
+  directory?: DirectoryState
 ): void => {
+  //       /\     /\
+  //      '. \   / ,'
+  //        `.\-/,'
+  //        ( X   )
+  //        ,'/ \`.\
+  //      .' /   \ `,
+  //      \/-----\/'
+  // _______|_|___|_______
+  // Remembering Mr. Berg
+  // Credits: https://ascii.co.uk/art/windmill
+
   const previousRootProgramId = state.rootProgramId
-  const program = addProgramNode(state, undefined, data.program, directory)
+  const program = addProgramNode(state, blueprint.program, undefined, directory)
   state.rootProgramId = program.id
   state.activeProgramId = program.id
   removeNode(state, previousRootProgramId)

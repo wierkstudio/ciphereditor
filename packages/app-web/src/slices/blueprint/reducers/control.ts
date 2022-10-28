@@ -1,11 +1,24 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import {
+  Control,
+  ControlNode,
+  availableValueTypes,
+  castSerializedValue,
+  compareSerializedValues,
+  createEmptyValue,
+  identifySerializedValueType,
+  serializeValue
+} from '@ciphereditor/library'
+import {
+  BlueprintNodeId,
+  BlueprintNodeType,
+  BlueprintState
+} from '../types/blueprint'
 import { ControlNodeState, ControlNodeChange } from '../types/control'
 import { OperationNodeState, OperationState } from '../types/operation'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
-import { availableValueTypes, castSerializedValue, compareSerializedValues, Control, ControlNode, createEmptyValue, identifySerializedValueType, serializeValue } from '@ciphereditor/library'
 import { capitalCase } from 'change-case'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getControlNode } from '../selectors/control'
@@ -35,12 +48,18 @@ export const defaultControlNode: ControlNodeState = {
 }
 
 /**
- * Add an empty control to the given program node id.
+ * Add the given control to the state
+ * @param state Blueprint state slice
+ * @param controlNode Control to be added
+ * @param programId Id of the parent program the control should be added to
+ * @param refIdMap Object mapping serialized ids to instanciated ids found
+ * while adding nodes. Tracking these ids is necessary to resolve variable
+ * attachments in the parent program.
  */
 export const addControlNode = (
   state: BlueprintState,
-  programId: BlueprintNodeId,
   controlNode: ControlNode,
+  programId: BlueprintNodeId,
   refIdMap?: Record<string, BlueprintNodeId>
 ): ControlNodeState => {
   const id = nextNodeId(state)

@@ -1,5 +1,9 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import {
+  BlueprintNodeId,
+  BlueprintNodeType,
+  BlueprintState
+} from '../types/blueprint'
 import { VariableNodeState } from '../types/variable'
 import { addChildNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'

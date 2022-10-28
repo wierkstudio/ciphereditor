@@ -1,11 +1,17 @@
 
 import {
+  Point,
+  ProgramNode,
+  Rect,
+  roundPoint,
+  roundRect
+} from '@ciphereditor/library'
+import {
   BlueprintNodeId,
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
-import { Point, ProgramNode, Rect, roundPoint, roundRect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { getNode, getNodeChildren } from './blueprint'
 import { serializeControl } from './control'
@@ -94,10 +100,19 @@ export const getNextProgramChildFrame = (state: BlueprintState, programId: Bluep
   }
 }
 
+/**
+ * Export a program from the blueprint state to a JSON serializable object.
+ * The resulting object may be extracted using `addProgramNode`.
+ * @param state Blueprint state slice
+ * @param operationId Id of the operation node to be serialized
+ * @param directory Directory state slice used to retrieve operation meta data
+ * necessary to serialize embedded operations
+ * @returns JSON serializable object representing the operation node
+ */
 export const serializeProgram = (
   state: BlueprintState,
-  directory: DirectoryState,
-  programId: BlueprintNodeId
+  programId: BlueprintNodeId,
+  directory: DirectoryState
 ): ProgramNode => {
   const program = getProgramNode(state, programId)
   const children = getNodeChildren(state, programId)
@@ -110,11 +125,11 @@ export const serializeProgram = (
         break
       }
       case BlueprintNodeType.Operation: {
-        serializedChildren.push(serializeOperation(state, directory, child.id))
+        serializedChildren.push(serializeOperation(state, child.id, directory))
         break
       }
       case BlueprintNodeType.Program: {
-        serializedChildren.push(serializeProgram(state, directory, child.id))
+        serializedChildren.push(serializeProgram(state, child.id, directory))
         break
       }
     }

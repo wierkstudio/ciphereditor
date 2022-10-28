@@ -1,5 +1,9 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import {
+  BlueprintNodeId,
+  BlueprintNodeType,
+  BlueprintState
+} from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
 import { movePointBy, Point, ProgramNode, Rect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
@@ -30,12 +34,23 @@ export const defaultProgramNode: ProgramNodeState = {
 }
 
 /**
- * Add the given program
+ * Add the given program to the state
+ * @param state Blueprint state slice
+ * @param programNode Program to be added
+ * @param parentId Parent program id or `undefined`, if the given program node
+ * should be added as the new root program. In the latter case the previous
+ * root program is added as a child to the new root.
+ * @param directory Directory state slice used to instanciate operations
+ * embedded in the program to be added. If set to `undefined` placeholder
+ * operation nodes will be added, instead.
+ * @param refIdMap Object mapping serialized ids to instanciated ids found
+ * while adding nodes. Tracking these ids is necessary to resolve variable
+ * attachments in the parent program.
  */
 export const addProgramNode = (
   state: BlueprintState,
-  parentId: BlueprintNodeId | undefined,
   programNode: ProgramNode,
+  parentId: BlueprintNodeId | undefined,
   directory?: DirectoryState,
   refIdMap?: Record<string, BlueprintNodeId>
 ): ProgramNodeState => {

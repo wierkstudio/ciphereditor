@@ -1,5 +1,9 @@
 
-import { BlueprintNodeId, BlueprintNodeType, BlueprintState } from '../types/blueprint'
+import {
+  BlueprintNodeId,
+  BlueprintNodeType,
+  BlueprintState
+} from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
 import { OperationIssue, OperationNode } from '@ciphereditor/library'
@@ -16,15 +20,15 @@ import { getOperationNode } from '../selectors/operation'
 /**
  * Add the given operation to a program.
  * @param state Blueprint state
- * @param programId Program the node should be added to
  * @param operationNode Operation to be added
+ * @param programId Program the node should be added to
  * @param directory Directory state to retrieve operation contribution meta data from
  * @param refIdMap Object mapping node ids to ids in the blueprint state
  */
 export const addOperationNode = (
   state: BlueprintState,
-  programId: BlueprintNodeId,
   operationNode: OperationNode,
+  programId: BlueprintNodeId,
   directory?: DirectoryState,
   refIdMap?: Record<string, BlueprintNodeId>
 ): OperationNodeState => {
@@ -32,7 +36,9 @@ export const addOperationNode = (
     directory !== undefined
       ? getOperationContribution(directory, operationNode.name)
       : undefined
+
   if (operationContribution === undefined) {
+    // TODO: Needs implementation: Placeholder operation nodes
     throw new Error('Needs implementation: Placeholder operation nodes')
   }
 

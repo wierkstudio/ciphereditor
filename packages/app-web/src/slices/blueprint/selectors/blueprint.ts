@@ -88,12 +88,20 @@ export const getNodePosition = (
   return undefined
 }
 
+/**
+ * Export the blueprint state to a JSON serializable object.
+ * The resulting object may be extracted using `loadBlueprint`.
+ * @param state Blueprint state slice
+ * @param directory Directory state slice used to retrieve operation meta data
+ * necessary to serialize embedded operations
+ * @returns JSON serializable object representing the current blueprint state
+ */
 export const serializeBlueprint = (
   state: BlueprintState,
   directory: DirectoryState
 ): Blueprint => {
   return {
     type: 'blueprint',
-    program: serializeProgram(state, directory, state.rootProgramId)
+    program: serializeProgram(state, state.rootProgramId, directory)
   }
 }
