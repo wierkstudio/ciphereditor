@@ -22,6 +22,15 @@ const keyPlatformSymbolMap: Record<string, Record<Platform, string> | string> = 
 }
 
 /**
+ * Map with platform specific dividers
+ */
+const platformKeyDivider: Record<Platform, string> = {
+  macos: '',
+  unknown: '+',
+  windows: '+'
+}
+
+/**
  * Compose key combination notation from the given keyboard event.
  */
 export const keyCombinationFromEvent = (event: KeyboardEvent): string => {
@@ -37,7 +46,7 @@ export const keyCombinationFromEvent = (event: KeyboardEvent): string => {
  */
 export const labelKeyCombination = (keyCombination: string): string => {
   const platform = identifyPlatform()
-  return keyCombination.split('+').map(key => {
+  return keyCombination.split(platformKeyDivider[platform]).map(key => {
     const symbolOrPlatformSymbolMap = keyPlatformSymbolMap[key]
     if (typeof symbolOrPlatformSymbolMap === 'string') {
       return symbolOrPlatformSymbolMap
