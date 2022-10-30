@@ -15,7 +15,7 @@ import {
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
-import { OperationNodeState, OperationState } from '../types/operation'
+import { OperationNodeState, OperationExecutionState } from '../types/operation'
 import { defaultControlNode } from '../reducers/control'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, getNodeChildren, hasNode } from './blueprint'
@@ -52,7 +52,7 @@ export const getOpenOperationRequest = (
     return undefined
   }
   const operation = getOperationNode(state, operationId)
-  if (operation.state !== OperationState.Busy) {
+  if (operation.state !== OperationExecutionState.Busy) {
     return undefined
   }
 
@@ -114,7 +114,7 @@ export const serializeOperation = (
   const controls = getNodeChildren(state, operationId, BlueprintNodeType.Control) as ControlNodeState[]
 
   // Find matching operation in the directory
-  const directoryOperation = getOperationContribution(directory, operation.contributionName)
+  const directoryOperation = getOperationContribution(directory, operation.name)
   if (directoryOperation === undefined) {
     throw new Error('Logic error: Cannot serialize an operation without its contribution')
   }
@@ -160,11 +160,16 @@ export const serializeOperation = (
 
   const serializedOperation: OperationNode = {
     type: 'operation',
-    name: operation.contributionName,
+    name: operation.name,
     extensionUrl: operation.extensionUrl,
     priorityControlNames: operation.priorityControlIds.map(controlId =>
       getControlNode(state, controlId).name),
     frame: roundRect(operation.frame)
+  }
+
+  // Enable initial execution if the execution is pending or erroneous
+  if (operation.state !== OperationExecutionState.Ready) {
+    serializedOperation.initialExecution = true
   }
 
   // Include controls object if at least one control is added

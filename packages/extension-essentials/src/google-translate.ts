@@ -148,7 +148,8 @@ const contribution: Contribution = {
       types: ['text'],
       order: 1000
     }
-  ]
+  ],
+  timeout: 20000
 }
 
 const execute: OperationExecuteExport = async (request) => {

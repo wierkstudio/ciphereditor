@@ -3,9 +3,9 @@ import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './bluepr
 import { OperationIssue, Rect } from '@ciphereditor/library'
 
 /**
- * Operation state
+ * Operation execution state
  */
-export enum OperationState {
+export enum OperationExecutionState {
   /**
    * The operation is idle and ready
    */
@@ -39,7 +39,12 @@ export interface OperationNodeState extends BlueprintNodeState {
   /**
    * Operation contribution name
    */
-  contributionName: string
+  name: string
+
+  /**
+   * Extension url
+   */
+  extensionUrl?: string
 
   /**
    * Operation label
@@ -52,9 +57,9 @@ export interface OperationNodeState extends BlueprintNodeState {
   reproducible: boolean
 
   /**
-   * Operation state
+   * Operation execution state
    */
-  state: OperationState
+  state: OperationExecutionState
 
   /**
    * Issues occurred while processing the last operation response
@@ -72,7 +77,7 @@ export interface OperationNodeState extends BlueprintNodeState {
   priorityControlIds: BlueprintNodeId[]
 
   /**
-   * Extension url
+   * Execution timeout (in ms)
    */
-  extensionUrl?: string
+  timeout: number
 }

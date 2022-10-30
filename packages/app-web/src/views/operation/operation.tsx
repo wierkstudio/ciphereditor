@@ -9,7 +9,7 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useTranslation from '../../hooks/useTranslation'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
-import { OperationNodeState, OperationState } from '../../slices/blueprint/types/operation'
+import { OperationNodeState, OperationExecutionState } from '../../slices/blueprint/types/operation'
 import { ProgramNodeState } from '../../slices/blueprint/types/program'
 import { chooseMostImportantIssue } from '@ciphereditor/library'
 import { enterProgramAction, executeOperationAction } from '../../slices/blueprint'
@@ -46,15 +46,15 @@ export default function OperationView (props: {
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
   const highestIssueLevel = chooseMostImportantIssue(issues)?.level
 
-  let state = OperationState.Ready
+  let state = OperationExecutionState.Ready
   if (node.type === BlueprintNodeType.Operation) {
     state = node.state
   }
 
   const canExecute =
     node.type === BlueprintNodeType.Operation &&
-    node.state !== OperationState.Busy &&
-    (!node.reproducible || node.state === OperationState.Error)
+    node.state !== OperationExecutionState.Busy &&
+    (!node.reproducible || node.state === OperationExecutionState.Error)
 
   // TODO: Right now, we assume that the last control conveys the 'result' of
   // the operation. Therefore we show the operation header above it. From a

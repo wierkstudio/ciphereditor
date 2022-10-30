@@ -54,7 +54,13 @@ export const operationContributionSchema = z.object({
   /**
    * Array of controls
    */
-  controls: z.array(controlSchema)
+  controls: z.array(controlSchema),
+
+  /**
+   * Execution timeout (in ms)
+   * Defaults to 10 seconds, limited to 5 minutes
+   */
+  timeout: z.number().optional()
 })
 
 /**

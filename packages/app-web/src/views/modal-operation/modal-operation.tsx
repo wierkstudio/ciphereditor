@@ -32,7 +32,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
     const operation = node as OperationNodeState
     // TODO: Needs translation
     title = `Configure ${operation.label}`
-    contribution = useDirectorySelector(state => getOperationContribution(state, operation.contributionName))
+    contribution = useDirectorySelector(state => getOperationContribution(state, operation.name))
     description = contribution?.description
   }
 

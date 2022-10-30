@@ -10,7 +10,7 @@ import { Blueprint, BlueprintNode, OperationIssue, Point } from '@ciphereditor/l
 import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
-import { OperationState } from './types/operation'
+import { OperationExecutionState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addNodes, layoutNode, loadBlueprint, moveNode, removeNode, selectNode } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
@@ -191,9 +191,9 @@ export const blueprintSlice = createSlice({
         for (let i = 0; i < changes.length; i++) {
           changeControl(state, changeControlIds[i], changes[i])
         }
-        setOperationState(state, operation.id, OperationState.Ready, issues)
+        setOperationState(state, operation.id, OperationExecutionState.Ready, issues)
       } else {
-        setOperationState(state, operation.id, OperationState.Error, issues)
+        setOperationState(state, operation.id, OperationExecutionState.Error, issues)
       }
     },
 

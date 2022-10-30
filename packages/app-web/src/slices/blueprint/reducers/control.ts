@@ -15,7 +15,7 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState, ControlNodeChange } from '../types/control'
-import { OperationNodeState, OperationState } from '../types/operation'
+import { OperationNodeState, OperationExecutionState } from '../types/operation'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -151,7 +151,7 @@ export const changeControl = (
       operation = parent as OperationNodeState
       if (source.type !== BlueprintNodeType.Operation) {
         // Change is not originating from the operation, so mark it busy
-        setOperationState(state, operation.id, OperationState.Busy)
+        setOperationState(state, operation.id, OperationExecutionState.Busy)
         // Increment the request version every time a control changes
         if (operation.requestVersion !== undefined) {
           operation.requestVersion += 1

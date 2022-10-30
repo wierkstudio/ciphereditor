@@ -53,6 +53,7 @@ export class ProcessorWorker {
   private uniqueIdCounter: number = 1
   private iframeElement: HTMLIFrameElement | undefined
   private iframeTimeout: ReturnType<typeof setTimeout> | undefined
+  private nextFunctionPointerCallTimeout: number | undefined
 
   // Handlers
   private readonly messageHandler = this.onWorkerMessage.bind(this)
@@ -409,6 +410,14 @@ export class ProcessorWorker {
   }
 
   /**
+   * Set the timeout of the next function pointer call request.
+   * The timeout will be reset after initiating the next call.
+   */
+  public setNextFunctionPointerCallTimeout (timeout: number | undefined): void {
+    this.nextFunctionPointerCallTimeout = timeout
+  }
+
+  /**
    * Return a promise that resolves when the worker has been activated.
    */
   public async activate (): Promise<void> {
@@ -522,10 +531,14 @@ export class ProcessorWorker {
   ): Promise<any> {
     // Function pointers are available as soon as they are provided in a worker
     // response; we do not need to queue this request for a specific state
-    return await this.queueWorkerRequest('both', {
+    const request: WorkerRequest = {
       type: 'callFunctionPointer',
       pointer,
       args: args.map(this.exportValue.bind(this))
-    })
+    }
+    // Consume next function pointer call timeout
+    const timeout = this.nextFunctionPointerCallTimeout
+    this.nextFunctionPointerCallTimeout = undefined
+    return await this.queueWorkerRequest('both', request, timeout)
   }
 }
