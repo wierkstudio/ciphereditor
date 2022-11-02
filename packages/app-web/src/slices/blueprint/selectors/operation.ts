@@ -107,14 +107,16 @@ export const getOperationIssues = (
  */
 export const serializeOperation = (
   state: BlueprintState,
-  operationId: BlueprintNodeId,
-  directory: DirectoryState
+  directory: DirectoryState | undefined,
+  operationId: BlueprintNodeId
 ): OperationNode => {
   const operation = getOperationNode(state, operationId)
   const controls = getNodeChildren(state, operationId, BlueprintNodeType.Control) as ControlNodeState[]
 
   // Find matching operation in the directory
-  const directoryOperation = getOperationContribution(directory, operation.name)
+  const directoryOperation = directory !== undefined
+    ? getOperationContribution(directory, operation.name)
+    : undefined
   if (directoryOperation === undefined) {
     throw new Error('Logic error: Cannot serialize an operation without its contribution')
   }
@@ -136,7 +138,7 @@ export const serializeOperation = (
     // serialized, too (i.e. having two or more attachments)
     if (
       control.attachedOutwardVariableId !== undefined &&
-      serializeVariable(state, directory, control.attachedOutwardVariableId) !== undefined
+      serializeVariable(state, control.attachedOutwardVariableId) !== undefined
     ) {
       serializedControl.id = control.id.toString()
     }

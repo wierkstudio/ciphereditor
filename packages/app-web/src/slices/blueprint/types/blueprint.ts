@@ -56,9 +56,9 @@ export interface BlueprintState {
   lastInsertNodeId: BlueprintNodeId
 
   /**
-   * Selected node id
+   * Selected node ids
    */
-  selectedNodeId: BlueprintNodeId | undefined
+  selectedNodeIds: BlueprintNodeId[]
 
   /**
    * Root program node id

@@ -14,7 +14,7 @@ import { addControlNode } from './control'
 import { addOperationNode } from './operation'
 import { addProgramNode, updateProgramContentBounds } from './program'
 import { addVariable, attachControlToVariable } from './variable'
-import { arrayRemove } from '../../../lib/utils/array'
+import { arrayRemove, arrayUnique } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
 import { getNode, hasNode } from '../selectors/blueprint'
 import { getVariableNode } from '../selectors/variable'
@@ -158,7 +158,8 @@ export const addNodes = (
 }
 
 /**
- * Safely remove a node and its children from the blueprint.
+ * Remove the given node and its children from the blueprint tree, making sure
+ * the state stays intact (updating node id references).
  * @param state Blueprint state slice
  * @param nodeId Id of node to be removed
  */
@@ -211,8 +212,8 @@ export const removeNode = (
   }
 
   // Remove blueprint references
-  if (state.selectedNodeId === nodeId) {
-    state.selectedNodeId = undefined
+  if (state.selectedNodeIds.includes(nodeId)) {
+    state.selectedNodeIds = arrayRemove(state.selectedNodeIds, nodeId)
   }
   if (state.activeProgramId === nodeId) {
     state.activeProgramId = node.parentId
@@ -227,6 +228,28 @@ export const removeNode = (
 
   if (parentNode.type === BlueprintNodeType.Program) {
     updateProgramContentBounds(state, parentNode.id)
+  }
+}
+
+/**
+ * Check for each of the given nodes wether it is allowed to be manually
+ * removed from the tree and if so, remove it.
+ * Example: A child node of an operation cannot be removed without its parent
+ */
+export const deleteNodes = (
+  state: BlueprintState,
+  nodeIds: BlueprintNodeId[]
+): void => {
+  for (const nodeId of nodeIds) {
+    if (hasNode(state, nodeId)) {
+      const node = getNode(state, nodeId)
+      const parent = getNode(state, node.parentId)
+
+      const allowed = parent.type !== BlueprintNodeType.Operation
+      if (allowed) {
+        removeNode(state, nodeId)
+      }
+    }
   }
 }
 
@@ -289,15 +312,13 @@ export const layoutNode = (
 }
 
 /**
- * Select a node or clear the selection.
+ * Replace the current selection by the given nodes.
  */
-export const selectNode = (
+export const selectNodes = (
   state: BlueprintState,
-  nodeId: BlueprintNodeId | undefined
+  nodeIds: BlueprintNodeId[]
 ): void => {
-  if (state.selectedNodeId !== nodeId) {
-    state.selectedNodeId = nodeId
-  }
+  state.selectedNodeIds = arrayUnique(nodeIds)
 }
 
 /**

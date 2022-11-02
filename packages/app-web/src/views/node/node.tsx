@@ -4,17 +4,18 @@ import ControlView from '../../views/control/control'
 import OperationView from '../../views/operation/operation'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import usePointerDrag from '../../hooks/usePointerDrag'
+import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
-import { FocusEvent, useCallback, useLayoutEffect, useRef } from 'react'
 import { UICanvasMode } from '../../slices/ui/types'
 import { getCanvasMode } from '../../slices/ui/selectors'
-import { getNode, getNodeChildren, isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { layoutNodeAction, moveNodeAction, selectNodeAction } from '../../slices/blueprint'
+import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
+import { layoutNodeAction, moveAction, selectAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { roundRect } from '@ciphereditor/library'
+import { Point, roundRect } from '@ciphereditor/library'
+import { useCallback, useLayoutEffect, useRef } from 'react'
+import { arrayRemove, arrayUniquePush } from '../../lib/utils/array'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -25,7 +26,8 @@ export default function NodeView (props: {
 
   const node = useBlueprintSelector(state => getNode(state, nodeId))
   const frame = node.frame !== undefined ? roundRect(node.frame) : undefined
-  const isSelected = useBlueprintSelector(state => isSelectedNode(state, nodeId))
+  const selectedNodeIds = useBlueprintSelector(state => state.selectedNodeIds)
+  const isSelected = selectedNodeIds.includes(node.id)
   const canvasMode = useUISelector(getCanvasMode)
 
   const controls = useBlueprintSelector(state => {
@@ -97,16 +99,34 @@ export default function NodeView (props: {
     }
   }, [nodeRef, outletRefs, frame, controls])
 
-  const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
-    dispatch(moveNodeAction({ nodeId, x: deltaX, y: deltaY }))
-  })
-
-  const onFocus = (event: FocusEvent): void => {
-    event.stopPropagation()
-    if (!isSelected) {
-      dispatch(selectNodeAction({ nodeId }))
+  const onPointerDrag = useCallback((state: PointerDragState, delta: Point, event: MouseEvent) => {
+    switch (state) {
+      case 'move': {
+        if (!isSelected) {
+          dispatch(selectAction({ nodeIds: [nodeId] }))
+        }
+        dispatch(moveAction({ delta }))
+        break
+      }
+      case 'cancel': {
+        const append =
+          event.getModifierState('Shift') ||
+          event.getModifierState('Control') ||
+          event.getModifierState('Meta')
+        if (append) {
+          const nodeIds = isSelected
+            ? arrayRemove(selectedNodeIds, nodeId)
+            : arrayUniquePush(selectedNodeIds, nodeId)
+          dispatch(selectAction({ nodeIds }))
+        } else {
+          dispatch(selectAction({ nodeIds: [nodeId] }))
+        }
+        break
+      }
     }
-  }
+  }, [nodeId, selectedNodeIds, isSelected])
+
+  const onPointerDown = usePointerDrag(onPointerDrag)
 
   const modifiers = isSelected ? ['selected'] : []
 
@@ -120,7 +140,6 @@ export default function NodeView (props: {
         : {}}
       tabIndex={0}
       onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
-      onFocus={onFocus}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
         <OperationView nodeId={nodeId} onOutletRef={onOutletRef} />

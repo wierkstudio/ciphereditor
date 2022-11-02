@@ -7,7 +7,6 @@ import WireDraftView from '../../views/wire-draft/wire-draft'
 import WireView from '../../views/wire/wire'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
-import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
@@ -17,18 +16,16 @@ import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
 import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
 import { getContentBounds, getOffset, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
-import { getSelectedNode } from '../../slices/blueprint/selectors/blueprint'
-import { loadBlueprintAction, moveOffsetAction, selectNodeAction } from '../../slices/blueprint'
+import { getHasSelection } from '../../slices/blueprint/selectors/blueprint'
+import { loadBlueprintAction, moveOffsetAction, selectAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
 import { updateCanvasSizeAction } from '../../slices/ui'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
 
-  const directory = useDirectorySelector(state => state)
-
   const canvasMode = useUISelector(getCanvasMode)
-  const hasSelectedNode = useBlueprintSelector(state => getSelectedNode(state) !== undefined)
+  const hasSelection = useBlueprintSelector(getHasSelection)
 
   const contentBounds = useBlueprintSelector(getContentBounds)
 
@@ -49,8 +46,8 @@ export default function CanvasView (): JSX.Element {
   })
 
   // Move canvas interaction
-  const onPointerDown = usePointerDrag((state, deltaX, deltaY) => {
-    const deltaOffset = { x: -deltaX, y: -deltaY }
+  const onPointerDown = usePointerDrag((state, delta, event) => {
+    const deltaOffset = { x: -delta.x, y: -delta.y }
     dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
   })
 
@@ -82,29 +79,17 @@ export default function CanvasView (): JSX.Element {
       if (file !== null) {
         void file.text().then((content: string): void => {
           const blueprint = blueprintSchema.parse(JSON.parse(content))
-          dispatch(loadBlueprintAction({
-            blueprint,
-            directory
-          }))
+          dispatch(loadBlueprintAction({ blueprint }))
         })
       }
     }
-  }, [directory])
-
-  /**
-   * Handle blur events emitted by child nodes.
-   */
-  const onBlur = (event: FocusEvent): void => {
-    event.stopPropagation()
-    if (hasSelectedNode) {
-      dispatch(selectNodeAction({ nodeId: undefined }))
-    }
-  }
+  }, [])
 
   const onCanvasFocus = (event: FocusEvent): void => {
     event.stopPropagation()
-    if (hasSelectedNode) {
-      dispatch(selectNodeAction({ nodeId: undefined }))
+    if (hasSelection) {
+      // Clear selection
+      dispatch(selectAction({ nodeIds: [] }))
     }
   }
 
@@ -122,7 +107,6 @@ export default function CanvasView (): JSX.Element {
       <div
         className='canvas__content'
         onFocus={event => { event.stopPropagation() }}
-        onBlur={onBlur}
         style={canvasMode === UICanvasMode.Plane
           ? { transform: `translate(${-viewportRect.x}px, ${-viewportRect.y}px)` }
           : {}}

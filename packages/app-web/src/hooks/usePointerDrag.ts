@@ -6,23 +6,23 @@ import {
   useRef,
   useState
 } from 'react'
-import { releaseOptionalPointerCapture } from '../lib/utils/dom'
 import useCallbackRef from './useCallbackRef'
 import usePointerFollowUp from './usePointerFollowUp'
+import { deltaPoint, Point, pointEqualTo } from '@ciphereditor/library'
+import { releaseOptionalPointerCapture } from '../lib/utils/dom'
 
-export type PointerDragState = 'pointerdown' | 'pointermove' | 'pointerup'
+export type PointerDragState = 'start' | 'move' | 'end' | 'cancel'
 
 export type PointerDragHandler = (
   state: PointerDragState,
-  deltaX: number,
-  deltaY: number
+  delta: Point,
+  event: PointerEvent
 ) => void
 
 interface DragMoveState {
   pointerId: number
   dragging: boolean
-  lastX: number
-  lastY: number
+  lastPointerLocation: Point
 }
 
 const usePointerDrag = (handler: PointerDragHandler): MouseEventHandler => {
@@ -31,18 +31,19 @@ const usePointerDrag = (handler: PointerDragHandler): MouseEventHandler => {
 
   const onPointerDown = useCallback((event: ReactPointerEvent) => {
     if (event.isPrimary && event.buttons === 1) {
+      const pointerLocation = { x: event.clientX, y: event.clientY }
       event.stopPropagation()
       releaseOptionalPointerCapture(event)
 
       // Call drag handler
-      handler('pointerdown', 0, 0)
+      const delta = { x: 0, y: 0 }
+      handler('start', delta, event.nativeEvent)
 
       // Update state
       stateRef.current = {
         pointerId: event.pointerId,
         dragging: false,
-        lastX: event.clientX,
-        lastY: event.clientY
+        lastPointerLocation: pointerLocation
       }
       setPointerDown(true)
     }
@@ -51,13 +52,12 @@ const usePointerDrag = (handler: PointerDragHandler): MouseEventHandler => {
   const onPointerMove = useCallbackRef((event: PointerEvent) => {
     const state = stateRef.current
     if (state?.pointerId === event.pointerId) {
-      if (event.clientX !== state.lastX || event.clientY !== state.lastY) {
+      const pointerLocation = { x: event.clientX, y: event.clientY }
+      if (!pointEqualTo(pointerLocation, state.lastPointerLocation)) {
+        const delta = deltaPoint(pointerLocation, state.lastPointerLocation)
+
         // Call drag handler
-        handler(
-          'pointermove',
-          event.clientX - state.lastX,
-          event.clientY - state.lastY
-        )
+        handler('move', delta, event)
 
         // Show grabbing cursor
         if (!state.dragging) {
@@ -68,8 +68,7 @@ const usePointerDrag = (handler: PointerDragHandler): MouseEventHandler => {
         stateRef.current = {
           ...state,
           dragging: true,
-          lastX: event.clientX,
-          lastY: event.clientY
+          lastPointerLocation: pointerLocation
         }
       }
     }
@@ -78,12 +77,11 @@ const usePointerDrag = (handler: PointerDragHandler): MouseEventHandler => {
   const onPointerEnd = useCallbackRef((event: PointerEvent) => {
     const state = stateRef.current
     if (state?.pointerId === event.pointerId) {
+      const pointerLocation = { x: event.clientX, y: event.clientY }
+      const delta = deltaPoint(pointerLocation, state.lastPointerLocation)
+
       // Call drag handler
-      handler(
-        'pointerup',
-        event.clientX - state.lastX,
-        event.clientY - state.lastY
-      )
+      handler(state.dragging ? 'end' : 'cancel', delta, event)
 
       // Hide grabbing cursor
       if (state.dragging) {

@@ -1,7 +1,7 @@
 
 import './scrollbars.scss'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
-import { expandRect, mergeRects, Rect } from '@ciphereditor/library'
+import { expandRect, mergeRects, Point, Rect } from '@ciphereditor/library'
 import { useCallback, useState } from 'react'
 
 export interface ScrollbarsLayout {
@@ -35,33 +35,37 @@ export default function ScrollbarsView (props: {
   const onPointerDrag = useCallback((
     horizontal: boolean,
     state: PointerDragState,
-    deltaX: number,
-    deltaY: number
+    delta: Point,
+    event: MouseEvent
   ): void => {
     switch (state) {
-      case 'pointerdown':
+      case 'start': {
         setDraggingLayout(viewportLayout)
         break
-      case 'pointermove':
+      }
+      case 'move': {
         if (draggingLayout !== undefined) {
           if (horizontal) {
             const positionScope = (1 - draggingLayout.horizontalSize) * horizontalTrackWidth
-            const position = Math.max(Math.min(deltaX / positionScope + draggingLayout.horizontalPosition, 1), 0)
+            const position = Math.max(Math.min(delta.x / positionScope + draggingLayout.horizontalPosition, 1), 0)
             const scrollDelta = (position - draggingLayout.horizontalPosition) * draggingLayout.horizontalScope
             onScroll(scrollDelta, 0)
             setDraggingLayout({ ...draggingLayout, horizontalPosition: position })
           } else {
             const positionScope = (1 - draggingLayout.verticalSize) * verticalTrackHeight
-            const position = Math.max(Math.min(deltaY / positionScope + draggingLayout.verticalPosition, 1), 0)
+            const position = Math.max(Math.min(delta.y / positionScope + draggingLayout.verticalPosition, 1), 0)
             const scrollDelta = (position - draggingLayout.verticalPosition) * draggingLayout.verticalScope
             onScroll(0, scrollDelta)
             setDraggingLayout({ ...draggingLayout, verticalPosition: position })
           }
         }
         break
-      case 'pointerup':
+      }
+      case 'end':
+      case 'cancel': {
         setDraggingLayout(undefined)
         break
+      }
     }
   }, [viewportLayout, draggingLayout, setDraggingLayout, onScroll, verticalTrackHeight, horizontalTrackWidth])
 

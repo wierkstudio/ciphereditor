@@ -7,28 +7,36 @@ import {
   changeControlValueToType
 } from './reducers/control'
 import { Blueprint, BlueprintNode, OperationIssue, Point } from '@ciphereditor/library'
-import { BlueprintNodeId, BlueprintState, BlueprintNodeType } from './types/blueprint'
+import { BlueprintNodeId, BlueprintState } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
 import { OperationExecutionState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
-import { addNodes, layoutNode, loadBlueprint, moveNode, removeNode, selectNode } from './reducers/blueprint'
+import { addNodes, deleteNodes, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { defaultProgramNode, moveOffset } from './reducers/program'
 import { executeOperation, setOperationState } from './reducers/operation'
 import { getControlNode } from './selectors/control'
-import { getNode, hasNode } from './selectors/blueprint'
+import { getNode, hasNode, serializeNodes } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 
 export const defaultBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
   lastInsertNodeId: 1,
-  selectedNodeId: undefined,
+  selectedNodeIds: [],
   rootProgramId: 1,
   activeProgramId: 1,
   rootOffset: { x: 0, y: 0 },
   busyOperationIds: []
 }
+
+/**
+ * Variable to hold the current clipboard content. This can't be part of the
+ * blueprint state slice as it then would be affected by redo/undo. We could
+ * add the clipboard to the UI state slice but then e.g. the cut action would
+ * need to make changes in two slices simultaneously.
+ */
+let clipboard: BlueprintNode[] | undefined
 
 export const blueprintSlice = createSlice({
   name: 'blueprint',
@@ -52,14 +60,19 @@ export const blueprintSlice = createSlice({
       programId?: BlueprintNodeId
       directory?: DirectoryState
     }>) => {
+      const { nodes, directory } = payload
       const programId = payload.programId ?? state.activeProgramId
-      // Add the nodes
-      const nodes = addNodes(state, payload.nodes, programId, payload.directory)
-      // Select the last node added, if it is in the currently active program
-      const lastNode = nodes.at(-1)
-      if (programId === undefined || programId === lastNode?.parentId) {
-        state.selectedNodeId = nodes.at(-1)?.id
+
+      // Add nodes
+      const addedNodes = addNodes(state, nodes, programId, directory)
+
+      // Select added nodes if we're in the same program
+      if (addedNodes.length > 0) {
+        if (programId === undefined || programId === addedNodes.at(-1)?.parentId) {
+          state.selectedNodeIds = addedNodes.map(nodes => nodes.id)
+        }
       }
+
       // If a program has been created to add the node, enter into it
       if (programId === undefined && state.activeProgramId === undefined) {
         state.activeProgramId = state.rootProgramId
@@ -67,24 +80,24 @@ export const blueprintSlice = createSlice({
     },
 
     /**
-     * Change the active program.
+     * Navigate to the given program
      */
     enterProgramAction: (state, { payload }: PayloadAction<{
       programId?: BlueprintNodeId
     }>) => {
-      const targetNodeId = payload.programId ?? state.selectedNodeId
-      if (targetNodeId !== undefined) {
-        state.activeProgramId = targetNodeId
-        state.selectedNodeId = undefined
+      const programId = payload.programId ?? state.selectedNodeIds.at(0)
+      if (programId !== undefined) {
+        state.activeProgramId = programId
+        state.selectedNodeIds = []
       }
     },
 
     /**
-     * Move a level up, changing the active program to its parent program.
+     * Navigate to the parent of the currently active program.
      */
     leaveProgramAction: (state, { payload }: PayloadAction<{}>) => {
       if (state.activeProgramId !== undefined) {
-        state.selectedNodeId = state.activeProgramId
+        state.selectedNodeIds = [state.activeProgramId]
         if (state.rootProgramId !== state.activeProgramId) {
           state.activeProgramId = getNode(state, state.activeProgramId).parentId
         } else {
@@ -203,35 +216,74 @@ export const blueprintSlice = createSlice({
       executeOperation(state, payload.nodeId)
     },
 
-    /**
-     * Select a node or clear the selection.
-     */
-    selectNodeAction: (state, { payload }: PayloadAction<{
-      nodeId?: BlueprintNodeId
+    selectAction: (state, { payload }: PayloadAction<{
+      nodeIds: BlueprintNodeId[]
     }>) => {
-      selectNode(state, payload.nodeId)
+      selectNodes(state, payload.nodeIds)
     },
 
-    /**
-     * Remove a node.
-     */
-    removeNodeAction: (state, { payload }: PayloadAction<{
-      nodeId?: BlueprintNodeId
+    moveAction: (state, { payload }: PayloadAction<{
+      nodeIds?: BlueprintNodeId[]
+      delta: Point
     }>) => {
-      const nodeId = payload.nodeId ?? state.selectedNodeId
-      if (nodeId !== undefined) {
-        // Check wether removal is allowed
-        const node = getNode(state, nodeId)
-        const parent = getNode(state, node.parentId)
-        if (
-          node.type === BlueprintNodeType.Control &&
-          parent.type === BlueprintNodeType.Operation
-        ) {
-          return
-        }
-
-        removeNode(state, nodeId)
+      const nodeIds = payload.nodeIds ?? state.selectedNodeIds
+      if (nodeIds.length > 0) {
+        const delta = payload.delta
+        nodeIds.map(id => moveNode(state, id, delta.x, delta.y, true))
       }
+    },
+
+    cutAction: (state, { payload }: PayloadAction<{
+      nodeIds?: BlueprintNodeId[]
+      directory?: DirectoryState
+    }>) => {
+      const nodeIds = payload.nodeIds ?? state.selectedNodeIds
+      clipboard = serializeNodes(state, payload.directory, nodeIds)
+      deleteNodes(state, nodeIds)
+
+      // Try to write the copied serialized nodes to the clipboard
+      try {
+        void navigator.clipboard.writeText(JSON.stringify(clipboard))
+      } catch {
+      }
+    },
+
+    copyAction: (state, { payload }: PayloadAction<{
+      nodeIds?: BlueprintNodeId[]
+      directory?: DirectoryState
+    }>) => {
+      const nodeIds = payload.nodeIds ?? state.selectedNodeIds
+      clipboard = serializeNodes(state, payload.directory, nodeIds)
+
+      if (clipboard.length > 0) {
+        // Try to write the copied serialized nodes to the clipboard
+        try {
+          void navigator.clipboard.writeText(JSON.stringify(clipboard))
+        } catch {
+        }
+      }
+    },
+
+    pasteAction: (state, { payload }: PayloadAction<{
+      directory?: DirectoryState
+    }>) => {
+      if (clipboard !== undefined) {
+        const programId = state.activeProgramId
+        const directory = payload.directory
+        const addedNodes = addNodes(state, clipboard, programId, directory)
+
+        if (addedNodes.length > 0) {
+          // Select added nodes
+          state.selectedNodeIds = addedNodes.map(node => node.id)
+        }
+      }
+    },
+
+    deleteAction: (state, { payload }: PayloadAction<{
+      nodeIds?: BlueprintNodeId[]
+    }>) => {
+      const nodeIds = payload.nodeIds ?? state.selectedNodeIds
+      deleteNodes(state, nodeIds)
     },
 
     /**
@@ -242,17 +294,6 @@ export const blueprintSlice = createSlice({
       relative?: boolean
     }>) => {
       moveOffset(state, payload.offset, payload.relative ?? false)
-    },
-
-    moveNodeAction: (state, { payload }: PayloadAction<{
-      nodeId?: BlueprintNodeId
-      x: number
-      y: number
-    }>) => {
-      const nodeId = payload.nodeId ?? state.selectedNodeId
-      if (nodeId !== undefined) {
-        moveNode(state, nodeId, payload.x, payload.y, true)
-      }
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{
@@ -297,10 +338,13 @@ export const {
   attachControlsAction,
   applyOperationResultAction,
   executeOperationAction,
-  selectNodeAction,
-  removeNodeAction,
+  selectAction,
+  moveAction,
+  cutAction,
+  copyAction,
+  pasteAction,
+  deleteAction,
   moveOffsetAction,
-  moveNodeAction,
   layoutNodeAction
 } = blueprintSlice.actions
 
@@ -316,7 +360,6 @@ export default undoable(blueprintSlice.reducer, {
     // The undo history must stay intact when navigating or selecting
     enterProgramAction.type,
     leaveProgramAction.type,
-    selectNodeAction.type,
     toggleControlVisibility.type,
     layoutNodeAction.type
   ]),
@@ -326,15 +369,20 @@ export default undoable(blueprintSlice.reducer, {
       // Group incoming operation results with the previous state as they are
       // automatic and should not be performed again when doing undo/redo
       return currentGroup
+    } else if (action.type === selectAction.type) {
+      // Group together consecutive changes to the selection
+      return 'select'
     } else if (action.type === changeControlAction.type) {
       // User initiated changes to controls should be grouped together when they
       // refer to the same control and happen after small time intervals (30s)
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
       return `control-${action.payload.controlId as number}-${timeUnit}`
-    } else if (action.type === moveNodeAction.type) {
+    } else if (action.type === moveAction.type) {
       // See case above
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
-      return `move-node-${action.payload.nodeId as number}-${timeUnit}`
+      const selectionIdentifier =
+        ((action.payload.nodeIds ?? []) as number[]).join('')
+      return `move-node-${selectionIdentifier}-${timeUnit}`
     }
     // Put this action into a separate group
     return typeof currentGroup === 'number' ? currentGroup + 1 : 1

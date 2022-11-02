@@ -1,5 +1,12 @@
 
 /**
+ * Return a new array having duplicate elements removed
+ */
+export const arrayUnique = <E>(array: E[]): E[] => {
+  return array.filter((e, i, a) => a.indexOf(e) === i)
+}
+
+/**
  * Return a new array having the given element at the front
  */
 export const arrayUniqueUnshift = <E>(array: E[], element: E): E[] => {

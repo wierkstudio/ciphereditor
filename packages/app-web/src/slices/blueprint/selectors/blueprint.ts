@@ -5,10 +5,12 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { Blueprint } from '@ciphereditor/library'
+import { Blueprint, BlueprintNode } from '@ciphereditor/library'
 import { UICanvasMode } from '../../ui/types'
 import { serializeProgram } from './program'
 import { DirectoryState } from '../../directory/types'
+import { serializeControl } from './control'
+import { serializeOperation } from './operation'
 
 /**
  * Find a node by the given node id.
@@ -42,11 +44,14 @@ export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | und
 export const hasNode = (state: BlueprintState, id: BlueprintNodeId): boolean =>
   state.nodes[id] !== undefined
 
-export const getSelectedNode = (state: BlueprintState): BlueprintNodeState | undefined =>
-  state.selectedNodeId !== undefined ? getNode(state, state.selectedNodeId) : undefined
+export const getSelectedNodes = (state: BlueprintState): BlueprintNodeState[] =>
+  state.selectedNodeIds.map(nodeId => getNode(state, nodeId))
 
-export const isSelectedNode = (state: BlueprintState, nodeId: BlueprintNodeId): boolean =>
-  state.selectedNodeId === nodeId
+export const isNodeSelected = (state: BlueprintState, nodeId: BlueprintNodeId): boolean =>
+  state.selectedNodeIds.includes(nodeId)
+
+export const getHasSelection = (state: BlueprintState): boolean =>
+  state.selectedNodeIds.length > 0
 
 export const getNodeChildren = (
   state: BlueprintState,
@@ -89,6 +94,43 @@ export const getNodePosition = (
 }
 
 /**
+ * Serialize the given control, operation or program node.
+ */
+export const serializeNode = (
+  state: BlueprintState,
+  directory: DirectoryState | undefined,
+  nodeId: BlueprintNodeId
+): BlueprintNode => {
+  const node = getNode(state, nodeId)
+  switch (node.type) {
+    case BlueprintNodeType.Control: {
+      return serializeControl(state, nodeId)
+    }
+    case BlueprintNodeType.Operation: {
+      return serializeOperation(state, directory, nodeId)
+    }
+    case BlueprintNodeType.Program: {
+      return serializeProgram(state, directory, nodeId)
+    }
+    default: {
+      throw new Error(`Can't serialize node type ${node.type} individually`)
+    }
+  }
+}
+
+export const serializeNodes = (
+  state: BlueprintState,
+  directory: DirectoryState | undefined,
+  nodeIds: BlueprintNodeId[]
+): BlueprintNode[] =>
+  nodeIds
+    .map(nodeId => getNode(state, nodeId))
+    .filter(node => node.type !== BlueprintNodeType.Variable)
+    .map(node => node.id)
+    // TODO: Serialize variables two or more of the given nodes are attached to
+    .map(serializeNode.bind(null, state, directory))
+
+/**
  * Export the blueprint state to a JSON serializable object.
  * The resulting object may be extracted using `loadBlueprint`.
  * @param state Blueprint state slice
@@ -102,6 +144,6 @@ export const serializeBlueprint = (
 ): Blueprint => {
   return {
     type: 'blueprint',
-    program: serializeProgram(state, state.rootProgramId, directory)
+    program: serializeProgram(state, directory, state.rootProgramId)
   }
 }

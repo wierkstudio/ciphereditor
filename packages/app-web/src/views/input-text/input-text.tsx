@@ -15,10 +15,16 @@ const stopPropagationForShortcuts = [
   'arrowright',
   'arrowup',
   'backspace',
+  'control+c',
   'control+shift+z',
+  'control+v',
+  'control+x',
   'control+y',
   'control+z',
   'delete',
+  'meta+c',
+  'meta+v',
+  'meta+x',
   'meta+z',
   'shift+meta+z'
 ]

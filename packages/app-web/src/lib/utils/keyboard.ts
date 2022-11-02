@@ -15,7 +15,9 @@ const keyPlatformSymbolMap: Record<string, Record<Platform, string> | string> = 
   arrowleft: '←',
   arrowright: '→',
   arrowup: '↑',
+  backspace: { windows: 'Backspace', macos: '⌫', unknown: 'Backspace' },
   control: { windows: 'Ctrl', macos: '⌃', unknown: 'Ctrl' },
+  delete: { windows: 'Delete', macos: '⌦', unknown: 'Delete' },
   escape: 'ESC',
   meta: { windows: 'Win', macos: '⌘', unknown: 'Meta' },
   shift: { windows: 'Shift', macos: '⇧', unknown: 'Shift' }
@@ -46,7 +48,7 @@ export const keyCombinationFromEvent = (event: KeyboardEvent): string => {
  */
 export const labelKeyCombination = (keyCombination: string): string => {
   const platform = identifyPlatform()
-  return keyCombination.split(platformKeyDivider[platform]).map(key => {
+  return keyCombination.split('+').map(key => {
     const symbolOrPlatformSymbolMap = keyPlatformSymbolMap[key]
     if (typeof symbolOrPlatformSymbolMap === 'string') {
       return symbolOrPlatformSymbolMap
@@ -57,5 +59,5 @@ export const labelKeyCombination = (keyCombination: string): string => {
     }
     const [firstLetter, ...remainingKey] = key
     return [firstLetter.toLocaleUpperCase(), ...remainingKey].join('')
-  }).join('+')
+  }).join(platformKeyDivider[platform])
 }

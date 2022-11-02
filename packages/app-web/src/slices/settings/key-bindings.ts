@@ -1,7 +1,24 @@
 
+import {
+  endWireAction,
+  popModalAction,
+  pushDeadEndModalAction,
+  pushModalAction,
+  toggleAddModalAction,
+  toggleEmbedMaximizedAction
+} from '../ui'
+import {
+  enterProgramAction,
+  leaveProgramAction,
+  redoAction,
+  deleteAction,
+  undoAction,
+  cutAction,
+  copyAction,
+  pasteAction,
+  moveAction
+} from '../blueprint'
 import { AppDispatch } from '../../store'
-import { endWireAction, popModalAction, pushDeadEndModalAction, pushModalAction, toggleAddModalAction, toggleEmbedMaximizedAction } from '../ui'
-import { enterProgramAction, leaveProgramAction, moveNodeAction, redoAction, removeNodeAction, undoAction } from '../blueprint'
 
 export type KeyBindingDispatchAction = Parameters<AppDispatch>[0]
 
@@ -12,16 +29,19 @@ const nudgeAmount = 16
  * will be triggered in Redux when a matching key combination is pressed.
  */
 export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchAction> = {
+  closeModal: popModalAction({}),
+  copy: copyAction({}),
+  cut: cutAction({}),
+  delete: deleteAction({}),
   endWire: endWireAction({}),
   enterProgram: enterProgramAction({}),
   leaveProgram: leaveProgramAction({}),
-  nudgeNodeDown: moveNodeAction({ x: 0, y: nudgeAmount }),
-  nudgeNodeLeft: moveNodeAction({ x: -nudgeAmount, y: 0 }),
-  nudgeNodeRight: moveNodeAction({ x: nudgeAmount, y: 0 }),
-  nudgeNodeUp: moveNodeAction({ x: 0, y: -nudgeAmount }),
-  closeModal: popModalAction({}),
+  nudgeNodeDown: moveAction({ x: 0, y: nudgeAmount }),
+  nudgeNodeLeft: moveAction({ x: -nudgeAmount, y: 0 }),
+  nudgeNodeRight: moveAction({ x: nudgeAmount, y: 0 }),
+  nudgeNodeUp: moveAction({ x: 0, y: -nudgeAmount }),
+  paste: pasteAction({}),
   redo: redoAction(),
-  removeNode: removeNodeAction({}),
   // TODO: Replace by share modal (when it becomes available)
   shareBlueprint: pushDeadEndModalAction({}),
   showSettings: pushModalAction({ payload: { type: 'settings' } }),
@@ -41,16 +61,19 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'arrowleft': 'nudgeNodeLeft',
   'arrowright': 'nudgeNodeRight',
   'arrowup': 'nudgeNodeUp',
-  'backspace': 'removeNode',
+  'backspace': 'delete',
+  'control+,': 'showSettings',
   'control+b': 'toggleMaximized',
+  'control+c': 'copy',
   'control+k': 'toggleAddModal',
   'control+s': 'shareBlueprint',
   'control+shift+z': 'redo',
+  'control+v': 'paste',
+  'control+x': 'cut',
   // Windows and Linux systems that use Cinnamon as a DE use Ctrl+Y for redo
   'control+y': 'redo',
   'control+z': 'undo',
-  'control+,': 'showSettings',
-  'delete': 'removeNode',
+  'delete': 'delete',
   'escape': ['closeModal', 'endWire']
   /* eslint-enable quote-props */
 }
@@ -66,16 +89,19 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'arrowleft': 'nudgeNodeLeft',
   'arrowright': 'nudgeNodeRight',
   'arrowup': 'nudgeNodeUp',
-  'backspace': 'removeNode',
-  'delete': 'removeNode',
+  'backspace': 'delete',
+  'delete': 'delete',
   'escape': ['closeModal', 'endWire'],
+  'meta+,': 'showSettings',
   'meta+arrowup': 'leaveProgram',
   'meta+b': 'toggleMaximized',
+  'meta+c': 'copy',
   'meta+enter': 'enterProgram',
   'meta+k': 'toggleAddModal',
   'meta+s': 'shareBlueprint',
+  'meta+v': 'paste',
+  'meta+x': 'cut',
   'meta+z': 'undo',
-  'meta+,': 'showSettings',
   'shift+meta+z': 'redo'
   /* eslint-enable quote-props */
 }

@@ -5,9 +5,9 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { FocusEvent } from 'react'
 import { getVariableWireWaypoints } from '../../slices/blueprint/selectors/variable'
-import { isSelectedNode } from '../../slices/blueprint/selectors/blueprint'
+import { isNodeSelected } from '../../slices/blueprint/selectors/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { selectNodeAction } from '../../slices/blueprint'
+import { selectAction } from '../../slices/blueprint'
 
 const minNodeGap = 48
 
@@ -24,7 +24,7 @@ export default function WireView (props: {
   const { variableId } = props
 
   const waypoints = useBlueprintSelector(state => getVariableWireWaypoints(state, variableId))
-  const isSelected = useBlueprintSelector(state => isSelectedNode(state, variableId))
+  const isSelected = useBlueprintSelector(state => isNodeSelected(state, variableId))
   const dispatch = useAppDispatch()
 
   const modifiers = isSelected ? ['selected'] : []
@@ -118,7 +118,7 @@ export default function WireView (props: {
   const onFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (!isSelected) {
-      dispatch(selectNodeAction({ nodeId: variableId }))
+      dispatch(selectAction({ nodeIds: [variableId] }))
     }
   }
 

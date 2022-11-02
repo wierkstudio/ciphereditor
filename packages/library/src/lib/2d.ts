@@ -10,6 +10,14 @@ export const movePointBy = (point: Point, delta: Point): Point => ({
 })
 
 /**
+ * Return a new point from the difference between the two given points.
+ */
+export const deltaPoint = (a: Point, b: Point): Point => ({
+  x: a.x - b.x,
+  y: a.y - b.y
+})
+
+/**
  * Move the given point to the next integer coordinates
  */
 export const roundPoint = (point: Point): Point => ({

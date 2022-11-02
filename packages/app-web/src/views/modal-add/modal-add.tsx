@@ -4,7 +4,6 @@ import InputTextView from '../input-text/input-text'
 import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
-import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
 import { AddModalPayload } from '../../slices/ui/types'
 import { BlueprintNode, createEmptyValue, serializeValue } from '@ciphereditor/library'
@@ -18,8 +17,6 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
   const contributions = useAppSelector(state => getContributions(state.directory))
-
-  const directory = useDirectorySelector(state => state)
 
   const [searchQuery, setSearchQuery] = useState('')
   const searchKeywords = searchQuery.toLowerCase().split(/\s+/g)
@@ -50,10 +47,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
   }
 
   const addNode = (node: BlueprintNode): void => {
-    dispatch(addNodesAction({
-      nodes: [node],
-      directory
-    }))
+    dispatch(addNodesAction({ nodes: [node] }))
     dispatch(popModalAction({}))
   }
 

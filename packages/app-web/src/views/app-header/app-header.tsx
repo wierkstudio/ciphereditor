@@ -10,10 +10,11 @@ import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
 import { UIEmbedType } from '../../slices/ui/types'
+import { copyAction, deleteAction, leaveProgramAction, pasteAction, redoAction, undoAction } from '../../slices/blueprint'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
+import { getHasSelection } from '../../slices/blueprint/selectors/blueprint'
 import { getKeyCombination } from '../../slices/settings/selectors'
-import { leaveProgramAction, redoAction, undoAction } from '../../slices/blueprint'
 import { openUrlAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
 export default function AppHeaderView (): JSX.Element {
@@ -24,9 +25,20 @@ export default function AppHeaderView (): JSX.Element {
   const maximized = useUISelector(isEmbedMaximized)
   const [t] = useTranslation()
 
+  // Button enabled states
+  const hasSelection = useBlueprintSelector(getHasSelection)
+  const undoEnabled = useAppSelector(state => state.blueprint.past.length > 0)
+  const redoEnabled = useAppSelector(state => state.blueprint.future.length > 0)
+
   // Gather key bindings
   const toggleAddModalKeyCombination = useSettingsSelector(state =>
     getKeyCombination(state, 'toggleAddModal'))
+  const copyKeyCombination = useSettingsSelector(state =>
+    getKeyCombination(state, 'copy'))
+  const pasteKeyCombination = useSettingsSelector(state =>
+    getKeyCombination(state, 'paste'))
+  const deleteKeyCombination = useSettingsSelector(state =>
+    getKeyCombination(state, 'delete'))
   const undoKeyCombination = useSettingsSelector(state =>
     getKeyCombination(state, 'undo'))
   const redoKeyCombination = useSettingsSelector(state =>
@@ -58,12 +70,37 @@ export default function AppHeaderView (): JSX.Element {
           />
           <ToolbarView.GroupView>
             <ButtonView
+              title={t('Copy')}
+              keyCombination={copyKeyCombination}
+              icon='copy'
+              modifiers='large'
+              onClick={() => dispatch(copyAction({}))}
+              disabled={!hasSelection}
+            />
+            <ButtonView
+              title={t('Paste')}
+              keyCombination={pasteKeyCombination}
+              icon='paste'
+              modifiers='large'
+              onClick={() => dispatch(pasteAction({}))}
+            />
+            <ButtonView
+              title={t('Delete')}
+              keyCombination={deleteKeyCombination}
+              icon='trash'
+              modifiers='large'
+              onClick={() => dispatch(deleteAction({}))}
+              disabled={!hasSelection}
+            />
+          </ToolbarView.GroupView>
+          <ToolbarView.GroupView>
+            <ButtonView
               title={t('Undo')}
               keyCombination={undoKeyCombination}
               icon='undo'
               modifiers='large'
               onClick={() => dispatch(undoAction())}
-              disabled={useAppSelector(state => state.blueprint.past.length) === 0}
+              disabled={!undoEnabled}
             />
             <ButtonView
               title={t('Redo')}
@@ -71,7 +108,7 @@ export default function AppHeaderView (): JSX.Element {
               icon='redo'
               modifiers='large'
               onClick={() => dispatch(redoAction())}
-              disabled={useAppSelector(state => state.blueprint.future.length) === 0}
+              disabled={!redoEnabled}
             />
           </ToolbarView.GroupView>
           <ButtonView

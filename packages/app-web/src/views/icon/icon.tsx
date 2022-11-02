@@ -112,6 +112,15 @@ const iconSVGMap = {
       <path fillRule='evenodd' clipRule='evenodd' d='M8 12C8 14.2091 9.79086 16 12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12ZM12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6Z' fill='currentColor' />
     </svg>
   ),
+  /** Icon by Iconic (https://iconic.app/clipboard/) */
+  paste: (props: SVGProps): JSX.Element => (
+    <svg {...props} width='24' height='24' fill='none' viewBox='0 0 24 24'>
+      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M9 6.75H7.75C6.64543 6.75 5.75 7.64543 5.75 8.75V17.25C5.75 18.3546 6.64543 19.25 7.75 19.25H16.25C17.3546 19.25 18.25 18.3546 18.25 17.25V8.75C18.25 7.64543 17.3546 6.75 16.25 6.75H15' />
+      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M14 8.25H10C9.44772 8.25 9 7.80228 9 7.25V5.75C9 5.19772 9.44772 4.75 10 4.75H14C14.5523 4.75 15 5.19772 15 5.75V7.25C15 7.80228 14.5523 8.25 14 8.25Z' />
+      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M9.75 12.25H14.25' />
+      <path stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M9.75 15.25H14.25' />
+    </svg>
+  ),
   /** Icon by Iconic (https://iconic.app/play/) */
   play: (props: SVGProps): JSX.Element => (
     <svg {...props} width='24' height='24' viewBox='0 0 24 24'>

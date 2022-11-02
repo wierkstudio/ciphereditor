@@ -13,9 +13,7 @@ import {
 } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
 import { ProgramNodeState } from '../types/program'
-import { getNode, getNodeChildren } from './blueprint'
-import { serializeControl } from './control'
-import { serializeOperation } from './operation'
+import { getNode, getNodeChildren, serializeNode } from './blueprint'
 import { serializeVariable } from './variable'
 
 // TODO: Move to a constants file
@@ -111,34 +109,23 @@ export const getNextProgramChildFrame = (state: BlueprintState, programId: Bluep
  */
 export const serializeProgram = (
   state: BlueprintState,
-  programId: BlueprintNodeId,
-  directory: DirectoryState
+  directory: DirectoryState | undefined,
+  programId: BlueprintNodeId
 ): ProgramNode => {
   const program = getProgramNode(state, programId)
   const children = getNodeChildren(state, programId)
 
   const serializedChildren: ProgramNode['children'] = []
   for (const child of children) {
-    switch (child.type) {
-      case BlueprintNodeType.Control: {
-        serializedChildren.push(serializeControl(state, child.id))
-        break
-      }
-      case BlueprintNodeType.Operation: {
-        serializedChildren.push(serializeOperation(state, child.id, directory))
-        break
-      }
-      case BlueprintNodeType.Program: {
-        serializedChildren.push(serializeProgram(state, child.id, directory))
-        break
-      }
+    if (child.type !== BlueprintNodeType.Variable) {
+      serializedChildren.push(serializeNode(state, directory, child.id))
     }
   }
 
   // Append variable nodes at the end
   for (const child of children) {
     if (child.type === BlueprintNodeType.Variable) {
-      const serializedVariable = serializeVariable(state, directory, child.id)
+      const serializedVariable = serializeVariable(state, child.id)
       if (serializedVariable !== undefined) {
         serializedChildren.push(serializedVariable)
       }

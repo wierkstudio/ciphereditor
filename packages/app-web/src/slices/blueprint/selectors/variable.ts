@@ -5,7 +5,6 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
-import { DirectoryState } from '../../directory/types'
 import { SerializedValue, VariableNode } from '@ciphereditor/library'
 import { VariableNodeState } from '../types/variable'
 import { getControlNode } from './control'
@@ -125,7 +124,6 @@ export const getVariableWireWaypoints = (
 
 export const serializeVariable = (
   state: BlueprintState,
-  directory: DirectoryState,
   variableId: BlueprintNodeId
 ): VariableNode | undefined => {
   const variable = getVariableNode(state, variableId)

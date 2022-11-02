@@ -5,7 +5,6 @@ import CanvasView from '../canvas/canvas'
 import ModalStackView from '../../views/modal-stack/modal-stack'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
-import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
@@ -35,8 +34,6 @@ export default function AppView (): JSX.Element {
   const { theme, reducedMotionPreference } =
     useSettingsSelector(getAccessibilitySettings)
 
-  const directory = useDirectorySelector(state => state)
-
   const onEditorMessage = useCallback((message: EditorMessage): void => {
     const messageType = message.type
     switch (messageType) {
@@ -49,12 +46,12 @@ export default function AppView (): JSX.Element {
       }
       case 'loadBlueprint': {
         const blueprint = message.blueprint
-        dispatch(loadBlueprintAction({ blueprint, directory }))
+        dispatch(loadBlueprintAction({ blueprint }))
         break
       }
       case 'addNodes': {
         const nodes = message.nodes
-        dispatch(addNodesAction({ nodes, directory }))
+        dispatch(addNodesAction({ nodes }))
         break
       }
     }
@@ -92,7 +89,7 @@ export default function AppView (): JSX.Element {
       const documentText = bufferToString(base64urlStringToBuffer(blueprintParameter))
       if (documentText !== undefined) {
         const blueprint = blueprintSchema.parse(JSON.parse(documentText))
-        dispatch(loadBlueprintAction({ blueprint, directory }))
+        dispatch(loadBlueprintAction({ blueprint }))
       }
     }
   }, [])
@@ -102,7 +99,10 @@ export default function AppView (): JSX.Element {
   // Shortcut handler, receives shortcut notation from a function that calls it,
   // this function looks up the shortcut notation in the shortcut "lookup" table
   // and dispatches the action
-  const onKeyCombination = useCallback((shortcut: string, event: KeyboardEvent) => {
+  const onKeyCombination = useCallback((
+    shortcut: string,
+    event: KeyboardEvent
+  ) => {
     const targets = keyBindings[shortcut]
     if (targets !== undefined) {
       event.preventDefault()
@@ -110,8 +110,9 @@ export default function AppView (): JSX.Element {
         const dispatchAction = keyBindingTargetDispatchActions[target]
         if (dispatchAction === undefined) {
           throw new Error(`Unexpected key binding target '${target}'`)
+        } else {
+          dispatch(dispatchAction)
         }
-        dispatch(dispatchAction)
       }
     }
   }, [keyBindings, dispatch])

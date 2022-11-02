@@ -1,4 +1,5 @@
 
+import IssueListView from '../issue-list/issue-list'
 import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
@@ -8,12 +9,11 @@ import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { OperationContribution } from '@ciphereditor/library'
 import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNodeState } from '../../slices/blueprint/types/operation'
+import { deleteAction } from '../../slices/blueprint'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
-import { openUrlAction, popModalAction } from '../../slices/ui'
-import { removeNodeAction } from '../../slices/blueprint'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
-import IssueListView from '../issue-list/issue-list'
+import { openUrlAction, popModalAction } from '../../slices/ui'
 
 export default function OperationModalView (props: OperationModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
@@ -56,7 +56,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
     icon: 'trash',
     onClick: (): void => {
       dispatch(popModalAction({}))
-      dispatch(removeNodeAction({ nodeId }))
+      dispatch(deleteAction({ nodeIds: [nodeId] }))
     }
   })
 
