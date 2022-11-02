@@ -5,12 +5,18 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { Blueprint, BlueprintNode } from '@ciphereditor/library'
-import { UICanvasMode } from '../../ui/types'
-import { serializeProgram } from './program'
+import {
+  Blueprint,
+  BlueprintNode,
+  collectNodesIds,
+  VariableNode
+} from '@ciphereditor/library'
 import { DirectoryState } from '../../directory/types'
+import { UICanvasMode } from '../../ui/types'
 import { serializeControl } from './control'
 import { serializeOperation } from './operation'
+import { serializeProgram } from './program'
+import { serializeVariable } from './variable'
 
 /**
  * Find a node by the given node id.
@@ -118,17 +124,64 @@ export const serializeNode = (
   }
 }
 
+/**
+ * Serialize a selection of nodes that descend from the same parent.
+ * Variable nodes within this selection will be ignored and replaced by
+ * variables that form connections between the remaining nodes.
+ * @param state Blueprint state slice
+ * @param directory Directory state slice used to retrieve operation meta data
+ * necessary to serialize embedded operations
+ * @param nodeIds Ids of nodes to be serialized
+ * @returns JSON serializable objects representing the nodes of the given ids
+ */
 export const serializeNodes = (
   state: BlueprintState,
   directory: DirectoryState | undefined,
   nodeIds: BlueprintNodeId[]
-): BlueprintNode[] =>
-  nodeIds
+): BlueprintNode[] => {
+  // Retrieve selected nodes and filter out variables
+  const nodes = nodeIds
     .map(nodeId => getNode(state, nodeId))
     .filter(node => node.type !== BlueprintNodeType.Variable)
-    .map(node => node.id)
-    // TODO: Serialize variables two or more of the given nodes are attached to
-    .map(serializeNode.bind(null, state, directory))
+
+  if (nodes.length === 0) {
+    return []
+  }
+
+  // Verify assumption: Nodes to be serialized must descend from the same parent
+  const parentId = nodes[0].parentId
+  for (let i = 0; i < nodes.length; i++) {
+    if (nodes[i].parentId !== parentId) {
+      throw new Error('Logic error: Nodes to be serialized must descend from the same parent')
+    }
+  }
+
+  // Serialize nodes that are not variables
+  const serializedNodes = nodes
+    .map(node => serializeNode(state, directory, node.id))
+  const serializedNodeIds = collectNodesIds(serializedNodes)
+
+  // Get variable nodes that descend from the same parent and serialize them.
+  // Next, strip attachments that are not referenced by the serialized nodes.
+  // Finally, strip variable nodes that do not form a connection between two or
+  // more nodes.
+  const serializedVariables = (
+    getNodeChildren(state, parentId, BlueprintNodeType.Variable)
+      .map(variable => serializeVariable(state, variable.id))
+      .map(serializedVariable => serializedVariable === undefined
+        ? undefined
+        : {
+            ...serializedVariable,
+            attachments: serializedVariable.attachments.filter(id =>
+              serializedNodeIds.includes(id))
+          })
+      .filter(serializedVariable =>
+        serializedVariable !== undefined &&
+        serializedVariable.attachments.length >= 2)
+  ) as VariableNode[]
+
+  return serializedNodes.concat(serializedVariables)
+}
 
 /**
  * Export the blueprint state to a JSON serializable object.

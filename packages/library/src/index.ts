@@ -1,6 +1,7 @@
 
 export * from './lib/2d'
 export * from './lib/binary'
+export * from './lib/blueprint'
 export * from './lib/issue'
 export * from './lib/type'
 export * from './lib/value'
