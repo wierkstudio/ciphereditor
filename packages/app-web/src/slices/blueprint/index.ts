@@ -19,6 +19,7 @@ import { executeOperation, setOperationState } from './reducers/operation'
 import { getControlNode } from './selectors/control'
 import { getNode, hasNode, serializeNodes } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
+import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
 
 export const defaultBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
@@ -238,13 +239,10 @@ export const blueprintSlice = createSlice({
       directory?: DirectoryState
     }>) => {
       const nodeIds = payload.nodeIds ?? state.selectedNodeIds
-      clipboard = serializeNodes(state, payload.directory, nodeIds)
-      deleteNodes(state, nodeIds)
-
-      // Try to write the copied serialized nodes to the clipboard
-      try {
-        void navigator.clipboard.writeText(JSON.stringify(clipboard))
-      } catch {
+      if (nodeIds.length > 0) {
+        clipboard = serializeNodes(state, payload.directory, nodeIds)
+        deleteNodes(state, nodeIds)
+        tryToWriteTextToClipboard(JSON.stringify(clipboard))
       }
     },
 
@@ -254,13 +252,8 @@ export const blueprintSlice = createSlice({
     }>) => {
       const nodeIds = payload.nodeIds ?? state.selectedNodeIds
       clipboard = serializeNodes(state, payload.directory, nodeIds)
-
       if (clipboard.length > 0) {
-        // Try to write the copied serialized nodes to the clipboard
-        try {
-          void navigator.clipboard.writeText(JSON.stringify(clipboard))
-        } catch {
-        }
+        tryToWriteTextToClipboard(JSON.stringify(clipboard))
       }
     },
 
@@ -272,8 +265,8 @@ export const blueprintSlice = createSlice({
         const directory = payload.directory
         const addedNodes = addNodes(state, clipboard, programId, directory)
 
+        // Select added nodes, if any
         if (addedNodes.length > 0) {
-          // Select added nodes
           state.selectedNodeIds = addedNodes.map(node => node.id)
         }
       }

@@ -46,3 +46,15 @@ export const releaseOptionalPointerCapture = (event: any): void => {
     }
   }
 }
+
+/**
+ * Try to write the given text to the system clipboard and ignore errors
+ * resulting from it.
+ */
+export const tryToWriteTextToClipboard = (text: string): void => {
+  try {
+    void navigator.clipboard.writeText(text)
+  } catch {
+    // Ignore errors
+  }
+}

@@ -16,6 +16,7 @@ import useTranslation from '../../hooks/useTranslation'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { extractValue, identifySerializedValueType, labelType, previewSerializedValue, SerializedValue, stringifyValue } from '@ciphereditor/library'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
+import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
 
 export default function ControlDrawerView (props: {
   control: ControlNodeState
@@ -38,7 +39,7 @@ export default function ControlDrawerView (props: {
 
   const onValueCopy = useCallback((event: MouseEvent<HTMLButtonElement>) => {
     // TODO: Make it visible to the user that they just copied the value
-    void navigator.clipboard.writeText(stringifyValue(extractValue(value)))
+    tryToWriteTextToClipboard(stringifyValue(extractValue(value)))
   }, [value])
 
   const onSelectChange = useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
