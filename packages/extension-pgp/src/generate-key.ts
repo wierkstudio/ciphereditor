@@ -72,7 +72,7 @@ const contribution: Contribution = {
       order: 1000
     }
   ],
-  timeout: 60000
+  timeout: 300000
 }
 
 const execute: OperationExecuteExport = async (request) => {

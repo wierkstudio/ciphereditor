@@ -18,7 +18,7 @@ import { getOperationContribution } from '../../directory/selectors'
 import { getOperationNode } from '../selectors/operation'
 
 // TODO: Move to a constants file
-const maxOperationTimeout = 5 * 60 * 1000
+const maxOperationTimeout = 10 * 60 * 1000
 const defaultOperationTimeout = 10 * 1000
 
 /**

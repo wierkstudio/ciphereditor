@@ -970,7 +970,7 @@ const defaultDirectoryState: DirectoryState = {
           order: 1000
         }
       ],
-      timeout: 60000
+      timeout: 300000
     },
     {
       type: 'operation',

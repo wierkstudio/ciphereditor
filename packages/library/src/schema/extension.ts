@@ -58,7 +58,7 @@ export const operationContributionSchema = z.object({
 
   /**
    * Execution timeout (in ms)
-   * Defaults to 10 seconds, limited to 5 minutes
+   * Defaults to 10 seconds, limited to 10 minutes
    */
   timeout: z.number().optional()
 })
