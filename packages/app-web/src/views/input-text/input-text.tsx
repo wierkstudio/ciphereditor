@@ -22,6 +22,7 @@ const stopPropagationForShortcuts = [
   'control+y',
   'control+z',
   'delete',
+  'enter',
   'meta+c',
   'meta+v',
   'meta+x',

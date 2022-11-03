@@ -74,6 +74,7 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'control+y': 'redo',
   'control+z': 'undo',
   'delete': 'delete',
+  'enter': 'enterProgram',
   'escape': ['closeModal', 'endWire']
   /* eslint-enable quote-props */
 }
@@ -93,10 +94,10 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'delete': 'delete',
   'escape': ['closeModal', 'endWire'],
   'meta+,': 'showSettings',
+  'meta+arrowdown': 'enterProgram',
   'meta+arrowup': 'leaveProgram',
   'meta+b': 'toggleMaximized',
   'meta+c': 'copy',
-  'meta+enter': 'enterProgram',
   'meta+k': 'toggleAddModal',
   'meta+s': 'shareBlueprint',
   'meta+v': 'paste',

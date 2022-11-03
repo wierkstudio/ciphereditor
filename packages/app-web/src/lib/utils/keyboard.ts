@@ -18,6 +18,7 @@ const keyPlatformSymbolMap: Record<string, Record<Platform, string> | string> = 
   backspace: { windows: 'Backspace', macos: '⌫', unknown: 'Backspace' },
   control: { windows: 'Ctrl', macos: '⌃', unknown: 'Ctrl' },
   delete: { windows: 'Delete', macos: '⌦', unknown: 'Delete' },
+  enter: { windows: 'Enter', macos: '↵', unknown: 'Enter' },
   escape: 'ESC',
   meta: { windows: 'Win', macos: '⌘', unknown: 'Meta' },
   shift: { windows: 'Shift', macos: '⇧', unknown: 'Shift' }
