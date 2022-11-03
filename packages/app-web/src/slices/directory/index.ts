@@ -848,7 +848,8 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text'],
           order: 1000
         }
-      ]
+      ],
+      timeout: 20000
     },
     {
       type: 'operation',
@@ -895,7 +896,8 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text', 'bytes'],
           order: 1000
         }
-      ]
+      ],
+      timeout: 30000
     },
     {
       type: 'operation',
@@ -967,7 +969,8 @@ const defaultDirectoryState: DirectoryState = {
           writable: false,
           order: 1000
         }
-      ]
+      ],
+      timeout: 60000
     },
     {
       type: 'operation',
