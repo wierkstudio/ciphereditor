@@ -7,7 +7,8 @@ import {
   compareSerializedValues,
   createEmptyValue,
   identifySerializedValueType,
-  serializeValue
+  serializeValue,
+  SerializedValue
 } from '@ciphereditor/library'
 import {
   BlueprintNodeId,
@@ -95,17 +96,18 @@ export const addControlNode = (
  * @param state Blueprint state
  * @param operationId Operation node id
  * @param control Control to be added
+ * @param initialValue Initial value, if deviating from the default value
  * @returns New control node
  */
 export const addOperationControlNode = (
   state: BlueprintState,
   operationId: BlueprintNodeId,
-  control: Control
+  control: Control,
+  initialValue: SerializedValue | undefined
 ): ControlNodeState => {
-  const value = control.value
+  const value = initialValue ?? control.value
   const options = control.options ?? []
-  const index = options.findIndex(option =>
-    compareSerializedValues(option.value, value))
+  const index = options.findIndex(o => compareSerializedValues(o.value, value))
   const selectedOptionIndex = index !== -1 ? index : undefined
   const controlNode: ControlNodeState = {
     ...defaultControlNode,

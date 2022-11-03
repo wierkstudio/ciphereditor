@@ -14,10 +14,11 @@ import { addControlNode } from './control'
 import { addOperationNode } from './operation'
 import { addProgramNode, updateProgramContentBounds } from './program'
 import { addVariable, attachControlToVariable } from './variable'
-import { arrayRemove, arrayUnique } from '../../../lib/utils/array'
+import { arrayRemove, arrayUnique, arrayUniquePush } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
 import { getNode, hasNode } from '../selectors/blueprint'
 import { getVariableNode } from '../selectors/variable'
+import { OperationExecutionState, OperationNodeState } from '../types/operation'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -83,6 +84,14 @@ export const addChildNode = <T extends BlueprintNodeState>(
 
   if (parentNode.type === BlueprintNodeType.Program) {
     updateProgramContentBounds(state, parentNode.id)
+  }
+
+  // Update busy operation ids if a busy operation was added
+  if (childNode.type === BlueprintNodeType.Operation) {
+    const operation = (childNode as any) as OperationNodeState
+    if (operation.state === OperationExecutionState.Busy) {
+      state.busyOperationIds = arrayUniquePush(state.busyOperationIds, operation.id)
+    }
   }
 
   return childNode

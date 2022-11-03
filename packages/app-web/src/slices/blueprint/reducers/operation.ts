@@ -59,6 +59,9 @@ export const addOperationNode = (
     state: operationNode.initialExecution === true
       ? OperationExecutionState.Busy
       : OperationExecutionState.Ready,
+    requestVersion: operationNode.initialExecution === true
+      ? 0
+      : undefined,
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
@@ -72,13 +75,13 @@ export const addOperationNode = (
 
   const nameControlMap: Record<string, ControlNodeState> = {}
   const controls = operationContribution.controls.map(controlContribution => {
-    const control = addOperationControlNode(state, operation.id, controlContribution)
-    const overrides = operationNode.controls?.[control.name]
+    const overrides = operationNode.controls?.[controlContribution.name]
+    const control = addOperationControlNode(
+      state, operation.id, controlContribution, overrides?.value)
     if (overrides !== undefined) {
       if (refIdMap !== undefined && overrides.id !== undefined) {
         refIdMap[overrides.id] = control.id
       }
-      control.value = overrides.value ?? control.value
       control.visibility = overrides.visibility ?? control.visibility
     }
     nameControlMap[control.name] = control
@@ -109,20 +112,21 @@ export const setOperationState = (
   operation.state = newState
   operation.issues = issues ?? []
   switch (newState) {
-    case OperationExecutionState.Ready:
+    case OperationExecutionState.Ready: {
       state.busyOperationIds = arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
       break
-
-    case OperationExecutionState.Busy:
+    }
+    case OperationExecutionState.Busy: {
       state.busyOperationIds = arrayUniquePush(state.busyOperationIds, operation.id)
       operation.requestVersion = 0
       break
-
-    case OperationExecutionState.Error:
+    }
+    case OperationExecutionState.Error: {
       state.busyOperationIds = arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
       break
+    }
   }
 }
 
