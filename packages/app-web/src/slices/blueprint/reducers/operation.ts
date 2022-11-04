@@ -48,6 +48,10 @@ export const addOperationNode = (
 
   const frame = operationNode.frame ?? getNextProgramChildFrame(state, programId)
 
+  const initialExecution =
+    operationNode.initialExecution ??
+    operationContribution.reproducible === false
+
   const operation: OperationNodeState = {
     type: BlueprintNodeType.Operation,
     id: nextNodeId(state),
@@ -56,12 +60,10 @@ export const addOperationNode = (
     label: operationContribution.label ?? capitalCase(operationContribution.name),
     childIds: [],
     reproducible: operationContribution.reproducible !== false,
-    state: operationNode.initialExecution === true
+    state: initialExecution
       ? OperationExecutionState.Busy
       : OperationExecutionState.Ready,
-    requestVersion: operationNode.initialExecution === true
-      ? 0
-      : undefined,
+    requestVersion: initialExecution ? 0 : undefined,
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,

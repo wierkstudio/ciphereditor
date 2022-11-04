@@ -96,7 +96,7 @@ export default function OperationView (props: {
         <div className='operation__header-end'>
           {canExecute && (
             <ButtonView
-              icon='play'
+              icon='refresh'
               title={t('(Re-)execute operation')}
               onClick={() => dispatch(executeOperationAction({ nodeId }))}
             />
