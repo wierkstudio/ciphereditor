@@ -8,15 +8,16 @@ import {
   toggleEmbedMaximizedAction
 } from '../ui'
 import {
+  copyAction,
+  cutAction,
+  deleteAction,
   enterProgramAction,
   leaveProgramAction,
-  redoAction,
-  deleteAction,
-  undoAction,
-  cutAction,
-  copyAction,
+  moveAction,
   pasteAction,
-  moveAction
+  redoAction,
+  selectAllAction,
+  undoAction
 } from '../blueprint'
 import { AppDispatch } from '../../store'
 
@@ -42,6 +43,7 @@ export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchA
   nudgeNodeUp: moveAction({ delta: { x: 0, y: -nudgeAmount } }),
   paste: pasteAction({}),
   redo: redoAction(),
+  selectAll: selectAllAction(),
   // TODO: Replace by share modal (when it becomes available)
   shareBlueprint: pushDeadEndModalAction({}),
   showSettings: pushModalAction({ payload: { type: 'settings' } }),
@@ -63,6 +65,7 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'arrowup': 'nudgeNodeUp',
   'backspace': 'delete',
   'control+,': 'showSettings',
+  'control+a': 'selectAll',
   'control+b': 'toggleMaximized',
   'control+c': 'copy',
   'control+k': 'toggleAddModal',
@@ -94,6 +97,7 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'delete': 'delete',
   'escape': ['closeModal', 'endWire'],
   'meta+,': 'showSettings',
+  'meta+a': 'selectAll',
   'meta+arrowdown': 'enterProgram',
   'meta+arrowup': 'leaveProgram',
   'meta+b': 'toggleMaximized',

@@ -47,8 +47,12 @@ export default function CanvasView (): JSX.Element {
 
   // Move canvas interaction
   const onPointerDown = usePointerDrag((state, delta, event) => {
-    const deltaOffset = { x: -delta.x, y: -delta.y }
-    dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
+    if (state === 'move') {
+      const deltaOffset = { x: -delta.x, y: -delta.y }
+      dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
+    } else if (state === 'cancel' && hasSelection) {
+      dispatch(selectAction({ nodeIds: [] }))
+    }
   })
 
   useNormalizedWheel((event, wheelFacts) => {
@@ -88,7 +92,6 @@ export default function CanvasView (): JSX.Element {
   const onCanvasFocus = (event: FocusEvent): void => {
     event.stopPropagation()
     if (hasSelection) {
-      // Clear selection
       dispatch(selectAction({ nodeIds: [] }))
     }
   }

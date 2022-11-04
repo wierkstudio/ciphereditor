@@ -20,6 +20,7 @@ import { getControlNode } from './selectors/control'
 import { getNode, hasNode, serializeNodes } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
 import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
+import { getProgramNode } from './selectors/program'
 
 export const defaultBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
@@ -223,6 +224,15 @@ export const blueprintSlice = createSlice({
       selectNodes(state, payload.nodeIds)
     },
 
+    selectAllAction: (state, { payload }: PayloadAction) => {
+      if (state.activeProgramId !== undefined) {
+        const program = getProgramNode(state, state.activeProgramId)
+        selectNodes(state, program.childIds)
+      } else {
+        selectNodes(state, [state.rootProgramId])
+      }
+    },
+
     moveAction: (state, { payload }: PayloadAction<{
       nodeIds?: BlueprintNodeId[]
       delta: Point
@@ -332,6 +342,7 @@ export const {
   applyOperationResultAction,
   executeOperationAction,
   selectAction,
+  selectAllAction,
   moveAction,
   cutAction,
   copyAction,

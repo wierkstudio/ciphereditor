@@ -141,11 +141,11 @@ export default function AppHeaderView (): JSX.Element {
           />
           {embedType !== UIEmbedType.Website && (
             <ButtonView
-              title={t('View manual')}
+              title={t('View docs')}
               icon='help'
               modifiers='large'
               onClick={() => dispatch(openUrlAction({
-                url: 'https://ciphereditor.com/manual'
+                url: 'https://ciphereditor.com/docs'
               }))}
             />
           )}
