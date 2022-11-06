@@ -407,6 +407,83 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/swap-endianness',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Swap endianness',
+      description: 'Switch bit string from big-endian to little-endian or vice-versa.',
+      url: 'https://ciphereditor.com/operations/swap-endianness',
+      keywords: ['binary', 'bytes', 'words', 'bit'],
+      controls: [
+        {
+          name: 'data',
+          value: { type: 'bytes', data: 'Y2lwaGVyZWRpdG9y' },
+          types: ['bytes']
+        },
+        {
+          name: 'wordLength',
+          label: 'Word byte length',
+          value: 4,
+          types: ['integer']
+        },
+        {
+          name: 'padWords',
+          label: 'Pad incomplete words',
+          value: true,
+          types: ['boolean']
+        },
+        {
+          name: 'transformedData',
+          value: { type: 'bytes', data: 'aHBpY2RlcmVyb3Rp' },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/bitwise-operator',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Bitwise operation',
+      description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
+      url: 'https://ciphereditor.com/operations/bitwise-operator',
+      keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
+      controls: [
+        {
+          name: 'data',
+          value: { type: 'bytes', data: 'Y2lwaGVyZWRpdG9y' },
+          types: ['bytes']
+        },
+        {
+          name: 'key',
+          value: { type: 'bytes', data: 'VQ==' },
+          types: ['bytes']
+        },
+        {
+          name: 'operator',
+          value: 'xor',
+          types: ['text'],
+          options: [
+            { value: 'not', label: 'NOT ~a' },
+            { value: 'and', label: 'AND (a & b)' },
+            { value: 'or', label: 'OR (a | b)' },
+            { value: 'xor', label: 'XOR (a ^ b)' },
+            { value: 'nand', label: 'NAND ~(a & b)' },
+            { value: 'nor', label: 'NOR ~(a | b)' },
+            { value: 'nxor', label: 'NXOR ~(a ^ b)' },
+            { value: 'add', label: 'ADD (a + b)' },
+            { value: 'sub', label: 'SUB (a - b) }' }
+          ]
+        },
+        {
+          name: 'encodedData',
+          value: { type: 'bytes', data: 'NjwlPTAnMDE8ITon' },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-hash/hash',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
       label: 'Hash function',
@@ -506,49 +583,6 @@ const defaultDirectoryState: DirectoryState = {
           value: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
           types: ['text', 'bytes'],
           writable: false,
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-essentials/bitwise-operator',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Bitwise operation',
-      description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
-      url: 'https://ciphereditor.com/operations/bitwise-operator',
-      keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
-      controls: [
-        {
-          name: 'data',
-          value: { type: 'bytes', data: 'Y2lwaGVyZWRpdG9y' },
-          types: ['bytes']
-        },
-        {
-          name: 'key',
-          value: { type: 'bytes', data: 'VQ==' },
-          types: ['bytes']
-        },
-        {
-          name: 'operator',
-          value: 'xor',
-          types: ['text'],
-          options: [
-            { value: 'not', label: 'NOT ~a' },
-            { value: 'and', label: 'AND (a & b)' },
-            { value: 'or', label: 'OR (a | b)' },
-            { value: 'xor', label: 'XOR (a ^ b)' },
-            { value: 'nand', label: 'NAND ~(a & b)' },
-            { value: 'nor', label: 'NOR ~(a | b)' },
-            { value: 'nxor', label: 'NXOR ~(a ^ b)' },
-            { value: 'add', label: 'ADD (a + b)' },
-            { value: 'sub', label: 'SUB (a - b) }' }
-          ]
-        },
-        {
-          name: 'encodedData',
-          value: { type: 'bytes', data: 'NjwlPTAnMDE8ITon' },
-          types: ['bytes'],
           order: 1000
         }
       ]
