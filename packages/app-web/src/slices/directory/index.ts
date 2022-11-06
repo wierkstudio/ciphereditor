@@ -512,6 +512,49 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/bitwise-operator',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Bitwise operation',
+      description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
+      url: 'https://ciphereditor.com/operations/bitwise-operator',
+      keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
+      controls: [
+        {
+          name: 'data',
+          value: { type: 'bytes', data: 'Y2lwaGVyZWRpdG9y' },
+          types: ['bytes']
+        },
+        {
+          name: 'key',
+          value: { type: 'bytes', data: 'VQ==' },
+          types: ['bytes']
+        },
+        {
+          name: 'operator',
+          value: 'xor',
+          types: ['text'],
+          options: [
+            { value: 'not', label: 'NOT ~a' },
+            { value: 'and', label: 'AND (a & b)' },
+            { value: 'or', label: 'OR (a | b)' },
+            { value: 'xor', label: 'XOR (a ^ b)' },
+            { value: 'nand', label: 'NAND ~(a & b)' },
+            { value: 'nor', label: 'NOR ~(a | b)' },
+            { value: 'nxor', label: 'NXOR ~(a ^ b)' },
+            { value: 'add', label: 'ADD (a + b)' },
+            { value: 'sub', label: 'SUB (a - b) }' }
+          ]
+        },
+        {
+          name: 'encodedData',
+          value: { type: 'bytes', data: 'NjwlPTAnMDE8ITon' },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-not',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical NOT',

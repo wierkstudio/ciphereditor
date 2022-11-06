@@ -1,5 +1,6 @@
 
 import binaryToText from './binary-to-text'
+import bitwiseOperator from './bitwise-operator'
 import caesarCipher from './caesar-cipher'
 import caseTransform from './case-transform'
 import concatenate from './concatenate'
@@ -15,6 +16,7 @@ import { ExtensionActivateExport } from '@ciphereditor/library'
 
 export const activate: ExtensionActivateExport = (context) => [
   binaryToText,
+  bitwiseOperator,
   caesarCipher,
   caseTransform,
   concatenate,
