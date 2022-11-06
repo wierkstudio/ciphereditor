@@ -3,6 +3,7 @@ import {
   addNodesAction,
   copyAction,
   cutAction,
+  duplicateAction,
   loadBlueprintAction,
   pasteAction
 } from '../../slices/blueprint'
@@ -13,11 +14,12 @@ import { RootState } from '../../slices'
  * Array of action types containing the directory attribute to be injected
  */
 const directoryDependentActionTypes = [
-  cutAction.type,
+  addNodesAction.type,
   copyAction.type,
-  pasteAction.type,
+  cutAction.type,
+  duplicateAction.type,
   loadBlueprintAction.type,
-  addNodesAction.type
+  pasteAction.type
 ]
 
 export const directoryMiddleware: Middleware<{}, RootState> = store => {

@@ -282,6 +282,21 @@ export const blueprintSlice = createSlice({
       }
     },
 
+    duplicateAction: (state, { payload }: PayloadAction<{
+      nodeIds?: BlueprintNodeId[]
+      directory?: DirectoryState
+    }>) => {
+      const directory = payload.directory
+      const nodeIds = payload.nodeIds ?? state.selectedNodeIds
+      const duplicatingNodes = serializeNodes(state, directory, nodeIds)
+      const addedNodes = addNodes(state, duplicatingNodes, undefined, directory)
+
+      // Select added nodes, if any
+      if (addedNodes.length > 0) {
+        state.selectedNodeIds = addedNodes.map(node => node.id)
+      }
+    },
+
     deleteAction: (state, { payload }: PayloadAction<{
       nodeIds?: BlueprintNodeId[]
     }>) => {
@@ -347,6 +362,7 @@ export const {
   cutAction,
   copyAction,
   pasteAction,
+  duplicateAction,
   deleteAction,
   moveOffsetAction,
   layoutNodeAction
