@@ -22,6 +22,7 @@ As a monorepo this repository contains multiple packages that share common depen
 - 📦 [`processor`](packages/processor/README.md) - JavaScript sandbox for Browser environments where extensions are executed in
 - 📦 `library` - Logic and types shared between packages and third-party extensions
 - 📦 `extension-essentials` - Extension providing essential operations
+- 📦 `extension-codepages` - Extension providing code pages for character encodings
 - 📦 `extension-hash` - Extension providing operations related to cryptographic hash functions
 - 📦 `extension-pgp` - Extension providing operations related to the OpenPGP protocol
 

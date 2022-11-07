@@ -16,6 +16,7 @@
     "library-watch": "npm run watch -w @ciphereditor/library",
     "processor-build": "npm run build -w @ciphereditor/processor",
     "processor-watch": "npm run watch -w @ciphereditor/processor",
+    "extension-codepages-build": "npm run build -w @ciphereditor/extension-codepages",
     "extension-essentials-build": "npm run build -w @ciphereditor/extension-essentials",
     "extension-essentials-watch": "npm run watch -w @ciphereditor/extension-essentials",
     "extension-hash-build": "npm run build -w @ciphereditor/extension-hash",
