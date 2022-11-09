@@ -12,8 +12,7 @@ import { addChildNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
 import { capitalCase } from 'change-case'
-import { getNextProgramChildFrame } from '../selectors/program'
-import { getNode } from '../selectors/blueprint'
+import { getNextNodeFrame, getNode } from '../selectors/blueprint'
 import { getOperationContribution } from '../../directory/selectors'
 import { getOperationNode } from '../selectors/operation'
 
@@ -46,8 +45,6 @@ export const addOperationNode = (
     throw new Error('Needs implementation: Placeholder operation nodes')
   }
 
-  const frame = operationNode.frame ?? getNextProgramChildFrame(state, programId)
-
   const initialExecution =
     operationNode.initialExecution ??
     operationContribution.reproducible === false
@@ -67,7 +64,7 @@ export const addOperationNode = (
     issues: [],
     priorityControlIds: [],
     extensionUrl: operationContribution.extensionUrl,
-    frame,
+    frame: getNextNodeFrame(state, programId, operationNode.frame),
     timeout: operationContribution.timeout !== undefined
       ? Math.max(Math.min(operationContribution.timeout, maxOperationTimeout), 0)
       : defaultOperationTimeout

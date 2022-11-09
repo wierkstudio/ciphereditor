@@ -5,9 +5,19 @@ import {
   BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
-import { Blueprint, BlueprintNode } from '@ciphereditor/library'
+import {
+  Blueprint,
+  BlueprintNode,
+  deltaPoint,
+  getCombinedBlueprintNodesRect,
+  getRectFromOriginAndSize,
+  getRectOrigin,
+  getRectSize,
+  movePointBy
+} from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
+import { OperationExecutionState, OperationNodeState } from '../types/operation'
 import { ProgramNodeState } from '../types/program'
 import { VariableNodeState } from '../types/variable'
 import { addControlNode } from './control'
@@ -16,9 +26,8 @@ import { addProgramNode, updateProgramContentBounds } from './program'
 import { addVariable, attachControlToVariable } from './variable'
 import { arrayRemove, arrayUnique, arrayUniquePush } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
-import { getNode, hasNode } from '../selectors/blueprint'
+import { getNextNodeFrame, getNode, hasNode } from '../selectors/blueprint'
 import { getVariableNode } from '../selectors/variable'
-import { OperationExecutionState, OperationNodeState } from '../types/operation'
 
 /**
  * Generate a new node id that has not been assigned, yet.
@@ -98,12 +107,13 @@ export const addChildNode = <T extends BlueprintNodeState>(
 }
 
 /**
- * Add the given nodes to the state
- * @param state Blueprint state slice
+ * Add the given nodes to the blueprint state at the current program offset.
+ * If multiple nodes are added, make sure the relative positioning stays intact.
+ * @param state Blueprint state
  * @param nodes Nodes to be added
  * @param programId Parent program id or `undefined`, if the currently active
  * program should be used. If the active program is `undefined` the given nodes
- * are added next to the previous root program (creating a new root).
+ * are added next to the root program (creating a new root program around it).
  * @param directory Directory state slice used to instanciate operations.
  * If set to `undefined` placeholder operation nodes will be added, instead.
  * @param refIdMap Object mapping serialized ids to instanciated ids found
@@ -123,47 +133,77 @@ export const addNodes = (
     // Create a new program and install it as the new root
     addProgramNode(state, { type: 'program' }, undefined).id
 
-  // TODO: Make sure variables are added last (as we need attachment ids)
-  return nodes.map((node): BlueprintNodeState => {
-    const nodeType = node.type
-    switch (nodeType) {
-      case 'operation': {
-        return addOperationNode(state, node, parentId, directory, refIdMap)
-      }
-      case 'control': {
-        return addControlNode(state, node, parentId, refIdMap)
-      }
-      case 'program': {
-        return addProgramNode(state, node, parentId, directory, refIdMap)
-      }
-      case 'variable': {
-        // TODO: Make sure the push/pull controls are maintained
-        // TODO: Throw if at least one ref id can't be resolved
-        const attachmentIds = node.attachments.map(refId => {
-          const nodeId = refIdMap[refId]
-          if (nodeId === undefined) {
-            throw new Error(`Reference id ${refId} cannot be resolved to a node id`)
-          }
-          return nodeId
-        })
-        if (attachmentIds.length === 0) {
-          throw new Error('Variable must have at least one attachment')
-        }
+  // Layout
+  const nextNodeFrame = getNextNodeFrame(state, parentId)
+  const nodesRect = getCombinedBlueprintNodesRect(nodes) ?? nextNodeFrame
+  const repositionVector =
+    deltaPoint(getRectOrigin(nextNodeFrame), getRectOrigin(nodesRect))
 
-        const [firstControlId, ...remainingControlIds] = attachmentIds
-        const firstControl = getControlNode(state, firstControlId)
-        const outward = firstControl.parentId !== parentId
-        const variable = addVariable(state, firstControlId, outward)
-        for (const controlId of remainingControlIds) {
-          attachControlToVariable(state, controlId, variable.id)
+  // Order in which node types are being added
+  const nodeTypeAddOrder: Array<BlueprintNode['type']> =
+    ['program', 'operation', 'control', 'variable']
+
+  return nodes
+    // Assign a frame to each node where it will be positioned
+    .map(node => {
+      if (node.type === 'variable') {
+        return node
+      }
+      const leadingTopPoint = node.frame !== undefined
+        ? movePointBy(getRectOrigin(node.frame), repositionVector)
+        : nextNodeFrame
+      const size = node.frame !== undefined
+        ? getRectSize(node.frame)
+        : getRectSize(nextNodeFrame)
+      const frame = getRectFromOriginAndSize(leadingTopPoint, size)
+      return { ...node, frame }
+    })
+
+    // Make sure variables are added last
+    .sort((a, b) =>
+      nodeTypeAddOrder.indexOf(a.type) -
+      nodeTypeAddOrder.indexOf(b.type))
+
+    // Add each node to the blueprint state
+    .map((node): BlueprintNodeState => {
+      const nodeType = node.type
+      switch (nodeType) {
+        case 'operation': {
+          return addOperationNode(state, node, parentId, directory, refIdMap)
         }
-        return variable
+        case 'control': {
+          return addControlNode(state, node, parentId, refIdMap)
+        }
+        case 'program': {
+          return addProgramNode(state, node, parentId, directory, refIdMap)
+        }
+        case 'variable': {
+          const attachmentIds = node.attachments.map(refId => {
+            const nodeId = refIdMap[refId]
+            if (nodeId === undefined) {
+              throw new Error(`Reference id ${refId} cannot be resolved to a node id`)
+            }
+            return nodeId
+          })
+
+          if (attachmentIds.length === 0) {
+            throw new Error('Variable must have at least one attachment')
+          }
+
+          const [firstControlId, ...remainingControlIds] = attachmentIds
+          const firstControl = getControlNode(state, firstControlId)
+          const outward = firstControl.parentId !== parentId
+          const variable = addVariable(state, firstControlId, outward)
+          for (const controlId of remainingControlIds) {
+            attachControlToVariable(state, controlId, variable.id)
+          }
+          return variable
+        }
+        default: {
+          throw new Error(`Node with type '${nodeType as string}' cannot be added`)
+        }
       }
-      default: {
-        throw new Error(`Node with type '${nodeType as string}' cannot be added`)
-      }
-    }
-  })
+    })
 }
 
 /**

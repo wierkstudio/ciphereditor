@@ -16,9 +16,6 @@ import { ProgramNodeState } from '../types/program'
 import { getNode, getNodeChildren, serializeNode } from './blueprint'
 import { serializeVariable } from './variable'
 
-// TODO: Move to a constants file
-const defaultNodeSize = { width: 320, height: 96 }
-
 /**
  * Find a program node by the given node id.
  * @param state Blueprint state
@@ -85,16 +82,6 @@ export const getVisibleVariableIds = (state: BlueprintState): BlueprintNodeId[] 
   } else {
     // Outside the root program there are no variables or wires
     return []
-  }
-}
-
-export const getNextProgramChildFrame = (state: BlueprintState, programId: BlueprintNodeId): Rect => {
-  const program = getProgramNode(state, programId)
-  return {
-    x: program.offset.x - defaultNodeSize.width * 0.5,
-    y: program.offset.y - defaultNodeSize.height * 0.5,
-    width: defaultNodeSize.width,
-    height: defaultNodeSize.height
   }
 }
 

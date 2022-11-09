@@ -23,8 +23,7 @@ import { arrayUniqueUnshift } from '../../../lib/utils/array'
 import { capitalCase } from 'change-case'
 import { deriveUniqueName } from '../../../lib/utils/string'
 import { getControlNode } from '../selectors/control'
-import { getNextProgramChildFrame } from '../selectors/program'
-import { getNode, getNodeChildren } from '../selectors/blueprint'
+import { getNextNodeFrame, getNode, getNodeChildren } from '../selectors/blueprint'
 import { setOperationState } from './operation'
 
 /**
@@ -70,16 +69,13 @@ export const addControlNode = (
   const usedLabels = controls.map(control => control.label)
   const uniqueLabel = deriveUniqueName(controlNode.label ?? defaultControlNode.label, usedLabels)
 
-  // Choose frame
-  const frame = controlNode.frame ?? getNextProgramChildFrame(state, programId)
-
   const control: ControlNodeState = {
     ...defaultControlNode,
     parentId: programId,
     id,
     name: `control${id}`,
     label: uniqueLabel,
-    frame,
+    frame: getNextNodeFrame(state, programId, controlNode.frame),
     value: controlNode.value,
     visibility: controlNode.visibility ?? defaultControlNode.visibility
   }

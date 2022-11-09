@@ -1,5 +1,5 @@
 
-import { Point, Rect } from '../schema/2d'
+import { Point, Rect, Size } from '../schema/2d'
 
 /**
  * Move the given point by delta coordinates
@@ -73,3 +73,27 @@ export const expandRect = (rect: Rect, value: number): Rect => ({
  */
 export const rectEqualTo = (a: Rect, b: Rect): boolean =>
   a.x === b.x && a.y === b.y && a.width === b.width && a.height === b.height
+
+/**
+ * Return the origin (or leading top point) of the given rect.
+ */
+export const getRectOrigin =
+  ({ x, y }: Rect): Point => ({ x, y })
+
+/**
+ * Return the center point of the given size.
+ */
+export const getSizeCenter =
+  ({ width, height }: Size): Point => ({ x: width * 0.5, y: height * 0.5 })
+
+/**
+ * Return a rect from the given origin and size.
+ */
+export const getRectFromOriginAndSize =
+  ({ x, y }: Point, { width, height }: Size): Rect => ({ x, y, width, height })
+
+/**
+ * Return the size of the given rect.
+ */
+export const getRectSize =
+  ({ width, height }: Rect): Size => ({ width, height })

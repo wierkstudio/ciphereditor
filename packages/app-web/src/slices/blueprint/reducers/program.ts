@@ -5,15 +5,12 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
-import { movePointBy, Point, ProgramNode, Rect } from '@ciphereditor/library'
 import { ProgramNodeState } from '../types/program'
 import { addChildNode, addNodes, nextNodeId } from './blueprint'
+import { defaultNodeSize } from '../../../constants'
 import { deriveUniqueName } from '../../../lib/utils/string'
-import { getNextProgramChildFrame } from '../selectors/program'
-import { getNode, getNodeChildren } from '../selectors/blueprint'
-
-// TODO: Move to a constants file
-const defaultNodeSize = { width: 320, height: 96 }
+import { getNextNodeFrame, getNode, getNodeChildren } from '../selectors/blueprint'
+import { movePointBy, Point, ProgramNode } from '@ciphereditor/library'
 
 /**
  * Default program node object
@@ -64,14 +61,6 @@ export const addProgramNode = (
   const label = programNode.label
   const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
 
-  // Choose program frame
-  let frame: Rect | undefined = programNode.frame
-  if (frame === undefined && parentId !== undefined) {
-    frame = getNextProgramChildFrame(state, parentId)
-  } else if (frame === undefined) {
-    frame = defaultProgramNode.frame
-  }
-
   const program: ProgramNodeState = {
     ...defaultProgramNode,
     id,
@@ -79,7 +68,9 @@ export const addProgramNode = (
     childIds: [],
     label: uniqueLabel,
     offset: programNode.offset ?? defaultProgramNode.offset,
-    frame
+    frame: parentId !== undefined
+      ? getNextNodeFrame(state, parentId, programNode.frame)
+      : defaultProgramNode.frame
   }
 
   addChildNode(state, program)

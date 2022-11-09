@@ -8,15 +8,23 @@ import {
 import {
   Blueprint,
   BlueprintNode,
+  Rect,
+  VariableNode,
   collectNodesIds,
-  VariableNode
+  deltaPoint,
+  getRectFromOriginAndSize,
+  getRectOrigin,
+  getRectSize,
+  getSizeCenter,
+  movePointBy
 } from '@ciphereditor/library'
 import { DirectoryState } from '../../directory/types'
 import { UICanvasMode } from '../../ui/types'
 import { serializeControl } from './control'
 import { serializeOperation } from './operation'
-import { serializeProgram } from './program'
+import { getProgramNode, serializeProgram } from './program'
 import { serializeVariable } from './variable'
+import { defaultNodeSize, nodeShiftVector } from '../../../constants'
 
 /**
  * Find a node by the given node id.
@@ -68,6 +76,44 @@ export const getNodeChildren = (
     .childIds
     .map(id => getNode(state, id))
     .filter(node => type === undefined || node.type === type)
+
+/**
+ * Lay out the frame of an incoming node. Make sure two nodes are not placed on
+ * top of each other by shifting them (e.g. when duplicating nodes).
+ * @param state Blueprint state
+ * @param programId Program in which the node frame is layed out
+ * @param targetFrame Target frame or `undefined` to derive it from the current
+ * program offset and default node size
+ */
+export const getNextNodeFrame = (
+  state: BlueprintState,
+  programId: BlueprintNodeId,
+  targetFrame?: Rect
+): Rect => {
+  const program = getProgramNode(state, programId)
+  let origin = targetFrame !== undefined
+    ? getRectOrigin(targetFrame)
+    : deltaPoint(program.offset, getSizeCenter(defaultNodeSize))
+
+  // Shift the frame origin as long as another node is blocking it
+  const nodes = getNodeChildren(state, programId)
+  let blockingNode: BlueprintNodeState | undefined
+  do {
+    blockingNode = nodes.find(node =>
+      node.frame !== undefined &&
+      Math.abs(node.frame.x - origin.x) < nodeShiftVector.x &&
+      Math.abs(node.frame.y - origin.y) < nodeShiftVector.y)
+    if (blockingNode !== undefined) {
+      origin = movePointBy(blockingNode.frame as Rect, nodeShiftVector)
+    }
+  } while (blockingNode !== undefined)
+
+  // Compose non-blocking frame rect
+  const size = targetFrame !== undefined
+    ? getRectSize(targetFrame)
+    : defaultNodeSize
+  return getRectFromOriginAndSize(origin, size)
+}
 
 /**
  * Retrive a node position on the plane or sequential canvas.

@@ -27,7 +27,7 @@
     left: rem(-1);
     z-index: 1;
     border-radius: rem(8);
-    border: rem(2) solid transparent;
+    border: rem(2) solid $c-muted;
     pointer-events: none;
   }
 
