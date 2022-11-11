@@ -122,7 +122,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/google-translate',
   label: 'Google Translate',
   description: 'Translate content between languages using the Google Cloud Translation API',
-  url: 'https://ciphereditor.com/operations/google-translate',
+  url: 'https://ciphereditor.com/explore/google-translate',
   keywords: ['english', 'german', 'spanish', 'french'],
   controls: [
     {

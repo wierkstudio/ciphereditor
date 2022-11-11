@@ -6,7 +6,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/swap-endianness',
   label: 'Swap endianness',
   description: 'Switch bit string from big-endian to little-endian or vice-versa.',
-  url: 'https://ciphereditor.com/operations/swap-endianness',
+  url: 'https://ciphereditor.com/explore/swap-endianness',
   keywords: ['binary', 'bytes', 'words', 'bit', 'big-endian', 'little-endian'],
   controls: [
     {

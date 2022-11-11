@@ -7,7 +7,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-pgp/generate-key',
   label: 'Generate PGP Key',
   description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
-  url: 'https://ciphereditor.com/operations/pgp-encryption',
+  url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],
   reproducible: false,
   controls: [

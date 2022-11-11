@@ -10,7 +10,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/vigenere-cipher',
   label: 'Vigenère cipher',
   description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
-  url: 'https://ciphereditor.com/operations/vigenere-cipher',
+  url: 'https://ciphereditor.com/explore/vigenere-cipher',
   keywords: ['substitution cipher', 'shift', 'vigenere', 'key', 'beaufort', 'trithemius'],
   controls: [
     {

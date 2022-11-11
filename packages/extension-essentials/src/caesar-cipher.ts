@@ -10,7 +10,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/caesar-cipher',
   label: 'Caesar cipher',
   description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
-  url: 'https://ciphereditor.com/operations/caesar-cipher',
+  url: 'https://ciphereditor.com/explore/caesar-cipher',
   keywords: ['substitution', 'cipher', 'shift', 'julius'],
   controls: [
     {

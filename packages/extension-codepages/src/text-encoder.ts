@@ -8,7 +8,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-codepages/text-encoder',
   label: 'Text encoder',
   description: 'Encode text into bytes using the chosen character encoding or vice-versa.',
-  url: 'https://ciphereditor.com/operations/text-encoder',
+  url: 'https://ciphereditor.com/explore/text-encoder',
   keywords: ['utf-8', 'oem', 'iso', 'windows', 'ibm', 'iscii', 'mac', 'character'],
   controls: [
     {

@@ -8,7 +8,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-pgp/inspect-key',
   label: 'Inspect PGP Key',
   description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
-  url: 'https://ciphereditor.com/operations/pgp-encryption',
+  url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],
   controls: [
     {

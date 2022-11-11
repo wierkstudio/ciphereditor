@@ -10,7 +10,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/binary-to-text',
   label: 'Binary to text encoding',
   description: 'Operation for commonly used base64, base32, base16, hex, and binary encoding schemes.',
-  url: 'https://ciphereditor.com/operations/binary-to-text',
+  url: 'https://ciphereditor.com/explore/binary-to-text',
   keywords: ['base64', 'base32', 'base16', 'binary'],
   controls: [
     {

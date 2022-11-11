@@ -41,7 +41,7 @@ export default function AddModalView (props: AddModalPayload): JSX.Element {
     icon: 'help',
     onClick: (event) => {
       dispatch(openUrlAction({
-        url: 'https://ciphereditor.com/operations'
+        url: 'https://ciphereditor.com/explore'
       }))
     }
   }

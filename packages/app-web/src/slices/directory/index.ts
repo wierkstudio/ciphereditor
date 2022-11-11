@@ -12,7 +12,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Caesar cipher',
       description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
-      url: 'https://ciphereditor.com/operations/caesar-cipher',
+      url: 'https://ciphereditor.com/explore/caesar-cipher',
       keywords: ['substitution', 'cipher', 'shift', 'julius'],
       controls: [
         {
@@ -63,7 +63,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'ROT13',
       description: 'Method in which each letter in a text is rotated by 13 places.',
-      url: 'https://ciphereditor.com/operations/rot13',
+      url: 'https://ciphereditor.com/explore/rot13',
       keywords: ['substitution', 'cipher', 'shift'],
       controls: [
         {
@@ -96,7 +96,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Letter number cipher',
       description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
-      url: 'https://ciphereditor.com/operations/letter-number-cipher',
+      url: 'https://ciphereditor.com/explore/letter-number-cipher',
       keywords: ['a1z26 cipher', 'letter number code', 'substitution cipher'],
       controls: [
         {
@@ -157,7 +157,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Word counter',
       description: 'Operation for counting the number of characters, words and lines that appear in a text.',
-      url: 'https://ciphereditor.com/operations/word-counter',
+      url: 'https://ciphereditor.com/explore/word-counter',
       keywords: [],
       controls: [
         {
@@ -339,7 +339,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-codepages/1.0.0-alpha.1/extension.js',
       label: 'Text encoder',
       description: 'Encode text into bytes using the chosen character encoding or vice-versa.',
-      url: 'https://ciphereditor.com/operations/text-encoder',
+      url: 'https://ciphereditor.com/explore/text-encoder',
       keywords: ['utf-8', 'oem', 'iso', 'windows', 'ibm', 'iscii', 'mac', 'character'],
       controls: [
         {
@@ -520,7 +520,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Binary to text encoding',
       description: 'Operation for commonly used base64, base32, base16, hex, and binary encoding schemes.',
-      url: 'https://ciphereditor.com/operations/binary-to-text',
+      url: 'https://ciphereditor.com/explore/binary-to-text',
       keywords: ['base64', 'base32', 'base16', 'binary'],
       controls: [
         {
@@ -592,7 +592,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Swap endianness',
       description: 'Switch bit string from big-endian to little-endian or vice-versa.',
-      url: 'https://ciphereditor.com/operations/swap-endianness',
+      url: 'https://ciphereditor.com/explore/swap-endianness',
       keywords: ['binary', 'bytes', 'words', 'bit'],
       controls: [
         {
@@ -626,7 +626,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Bitwise operation',
       description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
-      url: 'https://ciphereditor.com/operations/bitwise-operator',
+      url: 'https://ciphereditor.com/explore/bitwise-operator',
       keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
       controls: [
         {
@@ -669,7 +669,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
       label: 'Hash function',
       description: 'Map data of arbitrary size to hashes of fixed size',
-      url: 'https://ciphereditor.com/operations/cryptographic-hash-function',
+      url: 'https://ciphereditor.com/explore/cryptographic-hash-function',
       keywords: ['digest', 'md5', 'sha'],
       controls: [
         {
@@ -719,7 +719,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
       label: 'HMAC function',
       description: 'The hash-based message authentication code (HMAC) is used to verify both the data integrity and the authentication of a message.',
-      url: 'https://ciphereditor.com/operations/hmac',
+      url: 'https://ciphereditor.com/explore/hmac',
       keywords: ['digest'],
       controls: [
         {
@@ -774,7 +774,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical NOT',
       description: 'Takes truth to falsity and vice versa',
-      url: 'https://ciphereditor.com/operations/logical-and-or-not',
+      url: 'https://ciphereditor.com/explore/logical-and-or-not',
       keywords: ['boolean', 'invert', 'complement', 'negation'],
       controls: [
         {
@@ -798,7 +798,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical AND',
       description: 'Output true if and only if all the operands are true',
-      url: 'https://ciphereditor.com/operations/logical-and-or-not',
+      url: 'https://ciphereditor.com/explore/logical-and-or-not',
       keywords: ['boolean'],
       controls: [
         {
@@ -829,7 +829,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Logical OR',
       description: 'Output true if and only if one or more of its operands is true',
-      url: 'https://ciphereditor.com/operations/logical-and-or-not',
+      url: 'https://ciphereditor.com/explore/logical-and-or-not',
       keywords: ['boolean', 'alternative'],
       controls: [
         {
@@ -860,7 +860,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Google Translate',
       description: 'Translate content between languages using the Google Cloud Translation API',
-      url: 'https://ciphereditor.com/operations/google-translate',
+      url: 'https://ciphereditor.com/explore/google-translate',
       keywords: ['english', 'german', 'spanish', 'french'],
       controls: [
         {
@@ -1115,7 +1115,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'PGP Encryption',
       description: 'Apply OpenPGP encryption and decryption on text or binary messages',
-      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
       keywords: ['pgp', 'gpg'],
       reproducible: false,
       controls: [
@@ -1163,7 +1163,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'Generate PGP Key',
       description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
-      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
       keywords: ['pgp', 'gpg'],
       reproducible: false,
       controls: [
@@ -1236,7 +1236,7 @@ const defaultDirectoryState: DirectoryState = {
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'Inspect PGP Key',
       description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
-      url: 'https://ciphereditor.com/operations/pgp-encryption',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
       keywords: ['pgp', 'gpg'],
       controls: [
         {

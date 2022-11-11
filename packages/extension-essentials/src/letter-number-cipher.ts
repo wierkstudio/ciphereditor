@@ -9,7 +9,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/letter-number-cipher',
   label: 'Letter number cipher',
   description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
-  url: 'https://ciphereditor.com/operations/letter-number-cipher',
+  url: 'https://ciphereditor.com/explore/letter-number-cipher',
   keywords: ['a1z26 cipher', 'letter number code', 'substitution cipher'],
   controls: [
     {

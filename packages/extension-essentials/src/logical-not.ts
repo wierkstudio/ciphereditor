@@ -6,7 +6,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/logical-not',
   label: 'Logical NOT',
   description: 'Takes truth to falsity and vice versa',
-  url: 'https://ciphereditor.com/operations/logical-and-or-not',
+  url: 'https://ciphereditor.com/explore/logical-and-or-not',
   keywords: ['boolean', 'invert', 'complement', 'negation'],
   controls: [
     {

@@ -8,7 +8,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-hash/hmac',
   label: 'HMAC function',
   description: 'The hash-based message authentication code (HMAC) is used to verify both the data integrity and the authentication of a message.',
-  url: 'https://ciphereditor.com/operations/hmac',
+  url: 'https://ciphereditor.com/explore/hmac',
   keywords: ['digest'],
   controls: [
     {

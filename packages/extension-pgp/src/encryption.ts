@@ -8,7 +8,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-pgp/encryption',
   label: 'PGP Encryption',
   description: 'Apply OpenPGP encryption and decryption on text or binary messages',
-  url: 'https://ciphereditor.com/operations/pgp-encryption',
+  url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],
   reproducible: false,
   controls: [
