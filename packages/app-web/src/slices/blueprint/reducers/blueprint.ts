@@ -38,7 +38,8 @@ import { getVariableNode } from '../selectors/variable'
  */
 export const nextNodeId = (state: BlueprintState): number => {
   do {
-    state.lastInsertNodeId = (state.lastInsertNodeId + 1) % Number.MAX_SAFE_INTEGER
+    state.lastInsertNodeId =
+      (state.lastInsertNodeId + 1) % Number.MAX_SAFE_INTEGER
   } while (state.nodes[state.lastInsertNodeId] !== undefined)
   return state.lastInsertNodeId
 }
@@ -87,7 +88,8 @@ export const addChildNode = <T extends BlueprintNodeState>(
   if (parentType !== BlueprintNodeType.Program &&
       (parentType !== BlueprintNodeType.Operation ||
         childType !== BlueprintNodeType.Control)) {
-    throw new Error(`Node type '${childType}' can't be added to '${parentType}'`)
+    throw new Error(
+      `Node type '${childType}' can't be added to '${parentType}'`)
   }
 
   if (childId !== parentId) {
@@ -102,7 +104,8 @@ export const addChildNode = <T extends BlueprintNodeState>(
   if (childNode.type === BlueprintNodeType.Operation) {
     const operation = (childNode as any) as OperationNodeState
     if (operation.state === OperationExecutionState.Busy) {
-      state.busyOperationIds = arrayUniquePush(state.busyOperationIds, operation.id)
+      state.busyOperationIds =
+        arrayUniquePush(state.busyOperationIds, operation.id)
     }
   }
 
@@ -198,7 +201,8 @@ export const addNodes = (
           const attachmentIds = node.attachments.map(refId => {
             const nodeId = refIdMap[refId]
             if (nodeId === undefined) {
-              throw new Error(`Reference id ${refId} cannot be resolved to a node id`)
+              throw new Error(
+                `Reference id ${refId} cannot be resolved to a node id`)
             }
             return nodeId
           })
@@ -217,7 +221,8 @@ export const addNodes = (
           return variable
         }
         default: {
-          throw new Error(`Node with type '${nodeType as string}' cannot be added`)
+          throw new Error(
+            `Node with type '${nodeType as string}' cannot be added`)
         }
       }
     })

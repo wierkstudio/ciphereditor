@@ -12,20 +12,17 @@ import { addChildNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
 import { capitalCase } from 'change-case'
+import { defaultOperationTimeout, maxOperationTimeout } from '../../../constants'
 import { getNextNodeFrame, getNode } from '../selectors/blueprint'
 import { getOperationContribution } from '../../directory/selectors'
 import { getOperationNode } from '../selectors/operation'
-
-// TODO: Move to a constants file
-const maxOperationTimeout = 10 * 60 * 1000
-const defaultOperationTimeout = 10 * 1000
 
 /**
  * Add the given operation to a program.
  * @param state Blueprint state
  * @param operationNode Operation to be added
  * @param programId Program the node should be added to
- * @param directory Directory state to retrieve operation contribution meta data from
+ * @param directory Directory state to retrieve operation contribution meta data
  * @param refIdMap Object mapping node ids to ids in the blueprint state
  */
 export const addOperationNode = (
@@ -112,24 +109,30 @@ export const setOperationState = (
   operation.issues = issues ?? []
   switch (newState) {
     case OperationExecutionState.Ready: {
-      state.busyOperationIds = arrayRemove(state.busyOperationIds, operation.id)
+      state.busyOperationIds =
+        arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
       break
     }
     case OperationExecutionState.Busy: {
-      state.busyOperationIds = arrayUniquePush(state.busyOperationIds, operation.id)
+      state.busyOperationIds =
+        arrayUniquePush(state.busyOperationIds, operation.id)
       operation.requestVersion = 0
       break
     }
     case OperationExecutionState.Error: {
-      state.busyOperationIds = arrayRemove(state.busyOperationIds, operation.id)
+      state.busyOperationIds =
+        arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
       break
     }
   }
 }
 
-export const executeOperation = (state: BlueprintState, nodeId: BlueprintNodeId): void => {
+export const executeOperation = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): void => {
   const node = getNode(state, nodeId)
   // TODO: Handle retry/execute on programs
   if (node.type === BlueprintNodeType.Operation) {

@@ -13,3 +13,13 @@ export const nodeShiftVector = { x: 40, y: 40 }
  * Minimum canvas width required to enter the plane canvas mode
  */
 export const planeCanvasMinWidth = 720
+
+/**
+ * Maximum operation timeout (in ms)
+ */
+export const maxOperationTimeout = 10 * 60 * 1000
+
+/**
+ * Default operation timeout (in ms)
+ */
+export const defaultOperationTimeout = 10 * 1000

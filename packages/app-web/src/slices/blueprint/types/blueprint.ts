@@ -62,23 +62,28 @@ export interface BlueprintState {
 
   /**
    * Root program node id
+   * A blueprint always contains a root program.
    */
   rootProgramId: BlueprintNodeId
 
   /**
    * Active program node id
-   * Set to undefined when leaving the root program
+   * Set to `undefined` when leaving the root program
    */
   activeProgramId: BlueprintNodeId | undefined
 
   /**
    * Busy operation node ids
+   * This is a lookup array, to avoid iterating over all nodes after every
+   * action is run in the extension middleware. The execution state of an
+   * operation node is also stored in the node itself.
    */
   busyOperationIds: BlueprintNodeId[]
 
   /**
    * Wether to use the plane (2-dimensional) canvas suited for larger devices
-   * (e.g. desktops, tablets).
+   * (e.g. desktops, tablets). If set to `false` the line (1-dimensional) canvas
+   * mode is used where nodes are placed behind each other.
    */
   planeCanvas: boolean
 

@@ -30,7 +30,10 @@ import { serializeVariable } from './variable'
  * @throws If the node type does not match the expected type
  * @returns Operation node
  */
-export const getOperationNode = (state: BlueprintState, id: BlueprintNodeId): OperationNodeState =>
+export const getOperationNode = (
+  state: BlueprintState,
+  id: BlueprintNodeId
+): OperationNodeState =>
   getNode(state, id, BlueprintNodeType.Operation) as OperationNodeState
 
 /**
@@ -118,7 +121,8 @@ export const serializeOperation = (
     ? getOperationContribution(directory, operation.name)
     : undefined
   if (directoryOperation === undefined) {
-    throw new Error('Logic error: Cannot serialize an operation without its contribution')
+    throw new Error(
+      'Logic error: Cannot serialize an operation without its contribution')
   }
 
   // Serialize operation control state
@@ -149,7 +153,8 @@ export const serializeOperation = (
     }
 
     // Include the `visibility` attribute only when it differs from the initial
-    const initialVisibility = directoryControl.visibility ?? defaultControlNode.visibility
+    const initialVisibility =
+      directoryControl.visibility ?? defaultControlNode.visibility
     if (control.visibility !== initialVisibility) {
       serializedControl.visibility = control.visibility
     }

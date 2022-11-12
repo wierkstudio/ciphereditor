@@ -20,11 +20,11 @@ import {
   Point
 } from '@ciphereditor/library'
 import { DirectoryState } from '../../directory/types'
+import { defaultNodeSize, nodeShiftVector } from '../../../constants'
+import { getProgramNode, serializeProgram } from './program'
 import { serializeControl } from './control'
 import { serializeOperation } from './operation'
-import { getProgramNode, serializeProgram } from './program'
 import { serializeVariable } from './variable'
-import { defaultNodeSize, nodeShiftVector } from '../../../constants'
 
 /**
  * Find a node by the given node id.
@@ -35,13 +35,18 @@ import { defaultNodeSize, nodeShiftVector } from '../../../constants'
  * @throws If the node type does not match the expected type
  * @returns Node object
  */
-export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType?: BlueprintNodeType): BlueprintNodeState => {
+export const getNode = (
+  state: BlueprintState,
+  id: BlueprintNodeId,
+  expectedType?: BlueprintNodeType
+): BlueprintNodeState => {
   const node = state.nodes[id]
   if (node === undefined) {
     throw new Error(`Node id ${id} is not part of the blueprint`)
   }
   if (expectedType !== undefined && node.type !== expectedType) {
-    throw new Error(`Expected node type '${expectedType}' but found '${node.type}'`)
+    throw new Error(
+      `Expected node type '${expectedType}' but found '${node.type}'`)
   }
   return state.nodes[id]
 }
@@ -49,7 +54,10 @@ export const getNode = (state: BlueprintState, id: BlueprintNodeId, expectedType
 /**
  * Find a node by the given id or return undefined.
  */
-export const getOptionalNode = (state: BlueprintState, id: BlueprintNodeId | undefined): BlueprintNodeState | undefined =>
+export const getOptionalNode = (
+  state: BlueprintState,
+  id: BlueprintNodeId | undefined
+): BlueprintNodeState | undefined =>
   id !== undefined ? state.nodes[id] : undefined
 
 /**
@@ -61,7 +69,10 @@ export const hasNode = (state: BlueprintState, id: BlueprintNodeId): boolean =>
 export const getSelectedNodes = (state: BlueprintState): BlueprintNodeState[] =>
   state.selectedNodeIds.map(nodeId => getNode(state, nodeId))
 
-export const isNodeSelected = (state: BlueprintState, nodeId: BlueprintNodeId): boolean =>
+export const isNodeSelected = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): boolean =>
   state.selectedNodeIds.includes(nodeId)
 
 export const getHasSelection = (state: BlueprintState): boolean =>
@@ -215,7 +226,8 @@ export const serializeNodes = (
   const parentId = nodes[0].parentId
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].parentId !== parentId) {
-      throw new Error('Logic error: Nodes to be serialized must descend from the same parent')
+      throw new Error(
+        'Logic error: Nodes to be serialized must descend from the same parent')
     }
   }
 

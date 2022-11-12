@@ -28,15 +28,19 @@ import { mapNamedObjects } from '../../../lib/utils/map'
  * @throws If the node type does not match the expected type
  * @returns Control node
  */
-export const getControlNode = (state: BlueprintState, id: BlueprintNodeId): ControlNodeState =>
+export const getControlNode = (
+  state: BlueprintState,
+  id: BlueprintNodeId
+): ControlNodeState =>
   getNode(state, id, BlueprintNodeType.Control) as ControlNodeState
 
 /**
  * Get an object mapping control names to control nodes.
  */
-export const getNodeNamedControls = (state: BlueprintState, nodeId: BlueprintNodeId): {
-  [name: string]: ControlNodeState
-} =>
+export const getNodeNamedControls = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId
+): Record<string, ControlNodeState> =>
   mapNamedObjects(getNodeChildren(
     state, nodeId, BlueprintNodeType.Control) as ControlNodeState[])
 
@@ -161,7 +165,8 @@ export const canAttachControls = (
   }
 
   // Check if source value type is within the value types supported by the target
-  if (!isTypeCompatibleToValueTypes(identifySerializedValueType(sourceControl.value), targetControl.types)) {
+  const sourceType = identifySerializedValueType(sourceControl.value)
+  if (!isTypeCompatibleToValueTypes(sourceType, targetControl.types)) {
     return false
   }
 
@@ -184,7 +189,8 @@ export const getControlPreview = (
 ): string | undefined => {
   const control = getControlNode(state, controlId)
   if (control.selectedOptionIndex !== undefined) {
-    return control.options[control.selectedOptionIndex].label ?? previewSerializedValue(control.value)
+    return control.options[control.selectedOptionIndex].label ??
+      previewSerializedValue(control.value)
   }
   if (!control.maskPreview) {
     return previewSerializedValue(control.value)

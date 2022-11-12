@@ -18,7 +18,10 @@ import { getNode, getNodeChildren } from './blueprint'
  * @throws If the node type does not match the expected type
  * @returns Variable node
  */
-export const getVariableNode = (state: BlueprintState, id: BlueprintNodeId): VariableNodeState =>
+export const getVariableNode = (
+  state: BlueprintState,
+  id: BlueprintNodeId
+): VariableNodeState =>
   getNode(state, id, BlueprintNodeType.Variable) as VariableNodeState
 
 /**
@@ -37,7 +40,10 @@ export const getControlVariable = (
 /**
  * Return variables from the given program.
  */
-export const getProgramVariables = (state: BlueprintState, programId: BlueprintNodeId): VariableNodeState[] =>
+export const getProgramVariables = (
+  state: BlueprintState,
+  programId: BlueprintNodeId
+): VariableNodeState[] =>
   getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNodeState[]
 
 /**
@@ -50,7 +56,8 @@ export const getVariableControl = (
   const variable = getVariableNode(state, variableId)
   // Assertion: Variable attachment ids are ordered by when they propagated
   if (variable.attachmentIds.length === 0) {
-    throw new Error('Assertion failed: A variable is always attached to at least one control')
+    throw new Error(
+      'Assertion failed: A variable is always attached to at least one control')
   }
   return getControlNode(state, variable.attachmentIds[0])
 }
@@ -69,7 +76,10 @@ export const getVariableAttachedControls = (
 /**
  * Return the current value for the given variable.
  */
-export const getVariableValue = (state: BlueprintState, variableId: BlueprintNodeId): SerializedValue =>
+export const getVariableValue = (
+  state: BlueprintState,
+  variableId: BlueprintNodeId
+): SerializedValue =>
   getVariableControl(state, variableId).value
 
 /**

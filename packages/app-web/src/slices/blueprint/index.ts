@@ -29,7 +29,11 @@ import { getProgramNode } from './selectors/program'
 import { planeCanvasMinWidth } from '../../constants'
 import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
 
-export const defaultBlueprintState: BlueprintState = {
+/**
+ * The initial blueprint state must meet all assumptions. That's why it includes
+ * an empty root program.
+ */
+const initialBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
   lastInsertNodeId: 1,
   selectedNodeIds: [],
@@ -51,7 +55,7 @@ let clipboard: BlueprintNode[] | undefined
 
 export const blueprintSlice = createSlice({
   name: 'blueprint',
-  initialState: defaultBlueprintState,
+  initialState: initialBlueprintState,
   reducers: {
     /**
      * Load the given blueprint
@@ -331,9 +335,7 @@ export const blueprintSlice = createSlice({
       const size = { ...state.canvasSize }
       const newSize = payload.size
 
-      // Set new size
       state.canvasSize = newSize
-      console.log('newSize', JSON.stringify(newSize))
 
       const planeCanvas = state.planeCanvas
       const newPlaneCanvas = newSize.width >= planeCanvasMinWidth

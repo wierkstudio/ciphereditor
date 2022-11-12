@@ -59,7 +59,8 @@ export const addProgramNode = (
     : []
   const usedLabels = programs.map(program => program.label)
   const label = programNode.label
-  const uniqueLabel = deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
+  const uniqueLabel =
+    deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
 
   const program: ProgramNodeState = {
     ...defaultProgramNode,
@@ -140,7 +141,6 @@ export const moveOffset = (
   offset: Point,
   relative: boolean
 ): void => {
-  // TODO: Round points
   if (state.activeProgramId === undefined) {
     state.rootOffset = relative ? movePointBy(state.rootOffset, offset) : offset
   } else {
