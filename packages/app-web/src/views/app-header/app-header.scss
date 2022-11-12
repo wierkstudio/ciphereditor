@@ -2,50 +2,22 @@
 @import '../../styles/shared';
 
 .app-header {
-  display: flex;
-  justify-content: space-between;
-  position: fixed;
-  top: rem(16);
-  left: rem(16);
-  right: rem(16);
+  padding: rem(8);
   z-index: $z-index-app-header;
   pointer-events: none;
+  border-bottom: rem(2) solid $c-muted;
+  background: $c-background;
+  -webkit-app-region: drag;
 
-  .root--embed-electron & {
-    top: rem(0);
-    left: rem(0);
-    right: rem(0);
-    border-bottom: rem(2) solid $c-muted;
-    background: $c-background;
-    -webkit-app-region: drag;
-  }
-
-  &__start,
-  &__end {
-    display: flex;
-    padding: rem(8);
-    border-radius: rem(16);
-    align-items: center;
+  &__toolbar {
+    display: block;
+    padding: 0 rem(16);
     line-height: 0;
-    background: $c-muted;
     pointer-events: initial;
-  }
-
-  .root--embed-electron &__start,
-  .root--embed-electron &__end {
-    background: none;
   }
 
   .root--env-darwin &__start {
     padding-left: rem(84);
-  }
-
-  &__brand {
-    padding: 0 rem(24) 0 rem(8);
-
-    @include breakpoint(s, m) {
-      display: none;
-    }
   }
 
   .root--embed-website &__brand,

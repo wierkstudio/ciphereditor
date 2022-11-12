@@ -4,17 +4,19 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useCallbackRef from '../../hooks/useCallbackRef'
 import usePointerFollowUp from '../../hooks/usePointerFollowUp'
+import { Point } from '@ciphereditor/library'
 import { UIWireDraft } from '../../slices/ui/types'
 import { attachControlsAction } from '../../slices/blueprint'
 import { endWireAction } from '../../slices/ui'
 import { getControlNode, getOutletPosition } from '../../slices/blueprint/selectors/control'
 import { getViewportRect } from '../../slices/blueprint/selectors/blueprint'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 export default function WireDraftView (props: {
   wireDraft: UIWireDraft
 }): JSX.Element {
   const wireDraft = props.wireDraft
+  const wireDraftRef = useRef<SVGSVGElement | null>(null)
 
   const dispatch = useAppDispatch()
 
@@ -30,10 +32,17 @@ export default function WireDraftView (props: {
   const viewportRect = useBlueprintSelector(getViewportRect)
 
   const [targetPosition, setTargetPosition] =
-    useState<{ x: number, y: number } | undefined>(undefined)
+    useState<Point | undefined>(undefined)
 
   const onWireMove = useCallbackRef((event: PointerEvent) => {
-    setTargetPosition({ x: event.clientX, y: event.clientY })
+    if (wireDraftRef.current !== null) {
+      const clientRect = wireDraftRef.current.getBoundingClientRect()
+      const point = {
+        x: event.clientX - clientRect.x,
+        y: event.clientY - clientRect.y
+      }
+      setTargetPosition(point)
+    }
   }, [setTargetPosition])
 
   const onWireEnd = useCallbackRef((event: PointerEvent) => {
@@ -62,6 +71,7 @@ export default function WireDraftView (props: {
 
   return (
     <svg
+      ref={wireDraftRef}
       className='wire-draft'
       width='100%'
       height='100%'

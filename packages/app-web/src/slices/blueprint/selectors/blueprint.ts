@@ -158,8 +158,7 @@ export const getNodePosition = (
       return { x: node.frame.x, y: node.frame.y }
     }
   } else {
-    // TODO: Evacuate magic numbers
-    let y = 96 // Canvas top padding at S-M
+    let y = 32
     // We sum up the heights and margins of the nodes situated above
     const siblings = getNodeChildren(state, node.parentId)
     for (const sibling of siblings) {

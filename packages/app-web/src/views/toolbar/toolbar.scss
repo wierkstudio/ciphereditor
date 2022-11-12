@@ -4,18 +4,31 @@
 .toolbar {
   $block: &;
   display: flex;
-  margin: 0 rem(-4);
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: rem(-4);
 
+  &__brand,
   &__button {
-    padding: 0 rem(4);
+    padding: rem(4);
   }
 
   &__group {
     display: flex;
-    margin: 0 rem(-1);
+    margin: rem(-1);
 
     > #{$block}__button {
-      padding: 0 rem(1);
+      padding: rem(1);
     }
+  }
+
+  &__spacer {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+
+  &__brand {
+    padding: 0 rem(8);
   }
 }

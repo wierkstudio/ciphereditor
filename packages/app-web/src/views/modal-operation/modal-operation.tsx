@@ -9,7 +9,7 @@ import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { OperationContribution } from '@ciphereditor/library'
 import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNodeState } from '../../slices/blueprint/types/operation'
-import { deleteAction } from '../../slices/blueprint'
+import { deleteAction, duplicateAction } from '../../slices/blueprint'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
@@ -49,6 +49,16 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
       }
     })
   }
+
+  // Duplicate action
+  actions.push({
+    title: t('Duplicate node'),
+    icon: 'copy',
+    onClick: (): void => {
+      dispatch(popModalAction({}))
+      dispatch(duplicateAction({ nodeIds: [nodeId] }))
+    }
+  })
 
   // Remove action
   actions.push({

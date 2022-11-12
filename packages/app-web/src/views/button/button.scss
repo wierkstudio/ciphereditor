@@ -19,6 +19,10 @@
     color: $c-meta;
   }
 
+  &--alt {
+    background: $c-muted;
+  }
+
   &--icon {
     padding: 0;
   }
@@ -42,6 +46,10 @@
     color: $c-control-disabled-color;
     background: $c-control-disabled-background;
     cursor: default;
+  }
+
+  &--alt:disabled {
+    background: $c-muted;
   }
 
   &--large {

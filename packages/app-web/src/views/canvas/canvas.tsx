@@ -11,7 +11,7 @@ import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
-import { DragEvent, FocusEvent, useCallback } from 'react'
+import { DragEvent, FocusEvent, useCallback, useRef } from 'react'
 import { UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
 import { getCanvasState, getWireDraft } from '../../slices/ui/selectors'
@@ -22,6 +22,7 @@ import { renderClassName } from '../../lib/utils/dom'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
+  const canvasRef = useRef<HTMLDivElement | null>(null)
 
   const planeCanvas = useBlueprintSelector(getPlaneCanvas)
   const hasSelection = useBlueprintSelector(getHasSelection)
@@ -39,8 +40,11 @@ export default function CanvasView (): JSX.Element {
 
   // Keep track of the canvas size
   useWindowResizeListener((): void => {
-    const size = { width: window.innerWidth, height: window.innerHeight }
-    dispatch(layoutCanvasAction({ size }))
+    if (canvasRef.current !== null) {
+      const clientRect = canvasRef.current.getBoundingClientRect()
+      const size = { width: clientRect.width, height: clientRect.height }
+      dispatch(layoutCanvasAction({ size }))
+    }
   })
 
   // Move canvas interaction
@@ -98,6 +102,7 @@ export default function CanvasView (): JSX.Element {
 
   return (
     <div
+      ref={canvasRef}
       className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
       onPointerDown={planeCanvas ? onPointerDown : undefined}

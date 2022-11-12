@@ -10,7 +10,6 @@
   border-radius: rem(16);
   background: $c-background;
   pointer-events: initial;
-  box-shadow: 0 0 rem(64) rem(32) $c-muted;
 
   &__header {
     position: relative;
@@ -19,7 +18,7 @@
     padding: rem(16) rem(16) 0 rem(24);
     margin: 0 0 rem(16) 0;
 
-    @include breakpoint(l) {
+    @include breakpoint(l, xl) {
       padding: rem(16) rem(16) 0 rem(32);
     }
   }
@@ -34,9 +33,10 @@
   }
 
   &__content {
+    @extend %t-text;
     padding: 0 rem(24);
 
-    @include breakpoint(l) {
+    @include breakpoint(l, xl) {
       padding: 0 rem(32);
     }
   }
@@ -44,7 +44,7 @@
   &__footer {
     margin-top: rem(24);
 
-    @include breakpoint(l) {
+    @include breakpoint(l, xl) {
       margin-top: rem(32);
     }
   }

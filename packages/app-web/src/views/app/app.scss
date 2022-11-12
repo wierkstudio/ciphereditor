@@ -7,14 +7,34 @@
   width: 100%;
   min-height: 100%;
   user-select: none;
+  line-height: 0;
 
   @include breakpoint(l, xl) {
     min-height: 100vh;
   }
 
-  &__content {
+  &__main {
+    display: flex;
+    flex-direction: column;
     position: relative;
     grid-area: 1 / 1 / 2 / 2;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &__header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+  }
+
+  &__canvas {
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
   }
 
   &__modals {

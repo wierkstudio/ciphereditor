@@ -1,7 +1,14 @@
 
 import './app-header.scss'
+import {
+  copyAction,
+  deleteAction,
+  leaveProgramAction,
+  pasteAction,
+  redoAction,
+  undoAction
+} from '../../slices/blueprint'
 import ButtonView from '../../views/button/button'
-import LogoView from '../../views/logo/logo'
 import ToolbarView from '../../views/toolbar/toolbar'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
@@ -10,10 +17,9 @@ import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
 import { UIEmbedType } from '../../slices/ui/types'
-import { copyAction, deleteAction, leaveProgramAction, pasteAction, redoAction, undoAction } from '../../slices/blueprint'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
-import { getHasSelection } from '../../slices/blueprint/selectors/blueprint'
+import { getHasSelection, getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { getKeyCombination } from '../../slices/settings/selectors'
 import { openUrlAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
 
@@ -21,6 +27,7 @@ export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
   const program = useBlueprintSelector(getActiveProgram)
   const embedType = useUISelector(getEmbedType)
+  const planeCanvas = useBlueprintSelector(getPlaneCanvas)
   const maximizable = useUISelector(isEmbedMaximizable)
   const maximized = useUISelector(isEmbedMaximized)
   const [t] = useTranslation()
@@ -54,51 +61,53 @@ export default function AppHeaderView (): JSX.Element {
 
   return (
     <header className='app-header'>
-      <div className='app-header__start'>
-        <div className='app-header__brand'>
-          <LogoView />
-        </div>
+      <div className='app-header__toolbar'>
         <ToolbarView>
+          {embedType !== UIEmbedType.Website && (
+            <ToolbarView.BrandView />
+          )}
           <ButtonView
             title={t('Add node')}
             keyCombination={toggleAddModalKeyCombination}
             icon='plus'
-            modifiers='large'
+            modifiers='large alt'
             onClick={() => dispatch(pushModalAction({
               payload: { type: 'add' }
             }))}
           />
-          <ToolbarView.GroupView>
-            <ButtonView
-              title={t('Copy')}
-              keyCombination={copyKeyCombination}
-              icon='copy'
-              modifiers='large'
-              onClick={() => dispatch(copyAction({}))}
-              disabled={!hasSelection}
-            />
-            <ButtonView
-              title={t('Paste')}
-              keyCombination={pasteKeyCombination}
-              icon='paste'
-              modifiers='large'
-              onClick={() => dispatch(pasteAction({}))}
-            />
-            <ButtonView
-              title={t('Delete')}
-              keyCombination={deleteKeyCombination}
-              icon='trash'
-              modifiers='large'
-              onClick={() => dispatch(deleteAction({}))}
-              disabled={!hasSelection}
-            />
-          </ToolbarView.GroupView>
+          {planeCanvas && (
+            <ToolbarView.GroupView>
+              <ButtonView
+                title={t('Copy')}
+                keyCombination={copyKeyCombination}
+                icon='copy'
+                modifiers='large alt'
+                onClick={() => dispatch(copyAction({}))}
+                disabled={!hasSelection}
+              />
+              <ButtonView
+                title={t('Paste')}
+                keyCombination={pasteKeyCombination}
+                icon='paste'
+                modifiers='large alt'
+                onClick={() => dispatch(pasteAction({}))}
+              />
+              <ButtonView
+                title={t('Delete')}
+                keyCombination={deleteKeyCombination}
+                icon='trash'
+                modifiers='large alt'
+                onClick={() => dispatch(deleteAction({}))}
+                disabled={!hasSelection}
+              />
+            </ToolbarView.GroupView>
+          )}
           <ToolbarView.GroupView>
             <ButtonView
               title={t('Undo')}
               keyCombination={undoKeyCombination}
               icon='undo'
-              modifiers='large'
+              modifiers='large alt'
               onClick={() => dispatch(undoAction())}
               disabled={!undoEnabled}
             />
@@ -106,7 +115,7 @@ export default function AppHeaderView (): JSX.Element {
               title={t('Redo')}
               keyCombination={redoKeyCombination}
               icon='redo'
-              modifiers='large'
+              modifiers='large alt'
               onClick={() => dispatch(redoAction())}
               disabled={!redoEnabled}
             />
@@ -115,7 +124,7 @@ export default function AppHeaderView (): JSX.Element {
             title={t('Leave program')}
             keyCombination={leaveProgramKeyCombination}
             icon='arrowUp'
-            modifiers='large'
+            modifiers='large alt'
             onClick={() => dispatch(leaveProgramAction({}))}
             disabled={program === undefined}
           />
@@ -123,18 +132,15 @@ export default function AppHeaderView (): JSX.Element {
             title={t('Share')}
             keyCombination={shareBlueprintKeyCombination}
             icon='share'
-            modifiers='large'
+            modifiers='large alt'
             onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
           />
-        </ToolbarView>
-      </div>
-      <div className='app-header__end'>
-        <ToolbarView>
+          <ToolbarView.SpacerView />
           <ButtonView
             title={t('Settings')}
             keyCombination={showSettingsKeyCombination}
             icon='settings'
-            modifiers='large'
+            modifiers='large alt'
             onClick={() => dispatch(pushModalAction({
               payload: { type: 'settings' }
             }))}
@@ -143,7 +149,7 @@ export default function AppHeaderView (): JSX.Element {
             <ButtonView
               title={t('View docs')}
               icon='help'
-              modifiers='large'
+              modifiers='large alt'
               onClick={() => dispatch(openUrlAction({
                 url: 'https://ciphereditor.com/docs'
               }))}
@@ -154,7 +160,7 @@ export default function AppHeaderView (): JSX.Element {
               title={maximized ? t('Show docs') : t('Hide docs')}
               keyCombination={toggleMaximizedKeyCombination}
               icon={maximized ? 'minimize' : 'maximize'}
-              modifiers='large'
+              modifiers='large alt'
               onClick={() => dispatch(toggleEmbedMaximizedAction({}))}
             />
           )}

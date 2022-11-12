@@ -197,9 +197,13 @@ export default function AppView (): JSX.Element {
 
   return (
     <div ref={appRef} className={renderClassName('app', modifiers)}>
-      <div className='app__content'>
-        <AppHeaderView />
-        <CanvasView />
+      <div className='app__main'>
+        <div className='app__header'>
+          <AppHeaderView />
+        </div>
+        <div className='app__canvas'>
+          <CanvasView />
+        </div>
       </div>
       <div className='app__modals'>
         <ModalStackView />

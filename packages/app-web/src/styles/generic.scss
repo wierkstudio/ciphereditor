@@ -20,10 +20,6 @@ body {
   background: $c-muted;
 }
 
-body {
-  overflow: hidden;
-}
-
 body.body-grabbing * {
   cursor: grabbing !important;
 }

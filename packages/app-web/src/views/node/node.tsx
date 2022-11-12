@@ -127,7 +127,10 @@ export default function NodeView (props: {
     }
   }, [nodeId, selectedNodeIds, isSelected])
 
-  const onPointerDown = usePointerDrag(onPointerDrag)
+  const onPlanePointerDown = usePointerDrag(onPointerDrag)
+  const onLinePointerDown = (): void => {
+    dispatch(selectAction({ nodeIds: [nodeId] }))
+  }
 
   const modifiers = isSelected ? ['selected'] : []
 
@@ -140,7 +143,7 @@ export default function NodeView (props: {
         ? { transform: `translate(${frame.x}px, ${frame.y}px)` }
         : {}}
       tabIndex={0}
-      onPointerDown={planeCanvas ? onPointerDown : undefined}
+      onPointerDown={planeCanvas ? onPlanePointerDown : onLinePointerDown}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
         <OperationView nodeId={nodeId} onOutletRef={onOutletRef} />
