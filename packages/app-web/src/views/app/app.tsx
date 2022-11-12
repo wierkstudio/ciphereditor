@@ -7,12 +7,13 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
+import useResizeObserver from '../../hooks/useResizeObserver'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { UIEmbedType } from '../../slices/ui/types'
 import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
-import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
+import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema, Size } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
 import { getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
@@ -20,7 +21,7 @@ import { getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { keyBindingTargetDispatchActions } from '../../slices/settings/key-bindings'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { postWebsiteMessage } from '../../lib/embed'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 export default function AppView (): JSX.Element {
   const dispatch = useAppDispatch()
@@ -154,36 +155,15 @@ export default function AppView (): JSX.Element {
   }, [embedType, theme, reducedMotionPreference, embedEnv, planeCanvas, canvasState])
 
   // Observe and react to intrinsic app size changes
-  const intrinsicAppSizeObserver = useMemo(() => {
-    return new ResizeObserver(entries => {
-      for (const entry of entries) {
-        if (embedType !== UIEmbedType.Standalone) {
-          postWebsiteMessage({
-            type: 'intrinsicHeightChange',
-            height: entry.contentRect.height
-          })
-        }
-      }
-    })
-  }, [embedType])
-
-  useEffect(() => {
-    const appElement = appRef.current
-    if (appElement !== null) {
-      intrinsicAppSizeObserver.observe(appElement)
-      // Initial observation
-      if (embedType !== UIEmbedType.Standalone) {
-        const rect = appElement.getBoundingClientRect()
-        postWebsiteMessage({
-          type: 'intrinsicHeightChange',
-          height: rect.height
-        })
-      }
-      return () => {
-        intrinsicAppSizeObserver.unobserve(appElement)
-      }
+  const onIntrinsicAppResize = useCallback((size: Size): void => {
+    if (embedType !== UIEmbedType.Standalone) {
+      postWebsiteMessage({
+        type: 'intrinsicHeightChange',
+        height: size.height
+      })
     }
-  }, [intrinsicAppSizeObserver, appRef, embedType])
+  }, [embedType])
+  useResizeObserver(appRef, onIntrinsicAppResize)
 
   // React to maximized changes
   useEffect(() => {
