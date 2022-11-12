@@ -15,7 +15,6 @@ import {
   BlueprintState
 } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
-import { UICanvasMode } from '../../ui/types'
 import { VariableNodeState } from '../types/variable'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
 import { getProgramVariables, getVariableControl } from './variable'
@@ -62,12 +61,11 @@ export const getNodeControlValues = (
 export const getOutletPosition = (
   state: BlueprintState,
   controlId: BlueprintNodeId,
-  outward: boolean,
-  canvasMode: UICanvasMode = UICanvasMode.Plane
+  outward: boolean
 ): { x: number, y: number } | undefined => {
   const control = getControlNode(state, controlId)
   const node = outward ? getNode(state, control.parentId) : control
-  const nodePosition = getNodePosition(state, node.id, canvasMode)
+  const nodePosition = getNodePosition(state, node.id)
   if (
     nodePosition !== undefined &&
     control.nodeOutletX !== undefined &&

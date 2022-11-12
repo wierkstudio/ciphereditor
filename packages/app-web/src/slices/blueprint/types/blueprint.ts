@@ -1,5 +1,5 @@
 
-import { Point, Rect } from '@ciphereditor/library'
+import { Point, Rect, Size } from '@ciphereditor/library'
 
 export type BlueprintNodeId = number
 
@@ -72,12 +72,23 @@ export interface BlueprintState {
   activeProgramId: BlueprintNodeId | undefined
 
   /**
-   * Canvas offset/position when leaving the root program
-   */
-  rootOffset: Point
-
-  /**
    * Busy operation node ids
    */
   busyOperationIds: BlueprintNodeId[]
+
+  /**
+   * Wether to use the plane (2-dimensional) canvas suited for larger devices
+   * (e.g. desktops, tablets).
+   */
+  planeCanvas: boolean
+
+  /**
+   * Current size of the canvas
+   */
+  canvasSize: Size
+
+  /**
+   * Canvas offset/position when leaving the root program
+   */
+  rootOffset: Point
 }

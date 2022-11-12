@@ -16,10 +16,10 @@ import {
   getRectOrigin,
   getRectSize,
   getSizeCenter,
-  movePointBy
+  movePointBy,
+  Point
 } from '@ciphereditor/library'
 import { DirectoryState } from '../../directory/types'
-import { UICanvasMode } from '../../ui/types'
 import { serializeControl } from './control'
 import { serializeOperation } from './operation'
 import { getProgramNode, serializeProgram } from './program'
@@ -115,20 +115,38 @@ export const getNextNodeFrame = (
   return getRectFromOriginAndSize(origin, size)
 }
 
+export const getPlaneCanvas = (state: BlueprintState): boolean =>
+  state.planeCanvas
+
+export const getCanvasOffset = (state: BlueprintState): Point =>
+  state.activeProgramId !== undefined
+    ? getProgramNode(state, state.activeProgramId).offset
+    : state.rootOffset
+
+export const getViewportRect = (state: BlueprintState): Rect => {
+  const offset = getCanvasOffset(state)
+  const size = state.canvasSize
+  return {
+    x: Math.round(offset.x - size.width * 0.5),
+    y: Math.round(offset.y - size.height * 0.5),
+    width: Math.round(size.width),
+    height: Math.round(size.height)
+  }
+}
+
 /**
  * Retrive a node position on the plane or sequential canvas.
  */
 export const getNodePosition = (
   state: BlueprintState,
-  nodeId: BlueprintNodeId,
-  canvasMode: UICanvasMode = UICanvasMode.Plane
-): { x: number, y: number } | undefined => {
+  nodeId: BlueprintNodeId
+): Point | undefined => {
   const node = getNode(state, nodeId)
-  if (canvasMode === UICanvasMode.Plane) {
+  if (state.planeCanvas) {
     if (node.frame !== undefined) {
       return { x: node.frame.x, y: node.frame.y }
     }
-  } else if (canvasMode === UICanvasMode.Sequential) {
+  } else {
     // TODO: Evacuate magic numbers
     let y = 96 // Canvas top padding at S-M
     // We sum up the heights and margins of the nodes situated above
@@ -142,7 +160,6 @@ export const getNodePosition = (
     }
     return { x: 0, y }
   }
-  return undefined
 }
 
 /**

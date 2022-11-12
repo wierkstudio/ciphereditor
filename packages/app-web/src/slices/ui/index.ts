@@ -1,7 +1,6 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
-import { ModalPayload, UICanvasMode, UICanvasState, UIEmbedType, UIState } from './types'
-import { Size } from '@ciphereditor/library'
+import { ModalPayload, UICanvasState, UIEmbedType, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushModal } from './reducers'
 import { postWebsiteMessage } from '../../lib/embed'
@@ -33,9 +32,7 @@ const defaultUIState: UIState = {
 
   shareBaseUrl: 'https://app.ciphereditor.com/',
 
-  canvasMode: UICanvasMode.Plane,
   canvasState: UICanvasState.Idle,
-  canvasSize: { width: 1, height: 1 },
 
   modalStack: [],
 
@@ -68,25 +65,6 @@ export const settingsSlice = createSlice({
     toggleEmbedMaximizedAction: (state, { payload }: PayloadAction<{}>) => {
       if (state.embedType === UIEmbedType.Website) {
         state.embedMaximized = !state.embedMaximized
-      }
-    },
-    updateCanvasSizeAction: (state, { payload }: PayloadAction<{
-      size: Size
-    }>) => {
-      const newSize = payload.size
-      const previousSize = state.canvasSize
-      state.canvasSize = payload.size
-
-      if (previousSize.width !== newSize.width) {
-        // TODO: Move magic numbers
-        const newCanvasMode =
-          newSize.width > 719
-            ? UICanvasMode.Plane
-            : UICanvasMode.Sequential
-        if (state.canvasMode !== newCanvasMode) {
-          state.canvasMode = newCanvasMode
-          // TODO: Transition from one mode to the other
-        }
       }
     },
     startWireAction: (state, { payload }: PayloadAction<{
@@ -171,7 +149,6 @@ export const settingsSlice = createSlice({
 export const {
   configureEmbedAction,
   toggleEmbedMaximizedAction,
-  updateCanvasSizeAction,
   startWireAction,
   targetWireAction,
   endWireAction,

@@ -1,12 +1,18 @@
 
 import undoable, { excludeAction } from 'redux-undo'
 import {
+  Blueprint,
+  BlueprintNode,
+  OperationIssue,
+  Point,
+  Size
+} from '@ciphereditor/library'
+import {
   addVariableFromControl,
   changeControl,
   changeControlValueToChoice,
   changeControlValueToType
 } from './reducers/control'
-import { Blueprint, BlueprintNode, OperationIssue, Point } from '@ciphereditor/library'
 import { BlueprintNodeId, BlueprintState } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
@@ -16,11 +22,12 @@ import { addNodes, deleteNodes, layoutNode, loadBlueprint, moveNode, selectNodes
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { defaultProgramNode, moveOffset } from './reducers/program'
 import { executeOperation, setOperationState } from './reducers/operation'
+import { getCanvasOffset, getNode, hasNode, serializeNodes } from './selectors/blueprint'
 import { getControlNode } from './selectors/control'
-import { getNode, hasNode, serializeNodes } from './selectors/blueprint'
 import { getOperationNode } from './selectors/operation'
-import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
 import { getProgramNode } from './selectors/program'
+import { planeCanvasMinWidth } from '../../constants'
+import { tryToWriteTextToClipboard } from '../../lib/utils/dom'
 
 export const defaultBlueprintState: BlueprintState = {
   nodes: { 1: defaultProgramNode },
@@ -28,8 +35,10 @@ export const defaultBlueprintState: BlueprintState = {
   selectedNodeIds: [],
   rootProgramId: 1,
   activeProgramId: 1,
-  rootOffset: { x: 0, y: 0 },
-  busyOperationIds: []
+  busyOperationIds: [],
+  planeCanvas: true,
+  canvasSize: { width: 1, height: 1 },
+  rootOffset: { x: 0, y: 0 }
 }
 
 /**
@@ -66,7 +75,7 @@ export const blueprintSlice = createSlice({
       const programId = payload.programId ?? state.activeProgramId
 
       // Add nodes
-      const addedNodes = addNodes(state, nodes, programId, directory)
+      const addedNodes = addNodes(state, nodes, true, programId, directory)
 
       // Select added nodes if we're in the same program
       if (addedNodes.length > 0) {
@@ -273,7 +282,8 @@ export const blueprintSlice = createSlice({
       if (clipboard !== undefined) {
         const programId = state.activeProgramId
         const directory = payload.directory
-        const addedNodes = addNodes(state, clipboard, programId, directory)
+        const addedNodes =
+          addNodes(state, clipboard, true, programId, directory)
 
         // Select added nodes, if any
         if (addedNodes.length > 0) {
@@ -289,7 +299,8 @@ export const blueprintSlice = createSlice({
       const directory = payload.directory
       const nodeIds = payload.nodeIds ?? state.selectedNodeIds
       const duplicatingNodes = serializeNodes(state, directory, nodeIds)
-      const addedNodes = addNodes(state, duplicatingNodes, undefined, directory)
+      const addedNodes =
+        addNodes(state, duplicatingNodes, false, undefined, directory)
 
       // Select added nodes, if any
       if (addedNodes.length > 0) {
@@ -312,6 +323,30 @@ export const blueprintSlice = createSlice({
       relative?: boolean
     }>) => {
       moveOffset(state, payload.offset, payload.relative ?? false)
+    },
+
+    layoutCanvasAction: (state, { payload }: PayloadAction<{
+      size: Size
+    }>) => {
+      const size = { ...state.canvasSize }
+      const newSize = payload.size
+
+      // Set new size
+      state.canvasSize = newSize
+      console.log('newSize', JSON.stringify(newSize))
+
+      const planeCanvas = state.planeCanvas
+      const newPlaneCanvas = newSize.width >= planeCanvasMinWidth
+      if (planeCanvas !== newPlaneCanvas) {
+        state.planeCanvas = newPlaneCanvas
+        // TODO: Transition between line and plane
+      }
+
+      // The program offset is assumed to be in the center of the canvas and it
+      // should not move when the canvas is resized
+      const offset = getCanvasOffset(state)
+      offset.x += (newSize.width - size.width) * 0.5
+      offset.y += (newSize.height - size.height) * 0.5
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{
@@ -365,6 +400,7 @@ export const {
   duplicateAction,
   deleteAction,
   moveOffsetAction,
+  layoutCanvasAction,
   layoutNodeAction
 } = blueprintSlice.actions
 
@@ -378,10 +414,16 @@ export default undoable(blueprintSlice.reducer, {
   filter: excludeAction([
     // Szenario: The user wants to copy something from the undo past
     // The undo history must stay intact when navigating or selecting
+    copyAction.type,
+    cutAction.type,
     enterProgramAction.type,
+    layoutCanvasAction.type,
+    layoutNodeAction.type,
     leaveProgramAction.type,
-    toggleControlVisibility.type,
-    layoutNodeAction.type
+    moveOffsetAction.type,
+    selectAction.type,
+    selectAllAction.type,
+    toggleControlVisibility.type
   ]),
   groupBy: (action, currentState, previousHistory) => {
     const currentGroup = previousHistory.group as number | string
@@ -389,9 +431,6 @@ export default undoable(blueprintSlice.reducer, {
       // Group incoming operation results with the previous state as they are
       // automatic and should not be performed again when doing undo/redo
       return currentGroup
-    } else if (action.type === selectAction.type) {
-      // Group together consecutive changes to the selection
-      return 'select'
     } else if (action.type === changeControlAction.type) {
       // User initiated changes to controls should be grouped together when they
       // refer to the same control and happen after small time intervals (30s)

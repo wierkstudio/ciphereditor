@@ -1,6 +1,5 @@
 
 import {
-  Point,
   ProgramNode,
   Rect,
   roundPoint,
@@ -32,17 +31,6 @@ export const getProgramNode = (state: BlueprintState, id: BlueprintNodeId): Prog
  */
 export const getActiveProgram = (state: BlueprintState): ProgramNodeState | undefined =>
   state.activeProgramId !== undefined ? getProgramNode(state, state.activeProgramId) : undefined
-
-/**
- * Return the current canvas offset/position depending on the active program
- */
-export const getOffset = (state: BlueprintState): Point => {
-  if (state.activeProgramId === undefined) {
-    return state.rootOffset
-  }
-  const program = getNode(state, state.activeProgramId, BlueprintNodeType.Program) as ProgramNodeState
-  return program.offset
-}
 
 /**
  * Return the current canvas content bounds used to layout scrollbars

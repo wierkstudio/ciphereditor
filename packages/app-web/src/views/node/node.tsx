@@ -5,17 +5,14 @@ import OperationView from '../../views/operation/operation'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
-import useUISelector from '../../hooks/useUISelector'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
-import { UICanvasMode } from '../../slices/ui/types'
-import { getCanvasMode } from '../../slices/ui/selectors'
-import { getNode, getNodeChildren } from '../../slices/blueprint/selectors/blueprint'
+import { Point, roundRect } from '@ciphereditor/library'
+import { arrayRemove, arrayUniquePush } from '../../lib/utils/array'
+import { getNode, getNodeChildren, getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveAction, selectAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { Point, roundRect } from '@ciphereditor/library'
 import { useCallback, useLayoutEffect, useRef } from 'react'
-import { arrayRemove, arrayUniquePush } from '../../lib/utils/array'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
@@ -28,7 +25,7 @@ export default function NodeView (props: {
   const frame = node.frame !== undefined ? roundRect(node.frame) : undefined
   const selectedNodeIds = useBlueprintSelector(state => state.selectedNodeIds)
   const isSelected = selectedNodeIds.includes(node.id)
-  const canvasMode = useUISelector(getCanvasMode)
+  const planeCanvas = useBlueprintSelector(getPlaneCanvas)
 
   const controls = useBlueprintSelector(state => {
     const controlNodes =
@@ -99,7 +96,11 @@ export default function NodeView (props: {
     }
   }, [nodeRef, outletRefs, frame, controls])
 
-  const onPointerDrag = useCallback((state: PointerDragState, delta: Point, event: MouseEvent) => {
+  const onPointerDrag = useCallback((
+    state: PointerDragState,
+    delta: Point,
+    event: MouseEvent
+  ) => {
     switch (state) {
       case 'move': {
         if (!isSelected) {
@@ -135,11 +136,11 @@ export default function NodeView (props: {
       ref={nodeRef}
       className={renderClassName('node', modifiers)}
       role='region'
-      style={canvasMode === UICanvasMode.Plane && frame !== undefined
+      style={planeCanvas && frame !== undefined
         ? { transform: `translate(${frame.x}px, ${frame.y}px)` }
         : {}}
       tabIndex={0}
-      onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
+      onPointerDown={planeCanvas ? onPointerDown : undefined}
     >
       {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
         <OperationView nodeId={nodeId} onOutletRef={onOutletRef} />

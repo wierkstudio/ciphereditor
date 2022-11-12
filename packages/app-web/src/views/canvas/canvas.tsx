@@ -12,19 +12,18 @@ import usePointerDrag from '../../hooks/usePointerDrag'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { DragEvent, FocusEvent, useCallback } from 'react'
-import { UICanvasMode, UICanvasState } from '../../slices/ui/types'
+import { UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
-import { getCanvasMode, getCanvasState, getViewportRect, getWireDraft } from '../../slices/ui/selectors'
-import { getContentBounds, getOffset, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
-import { getHasSelection } from '../../slices/blueprint/selectors/blueprint'
-import { loadBlueprintAction, moveOffsetAction, selectAction } from '../../slices/blueprint'
+import { getCanvasState, getWireDraft } from '../../slices/ui/selectors'
+import { getContentBounds, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
+import { getHasSelection, getPlaneCanvas, getViewportRect } from '../../slices/blueprint/selectors/blueprint'
+import { layoutCanvasAction, loadBlueprintAction, moveOffsetAction, selectAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { updateCanvasSizeAction } from '../../slices/ui'
 
 export default function CanvasView (): JSX.Element {
   const dispatch = useAppDispatch()
 
-  const canvasMode = useUISelector(getCanvasMode)
+  const planeCanvas = useBlueprintSelector(getPlaneCanvas)
   const hasSelection = useBlueprintSelector(getHasSelection)
 
   const contentBounds = useBlueprintSelector(getContentBounds)
@@ -36,13 +35,12 @@ export default function CanvasView (): JSX.Element {
   const wireDraft = useUISelector(getWireDraft)
 
   // Compose viewport rect
-  const offset = useBlueprintSelector(getOffset)
-  const viewportRect = useUISelector(state => getViewportRect(state, offset))
+  const viewportRect = useBlueprintSelector(getViewportRect)
 
   // Keep track of the canvas size
   useWindowResizeListener((): void => {
     const size = { width: window.innerWidth, height: window.innerHeight }
-    dispatch(updateCanvasSizeAction({ size }))
+    dispatch(layoutCanvasAction({ size }))
   })
 
   // Move canvas interaction
@@ -59,7 +57,7 @@ export default function CanvasView (): JSX.Element {
     event.preventDefault()
     const deltaOffset = { x: wheelFacts.pixelX, y: wheelFacts.pixelY }
     dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
-  }, canvasMode === UICanvasMode.Plane && canvasState === UICanvasState.Idle)
+  }, planeCanvas && canvasState === UICanvasState.Idle)
 
   const onScroll = (deltaX: number, deltaY: number): void => {
     const deltaOffset = { x: deltaX, y: deltaY }
@@ -102,7 +100,7 @@ export default function CanvasView (): JSX.Element {
     <div
       className={renderClassName('canvas', [canvasState])}
       tabIndex={0}
-      onPointerDown={canvasMode === UICanvasMode.Plane ? onPointerDown : undefined}
+      onPointerDown={planeCanvas ? onPointerDown : undefined}
       onFocus={onCanvasFocus}
       onDragOver={onCanvasDrag}
       onDrop={onCanvasDrop}
@@ -110,11 +108,11 @@ export default function CanvasView (): JSX.Element {
       <div
         className='canvas__content'
         onFocus={event => { event.stopPropagation() }}
-        style={canvasMode === UICanvasMode.Plane
+        style={planeCanvas
           ? { transform: `translate(${-viewportRect.x}px, ${-viewportRect.y}px)` }
           : {}}
       >
-        {canvasMode === UICanvasMode.Plane && variableIds.map(variableId => (
+        {planeCanvas && variableIds.map(variableId => (
           <WireView key={variableId} variableId={variableId} />
         ))}
         {childNodeIds.map(nodeId => (
@@ -126,7 +124,7 @@ export default function CanvasView (): JSX.Element {
           <WireDraftView wireDraft={wireDraft} />
         </div>
       )}
-      {canvasMode === UICanvasMode.Plane && contentBounds !== undefined && (
+      {planeCanvas && contentBounds !== undefined && (
         <div className='canvas__scrollbars'>
           <ScrollbarsView
             viewportRect={viewportRect}

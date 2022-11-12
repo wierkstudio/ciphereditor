@@ -76,7 +76,7 @@ export const addProgramNode = (
   addChildNode(state, program)
 
   if (programNode.children !== undefined) {
-    addNodes(state, programNode.children, id, directory, refIdMap)
+    addNodes(state, programNode.children, false, id, directory, refIdMap)
   }
 
   return program

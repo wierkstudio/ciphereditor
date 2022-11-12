@@ -13,6 +13,7 @@ import {
   getRectFromOriginAndSize,
   getRectOrigin,
   getRectSize,
+  getSizeCenter,
   movePointBy
 } from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
@@ -27,6 +28,7 @@ import { addVariable, attachControlToVariable } from './variable'
 import { arrayRemove, arrayUnique, arrayUniquePush } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
 import { getNextNodeFrame, getNode, hasNode } from '../selectors/blueprint'
+import { getProgramNode } from '../selectors/program'
 import { getVariableNode } from '../selectors/variable'
 
 /**
@@ -61,7 +63,8 @@ export const addChildNode = <T extends BlueprintNodeState>(
   // Special case: A self-referencing node is considered a new root node
   if (childId === parentId) {
     if (childType !== BlueprintNodeType.Program) {
-      throw new Error(`The root node must be of type program but found '${childType}'`)
+      throw new Error(
+        `The root node must be of type program but found '${childType}'`)
     }
 
     // Add previous root node as a child to the new root node
@@ -111,6 +114,8 @@ export const addChildNode = <T extends BlueprintNodeState>(
  * If multiple nodes are added, make sure the relative positioning stays intact.
  * @param state Blueprint state
  * @param nodes Nodes to be added
+ * @param moveFrameToOffset Wether to move the nodes frame to the program
+ * offset. If set to `false` the original nodes frame will be maintained.
  * @param programId Parent program id or `undefined`, if the currently active
  * program should be used. If the active program is `undefined` the given nodes
  * are added next to the root program (creating a new root program around it).
@@ -123,6 +128,7 @@ export const addChildNode = <T extends BlueprintNodeState>(
 export const addNodes = (
   state: BlueprintState,
   nodes: BlueprintNode[],
+  moveFrameToOffset: boolean,
   programId?: BlueprintNodeId,
   directory?: DirectoryState,
   refIdMap: Record<string, BlueprintNodeId> = {}
@@ -133,11 +139,22 @@ export const addNodes = (
     // Create a new program and install it as the new root
     addProgramNode(state, { type: 'program' }, undefined).id
 
-  // Layout
-  const nextNodeFrame = getNextNodeFrame(state, parentId)
-  const nodesRect = getCombinedBlueprintNodesRect(nodes) ?? nextNodeFrame
-  const repositionVector =
-    deltaPoint(getRectOrigin(nextNodeFrame), getRectOrigin(nodesRect))
+  // Compute the rect of all node frames to be added, combined together
+  const nextFrame = getNextNodeFrame(state, parentId)
+  const originalNodesFrame = getCombinedBlueprintNodesRect(nodes) ?? nextFrame
+
+  // If requested, align the center of the nodes frame with the program offset
+  let targetNodesFrame = originalNodesFrame
+  if (moveFrameToOffset) {
+    const program = getProgramNode(state, parentId)
+    targetNodesFrame = getRectFromOriginAndSize(
+      deltaPoint(program.offset, getSizeCenter(originalNodesFrame)),
+      getRectSize(originalNodesFrame)
+    )
+  }
+
+  const nodesFrame = getNextNodeFrame(state, parentId, targetNodesFrame)
+  const repositionVector = deltaPoint(nodesFrame, originalNodesFrame)
 
   // Order in which node types are being added
   const nodeTypeAddOrder: Array<BlueprintNode['type']> =
@@ -151,10 +168,10 @@ export const addNodes = (
       }
       const leadingTopPoint = node.frame !== undefined
         ? movePointBy(getRectOrigin(node.frame), repositionVector)
-        : nextNodeFrame
+        : nextFrame
       const size = node.frame !== undefined
         ? getRectSize(node.frame)
-        : getRectSize(nextNodeFrame)
+        : getRectSize(nextFrame)
       const frame = getRectFromOriginAndSize(leadingTopPoint, size)
       return { ...node, frame }
     })
@@ -394,8 +411,24 @@ export const loadBlueprint = (
   // Credits: https://ascii.co.uk/art/windmill
 
   const previousRootProgramId = state.rootProgramId
+
+  // When loading a blueprint, a new root program will be created around the
+  // current root program, following the serialized blueprint description.
+  // The placement of the new root program's children should not be influenced
+  // by the placement of the old root program (that will be deleted at the end).
+  // This is why we move the old root program far off into the distance.
+  const previousRootProgram = getProgramNode(state, previousRootProgramId)
+  previousRootProgram.offset = {
+    x: Number.MIN_SAFE_INTEGER,
+    y: Number.MAX_SAFE_INTEGER
+  }
+
+  // Add new program and install it as root
   const program = addProgramNode(state, blueprint.program, undefined, directory)
-  state.rootProgramId = program.id
+
+  // Enter into the new root program
   state.activeProgramId = program.id
+
+  // Remove the old root program
   removeNode(state, previousRootProgramId)
 }

@@ -1,8 +1,6 @@
 
-import { Point, Rect } from '@ciphereditor/library'
 import {
   ModalPayload,
-  UICanvasMode,
   UICanvasState,
   UIEmbedType,
   UIState,
@@ -21,21 +19,8 @@ export const isEmbedMaximizable = (state: UIState): boolean =>
 export const isEmbedMaximized = (state: UIState): boolean =>
   state.embedMaximized
 
-export const getCanvasMode = (state: UIState): UICanvasMode =>
-  state.canvasMode
-
 export const getCanvasState = (state: UIState): UICanvasState =>
   state.canvasState
-
-export const getCanvasSize = (state: UIState): { width: number, height: number } =>
-  state.canvasSize
-
-export const getViewportRect = (state: UIState, offset: Point): Rect => ({
-  x: Math.round(offset.x - state.canvasSize.width * 0.5),
-  y: Math.round(offset.y - state.canvasSize.height * 0.5),
-  width: Math.round(state.canvasSize.width),
-  height: Math.round(state.canvasSize.height)
-})
 
 export const getWireDraft = (state: UIState): UIWireDraft | undefined =>
   state.wireDraft

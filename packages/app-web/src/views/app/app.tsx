@@ -5,6 +5,7 @@ import CanvasView from '../canvas/canvas'
 import ModalStackView from '../../views/modal-stack/modal-stack'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
+import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
@@ -14,7 +15,8 @@ import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
 import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
-import { getCanvasMode, getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
+import { getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
+import { getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { keyBindingTargetDispatchActions } from '../../slices/settings/key-bindings'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { postWebsiteMessage } from '../../lib/embed'
@@ -28,7 +30,7 @@ export default function AppView (): JSX.Element {
   const embedType = useUISelector(getEmbedType)
   const embedEnv = useUISelector(getEmbedEnv)
   const embedMaximized = useUISelector(isEmbedMaximized)
-  const canvasMode = useUISelector(getCanvasMode)
+  const planeCanvas = useBlueprintSelector(getPlaneCanvas)
   const canvasState = useUISelector(getCanvasState)
   const keyBindings = useSettingsSelector(getKeyBindings)
   const { theme, reducedMotionPreference } =
@@ -133,7 +135,7 @@ export default function AppView (): JSX.Element {
       'script-enabled',
       `embed-${embedType as string}`,
       `env-${embedEnv}`,
-      `canvas-mode-${canvasMode}`,
+      `canvas-mode-${planeCanvas ? 'plane' : 'line'}`,
       `canvas-state-${canvasState}`,
       `theme-${theme as string}`,
       `reduced-motion-${reducedMotionPreference as string}`
@@ -149,7 +151,7 @@ export default function AppView (): JSX.Element {
         reducedMotionPreference
       })
     }
-  }, [embedType, theme, reducedMotionPreference, embedEnv, canvasMode, canvasState])
+  }, [embedType, theme, reducedMotionPreference, embedEnv, planeCanvas, canvasState])
 
   // Observe and react to intrinsic app size changes
   const intrinsicAppSizeObserver = useMemo(() => {

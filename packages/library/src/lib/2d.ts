@@ -69,6 +69,12 @@ export const expandRect = (rect: Rect, value: number): Rect => ({
 })
 
 /**
+ * Return true, if the given sizes are equal
+ */
+export const sizeEqualTo = (a: Size, b: Size): boolean =>
+  a.width === b.width && a.height === b.height
+
+/**
  * Return true, if the given rects are equal
  */
 export const rectEqualTo = (a: Rect, b: Rect): boolean =>

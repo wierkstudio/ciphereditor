@@ -7,7 +7,7 @@
   user-select: none;
   -webkit-user-select: none;
 
-  @include with-canvas-mode(sequential) {
+  @include with-canvas-mode(line) {
     min-height: rem(480);
   }
 
@@ -31,7 +31,7 @@
   &__content {
     padding: rem(96) 0 rem(8);
 
-    @include with-canvas-mode(sequential) {
+    @include with-canvas-mode(line) {
       display: flex;
       flex-direction: column;
       align-items: center;
