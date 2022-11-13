@@ -292,6 +292,7 @@ export const blueprintSlice = createSlice({
         // Select added nodes, if any
         if (addedNodes.length > 0) {
           state.selectedNodeIds = addedNodes.map(node => node.id)
+          state.activeProgramId = addedNodes[0].parentId
         }
       }
     },
@@ -309,6 +310,7 @@ export const blueprintSlice = createSlice({
       // Select added nodes, if any
       if (addedNodes.length > 0) {
         state.selectedNodeIds = addedNodes.map(node => node.id)
+        state.activeProgramId = addedNodes[0].parentId
       }
     },
 
