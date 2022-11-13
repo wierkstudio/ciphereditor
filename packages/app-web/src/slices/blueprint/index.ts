@@ -344,11 +344,13 @@ export const blueprintSlice = createSlice({
         // TODO: Transition between line and plane
       }
 
-      // The program offset is assumed to be in the center of the canvas and it
-      // should not move when the canvas is resized
-      const offset = getCanvasOffset(state)
-      offset.x += (newSize.width - size.width) * 0.5
-      offset.y += (newSize.height - size.height) * 0.5
+      if (size.width >= 320 || size.height >= 160) {
+        // The program offset is assumed to be in the center of the canvas and
+        // it should not move when the canvas is resized
+        const offset = getCanvasOffset(state)
+        offset.x += (newSize.width - size.width) * 0.5
+        offset.y += (newSize.height - size.height) * 0.5
+      }
     },
 
     layoutNodeAction: (state, { payload }: PayloadAction<{

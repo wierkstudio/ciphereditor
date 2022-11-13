@@ -9,11 +9,11 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
-import useResizeObserver from '../../hooks/useResizeObserver'
 import useUISelector from '../../hooks/useUISelector'
+import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { DragEvent, FocusEvent, useCallback, useRef } from 'react'
 import { UICanvasState } from '../../slices/ui/types'
-import { blueprintSchema, Size } from '@ciphereditor/library'
+import { blueprintSchema } from '@ciphereditor/library'
 import { getCanvasState, getWireDraft } from '../../slices/ui/selectors'
 import { getContentBounds, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
 import { getHasSelection, getPlaneCanvas, getViewportRect } from '../../slices/blueprint/selectors/blueprint'
@@ -38,11 +38,14 @@ export default function CanvasView (): JSX.Element {
   // Compose viewport rect
   const viewportRect = useBlueprintSelector(getViewportRect)
 
-  // Keep track of the canvas size
-  const onCanvasResize = useCallback((size: Size): void => {
-    dispatch(layoutCanvasAction({ size }))
-  }, [dispatch])
-  useResizeObserver(canvasRef, onCanvasResize)
+  // The canvas size depends on the size of the window and changes with it
+  useWindowResizeListener(() => {
+    if (canvasRef.current !== null) {
+      const clientRect = canvasRef.current.getBoundingClientRect()
+      const size = { width: clientRect.width, height: clientRect.height }
+      dispatch(layoutCanvasAction({ size }))
+    }
+  })
 
   // Move canvas interaction
   const onPointerDown = usePointerDrag((state, delta, event) => {

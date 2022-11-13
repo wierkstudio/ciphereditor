@@ -7,13 +7,13 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
-import useResizeObserver from '../../hooks/useResizeObserver'
+import useResizeObserver from '@react-hook/resize-observer'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { UIEmbedType } from '../../slices/ui/types'
 import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
-import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema, Size } from '@ciphereditor/library'
+import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
 import { getAccessibilitySettings, getKeyBindings } from '../../slices/settings/selectors'
 import { getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalStackEmpty } from '../../slices/ui/selectors'
@@ -155,15 +155,27 @@ export default function AppView (): JSX.Element {
   }, [embedType, theme, reducedMotionPreference, embedEnv, planeCanvas, canvasState])
 
   // Observe and react to intrinsic app size changes
-  const onIntrinsicAppResize = useCallback((size: Size): void => {
-    if (embedType !== UIEmbedType.Standalone) {
+  useResizeObserver(embedType !== UIEmbedType.Standalone ? appRef : null, (entry) => {
+    if (appRef.current !== null) {
+      // Using `getBoundingClientRect` yields better results compared to `entry`
+      const clientRect = appRef.current.getBoundingClientRect()
       postWebsiteMessage({
         type: 'intrinsicHeightChange',
-        height: size.height
+        height: clientRect.height
       })
     }
-  }, [embedType])
-  useResizeObserver(appRef, onIntrinsicAppResize)
+  })
+
+  // Initial intrinsic app size measurement
+  useEffect(() => {
+    if (appRef.current !== null && embedType !== UIEmbedType.Standalone) {
+      const clientRect = appRef.current.getBoundingClientRect()
+      postWebsiteMessage({
+        type: 'intrinsicHeightChange',
+        height: clientRect.height
+      })
+    }
+  }, [appRef, embedType])
 
   // React to maximized changes
   useEffect(() => {

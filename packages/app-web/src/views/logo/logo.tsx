@@ -20,24 +20,22 @@ export default function LogoView (props: {}): JSX.Element {
 
   return (
     <button onClick={(evt) => setSeed(seed + 1)} className='logo'>
-      <h1 className='logo__canvas'>
-        <svg
-          className='logo__svg'
-          width='36'
-          height='36'
-          viewBox='0 0 36 36'
-          role='img'
-          aria-labelledby={svgTitleId}
-        >
-          <title id={svgTitleId}>ciphereditor</title>
-          <path className='logo__svg-cross-1' transform={`translate(${positions[0]})`} d={crossPath} />
-          <path className='logo__svg-cross-2' transform={`translate(${positions[1]})`} d={crossPath} />
-          <path className='logo__svg-circle-1' transform={`translate(${positions[2]})`} d={circlePath} />
-          <path className='logo__svg-circle-2' transform={`translate(${positions[3]})`} d={circlePath} />
-          <path className='logo__svg-square-1' transform={`translate(${positions[4]})`} d={squarePath} />
-          <path className='logo__svg-square-2' transform={`translate(${positions[5]})`} d={squarePath} />
-        </svg>
-      </h1>
+      <svg
+        className='logo__svg'
+        width='36'
+        height='36'
+        viewBox='0 0 36 36'
+        role='img'
+        aria-labelledby={svgTitleId}
+      >
+        <title id={svgTitleId}>ciphereditor</title>
+        <path className='logo__svg-cross-1' transform={`translate(${positions[0]})`} d={crossPath} />
+        <path className='logo__svg-cross-2' transform={`translate(${positions[1]})`} d={crossPath} />
+        <path className='logo__svg-circle-1' transform={`translate(${positions[2]})`} d={circlePath} />
+        <path className='logo__svg-circle-2' transform={`translate(${positions[3]})`} d={circlePath} />
+        <path className='logo__svg-square-1' transform={`translate(${positions[4]})`} d={squarePath} />
+        <path className='logo__svg-square-2' transform={`translate(${positions[5]})`} d={squarePath} />
+      </svg>
     </button>
   )
 }
