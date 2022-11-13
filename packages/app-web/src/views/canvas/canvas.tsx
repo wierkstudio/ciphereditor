@@ -9,8 +9,8 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
+import useResizeObserver from '@react-hook/resize-observer'
 import useUISelector from '../../hooks/useUISelector'
-import useWindowResizeListener from '../../hooks/useWindowResizeListener'
 import { DragEvent, FocusEvent, useCallback, useRef } from 'react'
 import { UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
@@ -38,9 +38,10 @@ export default function CanvasView (): JSX.Element {
   // Compose viewport rect
   const viewportRect = useBlueprintSelector(getViewportRect)
 
-  // The canvas size depends on the size of the window and changes with it
-  useWindowResizeListener(() => {
+  // Observe and react to canvas size changes
+  useResizeObserver(canvasRef, (entry) => {
     if (canvasRef.current !== null) {
+      // Using `getBoundingClientRect` yields better results compared to `entry`
       const clientRect = canvasRef.current.getBoundingClientRect()
       const size = { width: clientRect.width, height: clientRect.height }
       dispatch(layoutCanvasAction({ size }))
