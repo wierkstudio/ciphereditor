@@ -88,12 +88,12 @@ export interface BlueprintState {
   planeCanvas: boolean
 
   /**
-   * Current size of the canvas
+   * Current size of the plane (2-dimensional) canvas
    */
   canvasSize: Size
 
   /**
-   * Canvas offset/position when leaving the root program
+   * Plane canvas offset/position when leaving the root program
    */
   rootOffset: Point
 }

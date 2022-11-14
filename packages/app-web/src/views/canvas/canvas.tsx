@@ -11,6 +11,7 @@ import useNormalizedWheel from '../../hooks/useNormalizedWheel'
 import usePointerDrag from '../../hooks/usePointerDrag'
 import useResizeObserver from '@react-hook/resize-observer'
 import useUISelector from '../../hooks/useUISelector'
+import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { DragEvent, FocusEvent, useCallback, useRef } from 'react'
 import { UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
@@ -38,15 +39,16 @@ export default function CanvasView (): JSX.Element {
   // Compose viewport rect
   const viewportRect = useBlueprintSelector(getViewportRect)
 
-  // Observe and react to canvas size changes
-  useResizeObserver(canvasRef, (entry) => {
-    if (canvasRef.current !== null) {
-      // Using `getBoundingClientRect` yields better results compared to `entry`
+  // Handle changes to the canvas size (if using the plane canvas)
+  const onCanvasSizeChange = useCallback(() => {
+    if (planeCanvas && canvasRef.current !== null) {
       const clientRect = canvasRef.current.getBoundingClientRect()
       const size = { width: clientRect.width, height: clientRect.height }
       dispatch(layoutCanvasAction({ size }))
     }
-  })
+  }, [planeCanvas, canvasRef, dispatch])
+  useResizeObserver(planeCanvas ? canvasRef : null, onCanvasSizeChange)
+  useWindowLoadListener(onCanvasSizeChange)
 
   // Move canvas interaction
   const onPointerDown = usePointerDrag((state, delta, event) => {

@@ -5,7 +5,8 @@ import {
   BlueprintNode,
   OperationIssue,
   Point,
-  Size
+  Size,
+  sizeEqualTo
 } from '@ciphereditor/library'
 import {
   addVariableFromControl,
@@ -337,21 +338,23 @@ export const blueprintSlice = createSlice({
       const size = { ...state.canvasSize }
       const newSize = payload.size
 
-      state.canvasSize = newSize
+      if (!sizeEqualTo(size, newSize)) {
+        state.canvasSize = newSize
 
-      const planeCanvas = state.planeCanvas
-      const newPlaneCanvas = newSize.width >= planeCanvasMinWidth
-      if (planeCanvas !== newPlaneCanvas) {
-        state.planeCanvas = newPlaneCanvas
-        // TODO: Transition between line and plane
-      }
+        const planeCanvas = state.planeCanvas
+        const newPlaneCanvas = newSize.width >= planeCanvasMinWidth
+        if (planeCanvas !== newPlaneCanvas) {
+          state.planeCanvas = newPlaneCanvas
+          // TODO: Transition between line and plane
+        }
 
-      if (size.width >= 320 || size.height >= 160) {
-        // The program offset is assumed to be in the center of the canvas and
-        // it should not move when the canvas is resized
-        const offset = getCanvasOffset(state)
-        offset.x += (newSize.width - size.width) * 0.5
-        offset.y += (newSize.height - size.height) * 0.5
+        if (size.width >= 320 || size.height >= 160) {
+          // The program offset is assumed to be in the center of the canvas and
+          // it should not move when the canvas is resized
+          const offset = getCanvasOffset(state)
+          offset.x += (newSize.width - size.width) * 0.5
+          offset.y += (newSize.height - size.height) * 0.5
+        }
       }
     },
 

@@ -24,7 +24,7 @@ export interface ProgramNodeState extends BlueprintNodeState {
   label: string
 
   /**
-   * Canvas offset/position
+   * Plane canvas offset/position
    */
   offset: Point
 

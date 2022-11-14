@@ -20,7 +20,7 @@ import { getCanvasState, getEmbedEnv, getEmbedType, isEmbedMaximized, isModalSta
 import { getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { keyBindingTargetDispatchActions } from '../../slices/settings/key-bindings'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
-import { postWebsiteMessage } from '../../lib/embed'
+import { postIntrinsicHeightChange, postWebsiteMessage } from '../../lib/embed'
 import { useCallback, useEffect, useRef } from 'react'
 
 export default function AppView (): JSX.Element {
@@ -154,28 +154,16 @@ export default function AppView (): JSX.Element {
     }
   }, [embedType, theme, reducedMotionPreference, embedEnv, planeCanvas, canvasState])
 
-  // Observe and react to intrinsic app size changes
-  useResizeObserver(embedType !== UIEmbedType.Standalone ? appRef : null, (entry) => {
-    if (appRef.current !== null) {
-      // Using `getBoundingClientRect` yields better results compared to `entry`
+  // Handle changes to the intrinsic app size (if embedded)
+  const embedded = embedType !== UIEmbedType.Standalone
+  const onIntrinsicHeightChange = useCallback(() => {
+    if (embedded && appRef.current !== null) {
       const clientRect = appRef.current.getBoundingClientRect()
-      postWebsiteMessage({
-        type: 'intrinsicHeightChange',
-        height: clientRect.height
-      })
+      postIntrinsicHeightChange(clientRect.height)
     }
-  })
-
-  // Initial intrinsic app size measurement
-  useEffect(() => {
-    if (appRef.current !== null && embedType !== UIEmbedType.Standalone) {
-      const clientRect = appRef.current.getBoundingClientRect()
-      postWebsiteMessage({
-        type: 'intrinsicHeightChange',
-        height: clientRect.height
-      })
-    }
-  }, [appRef, embedType])
+  }, [embedded, appRef])
+  useResizeObserver(embedded ? appRef : null, onIntrinsicHeightChange)
+  useWindowLoadListener(onIntrinsicHeightChange)
 
   // React to maximized changes
   useEffect(() => {
