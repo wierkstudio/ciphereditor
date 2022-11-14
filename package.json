@@ -21,8 +21,5 @@
     "extension-essentials-watch": "npm run watch -w @ciphereditor/extension-essentials",
     "extension-hash-build": "npm run build -w @ciphereditor/extension-hash",
     "extension-pgp-build": "npm run build -w @ciphereditor/extension-pgp"
-  },
-  "devDependencies": {
-    "ts-standard": "^11.0.0"
   }
 }

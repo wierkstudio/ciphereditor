@@ -26,7 +26,7 @@ export type SelectViewElement =
 
 export default function SelectView (props: {
   elements: SelectViewElement[]
-  value?: string|number
+  value?: string | number
   valueLabel?: string
   onChange?: ChangeEventHandler<HTMLSelectElement>
   modifiers?: ViewModifiers

@@ -45,7 +45,7 @@ type InputTextViewProps =
  */
 export default function InputTextView (props: InputTextViewProps): JSX.Element {
   const { leadingIcon, value, onChange, modifiers, ...textareaProps } = props
-  const textareaRef = useRef<HTMLTextAreaElement|null>(null)
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null)
 
   useKeyBindingHandler(textareaRef.current, (shortcut, event) => {
     if (stopPropagationForShortcuts.includes(shortcut)) {

@@ -1,6 +1,6 @@
 
 import useAppSelector from './useAppSelector'
-import { TypedUseSelectorHook } from 'react-redux'
+import { EqualityFn, NoInfer, TypedUseSelectorHook } from 'react-redux'
 import { UIState } from '../slices/ui/types'
 
 /**
@@ -9,7 +9,7 @@ import { UIState } from '../slices/ui/types'
  */
 const useUISelector: TypedUseSelectorHook<UIState> = <TSelected = unknown>(
   selector: (state: UIState) => TSelected,
-  equalityFn?: (left: TSelected, right: TSelected) => boolean
+  equalityFn?: EqualityFn<NoInfer<TSelected>> | undefined
 ) => useAppSelector(state => selector(state.ui), equalityFn)
 
 export default useUISelector

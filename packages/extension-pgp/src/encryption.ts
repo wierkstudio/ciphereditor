@@ -102,7 +102,7 @@ const execute: OperationExecuteExport = async (request) => {
   // Decrypt private key using passphrase
   if (privateKey !== undefined && !privateKey.isDecrypted()) {
     privateKey = await openpgp.decryptKey({
-      privateKey: privateKey,
+      privateKey,
       passphrase: privateKeyPassphrase
     })
   }

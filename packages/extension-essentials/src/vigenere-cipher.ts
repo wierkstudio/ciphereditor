@@ -223,7 +223,7 @@ const execute: OperationExecuteExport = (request) => {
   const output = stringFromUnicodeCodePoints(resultCodePoints)
   changes.push({ name: outputControl, value: output })
 
-  return { changes: changes, issues: issues }
+  return { changes, issues }
 }
 
 export default {

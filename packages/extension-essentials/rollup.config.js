@@ -4,7 +4,7 @@ import replace from '@rollup/plugin-replace'
 import typescript from '@rollup/plugin-typescript'
 import { loadEnvConfig } from '@next/env'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { terser } from 'rollup-plugin-terser'
+import { terser } from '@rollup/plugin-terser'
 
 const envDir = path.resolve(__dirname, '..', '..')
 

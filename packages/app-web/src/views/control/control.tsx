@@ -55,7 +55,7 @@ export default function ControlView (props: {
   useEffect(() => {
     if (isWireTargetable) {
       const onEnter = (): void => {
-        dispatch(targetWireAction({ controlId: controlId }))
+        dispatch(targetWireAction({ controlId }))
       }
       const onLeave = (): void => {
         dispatch(targetWireAction({ controlId: undefined }))

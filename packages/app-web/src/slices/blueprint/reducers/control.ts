@@ -114,7 +114,7 @@ export const addOperationControlNode = (
     initialValue: value,
     value,
     selectedOptionIndex,
-    options: options,
+    options,
     visibility: control.visibility ?? defaultControlNode.visibility
   }
   return addChildNode(state, controlNode)

@@ -1,7 +1,7 @@
 
 import useAppSelector from './useAppSelector'
+import { EqualityFn, NoInfer, TypedUseSelectorHook } from 'react-redux'
 import { SettingsState } from '../slices/settings/types'
-import { TypedUseSelectorHook } from 'react-redux'
 
 /**
  * A hook to access the settings state. This hook takes a settings selector
@@ -9,7 +9,7 @@ import { TypedUseSelectorHook } from 'react-redux'
  */
 const useSettingsSelector: TypedUseSelectorHook<SettingsState> = <TSelected = unknown>(
   selector: (state: SettingsState) => TSelected,
-  equalityFn?: (left: TSelected, right: TSelected) => boolean
+  equalityFn?: EqualityFn<NoInfer<TSelected>> | undefined
 ) => useAppSelector(state => selector(state.settings), equalityFn)
 
 export default useSettingsSelector

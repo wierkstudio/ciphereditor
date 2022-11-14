@@ -15,8 +15,8 @@
     "gulp-inject": "^5.0.5",
     "gulp-terser": "^2.1.0",
     "gulp-typescript": "^5.0.1",
-    "ts-standard": "^11.0.0",
-    "typescript": "^4.6.4"
+    "ts-standard": "^12.0.1",
+    "typescript": "^4.8.4"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts"

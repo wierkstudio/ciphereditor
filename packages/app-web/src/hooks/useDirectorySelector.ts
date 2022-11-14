@@ -1,7 +1,7 @@
 
 import useAppSelector from './useAppSelector'
-import { TypedUseSelectorHook } from 'react-redux'
 import { DirectoryState } from '../slices/directory/types'
+import { EqualityFn, NoInfer, TypedUseSelectorHook } from 'react-redux'
 
 /**
  * A hook to access the directory state. This hook takes a directory selector
@@ -9,7 +9,7 @@ import { DirectoryState } from '../slices/directory/types'
  */
 const useDirectorySelector: TypedUseSelectorHook<DirectoryState> = <TSelected = unknown>(
   selector: (state: DirectoryState) => TSelected,
-  equalityFn?: (left: TSelected, right: TSelected) => boolean
+  equalityFn?: EqualityFn<NoInfer<TSelected>> | undefined
 ) => useAppSelector(state => selector(state.directory), equalityFn)
 
 export default useDirectorySelector
