@@ -23,3 +23,8 @@ export const maxOperationTimeout = 10 * 60 * 1000
  * Default operation timeout (in ms)
  */
 export const defaultOperationTimeout = 10 * 1000
+
+/**
+ * Mime type of a blueprint document
+ */
+export const blueprintMimeType = 'application/vnd.ciphereditor.blueprint'

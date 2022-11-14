@@ -6,6 +6,7 @@ import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
 import { SettingsModalPayload } from '../../slices/ui/types'
+import { blueprintMimeType } from '../../constants'
 import { bufferToBase64urlString, stringToBuffer } from '@ciphereditor/library'
 import { serializeBlueprint } from '../../slices/blueprint/selectors/blueprint'
 import { trackEvent } from '../../lib/embed'
@@ -29,10 +30,8 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
 
   const onSave = (): void => {
     // Initiate download via anchor element
-    const documentBlob = URL.createObjectURL(new Blob(
-      [documentText],
-      { type: 'application/vnd.ciphereditor.blueprint' }
-    ))
+    const documentBlob = URL.createObjectURL(
+      new Blob([documentText], { type: blueprintMimeType }))
     const anchorElement = document.createElement('a')
     anchorElement.download = 'Blueprint.ciphereditor'
     anchorElement.href = documentBlob

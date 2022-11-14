@@ -16,8 +16,9 @@
     pointer-events: initial;
   }
 
-  .root--env-darwin &__start {
-    padding-left: rem(84);
+  .root--env-darwin &__toolbar {
+    padding-left: rem(78);
+    padding-right: 0;
   }
 
   .root--embed-website &__brand,

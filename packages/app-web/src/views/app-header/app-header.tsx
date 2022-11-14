@@ -63,7 +63,7 @@ export default function AppHeaderView (): JSX.Element {
     <header className='app-header'>
       <div className='app-header__toolbar'>
         <ToolbarView>
-          {embedType !== UIEmbedType.Website && (
+          {embedType !== UIEmbedType.Website && embedType !== UIEmbedType.Electron && (
             <ToolbarView.BrandView />
           )}
           <ButtonView

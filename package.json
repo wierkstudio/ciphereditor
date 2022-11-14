@@ -11,7 +11,7 @@
     "app-web-start": "npm run start -w @ciphereditor/app-web",
     "app-web-preview": "npm run preview -w @ciphereditor/app-web",
     "app-desktop-start": "npm run start -w @ciphereditor/app-desktop",
-    "app-desktop-pack": "npm run pack -w @ciphereditor/app-desktop",
+    "app-desktop-pack": "npm run app-web-build && npm run pack -w @ciphereditor/app-desktop",
     "library-build": "npm run build -w @ciphereditor/library",
     "library-watch": "npm run watch -w @ciphereditor/library",
     "processor-build": "npm run build -w @ciphereditor/processor",
