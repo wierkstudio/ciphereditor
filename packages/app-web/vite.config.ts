@@ -16,6 +16,15 @@ export default defineConfig(({ command, mode }) => {
       outDir: 'build',
       sourcemap: true
     },
+    define: {
+      'process.env.SENTRY_DSN': process.env.SENTRY_DSN !== undefined
+        ? JSON.stringify(process.env.SENTRY_DSN)
+        : undefined,
+      'process.env.ENV': JSON.stringify(
+        process.env.NODE_ENV ?? process.env.VERCEL_ENV ?? 'production'),
+      'process.env.RELEASE': JSON.stringify(
+        process.env.VERCEL_GIT_COMMIT_SHA ?? 'unknown')
+    },
     server: {
       port: 3010,
       https: useHttps
