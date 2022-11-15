@@ -11,8 +11,9 @@ import { store } from './store'
 if (process.env.SENTRY_DSN !== undefined) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
-    environment: process.env.ENV,
-    release: process.env.RELEASE
+    environment: process.env.NODE_ENV,
+    release: process.env.RELEASE,
+    maxBreadcrumbs: 0
   })
 }
 

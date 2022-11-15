@@ -1,6 +1,8 @@
 
 name: Preview Deployment
 env:
+  NODE_ENV: development
+  RELEASE: ${{ github.sha }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
