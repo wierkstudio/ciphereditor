@@ -13,7 +13,8 @@ export default defineConfig(({ command, mode }) => {
     // Use relative URLs (useful for Electron)
     base: './',
     build: {
-      outDir: 'build'
+      outDir: 'build',
+      sourcemap: true
     },
     server: {
       port: 3010,
