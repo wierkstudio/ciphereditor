@@ -8,12 +8,13 @@ import { createRoot } from 'react-dom/client'
 import { store } from './store'
 
 // Configure Sentry error reporting
-if (process.env.SENTRY_DSN !== undefined) {
+if (process.env.APP_SENTRY_DSN !== undefined) {
   Sentry.init({
-    dsn: process.env.SENTRY_DSN,
-    environment: process.env.NODE_ENV,
-    release: process.env.RELEASE,
-    maxBreadcrumbs: 0
+    dsn: process.env.APP_SENTRY_DSN,
+    environment: process.env.APP_ENV,
+    release: process.env.APP_RELEASE,
+    maxBreadcrumbs: 0,
+    autoSessionTracking: false
   })
 }
 

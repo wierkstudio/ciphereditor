@@ -17,13 +17,13 @@ export default defineConfig(({ command, mode }) => {
       sourcemap: true
     },
     define: {
-      'process.env.SENTRY_DSN': process.env.SENTRY_DSN !== undefined
-        ? JSON.stringify(process.env.SENTRY_DSN)
+      'process.env.APP_SENTRY_DSN': process.env.APP_SENTRY_DSN !== undefined
+        ? JSON.stringify(process.env.APP_SENTRY_DSN)
         : undefined,
-      'process.env.NODE_ENV': JSON.stringify(
-        process.env.NODE_ENV ?? 'production'),
-      'process.env.RELEASE': JSON.stringify(
-        process.env.RELEASE ?? 'unknown')
+      'process.env.APP_ENV': JSON.stringify(
+        process.env.APP_ENV ?? 'production'),
+      'process.env.APP_RELEASE': JSON.stringify(
+        process.env.APP_RELEASE ?? 'unknown')
     },
     server: {
       port: 3010,

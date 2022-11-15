@@ -1,8 +1,8 @@
 
 name: Production Deployment
 env:
-  NODE_ENV: production
-  RELEASE: ${{ github.sha }}
+  APP_ENV: production
+  APP_RELEASE: ${{ github.sha }}
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
