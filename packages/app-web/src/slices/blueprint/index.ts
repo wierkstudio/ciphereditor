@@ -19,7 +19,7 @@ import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
 import { OperationExecutionState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
-import { addNodes, deleteNodes, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
+import { addNodes, clearBlueprint, deleteNodes, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { defaultProgramNode, moveOffset } from './reducers/program'
 import { executeOperation, setOperationState } from './reducers/operation'
@@ -319,7 +319,14 @@ export const blueprintSlice = createSlice({
       nodeIds?: BlueprintNodeId[]
     }>) => {
       const nodeIds = payload.nodeIds ?? state.selectedNodeIds
-      deleteNodes(state, nodeIds)
+      if (nodeIds.length === 1 && nodeIds[0] === state.rootProgramId) {
+        // By deleting the root program the user probably wants to clear the
+        // blueprint to start from scratch. That's exactly what we give them.
+        clearBlueprint(state)
+      } else {
+        // Safely delete the given node ids
+        deleteNodes(state, nodeIds)
+      }
     },
 
     /**

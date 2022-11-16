@@ -25,6 +25,7 @@ import { openUrlAction, pushModalAction, toggleEmbedMaximizedAction } from '../.
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()
+  const rootProgramId = useBlueprintSelector(state => state.rootProgramId)
   const program = useBlueprintSelector(getActiveProgram)
   const embedType = useUISelector(getEmbedType)
   const planeCanvas = useBlueprintSelector(getPlaneCanvas)
@@ -36,6 +37,9 @@ export default function AppHeaderView (): JSX.Element {
   const hasSelection = useBlueprintSelector(getHasSelection)
   const undoEnabled = useAppSelector(state => state.blueprint.past.length > 0)
   const redoEnabled = useAppSelector(state => state.blueprint.future.length > 0)
+  const leaveProgramEnabled =
+    program !== undefined &&
+    (program.id !== rootProgramId || program.childIds.length > 0)
 
   // Gather key bindings
   const toggleAddModalKeyCombination = useSettingsSelector(state =>
@@ -126,7 +130,7 @@ export default function AppHeaderView (): JSX.Element {
             icon='arrowUp'
             modifiers='large alt'
             onClick={() => dispatch(leaveProgramAction({}))}
-            disabled={program === undefined}
+            disabled={!leaveProgramEnabled}
           />
           <ButtonView
             title={t('Share')}

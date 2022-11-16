@@ -25,7 +25,7 @@ import { ProgramNodeState } from '../types/program'
 import { VariableNodeState } from '../types/variable'
 import { addControlNode } from './control'
 import { addOperationNode } from './operation'
-import { addProgramNode, updateProgramContentBounds } from './program'
+import { addProgramNode, defaultProgramNode, updateProgramContentBounds } from './program'
 import { addVariable, attachControlToVariable } from './variable'
 import { arrayRemove, arrayUnique, arrayUniquePush } from '../../../lib/utils/array'
 import { getControlNode } from '../selectors/control'
@@ -317,8 +317,12 @@ export const deleteNodes = (
     if (hasNode(state, nodeId)) {
       const node = getNode(state, nodeId)
       const parent = getNode(state, node.parentId)
+      const allowed =
+        // Operation child nodes can't be deleted individually
+        parent.type !== BlueprintNodeType.Operation &&
+        // The root program can't be deleted
+        node.id !== node.parentId
 
-      const allowed = parent.type !== BlueprintNodeType.Operation
       if (allowed) {
         removeNode(state, nodeId)
       }
@@ -393,6 +397,19 @@ export const selectNodes = (
 }
 
 /**
+ * Reset the blueprint to start from scratch
+ */
+export const clearBlueprint = (
+  state: BlueprintState
+): void => {
+  const previousRootProgramId = state.rootProgramId
+  const program = addProgramNode(state, defaultProgramNode, undefined)
+  state.activeProgramId = program.id
+  state.rootOffset = defaultProgramNode.offset
+  removeNode(state, previousRootProgramId)
+}
+
+/**
  * Load the given blueprint into the state, replacing existing nodes.
  * @param state Blueprint state slice
  * @param blueprint Blueprint to be loaded
@@ -433,6 +450,7 @@ export const loadBlueprint = (
 
   // Enter into the new root program
   state.activeProgramId = program.id
+  state.rootOffset = defaultProgramNode.offset
 
   // Remove the old root program
   removeNode(state, previousRootProgramId)
