@@ -84,7 +84,7 @@ export const blueprintSlice = createSlice({
 
       // Select added nodes if we're in the same program
       if (addedNodes.length > 0) {
-        if (programId === undefined || programId === addedNodes.at(-1)?.parentId) {
+        if (programId === undefined || programId === addedNodes[0].parentId) {
           state.selectedNodeIds = addedNodes.map(nodes => nodes.id)
         }
       }
@@ -101,7 +101,7 @@ export const blueprintSlice = createSlice({
     enterProgramAction: (state, { payload }: PayloadAction<{
       programId?: BlueprintNodeId
     }>) => {
-      const programId = payload.programId ?? state.selectedNodeIds.at(0)
+      const programId = payload.programId ?? state.selectedNodeIds[0]
       if (programId !== undefined) {
         state.activeProgramId = programId
         state.selectedNodeIds = []

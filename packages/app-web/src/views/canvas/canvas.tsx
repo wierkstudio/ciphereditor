@@ -82,7 +82,7 @@ export default function CanvasView (): JSX.Element {
     // add the content of the drop as a new control to the blueprint
     event.preventDefault()
     // Only consider the first item dragged on the canvas
-    const item = Array.from(event.dataTransfer.items).at(0)
+    const item = Array.from(event.dataTransfer.items)[0]
     if (item?.kind === 'file') {
       const file = item.getAsFile()
       if (file !== null) {

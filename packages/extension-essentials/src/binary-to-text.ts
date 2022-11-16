@@ -123,7 +123,7 @@ const execute: OperationExecuteExport = (request) => {
       }]
     }
   }
-  const paddingSymbolCodePoint = paddingSymbolCodePoints.at(0)
+  const paddingSymbolCodePoint = paddingSymbolCodePoints[0]
   if (paddingSymbolCodePoint !== undefined && alphabet.includes(paddingSymbolCodePoint)) {
     return {
       issues: [{
