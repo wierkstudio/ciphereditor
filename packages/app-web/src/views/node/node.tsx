@@ -5,6 +5,7 @@ import OperationView from '../../views/operation/operation'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
+import useResizeObserver from '@react-hook/resize-observer'
 import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { Point, roundRect } from '@ciphereditor/library'
@@ -26,75 +27,54 @@ export default function NodeView (props: {
   const selectedNodeIds = useBlueprintSelector(state => state.selectedNodeIds)
   const isSelected = selectedNodeIds.includes(node.id)
   const planeCanvas = useBlueprintSelector(getPlaneCanvas)
-
-  const controls = useBlueprintSelector(state => {
-    const controlNodes =
+  const controlIds = useBlueprintSelector(state => {
+    const controls =
       node.type === BlueprintNodeType.Control
         ? [node as ControlNodeState]
         : getNodeChildren(state, node.id, BlueprintNodeType.Control) as ControlNodeState[]
-    return controlNodes.map(control => ({
-      id: control.id,
-      nodeOutletX: control.nodeOutletX,
-      nodeOutletY: control.nodeOutletY
-    }))
+    return controls.map(control => control.id)
   })
 
   const nodeRef = useRef<HTMLDivElement>(null)
-  const outletRefs = useRef<{ [controlId: string]: HTMLDivElement | undefined }>({})
+  const outletRefs = useRef<Record<string, HTMLDivElement | undefined>>({})
   const onOutletRef = useCallback((controlId: number, element: HTMLDivElement | null) => {
-    if (element !== null) {
-      outletRefs.current[controlId] = element
-    } else {
-      outletRefs.current[controlId] = undefined
-    }
+    outletRefs.current[controlId] = element ?? undefined
   }, [outletRefs])
 
-  useLayoutEffect(() => {
-    // TODO: Optimization: Measuring things is expensive, this should only be
-    // run when actual changes are applied to the DOM
-    // TODO: Optimization: This should NOT be called when the node gets moved
+  /**
+   * Measure the node size and the relative positions of the outlet indicators
+   * it contains. This is an expensive operation, it should only be run when the
+   * DOM changes. It SHOULD NOT be called when the node changes position.
+   */
+  const layoutNode = useCallback(() => {
     const nodeElement = nodeRef.current
-    if (frame !== undefined && nodeElement !== null) {
-      const outletPositions: Array<{
-        controlId: BlueprintNodeId
-        x: number | undefined
-        y: number | undefined
-      }> = []
-
-      const nodeRect = nodeElement.getBoundingClientRect()
-      const width = nodeRect.width
-      const height = nodeRect.height
-
-      for (let i = 0; i < controls.length; i++) {
-        const control = controls[i]
-        let x: number | undefined
-        let y: number | undefined
-
-        // Retrieve indicator element for this control
-        const indicatorElement = outletRefs.current[control.id.toString()]
-        if (indicatorElement !== undefined) {
-          // Measure indicator rect and calculate its relative position within
-          // the operation node component
-          const rect = indicatorElement.getBoundingClientRect()
-          x = Math.round(rect.x + rect.width * 0.5 - nodeRect.x)
-          y = Math.round(rect.y + rect.height * 0.5 - nodeRect.y)
-        }
-
-        // Return only indicator positions that changed
-        if (control.nodeOutletX !== x || control.nodeOutletY !== y) {
-          outletPositions.push({ controlId: control.id, x, y })
-        }
-      }
-
-      if (
-        frame.width !== width ||
-        frame.height !== height ||
-        outletPositions.length > 0
-      ) {
-        dispatch(layoutNodeAction({ nodeId, width, height, outletPositions }))
-      }
+    if (nodeElement === null) {
+      return
     }
-  }, [nodeRef, outletRefs, frame, controls])
+
+    const nodeClientRect = nodeElement.getBoundingClientRect()
+    const size = { width: nodeClientRect.width, height: nodeClientRect.height }
+
+    const outletPositions = controlIds.map(controlId => {
+      const indicatorElement = outletRefs.current[controlId.toString()]
+      const clientRect = indicatorElement?.getBoundingClientRect()
+      const position = clientRect === undefined ? undefined : {
+        x: Math.round(clientRect.x + clientRect.width * 0.5 - nodeClientRect.x),
+        y: Math.round(clientRect.y + clientRect.height * 0.5 - nodeClientRect.y)
+      }
+      return { controlId, position }
+    })
+
+    dispatch(layoutNodeAction({ nodeId, size, outletPositions }))
+  }, [dispatch, nodeRef, outletRefs, controlIds])
+
+  // Trigger layout when a node resizes
+  useResizeObserver(nodeRef, layoutNode)
+
+  // Trigger layout when controls appear/disappear or get reordered as this
+  // might not trigger the node to resize
+  const controlIdString = controlIds.join(',')
+  useLayoutEffect(layoutNode, [nodeId, controlIdString])
 
   const onPointerDrag = useCallback((
     state: PointerDragState,

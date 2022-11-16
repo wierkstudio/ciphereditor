@@ -360,25 +360,23 @@ export const blueprintSlice = createSlice({
 
     layoutNodeAction: (state, { payload }: PayloadAction<{
       nodeId: number
-      width: number | undefined
-      height: number | undefined
+      size: Size
       outletPositions?: Array<{
         controlId: BlueprintNodeId
-        x: number | undefined
-        y: number | undefined
+        position: Point | undefined
       }>
     }>) => {
-      const { nodeId, width, height, outletPositions } = payload
+      const { nodeId, size, outletPositions } = payload
 
-      if (width !== undefined && height !== undefined) {
-        layoutNode(state, nodeId, width, height)
+      if (size !== undefined) {
+        layoutNode(state, nodeId, size)
       }
 
       if (outletPositions !== undefined) {
-        outletPositions.forEach(position => {
-          const control = getControlNode(state, position.controlId)
-          control.nodeOutletX = position.x
-          control.nodeOutletY = position.y
+        outletPositions.forEach(({ controlId, position }) => {
+          const control = getControlNode(state, controlId)
+          control.nodeOutletX = position?.x
+          control.nodeOutletY = position?.y
         })
       }
     }

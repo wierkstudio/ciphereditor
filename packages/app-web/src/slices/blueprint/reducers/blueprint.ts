@@ -14,7 +14,9 @@ import {
   getRectOrigin,
   getRectSize,
   getSizeCenter,
-  movePointBy
+  movePointBy,
+  Size,
+  sizeEqualTo
 } from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
@@ -358,8 +360,7 @@ export const moveNode = (
 export const layoutNode = (
   state: BlueprintState,
   nodeId: BlueprintNodeId,
-  width: number,
-  height: number
+  size: Size
 ): void => {
   const node = getNode(state, nodeId)
   if (node.frame === undefined) {
@@ -367,13 +368,12 @@ export const layoutNode = (
     return
   }
 
-  if (node.frame.width === width && node.frame.height === height) {
+  if (sizeEqualTo(node.frame, size)) {
     return
   }
 
   // Update node frame
-  node.frame.width = width
-  node.frame.height = height
+  node.frame = getRectFromOriginAndSize(getRectOrigin(node.frame), size)
 
   // Update program boundary
   const parentNode = getNode(state, node.parentId)
