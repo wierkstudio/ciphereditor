@@ -58,10 +58,12 @@ export default function NodeView (props: {
     const outletPositions = controlIds.map(controlId => {
       const indicatorElement = outletRefs.current[controlId.toString()]
       const clientRect = indicatorElement?.getBoundingClientRect()
-      const position = clientRect === undefined ? undefined : {
-        x: Math.round(clientRect.x + clientRect.width * 0.5 - nodeClientRect.x),
-        y: Math.round(clientRect.y + clientRect.height * 0.5 - nodeClientRect.y)
-      }
+      const position = clientRect === undefined
+        ? undefined
+        : {
+            x: Math.round(clientRect.x + clientRect.width * 0.5 - nodeClientRect.x),
+            y: Math.round(clientRect.y + clientRect.height * 0.5 - nodeClientRect.y)
+          }
       return { controlId, position }
     })
 
