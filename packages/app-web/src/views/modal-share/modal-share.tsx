@@ -1,6 +1,7 @@
 
 import ButtonView from '../button/button'
-import ModalView from '../../views/modal/modal'
+import ModalView, { ModalViewAction } from '../../views/modal/modal'
+import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
@@ -8,10 +9,12 @@ import useUISelector from '../../hooks/useUISelector'
 import { SettingsModalPayload } from '../../slices/ui/types'
 import { blueprintMimeType } from '../../constants'
 import { bufferToBase64urlString, stringToBuffer } from '@ciphereditor/library'
+import { openUrlAction } from '../../slices/ui'
 import { serializeBlueprint } from '../../slices/blueprint/selectors/blueprint'
 import { trackEvent } from '../../lib/embed'
 
 export default function ShareModalView (props: SettingsModalPayload): JSX.Element {
+  const dispatch = useAppDispatch()
   const [t] = useTranslation()
 
   const directory = useDirectorySelector(state => state)
@@ -20,6 +23,16 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
   const shareBaseUrl = useUISelector(state => state.shareBaseUrl)
 
   const documentText = JSON.stringify(serializedBlueprint)
+
+  const helpAction: ModalViewAction = {
+    title: t('Help'),
+    icon: 'help',
+    onClick: (event) => {
+      dispatch(openUrlAction({
+        url: 'https://ciphereditor.com/docs/share-your-work'
+      }))
+    }
+  }
 
   const onShareViaLink = (): void => {
     const blueprintParameter = bufferToBase64urlString(stringToBuffer(documentText))
@@ -42,7 +55,7 @@ export default function ShareModalView (props: SettingsModalPayload): JSX.Elemen
   }
 
   return (
-    <ModalView title={t('Share your blueprint')}>
+    <ModalView title={t('Save and share your work')} actions={[helpAction]}>
       <ModalView.SectionView headline={t('Share via link')}>
         <ButtonView icon='copy' onClick={onShareViaLink}>
           {t('Copy link')}

@@ -440,9 +440,10 @@ export const loadBlueprint = (
   // by the placement of the old root program (that will be deleted at the end).
   // This is why we move the old root program far off into the distance.
   const previousRootProgram = getProgramNode(state, previousRootProgramId)
-  previousRootProgram.offset = {
+  previousRootProgram.frame = {
+    ...previousRootProgram.frame,
     x: Number.MIN_SAFE_INTEGER,
-    y: Number.MAX_SAFE_INTEGER
+    y: Number.MIN_SAFE_INTEGER
   }
 
   // Add new program and install it as root
