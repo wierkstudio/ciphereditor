@@ -2,7 +2,7 @@
 import { lcm } from './math'
 
 /**
- * Decode a binary buffer to a string.
+ * Decode a binary buffer to a string using UTF-8 text encoding.
  * @return Decoded string or undefined, if decoding failed
  */
 export const bufferToString = (buffer: ArrayBuffer): string | undefined => {
@@ -14,11 +14,57 @@ export const bufferToString = (buffer: ArrayBuffer): string | undefined => {
 }
 
 /**
- * Encode a string to a binary buffer.
+ * Encode a string to a binary buffer using UTF-8 text encoding.
  */
 export const stringToBuffer = (string: string): ArrayBuffer => {
   return new TextEncoder().encode(string).buffer
 }
+
+/**
+ * Swap endianness on the given binary string.
+ * @param data Binary string
+ * @param wordLength Word length in bytes
+ * @param padWords Wether to pad words
+ */
+export const swapBufferEndianness = (
+  data: ArrayBuffer,
+  wordLength: number,
+  padWords: boolean = true
+): ArrayBuffer => {
+  const wordCount = Math.ceil(data.byteLength / wordLength)
+  const byteLength = padWords ? wordCount * wordLength : data.byteLength
+  const flooredHalfWordLength = Math.floor(wordLength / 2)
+
+  const bytes = new Uint8Array(byteLength)
+  bytes.set(new Uint8Array(data), 0)
+
+  // Swap endianness in-place
+  let temp, left, right
+  for (let w = 0; w < wordCount; w++) {
+    for (let i = 0; i < flooredHalfWordLength; i++) {
+      // Calculate index from left and from right of the word
+      left = w * wordLength + i
+      right = w * wordLength + (wordLength - i - 1)
+
+      // Swap bytes within word
+      temp = bytes[left] ?? 0
+      if (left < byteLength) {
+        bytes[left] = bytes[right] ?? 0
+      }
+      if (right < byteLength) {
+        bytes[right] = temp
+      }
+    }
+  }
+
+  return bytes.buffer
+}
+
+/**
+ * Identify, if this code runs on a big-endian system.
+ */
+export const isBigEndianEnvironment = (): boolean =>
+  (new Uint32Array((new Uint8Array([1, 2, 3, 4])).buffer))[0] === 0x01020304
 
 /**
  * Transform binary content from one unit size to another.
@@ -33,6 +79,9 @@ export const transformUnitSize = (
 ): number[] => {
   if (inUnitSize === outUnitSize) {
     return inputUnits
+  }
+  if (inputUnits.length === 0) {
+    return []
   }
 
   const commonSize = lcm(inUnitSize, outUnitSize)
@@ -68,6 +117,6 @@ export const transformUnitSize = (
   }
 
   // Add padding to last out unit and append it
-  outputUnits[o++] = outUnit << remainingOutBits
+  outputUnits[o] = outUnit << remainingOutBits
   return outputUnits
 }

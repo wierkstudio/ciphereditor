@@ -1,12 +1,12 @@
 
+import nextEnv from '@next/env'
+import nodeResolve from '@rollup/plugin-node-resolve'
 import path from 'path'
 import replace from '@rollup/plugin-replace'
+import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
-import { loadEnvConfig } from '@next/env'
-import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { terser } from '@rollup/plugin-terser'
 
-const envDir = path.resolve(__dirname, '..', '..')
+const envDir = path.resolve('..', '..')
 
 export default {
   input: './src/index.ts',
@@ -22,7 +22,7 @@ export default {
     replace({
       preventAssignment: true,
       values: Object.fromEntries(
-        Object.entries(loadEnvConfig(envDir).combinedEnv)
+        Object.entries(nextEnv.loadEnvConfig(envDir).combinedEnv)
           .map(([key, value]) => [`process.env.${key}`, JSON.stringify(value)])
       )
     }),

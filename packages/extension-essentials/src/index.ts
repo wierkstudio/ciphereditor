@@ -9,6 +9,7 @@ import letterNumberCipher from './letter-number-cipher'
 import logicalAnd from './logical-and'
 import logicalNot from './logical-not'
 import logicalOr from './logical-or'
+import numberEncoder from './number-encoder'
 import rot13 from './rot13'
 import swapEndianness from './swap-endianness'
 import vigenereCipher from './vigenere-cipher'
@@ -26,6 +27,7 @@ export const activate: ExtensionActivateExport = (context) => [
   logicalAnd,
   logicalNot,
   logicalOr,
+  numberEncoder,
   rot13,
   swapEndianness,
   vigenereCipher,

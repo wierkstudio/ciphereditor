@@ -9,7 +9,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/caesar-cipher',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Caesar cipher',
       description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
       url: 'https://ciphereditor.com/explore/caesar-cipher',
@@ -60,7 +60,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/rot13',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'ROT13',
       description: 'Method in which each letter in a text is rotated by 13 places.',
       url: 'https://ciphereditor.com/explore/rot13',
@@ -93,7 +93,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/letter-number-cipher',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Letter number cipher',
       description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
       url: 'https://ciphereditor.com/explore/a1z26-letter-number-cipher',
@@ -154,7 +154,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/word-counter',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Word counter',
       description: 'Operation for counting the number of characters, words and lines that appear in a text.',
       url: 'https://ciphereditor.com/explore/word-counter',
@@ -191,7 +191,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/case-transform',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Case transform',
       description: 'Transform text to lower case, upper case, capitalize, alternating case or inverse case',
       keywords: [],
@@ -226,7 +226,7 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-essentials/vigenere-cipher',
       label: 'Vigenère cipher',
       description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       keywords: ['substitution cipher', 'shift', 'vigenere', 'key', 'beaufort', 'trithemius'],
       controls: [
         {
@@ -306,7 +306,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/concatenate',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Concatenate',
       description: 'Concatenate text or byte inputs',
       keywords: ['append', 'join'],
@@ -516,8 +516,56 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/number-encoder',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
+      label: 'Number encoder',
+      description: 'Operation for encoding and decoding integers and IEEE 754 floating-point numbers.',
+      url: 'https://ciphereditor.com/explore/integer-float-format',
+      keywords: ['integer', 'float', 'number', 'ieee 754', 'bigint', 'digit', 'bytes', 'binary'],
+      controls: [
+        {
+          name: 'numbers',
+          value: '-1 0 1',
+          types: ['text', 'number', 'integer', 'bigint']
+        },
+        {
+          name: 'format',
+          value: 'uint8',
+          types: ['text'],
+          options: [
+            { value: 'uint8', label: '8-bit unsigned integer' },
+            { value: 'int8', label: '8-bit signed integer' },
+            { value: 'uint16', label: '16-bit unsigned integer' },
+            { value: 'int16', label: '16-bit signed integer' },
+            { value: 'uint32', label: '32-bit unsigned integer' },
+            { value: 'int32', label: '32-bit signed integer' },
+            { value: 'uint64', label: '64-bit unsigned integer' },
+            { value: 'int64', label: '64-bit signed integer' },
+            { value: 'float32', label: 'IEEE 754 Single-precision floating-point' },
+            { value: 'float64', label: 'IEEE 754 Double-precision floating-point' }
+          ]
+        },
+        {
+          name: 'endianness',
+          value: 'BE',
+          types: ['text'],
+          options: [
+            { value: 'BE', label: 'Big-endian (BE)' },
+            { value: 'LE', label: 'Little-endian (LE)' }
+          ]
+        },
+        {
+          name: 'encodedData',
+          value: { type: 'bytes', data: '/wAB' },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/binary-to-text',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Binary to text encoding',
       description: 'Operation for commonly used base64, base32, base16, hex, and binary encoding schemes.',
       url: 'https://ciphereditor.com/explore/binary-to-text',
@@ -589,7 +637,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/swap-endianness',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Swap endianness',
       description: 'Switch bit string from big-endian to little-endian or vice-versa.',
       url: 'https://ciphereditor.com/explore/swap-endianness',
@@ -623,7 +671,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/bitwise-operator',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Bitwise operation',
       description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
       url: 'https://ciphereditor.com/explore/bitwise-operator',
@@ -771,7 +819,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-not',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Logical NOT',
       description: 'Takes truth to falsity and vice versa',
       url: 'https://ciphereditor.com/explore/logical-and-or-not',
@@ -795,7 +843,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-and',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Logical AND',
       description: 'Output true if and only if all the operands are true',
       url: 'https://ciphereditor.com/explore/logical-and-or-not',
@@ -826,7 +874,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/logical-or',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Logical OR',
       description: 'Output true if and only if one or more of its operands is true',
       url: 'https://ciphereditor.com/explore/logical-and-or-not',
@@ -857,7 +905,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/google-translate',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js?v=1',
       label: 'Google Translate',
       description: 'Translate content between languages using the Google Cloud Translation API',
       url: 'https://ciphereditor.com/explore/google-translate',

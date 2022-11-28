@@ -1,5 +1,6 @@
 
 import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
+import { swapBufferEndianness } from './lib/binary'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -42,43 +43,16 @@ const execute: OperationExecuteExport = (request) => {
     controlPriorities.indexOf('data') <
     controlPriorities.indexOf('transformedData')
 
+  const data = (forward ? values.data : values.transformedData) as ArrayBuffer
+
   const wordLength = values.wordLength as number
   if (wordLength < 1) {
     return { issues: [{ level: 'error', message: 'Invalid word length' }] }
   }
 
-  // Transformation is symmetric
-  const data = (forward ? values.data : values.transformedData) as ArrayBuffer
-  const outputControl = forward ? 'transformedData' : 'data'
-
-  // Prepare padded or unpadded array of bytes and load original data into it
   const padWords = values.padWords as boolean
-  const wordCount = Math.ceil(data.byteLength / wordLength)
-  const byteLength = padWords ? wordCount * wordLength : data.byteLength
-  const bytes = new Uint8Array(byteLength)
-  bytes.set(new Uint8Array(data), 0)
-
-  const flooredHalfWordLength = Math.floor(wordLength / 2)
-
-  let temp, left, right
-  for (let w = 0; w < wordCount; w++) {
-    for (let i = 0; i < flooredHalfWordLength; i++) {
-      // Calculate index from left and from right of the word
-      left = w * wordLength + i
-      right = w * wordLength + (wordLength - i - 1)
-
-      // Swap bytes within word
-      temp = bytes[left] ?? 0
-      if (left < byteLength) {
-        bytes[left] = bytes[right] ?? 0
-      }
-      if (right < byteLength) {
-        bytes[right] = temp
-      }
-    }
-  }
-
-  return { changes: [{ name: outputControl, value: bytes.buffer }] }
+  const value = swapBufferEndianness(data, wordLength, padWords)
+  return { changes: [{ name: forward ? 'transformedData' : 'data', value }] }
 }
 
 export default {
