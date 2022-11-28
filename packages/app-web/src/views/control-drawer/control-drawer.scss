@@ -22,4 +22,11 @@
   &__footer-end {
     padding: rem(8);
   }
+
+  &__footer-start {
+    position: relative;
+    flex-basis: 0;
+    flex-grow: 1;
+    min-width: 0;
+  }
 }

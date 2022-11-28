@@ -2,7 +2,7 @@
 /**
  * Default node size
  */
-export const defaultNodeSize = { width: 320, height: 96 }
+export const defaultNodeSize = { width: 320, height: 192 }
 
 /**
  * Vector by which nodes need to be shifted to not appear on top of each other

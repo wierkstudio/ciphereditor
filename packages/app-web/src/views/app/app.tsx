@@ -133,7 +133,6 @@ export default function AppView (): JSX.Element {
   useEffect(() => {
     // Update document element class names to apply accessibility settings
     const modifiers = [
-      'script-enabled',
       `embed-${embedType as string}`,
       `env-${embedEnv}`,
       `canvas-mode-${planeCanvas ? 'plane' : 'line'}`,
