@@ -308,7 +308,7 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       url: 'https://ciphereditor.com/explore/rc4-stream-cipher',
       keywords: ['rc4', 'arc4', 'stream cipher', 'PRGA'],
       controls: [
@@ -323,8 +323,14 @@ const defaultDirectoryState: DirectoryState = {
           types: ['bytes']
         },
         {
+          name: 'dropBytes',
+          label: 'RC4-drop bytes',
+          value: 768,
+          types: ['integer']
+        },
+        {
           name: 'encryptedMessage',
-          value: { type: 'bytes', data: 'tA/5ZMhO8tp0WP41gHygRLj8kbA8NpF8uYlcgn21+i3I9ykSaZknNqaAjA==' },
+          value: { type: 'bytes', data: '38WPTemiNf8Cxvpj/EZ22u94bH3P9iKONG7RUMzVvD0OapqZLOJ94n0AzQ==' },
           types: ['bytes'],
           order: 1000
         }
