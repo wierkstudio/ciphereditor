@@ -308,7 +308,7 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       url: 'https://ciphereditor.com/explore/rc4-stream-cipher',
       keywords: ['rc4', 'arc4', 'stream cipher', 'PRGA'],
       controls: [
