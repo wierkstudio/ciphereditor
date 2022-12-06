@@ -305,6 +305,75 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/polybius-square',
+      label: 'Polybius square',
+      description: 'Method in which the alphabet gets layed out in a grid that is then being used to represent each letter in the plaintext by its coordinates in the grid.',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      url: 'https://ciphereditor.com/explore/polybius-square-cipher',
+      keywords: ['polybius checkerboard'],
+      controls: [
+        {
+          name: 'plaintext',
+          value: 'thequickbrownfoxjumpsoverthelazydog',
+          types: ['text']
+        },
+        {
+          name: 'alphabet',
+          value: 'abcdefghiklmnopqrstuvwxyz',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghiklmnopqrstuvwxyz',
+              label: 'Latin (a-z) without j'
+            },
+            {
+              value: 'ABCDEFGHIKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin (A-Z) without J'
+            },
+            {
+              value: 'abcdefghijlmnopqrstuvwxyz',
+              label: 'Latin (a-z) without k'
+            },
+            {
+              value: 'ABCDEFGHIJLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin (A-Z) without K'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'columnSymbols',
+          value: '12345',
+          types: ['text']
+        },
+        {
+          name: 'rowSymbols',
+          value: '12345',
+          types: ['text']
+        },
+        {
+          name: 'separateCoordinates',
+          value: false,
+          types: ['boolean']
+        },
+        {
+          name: 'ciphertext',
+          value: '4423154145241325124234523321345324453235433451154244231531115554143422',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',
