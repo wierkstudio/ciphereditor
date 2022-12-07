@@ -12,6 +12,7 @@ import logicalOr from './logical-or'
 import numberEncoder from './number-encoder'
 import polybiusSquare from './polybius-square'
 import rc4Cipher from './rc4-cipher'
+import reverser from './reverser'
 import rot13 from './rot13'
 import swapEndianness from './swap-endianness'
 import vigenereCipher from './vigenere-cipher'
@@ -32,6 +33,7 @@ export const activate: ExtensionActivateExport = (context) => [
   numberEncoder,
   polybiusSquare,
   rc4Cipher,
+  reverser,
   rot13,
   swapEndianness,
   vigenereCipher,

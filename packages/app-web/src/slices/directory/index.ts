@@ -92,137 +92,6 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/extension-essentials/letter-number-cipher',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Letter number cipher',
-      description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
-      url: 'https://ciphereditor.com/explore/a1z26-letter-number-cipher',
-      keywords: ['a1z26 cipher', 'letter number code', 'substitution cipher'],
-      controls: [
-        {
-          name: 'letters',
-          value: 'abcdefghijklmnopqrstuvwxyz',
-          types: ['text']
-        },
-        {
-          name: 'alphabet',
-          value: 'abcdefghijklmnopqrstuvwxyz',
-          types: ['text'],
-          options: [
-            {
-              value: 'abcdefghijklmnopqrstuvwxyz',
-              label: 'Latin alphabet (a-z)'
-            },
-            {
-              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-              label: 'Uppercase Latin alphabet (A-Z)'
-            },
-            {
-              value: 'αβγδεζηθικλμνξοπρστυφχψω',
-              label: 'Greek alphabet (α-ω)'
-            },
-            {
-              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
-              label: 'Uppercase Greek alphabet (Α-Ω)'
-            }
-          ],
-          enforceOptions: false
-        },
-        {
-          name: 'separator',
-          value: ' ',
-          types: ['text'],
-          options: [
-            { value: ' ', label: 'Space' },
-            { value: ',', label: 'Comma (,)' },
-            { value: ';', label: 'Semicolon (;)' },
-            { value: '-', label: 'Minus (-)' },
-            { value: '_', label: 'Underscore (_)' },
-            { value: '\n', label: 'Newline (LF)' },
-            { value: '\r\n', label: 'Newline (CR LF)' }
-          ],
-          enforceOptions: false
-        },
-        {
-          name: 'numbers',
-          value: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
-          types: ['text'],
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-essentials/word-counter',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Word counter',
-      description: 'Operation for counting the number of characters, words and lines that appear in a text.',
-      url: 'https://ciphereditor.com/explore/word-counter',
-      keywords: [],
-      controls: [
-        {
-          name: 'text',
-          value: 'The quick brown fox jumps over the lazy dog.',
-          types: ['text']
-        },
-        {
-          name: 'characterCount',
-          value: 44,
-          types: ['integer'],
-          writable: false,
-          order: 1000
-        },
-        {
-          name: 'wordCount',
-          value: 9,
-          types: ['integer'],
-          writable: false,
-          order: 1000
-        },
-        {
-          name: 'lineCount',
-          value: 1,
-          types: ['integer'],
-          writable: false,
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-essentials/case-transform',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Case transform',
-      description: 'Transform text to lower case, upper case, capitalize, alternating case or inverse case',
-      keywords: [],
-      controls: [
-        {
-          name: 'source',
-          value: 'Hello World',
-          types: ['text']
-        },
-        {
-          name: 'transform',
-          value: 'upperCase',
-          types: ['text'],
-          options: [
-            { value: 'lowerCase', label: 'Lower case' },
-            { value: 'upperCase', label: 'Upper case' },
-            { value: 'capitalize', label: 'Capitalize' },
-            { value: 'alternatingCase', label: 'Alternating case' },
-            { value: 'inverseCase', label: 'Inverse case' }
-          ]
-        },
-        {
-          name: 'transformed',
-          value: 'HELLO WORLD',
-          types: ['text'],
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
       name: '@ciphereditor/extension-essentials/vigenere-cipher',
       label: 'Vigenère cipher',
       description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
@@ -374,6 +243,67 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/letter-number-cipher',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Letter number cipher',
+      description: 'Method in which each letter in a text is replaced by the corresponding position in the alphabet.',
+      url: 'https://ciphereditor.com/explore/a1z26-letter-number-cipher',
+      keywords: ['a1z26 cipher', 'letter number code', 'substitution cipher'],
+      controls: [
+        {
+          name: 'letters',
+          value: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text']
+        },
+        {
+          name: 'alphabet',
+          value: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'separator',
+          value: ' ',
+          types: ['text'],
+          options: [
+            { value: ' ', label: 'Space' },
+            { value: ',', label: 'Comma (,)' },
+            { value: ';', label: 'Semicolon (;)' },
+            { value: '-', label: 'Minus (-)' },
+            { value: '_', label: 'Underscore (_)' },
+            { value: '\n', label: 'Newline (LF)' },
+            { value: '\r\n', label: 'Newline (CR LF)' }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'numbers',
+          value: '1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',
@@ -407,28 +337,261 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/extension-essentials/concatenate',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Concatenate',
-      description: 'Concatenate text or byte inputs',
-      keywords: ['append', 'join'],
+      name: '@ciphereditor/extension-pgp/encryption',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
+      label: 'PGP Encryption',
+      description: 'Apply OpenPGP encryption and decryption on text or binary messages',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      reproducible: false,
       controls: [
         {
-          name: 'a',
-          label: 'A',
-          value: 'foo',
+          name: 'message',
+          value: 'The quick brown fox jumps over the lazy dog.',
           types: ['text', 'bytes']
         },
         {
-          name: 'b',
-          label: 'B',
-          value: 'bar',
+          name: 'password',
+          value: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'publicKey',
+          description: 'Either used as encryption key or as optional validation key',
+          value: '',
           types: ['text', 'bytes']
         },
         {
-          name: 'ab',
-          label: 'AB',
-          value: 'foobar',
+          name: 'privateKey',
+          description: 'Either used as optional siging key or as decryption key',
+          value: '',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'privateKeyPassphrase',
+          value: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'encryptedMessage',
+          value: '',
+          types: ['text', 'bytes'],
+          order: 1000
+        }
+      ],
+      timeout: 30000
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-pgp/generate-key',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
+      label: 'Generate PGP Key',
+      description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      reproducible: false,
+      controls: [
+        {
+          name: 'type',
+          value: 'ecc',
+          types: ['text'],
+          options: [
+            { value: 'ecc', label: 'ECC' },
+            { value: 'rsa', label: 'RSA' }
+          ]
+        },
+        {
+          name: 'eccCurve',
+          label: 'Curve',
+          value: 'curve25519',
+          types: ['text'],
+          options: [
+            { value: 'curve25519', label: 'curve25519' },
+            { value: 'ed25519', label: 'ed25519' },
+            { value: 'p256', label: 'p256' },
+            { value: 'p384', label: 'p384' },
+            { value: 'p521', label: 'p521' }
+          ]
+        },
+        {
+          name: 'rsaBits',
+          label: 'Bits',
+          value: 4096,
+          types: ['number'],
+          options: [
+            { value: 2048, label: '2048 bits' },
+            { value: 3072, label: '3072 bits' },
+            { value: 4096, label: '4096 bits' }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'passphrase',
+          value: '',
+          types: ['text'],
+          maskPreview: true
+        },
+        {
+          name: 'armored',
+          description: 'Wether to use the armored text representation for keys',
+          value: true,
+          types: ['boolean']
+        },
+        {
+          name: 'publicKey',
+          value: '',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'privateKey',
+          value: '',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        }
+      ],
+      timeout: 300000
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-pgp/inspect-key',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
+      label: 'Inspect PGP Key',
+      description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
+      url: 'https://ciphereditor.com/explore/pgp-encryption',
+      keywords: ['pgp', 'gpg'],
+      controls: [
+        {
+          name: 'key',
+          value: '',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'fingerprint',
+          value: '97c82fac489a31bd694cbce3103fe5948a2e073e',
+          types: ['text'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'private',
+          value: false,
+          types: ['boolean'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'creationTime',
+          value: '2022-09-18T15:48:24.000Z',
+          types: ['text'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-hash/hash',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
+      label: 'Hash function',
+      description: 'Map data of arbitrary size to hashes of fixed size',
+      url: 'https://ciphereditor.com/explore/cryptographic-hash-function',
+      keywords: ['digest', 'md5', 'sha'],
+      controls: [
+        {
+          name: 'message',
+          value: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'algorithm',
+          value: 'sha1',
+          types: ['text'],
+          options: [
+            { value: 'adler32', label: 'Adler-32' },
+            { value: 'crc32', label: 'CRC32' },
+            { value: 'crc32c', label: 'CRC32C' },
+            { value: 'keccak-224', label: 'Keccak-224' },
+            { value: 'keccak-256', label: 'Keccak-256' },
+            { value: 'keccak-384', label: 'Keccak-384' },
+            { value: 'md4', label: 'MD4' },
+            { value: 'md5', label: 'MD5' },
+            { value: 'ripemd160', label: 'RIPEMD-160' },
+            { value: 'sha1', label: 'SHA-1' },
+            { value: 'sha224', label: 'SHA-224' },
+            { value: 'sha256', label: 'SHA-256' },
+            { value: 'sha384', label: 'SHA-384' },
+            { value: 'sha512', label: 'SHA-512' },
+            { value: 'sha3-224', label: 'SHA3-224' },
+            { value: 'sha3-256', label: 'SHA3-256' },
+            { value: 'sha3-384', label: 'SHA3-384' },
+            { value: 'sha3-512', label: 'SHA3-512' },
+            { value: 'sm3', label: 'SM3' },
+            { value: 'whirlpool', label: 'Whirlpool' }
+          ]
+        },
+        {
+          name: 'hash',
+          value: '408d94384216f890ff7a0c3528e8bed1e0b01621',
+          types: ['text', 'bytes'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-hash/hmac',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
+      label: 'HMAC function',
+      description: 'The hash-based message authentication code (HMAC) is used to verify both the data integrity and the authentication of a message.',
+      url: 'https://ciphereditor.com/explore/hmac',
+      keywords: ['digest'],
+      controls: [
+        {
+          name: 'message',
+          value: 'The quick brown fox jumps over the lazy dog.',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'key',
+          value: 'ciphereditor',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'algorithm',
+          value: 'sha1',
+          types: ['text'],
+          options: [
+            { value: 'adler32', label: 'Adler-32' },
+            { value: 'crc32', label: 'CRC32' },
+            { value: 'crc32c', label: 'CRC32C' },
+            { value: 'keccak-224', label: 'Keccak-224' },
+            { value: 'keccak-256', label: 'Keccak-256' },
+            { value: 'keccak-384', label: 'Keccak-384' },
+            { value: 'md4', label: 'MD4' },
+            { value: 'md5', label: 'MD5' },
+            { value: 'ripemd160', label: 'RIPEMD-160' },
+            { value: 'sha1', label: 'SHA-1' },
+            { value: 'sha224', label: 'SHA-224' },
+            { value: 'sha256', label: 'SHA-256' },
+            { value: 'sha384', label: 'SHA-384' },
+            { value: 'sha512', label: 'SHA-512' },
+            { value: 'sha3-224', label: 'SHA3-224' },
+            { value: 'sha3-256', label: 'SHA3-256' },
+            { value: 'sha3-384', label: 'SHA3-384' },
+            { value: 'sha3-512', label: 'SHA3-512' },
+            { value: 'sm3', label: 'SM3' },
+            { value: 'whirlpool', label: 'Whirlpool' }
+          ]
+        },
+        {
+          name: 'hash',
+          value: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
@@ -774,7 +937,7 @@ const defaultDirectoryState: DirectoryState = {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/bitwise-operator',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
-      label: 'Bitwise operation',
+      label: 'Bitwise operator',
       description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
       url: 'https://ciphereditor.com/explore/bitwise-operator',
       keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
@@ -809,111 +972,6 @@ const defaultDirectoryState: DirectoryState = {
           name: 'encodedData',
           value: { type: 'bytes', data: 'NjwlPTAnMDE8ITon' },
           types: ['bytes'],
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-hash/hash',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
-      label: 'Hash function',
-      description: 'Map data of arbitrary size to hashes of fixed size',
-      url: 'https://ciphereditor.com/explore/cryptographic-hash-function',
-      keywords: ['digest', 'md5', 'sha'],
-      controls: [
-        {
-          name: 'message',
-          value: 'The quick brown fox jumps over the lazy dog.',
-          types: ['text', 'bytes']
-        },
-        {
-          name: 'algorithm',
-          value: 'sha1',
-          types: ['text'],
-          options: [
-            { value: 'adler32', label: 'Adler-32' },
-            { value: 'crc32', label: 'CRC32' },
-            { value: 'crc32c', label: 'CRC32C' },
-            { value: 'keccak-224', label: 'Keccak-224' },
-            { value: 'keccak-256', label: 'Keccak-256' },
-            { value: 'keccak-384', label: 'Keccak-384' },
-            { value: 'md4', label: 'MD4' },
-            { value: 'md5', label: 'MD5' },
-            { value: 'ripemd160', label: 'RIPEMD-160' },
-            { value: 'sha1', label: 'SHA-1' },
-            { value: 'sha224', label: 'SHA-224' },
-            { value: 'sha256', label: 'SHA-256' },
-            { value: 'sha384', label: 'SHA-384' },
-            { value: 'sha512', label: 'SHA-512' },
-            { value: 'sha3-224', label: 'SHA3-224' },
-            { value: 'sha3-256', label: 'SHA3-256' },
-            { value: 'sha3-384', label: 'SHA3-384' },
-            { value: 'sha3-512', label: 'SHA3-512' },
-            { value: 'sm3', label: 'SM3' },
-            { value: 'whirlpool', label: 'Whirlpool' }
-          ]
-        },
-        {
-          name: 'hash',
-          value: '408d94384216f890ff7a0c3528e8bed1e0b01621',
-          types: ['text', 'bytes'],
-          writable: false,
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-hash/hmac',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-hash/1.0.0-alpha.1/extension.js',
-      label: 'HMAC function',
-      description: 'The hash-based message authentication code (HMAC) is used to verify both the data integrity and the authentication of a message.',
-      url: 'https://ciphereditor.com/explore/hmac',
-      keywords: ['digest'],
-      controls: [
-        {
-          name: 'message',
-          value: 'The quick brown fox jumps over the lazy dog.',
-          types: ['text', 'bytes']
-        },
-        {
-          name: 'key',
-          value: 'ciphereditor',
-          types: ['text', 'bytes']
-        },
-        {
-          name: 'algorithm',
-          value: 'sha1',
-          types: ['text'],
-          options: [
-            { value: 'adler32', label: 'Adler-32' },
-            { value: 'crc32', label: 'CRC32' },
-            { value: 'crc32c', label: 'CRC32C' },
-            { value: 'keccak-224', label: 'Keccak-224' },
-            { value: 'keccak-256', label: 'Keccak-256' },
-            { value: 'keccak-384', label: 'Keccak-384' },
-            { value: 'md4', label: 'MD4' },
-            { value: 'md5', label: 'MD5' },
-            { value: 'ripemd160', label: 'RIPEMD-160' },
-            { value: 'sha1', label: 'SHA-1' },
-            { value: 'sha224', label: 'SHA-224' },
-            { value: 'sha256', label: 'SHA-256' },
-            { value: 'sha384', label: 'SHA-384' },
-            { value: 'sha512', label: 'SHA-512' },
-            { value: 'sha3-224', label: 'SHA3-224' },
-            { value: 'sha3-256', label: 'SHA3-256' },
-            { value: 'sha3-384', label: 'SHA3-384' },
-            { value: 'sha3-512', label: 'SHA3-512' },
-            { value: 'sm3', label: 'SM3' },
-            { value: 'whirlpool', label: 'Whirlpool' }
-          ]
-        },
-        {
-          name: 'hash',
-          value: 'ee4075afc952fbc9534bd721bd4411a021a0e96c',
-          types: ['text', 'bytes'],
-          writable: false,
           order: 1000
         }
       ]
@@ -1261,158 +1319,121 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/extension-pgp/encryption',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
-      label: 'PGP Encryption',
-      description: 'Apply OpenPGP encryption and decryption on text or binary messages',
-      url: 'https://ciphereditor.com/explore/pgp-encryption',
-      keywords: ['pgp', 'gpg'],
-      reproducible: false,
+      name: '@ciphereditor/extension-essentials/word-counter',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Word counter',
+      description: 'Operation for counting the number of characters, words and lines that appear in a text.',
+      url: 'https://ciphereditor.com/explore/word-counter',
+      keywords: [],
       controls: [
         {
-          name: 'message',
+          name: 'text',
           value: 'The quick brown fox jumps over the lazy dog.',
-          types: ['text', 'bytes']
+          types: ['text']
         },
         {
-          name: 'password',
-          value: '',
-          types: ['text'],
-          maskPreview: true
-        },
-        {
-          name: 'publicKey',
-          description: 'Either used as encryption key or as optional validation key',
-          value: '',
-          types: ['text', 'bytes']
-        },
-        {
-          name: 'privateKey',
-          description: 'Either used as optional siging key or as decryption key',
-          value: '',
-          types: ['text', 'bytes']
-        },
-        {
-          name: 'privateKeyPassphrase',
-          value: '',
-          types: ['text'],
-          maskPreview: true
-        },
-        {
-          name: 'encryptedMessage',
-          value: '',
-          types: ['text', 'bytes'],
-          order: 1000
-        }
-      ],
-      timeout: 30000
-    },
-    {
-      type: 'operation',
-      name: '@ciphereditor/extension-pgp/generate-key',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
-      label: 'Generate PGP Key',
-      description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
-      url: 'https://ciphereditor.com/explore/pgp-encryption',
-      keywords: ['pgp', 'gpg'],
-      reproducible: false,
-      controls: [
-        {
-          name: 'type',
-          value: 'ecc',
-          types: ['text'],
-          options: [
-            { value: 'ecc', label: 'ECC' },
-            { value: 'rsa', label: 'RSA' }
-          ]
-        },
-        {
-          name: 'eccCurve',
-          label: 'Curve',
-          value: 'curve25519',
-          types: ['text'],
-          options: [
-            { value: 'curve25519', label: 'curve25519' },
-            { value: 'ed25519', label: 'ed25519' },
-            { value: 'p256', label: 'p256' },
-            { value: 'p384', label: 'p384' },
-            { value: 'p521', label: 'p521' }
-          ]
-        },
-        {
-          name: 'rsaBits',
-          label: 'Bits',
-          value: 4096,
-          types: ['number'],
-          options: [
-            { value: 2048, label: '2048 bits' },
-            { value: 3072, label: '3072 bits' },
-            { value: 4096, label: '4096 bits' }
-          ],
-          enforceOptions: false
-        },
-        {
-          name: 'passphrase',
-          value: '',
-          types: ['text'],
-          maskPreview: true
-        },
-        {
-          name: 'armored',
-          description: 'Wether to use the armored text representation for keys',
-          value: true,
-          types: ['boolean']
-        },
-        {
-          name: 'publicKey',
-          value: '',
-          types: ['text', 'bytes'],
+          name: 'characterCount',
+          value: 44,
+          types: ['integer'],
           writable: false,
           order: 1000
         },
         {
-          name: 'privateKey',
-          value: '',
+          name: 'wordCount',
+          value: 9,
+          types: ['integer'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'lineCount',
+          value: 1,
+          types: ['integer'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/case-transform',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Case transform',
+      description: 'Transform text to lower case, upper case, capitalize, alternating case or inverse case',
+      keywords: [],
+      controls: [
+        {
+          name: 'source',
+          value: 'Hello World',
+          types: ['text']
+        },
+        {
+          name: 'transform',
+          value: 'upperCase',
+          types: ['text'],
+          options: [
+            { value: 'lowerCase', label: 'Lower case' },
+            { value: 'upperCase', label: 'Upper case' },
+            { value: 'capitalize', label: 'Capitalize' },
+            { value: 'alternatingCase', label: 'Alternating case' },
+            { value: 'inverseCase', label: 'Inverse case' }
+          ]
+        },
+        {
+          name: 'transformed',
+          value: 'HELLO WORLD',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/concatenate',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Concatenate',
+      description: 'Concatenate text or byte inputs',
+      keywords: ['append', 'join'],
+      controls: [
+        {
+          name: 'a',
+          label: 'A',
+          value: 'foo',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'b',
+          label: 'B',
+          value: 'bar',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'ab',
+          label: 'AB',
+          value: 'foobar',
           types: ['text', 'bytes'],
           writable: false,
           order: 1000
         }
-      ],
-      timeout: 300000
+      ]
     },
     {
       type: 'operation',
-      name: '@ciphereditor/extension-pgp/inspect-key',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
-      label: 'Inspect PGP Key',
-      description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
-      url: 'https://ciphereditor.com/explore/pgp-encryption',
-      keywords: ['pgp', 'gpg'],
+      name: '@ciphereditor/extension-essentials/reverser',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Reverser',
+      description: 'Reverse (or flip) characters or bytes',
+      keywords: ['flip'],
       controls: [
         {
-          name: 'key',
-          value: '',
+          name: 'data',
+          value: 'ciphereditor',
           types: ['text', 'bytes']
         },
         {
-          name: 'fingerprint',
-          value: '97c82fac489a31bd694cbce3103fe5948a2e073e',
-          types: ['text'],
-          writable: false,
-          order: 1000
-        },
-        {
-          name: 'private',
-          value: false,
-          types: ['boolean'],
-          writable: false,
-          order: 1000
-        },
-        {
-          name: 'creationTime',
-          value: '2022-09-18T15:48:24.000Z',
-          types: ['text'],
-          writable: false,
+          name: 'transformedData',
+          value: 'rotiderehpic',
+          types: ['text', 'bytes'],
           order: 1000
         }
       ]

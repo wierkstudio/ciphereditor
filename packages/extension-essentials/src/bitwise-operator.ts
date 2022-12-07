@@ -47,7 +47,7 @@ const inverseOperatorMap: Record<Operator, Operator> = {
 const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/bitwise-operator',
-  label: 'Bitwise operation',
+  label: 'Bitwise operator',
   description: 'Operate on binary numerals (bit string) at the level of their individual bits.',
   url: 'https://ciphereditor.com/explore/bitwise-operator',
   keywords: ['and', 'or', 'xor', 'nand', 'nor', 'nxor', 'add', 'sub'],
