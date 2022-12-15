@@ -3,7 +3,8 @@
   "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
   "private": true,
   "workspaces": [
-    "./packages/*"
+    "./packages/*",
+    "./extensions/*"
   ],
   "scripts": {
     "test": "npm run library-build && npm run processor-build && npm run test -ws",

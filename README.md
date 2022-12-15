@@ -10,21 +10,30 @@
 
 ## Your playground for cryptography, coding & data
 
-ciphereditor is a web app for cryptography, coding and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
+ciphereditor is a web app for cryptography, coding, and data encouraging beginners and pros alike to explore new operations and build own workflows – [ciphereditor.com](https://ciphereditor.com)
 
-## Repository packages
+## Repository structure
 
 As a monorepo this repository contains multiple packages that share common dependencies or depend on each other. All packages listed below share the same version.
 
-- 🚀 [`app-web`](packages/app-web/README.md) - Core web app built on React and Redux Toolkit
-- 🚀 [`app-desktop`](packages/app-desktop/README.md) - Desktop application source built on the web app and Electron
-- 🚀 [`website`](packages/website/README.md) - Website the web app is embedded in providing content pages (closed source)
-- 📦 [`processor`](packages/processor/README.md) - JavaScript sandbox for Browser environments where extensions are executed in
-- 📦 `library` - Logic and types shared between packages and third-party extensions
-- 📦 `extension-essentials` - Extension providing essential operations
-- 📦 `extension-codepages` - Extension providing code pages for character encodings
-- 📦 `extension-hash` - Extension providing operations related to cryptographic hash functions
-- 📦 `extension-pgp` - Extension providing operations related to the OpenPGP protocol
+### Packages
+
+The following packages contain the logic necessary to build the app itself (excl. operations).
+
+- [**app-web**](packages/app-web/README.md) - Core web app built on [React](https://reactjs.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) (requires processor and library)
+- [**app-desktop**](packages/app-desktop/README.md) - Desktop application source built on app-web and [Electron](https://www.electronjs.org/)
+- [**website**](packages/website/README.md) - Official [ciphereditor.com](https://ciphereditor.com) website app-web is embedded in (closed source)
+- [**processor**](packages/processor/README.md) - JavaScript sandbox and “runtime environment” for extensions
+- **library** - Logic, schemas and types shared between the app and extensions
+
+### Extensions
+
+Extensions provide operations, the nodes or methods you can use on the ciphereditor canvas. They run in the environment created by the app packages listed above.
+
+- **essentials** - Essential operations
+- **codepages** - Operations related to character encodings
+- **hash** - Operations related to cryptographic hash functions
+- **pgp** - Operations related to the OpenPGP protocol
 
 ## Development setup
 
