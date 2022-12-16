@@ -33,12 +33,13 @@ Please follow these steps to have your contribution considered:
 
 ### Browser Compatibility
 
-We target modern browsers that support the [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) and [`import.meta`](https://caniuse.com/mdn-javascript_statements_import_meta).
+We target modern browsers that support the [native ES Modules](https://caniuse.com/es6-module), [native ESM dynamic import](https://caniuse.com/es6-module-dynamic-import) and the [import.meta operator](https://caniuse.com/mdn-javascript_operators_import_meta).
 
 - Chrome >=87
-- Firefox >=78
-- Safari >=13
 - Edge >=88
+- Safari >=14
+- Firefox >=78
+- Opera >=54
 
 For more details refer to the [Vite docs](https://vitejs.dev/guide/build.html#browser-compatibility).
 
