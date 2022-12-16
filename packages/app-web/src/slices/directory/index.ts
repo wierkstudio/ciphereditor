@@ -935,6 +935,146 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/addition',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Addition',
+      description: 'Adds two numbers together',
+      url: 'https://ciphereditor.com/explore/arithmetic-operators',
+      keywords: ['add', 'addition', 'term', 'sum', 'plus', '+', 'arithmetic'],
+      controls: [
+        {
+          name: 'termA',
+          label: 'Term A',
+          value: 0,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'termB',
+          label: 'Term B',
+          value: 0,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'sum',
+          label: 'Sum A + B',
+          value: 0,
+          types: ['integer', 'number', 'bigint'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/subtraction',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Subtraction',
+      description: 'Subtracts one number from another',
+      url: 'https://ciphereditor.com/explore/arithmetic-operators',
+      keywords: ['sub', 'difference', 'minus', '-', 'arithmetic'],
+      controls: [
+        {
+          name: 'termA',
+          label: 'Term A',
+          value: 0,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'termB',
+          label: 'Term B',
+          value: 0,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'difference',
+          label: 'Difference A - B',
+          value: 0,
+          types: ['integer', 'number', 'bigint'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/multiplication',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Multiplication',
+      description: 'Multiplies two numbers together',
+      url: 'https://ciphereditor.com/explore/arithmetic-operators',
+      keywords: ['multiply', 'factor', 'product', 'times', '*', 'arithmetic'],
+      controls: [
+        {
+          name: 'factorA',
+          label: 'Factor A',
+          value: 1,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'factorB',
+          label: 'Factor B',
+          value: 1,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'product',
+          label: 'Product A × B',
+          value: 1,
+          types: ['integer', 'number', 'bigint'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/division',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Division',
+      description: 'Divides one number by another',
+      url: 'https://ciphereditor.com/explore/arithmetic-operators',
+      keywords: ['dividend', 'divisor', 'quotient', 'integer', '/', 'mod', 'remainder', '%', 'arithmetic'],
+      controls: [
+        {
+          name: 'dividend',
+          label: 'Dividend A',
+          value: 1,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'divisor',
+          label: 'Divisor B',
+          value: 1,
+          types: ['integer', 'number', 'bigint']
+        },
+        {
+          name: 'quotient',
+          label: 'Quotient A ÷ B',
+          value: 1,
+          types: ['integer', 'number', 'bigint'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'integerQuotient',
+          label: 'Integer quotient ⌊A ÷ B⌋',
+          value: 1,
+          types: ['integer', 'bigint'],
+          writable: false,
+          order: 1000
+        },
+        {
+          name: 'remainder',
+          label: 'Remainder A mod B',
+          value: 0,
+          types: ['integer', 'bigint'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/bitwise-operator',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Bitwise operator',
