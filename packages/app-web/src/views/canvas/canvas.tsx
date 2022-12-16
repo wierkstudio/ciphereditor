@@ -41,13 +41,13 @@ export default function CanvasView (): JSX.Element {
 
   // Handle changes to the canvas size (if using the plane canvas)
   const onCanvasSizeChange = useCallback(() => {
-    if (planeCanvas && canvasRef.current !== null) {
+    if (canvasRef.current !== null) {
       const clientRect = canvasRef.current.getBoundingClientRect()
       const size = { width: clientRect.width, height: clientRect.height }
       dispatch(layoutCanvasAction({ size }))
     }
-  }, [planeCanvas, canvasRef, dispatch])
-  useResizeObserver(planeCanvas ? canvasRef : null, onCanvasSizeChange)
+  }, [canvasRef, dispatch])
+  useResizeObserver(canvasRef, onCanvasSizeChange)
   useWindowLoadListener(onCanvasSizeChange)
 
   // Move canvas interaction
