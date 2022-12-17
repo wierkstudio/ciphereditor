@@ -11,20 +11,19 @@ const contribution: Contribution = {
   keywords: ['add', 'addition', 'term', 'sum', 'plus', '+', 'arithmetic'],
   controls: [
     {
-      name: 'termA',
-      label: 'Term A',
+      name: 'term1',
+      label: 'Term 1',
       value: 0,
       types: ['integer', 'number', 'bigint']
     },
     {
-      name: 'termB',
-      label: 'Term B',
+      name: 'term2',
+      label: 'Term 2',
       value: 0,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'sum',
-      label: 'Sum A + B',
       value: 0,
       types: ['integer', 'number', 'bigint'],
       writable: false,
@@ -34,17 +33,17 @@ const contribution: Contribution = {
 }
 
 const execute: OperationExecuteExport = (request) => {
-  const termA = request.values.termA as number | bigint
-  const termB = request.values.termB as number | bigint
+  const term1 = request.values.term1 as number | bigint
+  const term2 = request.values.term2 as number | bigint
 
   // When one of the operands provided is a bigint, the sum is a bigint
-  const sum = typeof termA === 'bigint' || typeof termB === 'bigint'
-    ? BigInt(termA) + BigInt(termB)
-    : termA + termB
+  const sum = typeof term1 === 'bigint' || typeof term2 === 'bigint'
+    ? BigInt(term1) + BigInt(term2)
+    : term1 + term2
 
   // Warn if the sum has become an unsafe integer
   const issues: OperationIssue[] = []
-  if (Number.isInteger(termA) && Number.isInteger(termB)) {
+  if (Number.isInteger(term1) && Number.isInteger(term2)) {
     logIssueIfUnsafeInteger(issues, sum, ['sum'])
   }
 

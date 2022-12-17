@@ -11,20 +11,19 @@ const contribution: Contribution = {
   keywords: ['multiply', 'factor', 'product', 'times', '*', 'arithmetic'],
   controls: [
     {
-      name: 'factorA',
-      label: 'Factor A',
+      name: 'factor1',
+      label: 'Factor 1',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },
     {
-      name: 'factorB',
-      label: 'Factor B',
+      name: 'factor2',
+      label: 'Factor 2',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'product',
-      label: 'Product A × B',
       value: 1,
       types: ['integer', 'number', 'bigint'],
       writable: false,
@@ -34,17 +33,17 @@ const contribution: Contribution = {
 }
 
 const execute: OperationExecuteExport = (request) => {
-  const factorA = request.values.factorA as number | bigint
-  const factorB = request.values.factorB as number | bigint
+  const factor1 = request.values.factor1 as number | bigint
+  const factor2 = request.values.factor2 as number | bigint
 
   // When one of the operands provided is a bigint, the product is a bigint
-  const product = typeof factorA === 'bigint' || typeof factorB === 'bigint'
-    ? BigInt(factorA) * BigInt(factorB)
-    : factorA * factorB
+  const product = typeof factor1 === 'bigint' || typeof factor2 === 'bigint'
+    ? BigInt(factor1) * BigInt(factor2)
+    : factor1 * factor2
 
   // Warn if the product has become an unsafe integer
   const issues: OperationIssue[] = []
-  if (Number.isInteger(factorA) && Number.isInteger(factorB)) {
+  if (Number.isInteger(factor1) && Number.isInteger(factor2)) {
     logIssueIfUnsafeInteger(issues, product, ['product'])
   }
 

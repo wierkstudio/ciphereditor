@@ -19,6 +19,7 @@ import reverser from './reverser'
 import rot13 from './rot13'
 import subtraction from './subtraction'
 import swapEndianness from './swap-endianness'
+import trigonometricFunction from './trigonometric-function'
 import vigenereCipher from './vigenere-cipher'
 import wordCounter from './word-counter'
 import { ExtensionActivateExport } from '@ciphereditor/library'
@@ -44,6 +45,7 @@ export const activate: ExtensionActivateExport = (context) => [
   rot13,
   subtraction,
   swapEndianness,
+  trigonometricFunction,
   vigenereCipher,
   wordCounter
 ]

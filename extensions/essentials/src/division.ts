@@ -12,19 +12,16 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'dividend',
-      label: 'Dividend A',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'divisor',
-      label: 'Divisor B',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'quotient',
-      label: 'Quotient A ÷ B',
       value: 1,
       types: ['integer', 'number', 'bigint'],
       writable: false,
@@ -32,7 +29,6 @@ const contribution: Contribution = {
     },
     {
       name: 'integerQuotient',
-      label: 'Integer quotient ⌊A ÷ B⌋',
       value: 1,
       types: ['integer', 'bigint'],
       writable: false,
@@ -40,7 +36,6 @@ const contribution: Contribution = {
     },
     {
       name: 'remainder',
-      label: 'Remainder A mod B',
       value: 0,
       types: ['integer', 'bigint'],
       writable: false,
@@ -52,6 +47,17 @@ const contribution: Contribution = {
 const execute: OperationExecuteExport = (request) => {
   const dividend = request.values.dividend as number | bigint
   const divisor = request.values.divisor as number | bigint
+
+  // Handle division by zero
+  if (divisor === 0) {
+    return {
+      issues: [{
+        level: 'error',
+        message: 'Division by zero is not defined',
+        targetControlNames: ['divisor']
+      }]
+    }
+  }
 
   // When one of the operands provided is a bigint, the quotient and remainder
   // are returned as bigint

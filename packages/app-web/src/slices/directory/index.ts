@@ -936,27 +936,26 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/addition',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       label: 'Addition',
       description: 'Adds two numbers together',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
       keywords: ['add', 'addition', 'term', 'sum', 'plus', '+', 'arithmetic'],
       controls: [
         {
-          name: 'termA',
-          label: 'Term A',
+          name: 'term1',
+          label: 'Term 1',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
-          name: 'termB',
-          label: 'Term B',
+          name: 'term2',
+          label: 'Term 2',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'sum',
-          label: 'Sum A + B',
           value: 0,
           types: ['integer', 'number', 'bigint'],
           writable: false,
@@ -967,27 +966,26 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/subtraction',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       label: 'Subtraction',
       description: 'Subtracts one number from another',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
       keywords: ['sub', 'difference', 'minus', '-', 'arithmetic'],
       controls: [
         {
-          name: 'termA',
-          label: 'Term A',
+          name: 'term1',
+          label: 'Term 1',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
-          name: 'termB',
-          label: 'Term B',
+          name: 'term2',
+          label: 'Term 2',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'difference',
-          label: 'Difference A - B',
           value: 0,
           types: ['integer', 'number', 'bigint'],
           writable: false,
@@ -998,27 +996,26 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/multiplication',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       label: 'Multiplication',
       description: 'Multiplies two numbers together',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
       keywords: ['multiply', 'factor', 'product', 'times', '*', 'arithmetic'],
       controls: [
         {
-          name: 'factorA',
-          label: 'Factor A',
+          name: 'factor1',
+          label: 'Factor 1',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
         {
-          name: 'factorB',
-          label: 'Factor B',
+          name: 'factor2',
+          label: 'Factor 2',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'product',
-          label: 'Product A × B',
           value: 1,
           types: ['integer', 'number', 'bigint'],
           writable: false,
@@ -1029,7 +1026,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/division',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       label: 'Division',
       description: 'Divides one number by another',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
@@ -1037,19 +1034,16 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'dividend',
-          label: 'Dividend A',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'divisor',
-          label: 'Divisor B',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'quotient',
-          label: 'Quotient A ÷ B',
           value: 1,
           types: ['integer', 'number', 'bigint'],
           writable: false,
@@ -1057,7 +1051,6 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'integerQuotient',
-          label: 'Integer quotient ⌊A ÷ B⌋',
           value: 1,
           types: ['integer', 'bigint'],
           writable: false,
@@ -1065,10 +1058,54 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'remainder',
-          label: 'Remainder A mod B',
           value: 0,
           types: ['integer', 'bigint'],
           writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/trigonometric-function',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      label: 'Trigonometric function',
+      description: 'Provide functions sine, cosine, tangent as well as their hyperbolic counterparts and inverses',
+      url: 'https://ciphereditor.com/explore/trigonometric-functions',
+      keywords: ['sine', 'cosine', 'tangent', 'hyperbolic', 'radians', 'degrees', 'turns'],
+      controls: [
+        {
+          name: 'angle',
+          value: 0,
+          types: ['integer', 'number']
+        },
+        {
+          name: 'angleUnit',
+          value: 'radian',
+          types: ['text'],
+          options: [
+            { value: 'radian', label: 'Radians (rad)' },
+            { value: 'degree', label: 'Degrees (°)' },
+            { value: 'turn', label: 'Turns (rev)' }
+          ]
+        },
+        {
+          name: 'function',
+          value: 'sin',
+          types: ['text'],
+          options: [
+            { value: 'sin', label: 'Sine (sin)' },
+            { value: 'cos', label: 'Cosine (cos)' },
+            { value: 'tan', label: 'Tangent (tan)' },
+            { value: 'sinh', label: 'Hyperbolic sine (sinh)' },
+            { value: 'cosh', label: 'Hyperbolic cosine (cosh)' },
+            { value: 'tanh', label: 'Hyperbolic tangent (tanh)' }
+          ]
+        },
+        {
+          name: 'functionValue',
+          value: 0,
+          types: ['integer', 'number'],
           order: 1000
         }
       ]
