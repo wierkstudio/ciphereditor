@@ -936,7 +936,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/addition',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Addition',
       description: 'Adds two numbers together',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
@@ -944,13 +944,13 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'term1',
-          label: 'Term 1',
+          label: 'First Term',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'term2',
-          label: 'Term 2',
+          label: 'Second Term',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
@@ -966,7 +966,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/subtraction',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Subtraction',
       description: 'Subtracts one number from another',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
@@ -974,13 +974,13 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'term1',
-          label: 'Term 1',
+          label: 'First Term',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'term2',
-          label: 'Term 2',
+          label: 'Second Term',
           value: 0,
           types: ['integer', 'number', 'bigint']
         },
@@ -996,7 +996,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/multiplication',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Multiplication',
       description: 'Multiplies two numbers together',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
@@ -1004,13 +1004,13 @@ const defaultDirectoryState: DirectoryState = {
       controls: [
         {
           name: 'factor1',
-          label: 'Factor 1',
+          label: 'First Factor',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
         {
           name: 'factor2',
-          label: 'Factor 2',
+          label: 'Second Factor',
           value: 1,
           types: ['integer', 'number', 'bigint']
         },
@@ -1026,7 +1026,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/division',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Division',
       description: 'Divides one number by another',
       url: 'https://ciphereditor.com/explore/arithmetic-operators',
@@ -1068,7 +1068,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/trigonometric-function',
-      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Trigonometric function',
       description: 'Provide functions sine, cosine, tangent as well as their hyperbolic counterparts and inverses',
       url: 'https://ciphereditor.com/explore/trigonometric-functions',

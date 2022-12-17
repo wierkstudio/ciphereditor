@@ -12,13 +12,13 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'factor1',
-      label: 'Factor 1',
+      label: 'First Factor',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'factor2',
-      label: 'Factor 2',
+      label: 'Second Factor',
       value: 1,
       types: ['integer', 'number', 'bigint']
     },

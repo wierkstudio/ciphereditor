@@ -12,13 +12,13 @@ const contribution: Contribution = {
   controls: [
     {
       name: 'term1',
-      label: 'Term 1',
+      label: 'First Term',
       value: 0,
       types: ['integer', 'number', 'bigint']
     },
     {
       name: 'term2',
-      label: 'Term 2',
+      label: 'Second Term',
       value: 0,
       types: ['integer', 'number', 'bigint']
     },
