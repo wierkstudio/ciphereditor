@@ -13,12 +13,15 @@ export const extractValue = (serializedValue: SerializedValue): Value => {
   }
 
   switch (serializedValue.type) {
-    case 'bytes':
+    case 'bytes': {
       return base64StringToBuffer(serializedValue.data)
-    case 'bigint':
+    }
+    case 'bigint': {
       return BigInt(serializedValue.data)
-    default:
+    }
+    default: {
       throw new Error('Logic error: Unexpected value during extraction')
+    }
   }
 }
 
@@ -49,14 +52,18 @@ export const serializeValue = (value: Value): SerializedValue => {
  */
 export const identifyValueType = (value: Value): string => {
   switch (typeof value) {
-    case 'string':
+    case 'string': {
       return 'text'
-    case 'number':
-      return Number.isInteger(value) ? 'integer' : 'number'
-    case 'boolean':
+    }
+    case 'number': {
+      return Number.isSafeInteger(value) ? 'integer' : 'number'
+    }
+    case 'boolean': {
       return 'boolean'
-    case 'bigint':
+    }
+    case 'bigint': {
       return 'bigint'
+    }
     default: {
       if (value instanceof ArrayBuffer) {
         return 'bytes'
@@ -71,19 +78,25 @@ export const identifyValueType = (value: Value): string => {
  */
 export const identifySerializedValueType = (value: SerializedValue): string => {
   switch (typeof value) {
-    case 'string':
+    case 'string': {
       return 'text'
-    case 'number':
-      return Number.isInteger(value) ? 'integer' : 'number'
-    case 'boolean':
+    }
+    case 'number': {
+      return Number.isSafeInteger(value) ? 'integer' : 'number'
+    }
+    case 'boolean': {
       return 'boolean'
-    default:
+    }
+    default: {
       switch (value.type) {
-        case 'bytes':
+        case 'bytes': {
           return 'bytes'
-        case 'bigint':
+        }
+        case 'bigint': {
           return 'bigint'
+        }
       }
+    }
   }
   throw new Error('Logic error: Unexpected value during type identification')
 }
@@ -94,17 +107,24 @@ export const identifySerializedValueType = (value: SerializedValue): string => {
  */
 export const createEmptyValue = (type: string = 'text'): Value => {
   switch (type) {
-    case 'text':
+    case 'text': {
       return ''
-    case 'number':
-    case 'integer':
-      return 0
-    case 'boolean':
+    }
+    case 'number': {
+      return 0.1
+    }
+    case 'integer': {
+      return 1
+    }
+    case 'boolean': {
       return false
-    case 'bytes':
+    }
+    case 'bytes': {
       return new ArrayBuffer(0)
-    case 'bigint':
+    }
+    case 'bigint': {
       return BigInt(0)
+    }
   }
   throw new Error('No empty value defined for type ' + type)
 }
