@@ -21,6 +21,9 @@ const contribution: Contribution = {
       options: [
         { value: 'radian', label: 'Radians (rad)' },
         { value: 'degree', label: 'Degrees (°)' },
+        { value: 'arcminute', label: 'Minute of arc (′)' },
+        { value: 'arcsecond', label: 'Second of arc (″)' },
+        { value: 'grad', label: 'Grad' },
         { value: 'turn', label: 'Turns (rev)' }
       ]
     },
@@ -32,9 +35,9 @@ const contribution: Contribution = {
         { value: 'sin', label: 'Sine (sin)' },
         { value: 'cos', label: 'Cosine (cos)' },
         { value: 'tan', label: 'Tangent (tan)' },
-        { value: 'sinh', label: 'Hyperbolic sine (sinh)' },
-        { value: 'cosh', label: 'Hyperbolic cosine (cosh)' },
-        { value: 'tanh', label: 'Hyperbolic tangent (tanh)' }
+        { value: 'csc', label: 'Cosecant (csc)' },
+        { value: 'sec', label: 'Secant (sec)' },
+        { value: 'cot', label: 'Cotangent (cot)' }
       ]
     },
     {
@@ -46,25 +49,64 @@ const contribution: Contribution = {
   ]
 }
 
-type TrigonometricFunction = 'sin' | 'cos' | 'tan' | 'sinh' | 'cosh' | 'tanh'
-type AngleUnit = 'radian' | 'degree' | 'turn'
+type TrigonometricFunction =
+  'sin' | 'cos' | 'tan' | 'csc' | 'sec' | 'cot'
 
-const trigonometricFunctionMap: Record<TrigonometricFunction, (radians: number) => number> = {
+/**
+ * Object mapping trigonometric function names to their respective functions.
+ * Functions take an angle as radians and return a result which may be NaN
+ * or infinite.
+ */
+const trigonometricFunctionMap: Record<TrigonometricFunction, (x: number) => number> = {
   sin: Math.sin,
   cos: Math.cos,
   tan: Math.tan,
-  sinh: Math.sinh,
-  cosh: Math.cosh,
-  tanh: Math.tanh
+  csc: x => 1 / Math.sin(x),
+  sec: x => 1 / Math.cos(x),
+  cot: x => 1 / Math.tan(x)
 }
 
-const inverseTrigonometricFunctionMap: Record<TrigonometricFunction, (functionValue: number) => number> = {
+/**
+ * Object mapping trigonometric function names to their respective
+ * inverse functions. Functions take an angle as radians and return a result
+ * which may be NaN or infinite.
+ */
+const inverseTrigonometricFunctionMap: Record<TrigonometricFunction, (x: number) => number> = {
   sin: Math.asin,
   cos: Math.acos,
   tan: Math.atan,
-  sinh: Math.asinh,
-  cosh: Math.acosh,
-  tanh: Math.atanh
+  csc: x => Math.asin(1 / x),
+  sec: x => Math.acos(1 / x),
+  cot: x => Math.atan(1 / x)
+}
+
+type AngleUnit =
+  'radian' | 'degree' | 'arcminute' | 'arcsecond' | 'grad' | 'turn'
+
+/**
+ * Object mapping angle units to their respective conversion functions that
+ * convert to radians.
+ */
+const angleRadianConversionMap: Record<AngleUnit, (x: number) => number> = {
+  radian: x => x,
+  degree: x => x * (Math.PI / 180),
+  arcminute: x => x * (Math.PI / (180 * 60)),
+  arcsecond: x => x * (Math.PI / (180 * 3600)),
+  grad: x => x * (800 * Math.PI),
+  turn: x => x * (2 * Math.PI)
+}
+
+/**
+ * Object mapping angle units to their respective inverse conversion functions
+ * that convert from radians.
+ */
+const radianAngleConversionMap: Record<AngleUnit, (x: number) => number> = {
+  radian: x => x,
+  degree: x => x * (180 / Math.PI),
+  arcminute: x => x * ((180 * 60) / Math.PI),
+  arcsecond: x => x * ((180 * 3600) / Math.PI),
+  grad: x => x / (800 * Math.PI),
+  turn: x => x / (2 * Math.PI)
 }
 
 const execute: OperationExecuteExport = (request) => {
@@ -78,36 +120,30 @@ const execute: OperationExecuteExport = (request) => {
   if (!inverse) {
     // Convert the angle from the angle unit to radians
     const angle = request.values.angle as number
-    let radians: number
-    switch (angleUnit) {
-      case 'radian': {
-        radians = angle
-        break
-      }
-      case 'degree': {
-        radians = angle * (Math.PI / 180)
-        break
-      }
-      case 'turn': {
-        radians = angle * (2 * Math.PI)
-        break
-      }
-    }
+    const radians = angleRadianConversionMap[angleUnit](angle)
 
     // Evaluate trigonometric function
     const functionValue = trigonometricFunctionMap[functionName](radians)
 
-    // The domain of a trigonometric function is the whole real line, so we
-    // don't need to check for NaN values here
+    // Check for NaN and infinite values that occur outside of the domain
+    if (isNaN(functionValue) || !Number.isFinite(functionValue)) {
+      return {
+        issues: [{
+          level: 'error',
+          message: 'Angle is not in the domain of the function',
+          targetControlNames: ['angle']
+        }]
+      }
+    }
+
     return { changes: [{ name: 'functionValue', value: functionValue }] }
   } else {
     // Evaluate inverse trigonometric function
     const functionValue = request.values.functionValue as number
     const radians = inverseTrigonometricFunctionMap[functionName](functionValue)
 
-    // Check for NaN values that are returned for function values outside
-    // of the inverse domain
-    if (isNaN(radians)) {
+    // Check for NaN and infinite values that occur outside of the domain
+    if (isNaN(radians) || !Number.isFinite(radians)) {
       return {
         issues: [{
           level: 'error',
@@ -119,22 +155,7 @@ const execute: OperationExecuteExport = (request) => {
     }
 
     // Convert radians to the desired angle unit
-    let angle: number
-    switch (angleUnit) {
-      case 'radian': {
-        angle = radians
-        break
-      }
-      case 'degree': {
-        angle = radians * (180 / Math.PI)
-        break
-      }
-      case 'turn': {
-        angle = radians / (2 * Math.PI)
-        break
-      }
-    }
-
+    const angle = radianAngleConversionMap[angleUnit](radians)
     return { changes: [{ name: 'angle', value: angle }] }
   }
 }

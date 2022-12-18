@@ -1086,6 +1086,9 @@ const defaultDirectoryState: DirectoryState = {
           options: [
             { value: 'radian', label: 'Radians (rad)' },
             { value: 'degree', label: 'Degrees (°)' },
+            { value: 'arcminute', label: 'Minute of arc (′)' },
+            { value: 'arcsecond', label: 'Second of arc (″)' },
+            { value: 'grad', label: 'Grad' },
             { value: 'turn', label: 'Turns (rev)' }
           ]
         },
@@ -1097,9 +1100,9 @@ const defaultDirectoryState: DirectoryState = {
             { value: 'sin', label: 'Sine (sin)' },
             { value: 'cos', label: 'Cosine (cos)' },
             { value: 'tan', label: 'Tangent (tan)' },
-            { value: 'sinh', label: 'Hyperbolic sine (sinh)' },
-            { value: 'cosh', label: 'Hyperbolic cosine (cosh)' },
-            { value: 'tanh', label: 'Hyperbolic tangent (tanh)' }
+            { value: 'csc', label: 'Cosecant (csc)' },
+            { value: 'sec', label: 'Secant (sec)' },
+            { value: 'cot', label: 'Cotangent (cot)' }
           ]
         },
         {
