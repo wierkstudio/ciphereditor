@@ -46,7 +46,7 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
       </ModalView.SectionView>
       <ModalView.SectionView headline='About this app'>
         <p>ciphereditor</p>
-        <p>Copyright (c) 2022 Fränz Friederes, Wierk S.à r.l.</p>
+        <p>Copyright (c) 2023 Fränz Friederes, Wierk S.à r.l.</p>
       </ModalView.SectionView>
     </ModalView>
   )

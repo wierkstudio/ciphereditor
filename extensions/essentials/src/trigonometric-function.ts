@@ -6,7 +6,7 @@ const contribution: Contribution = {
   name: '@ciphereditor/extension-essentials/trigonometric-function',
   label: 'Trigonometric function',
   description: 'Provide functions sine, cosine, tangent as well as their hyperbolic counterparts and inverses',
-  url: 'https://ciphereditor.com/explore/trigonometric-functions',
+  url: 'https://ciphereditor.com/explore/trigonometric-functions-sin-cos-tan',
   keywords: ['sine', 'cosine', 'tangent', 'hyperbolic', 'radians', 'degrees', 'turns'],
   controls: [
     {
