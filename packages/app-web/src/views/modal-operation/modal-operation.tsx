@@ -31,7 +31,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
   )
   let contribution: OperationContribution | undefined
   if (node.type === BlueprintNodeType.Operation) {
-    const operation = node as OperationNodeState
+    const operation = node
     // TODO: Needs translation
     title = `Configure ${operation.label}`
     contribution = useDirectorySelector(state => getOperationContribution(state, operation.name))

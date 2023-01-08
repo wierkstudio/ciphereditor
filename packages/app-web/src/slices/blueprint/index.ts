@@ -233,7 +233,7 @@ export const blueprintSlice = createSlice({
     },
 
     labelAction: (state, { payload }: PayloadAction<{
-      nodeId: BlueprintNodeId,
+      nodeId: BlueprintNodeId
       label: string
     }>) => {
       labelNode(state, payload.nodeId, payload.label)
