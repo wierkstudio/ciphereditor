@@ -36,6 +36,16 @@ export interface BlueprintNodeState {
   childIds: BlueprintNodeId[]
 
   /**
+   * Original node label
+   */
+  label: string
+
+  /**
+   * Node label after renaming it
+   */
+  alias?: string
+
+  /**
    * Size and position of the node, if applicable
    */
   frame?: Rect

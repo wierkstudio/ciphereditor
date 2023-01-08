@@ -64,17 +64,20 @@ export const addControlNode = (
 ): ControlNodeState => {
   const id = nextNodeId(state)
 
-  // Choose unique control label
+  // Choose label and optional unique alias
   const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNodeState[]
-  const usedLabels = controls.map(control => control.label)
-  const uniqueLabel = deriveUniqueName(controlNode.label ?? defaultControlNode.label, usedLabels)
+  const usedLabels = controls.map(control => control.alias ?? control.label)
+  const label = controlNode.label ?? defaultControlNode.label
+  const uniqueLabel = deriveUniqueName(label, usedLabels)
+  const alias = uniqueLabel !== label ? uniqueLabel : undefined
 
   const control: ControlNodeState = {
     ...defaultControlNode,
     parentId: programId,
     id,
     name: `control${id}`,
-    label: uniqueLabel,
+    label,
+    alias,
     frame: getNextNodeFrame(state, programId, controlNode.frame),
     value: controlNode.value,
     visibility: controlNode.visibility ?? defaultControlNode.visibility

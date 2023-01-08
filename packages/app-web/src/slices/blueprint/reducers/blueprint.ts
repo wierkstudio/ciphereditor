@@ -361,6 +361,15 @@ export const moveNode = (
   }
 }
 
+export const labelNode = (
+  state: BlueprintState,
+  nodeId: BlueprintNodeId,
+  label: string
+): void => {
+  const node = getNode(state, nodeId)
+  node.alias = (label.length > 0 && label !== node.label) ? label : undefined
+}
+
 export const layoutNode = (
   state: BlueprintState,
   nodeId: BlueprintNodeId,

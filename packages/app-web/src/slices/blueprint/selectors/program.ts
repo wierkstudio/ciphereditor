@@ -116,11 +116,16 @@ export const serializeProgram = (
 
   const serializedProgram: ProgramNode = {
     type: 'program',
-    label: program.label,
     offset: roundPoint(program.offset),
     frame: roundRect(program.frame)
   }
 
+  // Optional label
+  if (program.alias !== undefined) {
+    serializedProgram.label = program.alias
+  }
+
+  // Optional children
   if (serializedChildren.length > 0) {
     serializedProgram.children = serializedChildren
   }

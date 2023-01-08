@@ -47,11 +47,6 @@ export interface OperationNodeState extends BlueprintNodeState {
   extensionUrl?: string
 
   /**
-   * Operation label
-   */
-  label: string
-
-  /**
    * Wether the same inputs always return the same output
    */
   reproducible: boolean

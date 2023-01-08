@@ -120,7 +120,7 @@ export default function AppView (): JSX.Element {
     }
   }, [keyBindings, dispatch])
 
-  useKeyBindingHandler(window, onKeyCombination)
+  useKeyBindingHandler(undefined, onKeyCombination)
 
   // Modals modifier
   const hasModals = !useAppSelector(state => isModalStackEmpty(state.ui))

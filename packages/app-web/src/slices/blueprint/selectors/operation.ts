@@ -174,6 +174,11 @@ export const serializeOperation = (
     frame: roundRect(operation.frame)
   }
 
+  // Include label if operation has been renamed
+  if (operation.alias !== undefined) {
+    serializedOperation.label = operation.alias
+  }
+
   // Enable initial execution if the execution is pending or erroneous
   if (operation.state !== OperationExecutionState.Ready) {
     serializedOperation.initialExecution = true

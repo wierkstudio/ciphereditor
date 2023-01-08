@@ -19,7 +19,7 @@ import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
 import { OperationExecutionState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
-import { addNodes, clearBlueprint, deleteNodes, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
+import { addNodes, clearBlueprint, deleteNodes, labelNode, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
 import { defaultProgramNode, moveOffset } from './reducers/program'
 import { executeOperation, setOperationState } from './reducers/operation'
@@ -232,6 +232,13 @@ export const blueprintSlice = createSlice({
       executeOperation(state, payload.nodeId)
     },
 
+    labelAction: (state, { payload }: PayloadAction<{
+      nodeId: BlueprintNodeId,
+      label: string
+    }>) => {
+      labelNode(state, payload.nodeId, payload.label)
+    },
+
     selectAction: (state, { payload }: PayloadAction<{
       nodeIds: BlueprintNodeId[]
     }>) => {
@@ -405,6 +412,7 @@ export const {
   attachControlsAction,
   applyOperationResultAction,
   executeOperationAction,
+  labelAction,
   selectAction,
   selectAllAction,
   moveAction,

@@ -46,12 +46,21 @@ export const addOperationNode = (
     operationNode.initialExecution ??
     operationContribution.reproducible === false
 
+  const label = operationContribution.label ?? capitalCase(operationContribution.name)
+  const alias =
+    operationNode.label !== undefined &&
+    operationNode.label.length > 0 &&
+    operationNode.label !== label
+      ? operationNode.label
+      : undefined
+
   const operation: OperationNodeState = {
     type: BlueprintNodeType.Operation,
     id: nextNodeId(state),
     parentId: programId,
     name: operationContribution.name,
-    label: operationContribution.label ?? capitalCase(operationContribution.name),
+    label,
+    alias,
     childIds: [],
     reproducible: operationContribution.reproducible !== false,
     state: initialExecution

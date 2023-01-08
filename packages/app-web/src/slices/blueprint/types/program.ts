@@ -19,11 +19,6 @@ export interface ProgramNodeState extends BlueprintNodeState {
   frame: Rect
 
   /**
-   * Program label
-   */
-  label: string
-
-  /**
    * Plane canvas offset/position
    */
   offset: Point

@@ -72,6 +72,7 @@ export default function OperationView (props: {
         <div className='operation__header-start'>
           <MovableButtonView
             className='operation__pill'
+            title={node.alias !== undefined ? node.label : undefined}
             onClick={() => dispatch(pushModalAction({
               payload: {
                 type: 'operation',
@@ -83,8 +84,7 @@ export default function OperationView (props: {
               <IconView icon={node.type === BlueprintNodeType.Program ? 'program' : 'switch'} />
             </span>
             <h3 className='operation__label'>
-              {/* TODO: Needs translation */}
-              {node.label}
+              {node.alias ?? node.label}
             </h3>
             {highestIssueLevel !== undefined && (
               <div className={'operation__issue operation__issue--' + String(highestIssueLevel)}>

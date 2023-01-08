@@ -17,11 +17,6 @@ export interface ControlNodeState extends BlueprintNodeState {
   name: string
 
   /**
-   * Control label
-   */
-  label: string
-
-  /**
    * Control description
    */
   description: string | undefined

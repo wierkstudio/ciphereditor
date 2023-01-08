@@ -24,6 +24,7 @@ export const addVariable = (
     id: nextNodeId(state),
     parentId: getControlProgramId(state, controlId, outward),
     childIds: [],
+    label: 'Variable',
     attachmentIds: [controlId]
   }
   addChildNode(state, variable)

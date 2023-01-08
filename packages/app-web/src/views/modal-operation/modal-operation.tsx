@@ -1,4 +1,5 @@
 
+import InputTextView from '../input-text/input-text'
 import IssueListView from '../issue-list/issue-list'
 import ModalView, { ModalViewAction } from '../../views/modal/modal'
 import useAppDispatch from '../../hooks/useAppDispatch'
@@ -9,7 +10,8 @@ import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { OperationContribution } from '@ciphereditor/library'
 import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNodeState } from '../../slices/blueprint/types/operation'
-import { deleteAction, duplicateAction } from '../../slices/blueprint'
+import { ProgramNodeState } from '../../slices/blueprint/types/program'
+import { deleteAction, duplicateAction, labelAction } from '../../slices/blueprint'
 import { getNode } from '../../slices/blueprint/selectors/blueprint'
 import { getOperationContribution } from '../../slices/directory/selectors'
 import { getOperationIssues } from '../../slices/blueprint/selectors/operation'
@@ -18,7 +20,7 @@ import { openUrlAction, popModalAction } from '../../slices/ui'
 export default function OperationModalView (props: OperationModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const nodeId = props.nodeId
-  const node = useBlueprintSelector(state => getNode(state, nodeId))
+  const node = useBlueprintSelector(state => getNode(state, nodeId)) as OperationNodeState | ProgramNodeState
   const [t] = useTranslation()
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
 
@@ -72,6 +74,13 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
 
   return (
     <ModalView title={title} actions={actions}>
+      <ModalView.SectionView headline={t('Label')}>
+        <InputTextView
+          placeholder={node.label}
+          value={node.alias}
+          onChange={label => dispatch(labelAction({ nodeId, label }))}
+        />
+      </ModalView.SectionView>
       <ModalView.SectionView headline={t('Description')}>
         {description}
       </ModalView.SectionView>

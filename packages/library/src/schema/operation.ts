@@ -17,6 +17,11 @@ export const operationNodeSchema = z.object({
   name: z.string(),
 
   /**
+   * Alias label of the operation
+   */
+  label: z.string().optional(),
+
+  /**
    * Url of the extension that includes the operation contribution
    */
   extensionUrl: z.string().optional(),

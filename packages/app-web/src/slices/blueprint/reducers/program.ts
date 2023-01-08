@@ -53,21 +53,22 @@ export const addProgramNode = (
 ): ProgramNodeState => {
   const id = nextNodeId(state)
 
-  // Choose unique program label
+  // Choose label and optional unique alias
   const programs = parentId !== undefined
     ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNodeState[]
     : []
-  const usedLabels = programs.map(program => program.label)
-  const label = programNode.label
-  const uniqueLabel =
-    deriveUniqueName(label ?? defaultProgramNode.label, usedLabels)
+  const usedLabels = programs.map(program => program.alias ?? program.label)
+  const label = programNode.label ?? defaultProgramNode.label
+  const uniqueLabel = deriveUniqueName(label, usedLabels)
+  const alias = uniqueLabel !== label ? uniqueLabel : undefined
 
   const program: ProgramNodeState = {
     ...defaultProgramNode,
     id,
     parentId: parentId ?? id,
     childIds: [],
-    label: uniqueLabel,
+    label,
+    alias,
     offset: programNode.offset ?? defaultProgramNode.offset,
     frame: parentId !== undefined
       ? getNextNodeFrame(state, parentId, programNode.frame)
