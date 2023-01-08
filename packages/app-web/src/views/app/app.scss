@@ -23,9 +23,11 @@
     right: 0;
 
     @include with-canvas-mode(plane) {
-      // When in plane mode the canvas height is fixed to the window height and
-      // should not resize when a modal gets displayed
-      height: 100vh;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
     }
   }
 
