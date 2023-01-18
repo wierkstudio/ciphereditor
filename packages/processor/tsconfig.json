@@ -10,7 +10,8 @@
     "sourceRoot": "./src/",
     "sourceMap": true,
     "skipLibCheck": true,
-    "declaration": true
+    "declaration": true,
+    "resolveJsonModule": false
   },
   "include": [
     "src"

@@ -99,18 +99,18 @@ export const createDictionaryContribution = (
     const forward =
       request.controlPriorities.indexOf('source') <
       request.controlPriorities.indexOf('translation')
-    const variantName = request.values.variant
+    const variantName = request.values.variant as string | undefined
     const inputString = forward
       ? request.values.source as string
       : request.values.translation as string
     const outputControl = forward ? 'translation' : 'source'
 
     // Find variant by name
-    let variant = hasVariantChoice
+    const variant = hasVariantChoice
       ? variants.find(variant => variant.name === variantName)
       : variants[0]
     if (variant === undefined) {
-      throw new Error(`Logic error: Unexpected variant name '${variantName}'`)
+      throw new Error(`Logic error: Unexpected variant name '${variantName ?? 'none'}'`)
     }
 
     // Merge default, dictionary and variant config in this order
@@ -184,7 +184,7 @@ const createDictionaryTranslator = (
     element: matchIndices.map(({ match, index }) =>
       ({ match, value: () => index.toString() })),
     literal: {
-      match: /\[[^\[\]]+\]/,
+      match: /\[[^[\]]+\]/,
       value: match => match.substring(1, match.length - 1)
     },
     separator: {
