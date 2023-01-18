@@ -10,6 +10,7 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "strict": true
+    "strict": true,
+    "resolveJsonModule": true
   }
 }

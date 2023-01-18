@@ -1,0 +1,46 @@
+{
+  "config": {
+    "key": {
+      "caseSensitive": false
+    },
+    "value": {
+      "wordSeparator": " "
+    }
+  },
+  "variants": [
+    {
+      "name": "tap-code",
+      "label": "Tap code",
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tap_code"
+      ],
+      "elements": [
+        { "key": "a", "value": ". ." },
+        { "key": "b", "value": ". .." },
+        { "key": ["c", "k"], "value": ". ..." },
+        { "key": "d", "value": ". ...." },
+        { "key": "e", "value": ". ....." },
+        { "key": "f", "value": ".. ." },
+        { "key": "g", "value": ".. .." },
+        { "key": "h", "value": ".. ..." },
+        { "key": "i", "value": ".. ...." },
+        { "key": "j", "value": ".. ....." },
+        { "key": "l", "value": "... ." },
+        { "key": "m", "value": "... .." },
+        { "key": "n", "value": "... ..." },
+        { "key": "o", "value": "... ...." },
+        { "key": "p", "value": "... ....." },
+        { "key": "q", "value": ".... ." },
+        { "key": "r", "value": ".... .." },
+        { "key": "s", "value": ".... ..." },
+        { "key": "t", "value": ".... ...." },
+        { "key": "u", "value": ".... ....." },
+        { "key": "v", "value": "..... ." },
+        { "key": "w", "value": "..... .." },
+        { "key": "x", "value": "..... ..." },
+        { "key": "y", "value": "..... ...." },
+        { "key": "z", "value": "..... ....." }
+      ]
+    }
+  ]
+}

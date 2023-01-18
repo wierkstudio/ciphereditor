@@ -31,6 +31,7 @@ The following packages contain the logic necessary to build the app itself (excl
 Extensions provide operations, the nodes or methods you can use on the ciphereditor canvas. They run in the environment created by the app packages listed above.
 
 - **essentials** - Essential operations
+- **dictionary** - Operations related to dictionary-based translations
 - **codepages** - Operations related to character encodings
 - **hash** - Operations related to cryptographic hash functions
 - **pgp** - Operations related to the OpenPGP protocol

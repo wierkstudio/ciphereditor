@@ -304,6 +304,137 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-dictionary/morse-code',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      label: 'Morse code',
+      description: '(work in progress)',
+      url: 'https://ciphereditor.com/explore/morse-code-translator',
+      keywords: [],
+      controls: [
+        {
+          name: 'source',
+          value: '',
+          types: ['text']
+        },
+        {
+          name: 'translation',
+          value: '',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-dictionary/navajo-code',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      label: 'Navajo code',
+      description: '(work in progress)',
+      url: 'https://ciphereditor.com/explore/navajo-code-talkers',
+      keywords: [],
+      controls: [
+        {
+          name: 'source',
+          value: '',
+          types: ['text']
+        },
+        {
+          name: 'translation',
+          value: '',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-dictionary/phonetic-alphabet',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      label: 'Phonetic alphabet',
+      description: '(work in progress)',
+      url: 'https://ciphereditor.com/explore/nato-phonetic-alphabet',
+      keywords: [],
+      controls: [
+        {
+          name: 'source',
+          value: '',
+          types: ['text']
+        },
+        {
+          name: 'variant',
+          value: 'int-nato',
+          types: ['text'],
+          options: [
+            {
+              value: 'int-nato',
+              label: 'International (NATO)'
+            },
+            {
+              value: 'int-able-baker',
+              label: 'International (Able Baker)'
+            },
+            {
+              value: 'es-es',
+              label: 'European Spanish'
+            },
+            {
+              value: 'pt-pt',
+              label: 'European Portuguese'
+            },
+            {
+              value: 'de-2022',
+              label: 'German (2022)'
+            },
+            {
+              value: 'de-1996',
+              label: 'German (1996)'
+            },
+            {
+              value: 'pl',
+              label: 'Polish'
+            },
+            {
+              value: 'nl',
+              label: 'Dutch'
+            },
+            {
+              value: 'sv',
+              label: 'Swedish'
+            }
+          ]
+        },
+        {
+          name: 'translation',
+          value: '',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-dictionary/tap-code',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      label: 'Tap code',
+      description: '(work in progress)',
+      url: 'https://ciphereditor.com/explore/tap-code-translator',
+      keywords: ['knock'],
+      controls: [
+        {
+          name: 'source',
+          value: '',
+          types: ['text']
+        },
+        {
+          name: 'translation',
+          value: '',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',

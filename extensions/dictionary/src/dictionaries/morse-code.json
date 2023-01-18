@@ -1,0 +1,79 @@
+{
+  "config": {
+    "key": {
+      "caseSensitive": false
+    },
+    "value": {
+      "wordSeparator": " "
+    }
+  },
+  "variants": [
+    {
+      "name": "itur-m1172",
+      "label": "International Morse code",
+      "sources": [
+        "https://www.itu.int/rec/R-REC-M.1677-1-200910-I/"
+      ],
+      "elements": [
+        { "key": "a", "value": ".-" },
+        { "key": "b", "value": "-..." },
+        { "key": "c", "value": "-.-." },
+        { "key": "d", "value": "-.." },
+        { "key": "e", "value": "." },
+        { "key": ["é", "è", "ë"], "value": "..-.." },
+        { "key": "f", "value": "..-." },
+        { "key": "g", "value": "--." },
+        { "key": "h", "value": "...." },
+        { "key": "i", "value": ".." },
+        { "key": "j", "value": ".---" },
+        { "key": "k", "value": "-.-" },
+        { "key": "l", "value": ".-.." },
+        { "key": "m", "value": "--" },
+        { "key": "n", "value": "-." },
+        { "key": "o", "value": "---" },
+        { "key": "p", "value": ".--." },
+        { "key": "q", "value": "--.-" },
+        { "key": "r", "value": ".-." },
+        { "key": "s", "value": "..." },
+        { "key": "t", "value": "-" },
+        { "key": "u", "value": "..-" },
+        { "key": "v", "value": "...-" },
+        { "key": "w", "value": ".--" },
+        { "key": "x", "value": "-..-" },
+        { "key": "y", "value": "-.--" },
+        { "key": "z", "value": "--.." },
+        { "key": "1", "value": ".----" },
+        { "key": "2", "value": "..---" },
+        { "key": "3", "value": "...--" },
+        { "key": "4", "value": "....-" },
+        { "key": "5", "value": "....." },
+        { "key": "6", "value": "-...." },
+        { "key": "7", "value": "--..." },
+        { "key": "8", "value": "---.." },
+        { "key": "9", "value": "----." },
+        { "key": "0", "value": ["-----"] },
+        { "key": ".", "value": ".-.-.-" },
+        { "key": ",", "value": "--..--" },
+        { "key": ":", "value": "---..." },
+        { "key": "?", "value": "..--.." },
+        { "key": ["'", "’", "‘"], "value": ".----." },
+        { "key": ["-", "−", "–", "—"], "value": "-....-" },
+        { "key": "/", "value": "-..-." },
+        { "key": "(", "value": "-.--." },
+        { "key": ")", "value": "-.--.-" },
+        { "key": ["\"", "“", "”", "‟", "„", "‹", "›", "«", "»"], "value": ".-..-." },
+        { "key": "=", "value": "-...-" },
+        { "key": "+", "value": ".-.-." },
+        { "key": "×", "value": "-..-" },
+        { "key": "@", "value": ".--.-." },
+        { "key": "%", "value": ["----- -..-. -----"] },
+        { "key": "(understood)", "value": "...-." },
+        { "key": "(error)", "value": "........" },
+        { "key": "(invitation to transmit)", "value": "-.-" },
+        { "key": "(wait)", "value": ".-..." },
+        { "key": "(end of work)", "value": "...-.-" },
+        { "key": "(start)", "value": "-.-.-" }
+      ]
+    }
+  ]
+}
