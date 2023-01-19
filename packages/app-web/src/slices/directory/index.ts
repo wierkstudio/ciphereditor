@@ -413,28 +413,6 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
-      name: '@ciphereditor/extension-dictionary/tap-code',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
-      label: 'Tap code',
-      description: '(work in progress)',
-      url: 'https://ciphereditor.com/explore/tap-code-translator',
-      keywords: ['knock'],
-      controls: [
-        {
-          name: 'source',
-          value: '',
-          types: ['text']
-        },
-        {
-          name: 'translation',
-          value: '',
-          types: ['text'],
-          order: 1000
-        }
-      ]
-    },
-    {
-      type: 'operation',
       name: '@ciphereditor/extension-essentials/rc4-cipher',
       label: 'RC4 cipher',
       description: 'Apply the RC4 (ARC4) stream cipher on a message',
