@@ -4,7 +4,8 @@ import {
   defaultConfig,
   Dictionary,
   DictionaryConfig,
-  DictionaryElement
+  DictionaryElement,
+  DictionaryVariant
 } from './dictionary'
 import {
   Contribution,
@@ -20,12 +21,13 @@ import type { DeepRequired } from 'ts-essentials'
  * Arguments used to create a dictionary contribution
  */
 export interface CreateDictionaryArgs {
-  dictionary: Dictionary
   name: string
   label?: string
   description?: string
   url?: string
   keywords?: string[]
+  dictionary: Dictionary
+  initialSource: string
 }
 
 /**
@@ -57,18 +59,19 @@ export const createDictionaryContribution = (
 
   controls.push({
     name: 'source',
-    value: '',
+    value: args.initialSource,
     types: ['text']
   })
 
   // Compose variants control
   const variants = dictionary.variants
   const hasVariantChoice = variants.length > 1
+  let defaultVariant: DictionaryVariant = variants[0]
   if (hasVariantChoice) {
-    const defaultVariant = variants.find(variant => variant.default === true)
+    defaultVariant = variants.find(variant => variant.default === true) ?? defaultVariant
     controls.push({
       name: 'variant',
-      value: defaultVariant?.name ?? variants[0].name,
+      value: defaultVariant.name,
       types: ['text'],
       options: variants.map(variant => ({
         value: variant.name,
@@ -77,9 +80,13 @@ export const createDictionaryContribution = (
     })
   }
 
+  const config = mergeConfig(dictionary, defaultVariant)
+  const translator = createDictionaryTranslator(
+    undefined, defaultVariant.elements, config, true)
+
   controls.push({
     name: 'translation',
-    value: '',
+    value: translator(args.initialSource),
     types: ['text'],
     order: 1000,
     writable: dictionary.config?.reversible ?? true
@@ -114,22 +121,7 @@ export const createDictionaryContribution = (
     }
 
     // Merge default, dictionary and variant config in this order
-    const config: DeepRequired<DictionaryConfig> = {
-      ...defaultConfig,
-      ...dictionary.config,
-      ...variant.config,
-      key: {
-        ...defaultConfig.key,
-        ...dictionary.config?.key,
-        ...variant.config?.key
-      },
-      value: {
-        ...defaultConfig.value,
-        ...dictionary.config?.value,
-        ...variant.config?.value
-      }
-    }
-
+    const config = mergeConfig(dictionary, variant)
     const cacheKey = args.name + '-' + variant.name + (forward ? '>' : '<')
     const translator = createDictionaryTranslator(
       cacheKey, variant.elements, config, forward)
@@ -146,19 +138,47 @@ export const createDictionaryContribution = (
 }
 
 /**
+ * Deep merge default, dictionary and variant config in this order.
+ */
+const mergeConfig = (
+  dictionary: Dictionary,
+  variant: DictionaryVariant
+): DeepRequired<DictionaryConfig> => {
+  return {
+    ...defaultConfig,
+    ...dictionary.config,
+    ...variant.config,
+    key: {
+      ...defaultConfig.key,
+      ...dictionary.config?.key,
+      ...variant.config?.key
+    },
+    value: {
+      ...defaultConfig.value,
+      ...dictionary.config?.value,
+      ...variant.config?.value
+    }
+  }
+}
+
+/**
  * Lazily create a translator based on a lexer for the given dictionary elements
  * and configuration.
  * @param cacheKey The translator instance gets reused when the cache key stays
  * the same
  */
 const createDictionaryTranslator = (
-  cacheKey: string,
+  cacheKey: string | undefined,
   elements: DictionaryElement[],
   config: DeepRequired<DictionaryConfig>,
   forward: boolean
 ): ((content: string) => string) => {
   // Use cached version, if possible
-  if (cachedTranslator !== undefined && cachedTranslatorKey === cacheKey) {
+  if (
+    cacheKey !== undefined &&
+    cachedTranslator !== undefined &&
+    cachedTranslatorKey === cacheKey
+  ) {
     return cachedTranslator
   }
 

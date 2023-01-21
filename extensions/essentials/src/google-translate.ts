@@ -40,7 +40,7 @@ const languageOptions = [
   ['Haitian Creole', 'ht'],
   ['Hausa', 'ha'],
   ['Hawaiian', 'haw'],
-  ['Hebrew', 'he or iw'],
+  ['Hebrew', 'he'],
   ['Hindi', 'hi'],
   ['Hmong', 'hmn'],
   ['Hungarian', 'hu'],

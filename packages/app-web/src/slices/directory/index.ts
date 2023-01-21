@@ -305,20 +305,20 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/morse-code',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
       label: 'Morse code',
-      description: '(work in progress)',
+      description: 'Morse code is a method of transmitting text information as a series of on-off tones, lights, or clicks.',
       url: 'https://ciphereditor.com/explore/morse-code-translator',
-      keywords: [],
+      keywords: ['sos', 'telegraph'],
       controls: [
         {
           name: 'source',
-          value: '',
+          value: 'the quick brown fox jumps over the lazy dog',
           types: ['text']
         },
         {
           name: 'translation',
-          value: '',
+          value: '- .... . [ ] --.- ..- .. -.-. -.- [ ] -... .-. --- .-- -. [ ] ..-. --- -..- [ ] .--- ..- -- .--. ... [ ] --- ...- . .-. [ ] - .... . [ ] .-.. .- --.. -.-- [ ] -.. --- --.',
           types: ['text'],
           order: 1000
         }
@@ -327,20 +327,20 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/navajo-code',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
       label: 'Navajo code',
-      description: '(work in progress)',
+      description: 'Navajo Code talkers use the little-known Native American language Navajo as a mean of secret communication.',
       url: 'https://ciphereditor.com/explore/navajo-code-talkers',
-      keywords: [],
+      keywords: ['talkers'],
       controls: [
         {
           name: 'source',
-          value: '',
+          value: 'the quick brown fox jumps over the lazy dog',
           types: ['text']
         },
         {
           name: 'translation',
-          value: '',
+          value: 'than-zie cha ah-jah ca-yeilth no-da-ih a-chi ba-goshi jad-ho-loni shush dah-nes-tsa tlo-chin gloe-ih a-chin ma-e ne-ahs-jah al-na-as-dzoh ah-ya-tsinne shi-da na-as-tso-si bi-so-dih klesh ne-ahs-jah a-keh-di-glini dzeh gah d-ah lin ah-jah nash-doie-tso be-la-sana besh-do-tliz tsah-as-zih be tlo-chin klizzie',
           types: ['text'],
           order: 1000
         }
@@ -349,15 +349,15 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/phonetic-alphabet',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
       label: 'Phonetic alphabet',
-      description: '(work in progress)',
+      description: 'A phonetic alphabet or spelling alphabet is a set of words used to spell out letters in oral communication.',
       url: 'https://ciphereditor.com/explore/nato-phonetic-alphabet',
-      keywords: [],
+      keywords: ['international', 'nato', 'dutch', 'finnish', 'french', 'german', 'italian', 'korean', 'polish', 'portuguese', 'spanish', 'swedish', 'turkish'],
       controls: [
         {
           name: 'source',
-          value: '',
+          value: 'the quick brown fox jumps over the lazy dog',
           types: ['text']
         },
         {
@@ -365,47 +365,25 @@ const defaultDirectoryState: DirectoryState = {
           value: 'int-nato',
           types: ['text'],
           options: [
-            {
-              value: 'int-nato',
-              label: 'International (NATO)'
-            },
-            {
-              value: 'int-able-baker',
-              label: 'International (Able Baker)'
-            },
-            {
-              value: 'es-es',
-              label: 'European Spanish'
-            },
-            {
-              value: 'pt-pt',
-              label: 'European Portuguese'
-            },
-            {
-              value: 'de-2022',
-              label: 'German (2022)'
-            },
-            {
-              value: 'de-1996',
-              label: 'German (1996)'
-            },
-            {
-              value: 'pl',
-              label: 'Polish'
-            },
-            {
-              value: 'nl',
-              label: 'Dutch'
-            },
-            {
-              value: 'sv',
-              label: 'Swedish'
-            }
+            { label: 'International (NATO)', value: 'int-nato' },
+            { label: 'International (Able Baker)', value: 'int-able-baker' },
+            { label: 'Dutch',  value: 'nl' },
+            { label: 'Finnish', value: 'fi' },
+            { label: 'French', value: 'fr-fr' },
+            { label: 'German (2022)', value: 'de-de-2022' },
+            { label: 'German (1996)', value: 'de-de-1996' },
+            { label: 'Italian', value: 'it-it' },
+            { label: 'Korean', value: 'ko' },
+            { label: 'Polish', value: 'pl' },
+            { label: 'Portuguese', value: 'pt-pt' },
+            { label: 'Spanish', value: 'es-es' },
+            { label: 'Swedish',  value: 'sv' },
+            { label: 'Turkish', value: 'tr' }
           ]
         },
         {
           name: 'translation',
-          value: '',
+          value: 'Tango Hotel Echo [ ] Quebec Uniform India Charlie Kilo [ ] Bravo Romeo Oscar Whiskey November [ ] Foxtrot Oscar X-ray [ ] Juliett Uniform Mike Papa Sierra [ ] Oscar Victor Echo Romeo [ ] Tango Hotel Echo [ ] Lima Alfa Zulu Yankee [ ] Delta Oscar Golf',
           types: ['text'],
           order: 1000
         }
@@ -1405,7 +1383,7 @@ const defaultDirectoryState: DirectoryState = {
             { value: 'ht', label: 'Haitian Creole' },
             { value: 'ha', label: 'Hausa' },
             { value: 'haw', label: 'Hawaiian' },
-            { value: 'he or iw', label: 'Hebrew' },
+            { value: 'he', label: 'Hebrew' },
             { value: 'hi', label: 'Hindi' },
             { value: 'hmn', label: 'Hmong' },
             { value: 'hu', label: 'Hungarian' },
