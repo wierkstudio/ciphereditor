@@ -367,7 +367,7 @@ const defaultDirectoryState: DirectoryState = {
           options: [
             { label: 'International (NATO)', value: 'int-nato' },
             { label: 'International (Able Baker)', value: 'int-able-baker' },
-            { label: 'Dutch',  value: 'nl' },
+            { label: 'Dutch', value: 'nl' },
             { label: 'Finnish', value: 'fi' },
             { label: 'French', value: 'fr-fr' },
             { label: 'German (2022)', value: 'de-de-2022' },
@@ -377,7 +377,7 @@ const defaultDirectoryState: DirectoryState = {
             { label: 'Polish', value: 'pl' },
             { label: 'Portuguese', value: 'pt-pt' },
             { label: 'Spanish', value: 'es-es' },
-            { label: 'Swedish',  value: 'sv' },
+            { label: 'Swedish', value: 'sv' },
             { label: 'Turkish', value: 'tr' }
           ]
         },
