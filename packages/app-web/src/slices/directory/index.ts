@@ -305,7 +305,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/morse-code',
-      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
       label: 'Morse code',
       description: 'Morse code is a method of transmitting text information as a series of on-off tones, lights, or clicks.',
       url: 'https://ciphereditor.com/explore/morse-code-translator',
@@ -327,7 +327,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/navajo-code',
-      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
       label: 'Navajo code',
       description: 'Navajo Code talkers use the little-known Native American language Navajo as a mean of secret communication.',
       url: 'https://ciphereditor.com/explore/navajo-code-talkers',
@@ -349,7 +349,7 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-dictionary/phonetic-alphabet',
-      extensionUrl: 'https://localhost:3010/extensions/dictionary/extension.js',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-dictionary/1.0.0-alpha.1/extension.js',
       label: 'Phonetic alphabet',
       description: 'A phonetic alphabet or spelling alphabet is a set of words used to spell out letters in oral communication.',
       url: 'https://ciphereditor.com/explore/nato-phonetic-alphabet',
