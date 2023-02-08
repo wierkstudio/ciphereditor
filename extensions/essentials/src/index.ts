@@ -14,6 +14,7 @@ import logicalOr from './logical-or'
 import multiplication from './multiplication'
 import numberEncoder from './number-encoder'
 import polybiusSquare from './polybius-square'
+import railFenceCipher from './rail-fence-cipher'
 import rc4Cipher from './rc4-cipher'
 import reverser from './reverser'
 import rot13 from './rot13'
@@ -40,6 +41,7 @@ export const activate: ExtensionActivateExport = (context) => [
   multiplication,
   numberEncoder,
   polybiusSquare,
+  railFenceCipher,
   rc4Cipher,
   reverser,
   rot13,

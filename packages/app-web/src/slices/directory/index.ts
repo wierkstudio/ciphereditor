@@ -174,6 +174,38 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/rail-fence-cipher',
+      label: 'Rail fence cipher',
+      description: 'Rail fence cipher lays out characters in a zigzag pattern across a number of “rails” and reads them off row by row.',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      url: 'https://ciphereditor.com/explore/rail-fence-cipher',
+      keywords: ['transposition cipher', 'zigzag cipher'],
+      controls: [
+        {
+          name: 'plaintext',
+          value: 'wearediscoveredrunatonce',
+          types: ['text']
+        },
+        {
+          name: 'rails',
+          value: 4,
+          types: ['integer']
+        },
+        {
+          name: 'offset',
+          value: 0,
+          types: ['integer']
+        },
+        {
+          name: 'ciphertext',
+          value: 'wecruoerdsoeerntneaivdac',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/polybius-square',
       label: 'Polybius square',
       description: 'Method in which the alphabet gets layed out in a grid that is then being used to represent each letter in the plaintext by its coordinates in the grid.',
