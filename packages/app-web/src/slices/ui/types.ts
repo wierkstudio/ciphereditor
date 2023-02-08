@@ -77,10 +77,10 @@ export interface OperationModalPayload {
 }
 
 /**
- * Share modal state
+ * Save modal state
  */
-export interface ShareModalPayload {
-  type: 'share'
+export interface SaveModalPayload {
+  type: 'save'
 }
 
 export type ModalPayload =
@@ -88,4 +88,4 @@ export type ModalPayload =
   OperationModalPayload |
   ReportModalPayload |
   SettingsModalPayload |
-  ShareModalPayload
+  SaveModalPayload

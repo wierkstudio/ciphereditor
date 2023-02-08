@@ -13,7 +13,7 @@ import { openUrlAction } from '../../slices/ui'
 import { serializeBlueprint } from '../../slices/blueprint/selectors/blueprint'
 import { trackEvent } from '../../lib/embed'
 
-export default function ShareModalView (props: SettingsModalPayload): JSX.Element {
+export default function SaveModalView (props: SettingsModalPayload): JSX.Element {
   const dispatch = useAppDispatch()
   const [t] = useTranslation()
 

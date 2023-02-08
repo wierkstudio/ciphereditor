@@ -55,8 +55,8 @@ export default function AppHeaderView (): JSX.Element {
     getKeyCombination(state, 'redo'))
   const leaveProgramKeyCombination = useSettingsSelector(state =>
     getKeyCombination(state, 'leaveProgram'))
-  const shareBlueprintKeyCombination = useSettingsSelector(state =>
-    getKeyCombination(state, 'shareBlueprint'))
+  const saveBlueprintKeyCombination = useSettingsSelector(state =>
+    getKeyCombination(state, 'saveBlueprint'))
   const showSettingsKeyCombination = useSettingsSelector(state =>
     getKeyCombination(state, 'showSettings'))
   const toggleMaximizedKeyCombination = useSettingsSelector(state =>
@@ -132,11 +132,11 @@ export default function AppHeaderView (): JSX.Element {
             disabled={!leaveProgramEnabled}
           />
           <ButtonView
-            title={t('Share')}
-            keyCombination={shareBlueprintKeyCombination}
-            icon='share'
+            title={t('Save')}
+            keyCombination={saveBlueprintKeyCombination}
+            icon='save'
             modifiers='large alt'
-            onClick={() => dispatch(pushModalAction({ payload: { type: 'share' } }))}
+            onClick={() => dispatch(pushModalAction({ payload: { type: 'save' } }))}
           />
           <ToolbarView.SpacerView />
           <ButtonView

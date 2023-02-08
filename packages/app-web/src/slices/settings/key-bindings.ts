@@ -46,8 +46,8 @@ export const keyBindingTargetDispatchActions: Record<string, KeyBindingDispatchA
   paste: pasteAction({}),
   redo: redoAction(),
   selectAll: selectAllAction(),
-  // TODO: Replace by share modal (when it becomes available)
-  shareBlueprint: pushDeadEndModalAction({}),
+  // TODO: Replace by save modal (when it becomes available)
+  saveBlueprint: pushDeadEndModalAction({}),
   showSettings: pushModalAction({ payload: { type: 'settings' } }),
   toggleAddModal: toggleAddModalAction({}),
   toggleMaximized: toggleEmbedMaximizedAction({}),
@@ -72,7 +72,7 @@ export const defaultKeyBindings: Record<string, string | string[]> = {
   'control+c': 'copy',
   'control+d': 'duplicate',
   'control+k': 'toggleAddModal',
-  'control+s': 'shareBlueprint',
+  'control+s': 'saveBlueprint',
   'control+shift+z': 'redo',
   'control+v': 'paste',
   'control+x': 'cut',
@@ -107,7 +107,7 @@ export const defaultMacOSKeyBindings: Record<string, string | string[]> = {
   'meta+c': 'copy',
   'meta+d': 'duplicate',
   'meta+k': 'toggleAddModal',
-  'meta+s': 'shareBlueprint',
+  'meta+s': 'saveBlueprint',
   'meta+v': 'paste',
   'meta+x': 'cut',
   'meta+z': 'undo',
