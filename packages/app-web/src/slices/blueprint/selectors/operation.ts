@@ -8,14 +8,10 @@ import {
   roundRect,
   Value
 } from '@ciphereditor/library'
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
-import { OperationNodeState, OperationExecutionState } from '../types/operation'
+import { OperationNodeState } from '../types/operation'
 import { defaultControlNode } from '../reducers/control'
 import { getControlNode, getNodeControlValues } from './control'
 import { getNode, getNodeChildren, hasNode } from './blueprint'
@@ -34,7 +30,7 @@ export const getOperationNode = (
   state: BlueprintState,
   id: BlueprintNodeId
 ): OperationNodeState =>
-  getNode(state, id, BlueprintNodeType.Operation) as OperationNodeState
+  getNode(state, id, 'operation') as OperationNodeState
 
 /**
  * Return node ids of operations that are currently busy.
@@ -55,7 +51,7 @@ export const getOpenOperationRequest = (
     return undefined
   }
   const operation = getOperationNode(state, operationId)
-  if (operation.state !== OperationExecutionState.Busy) {
+  if (operation.state !== 'busy') {
     return undefined
   }
 
@@ -85,12 +81,12 @@ export const getOperationIssues = (
   let control: ControlNodeState, parentNode
   switch (node.type) {
     // TODO: Include programs here
-    case BlueprintNodeType.Operation:
+    case 'operation':
       return (node as OperationNodeState).issues
-    case BlueprintNodeType.Control:
+    case 'control':
       control = node as ControlNodeState
       parentNode = getNode(state, node.parentId)
-      if (parentNode.type === BlueprintNodeType.Operation) {
+      if (parentNode.type === 'operation') {
         const operationIssues = getOperationIssues(state, parentNode.id)
         return operationIssues.filter(issue =>
           issue.targetControlNames?.includes(control.name))
@@ -114,7 +110,7 @@ export const serializeOperation = (
   operationId: BlueprintNodeId
 ): OperationNode => {
   const operation = getOperationNode(state, operationId)
-  const controls = getNodeChildren(state, operationId, BlueprintNodeType.Control) as ControlNodeState[]
+  const controls = getNodeChildren(state, operationId, 'control') as ControlNodeState[]
 
   // Find matching operation in the directory
   const directoryOperation = directory !== undefined
@@ -180,7 +176,7 @@ export const serializeOperation = (
   }
 
   // Enable initial execution if the execution is pending or erroneous
-  if (operation.state !== OperationExecutionState.Ready) {
+  if (operation.state !== 'ready') {
     serializedOperation.initialExecution = true
   }
 

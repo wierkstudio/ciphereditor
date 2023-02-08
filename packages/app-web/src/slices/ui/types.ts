@@ -5,52 +5,36 @@ import { BlueprintNodeId } from '../blueprint/types/blueprint'
  * UI state
  */
 export interface UIState {
-  embedType: UIEmbedType
+  /**
+   * Frame embed type
+   *
+   * Possible types:
+   * - `standalone` - The web app is not embedded
+   * - `website` - The web app is embedded within the official website
+   * - `electron` - The web app is embedded within the Electron-based desktop app
+   * - `embed` - The web app is embedded within a third-party website
+   */
+  embedType: 'standalone' | 'website' | 'electron' | 'embed'
+
   embedEnv: string
   embedMaximizable: boolean
   embedMaximized: boolean
 
   shareBaseUrl: string
 
-  canvasState: UICanvasState
+  /**
+   * Canvas state
+   *
+   * Possible states:
+   * - `idle` - Idle
+   * - `wire` - User is creating a wire
+   * - `modal` - At least one modal is shown on top of the canvas
+   */
+  canvasState: 'idle' | 'wire' | 'modal'
 
   wireDraft?: UIWireDraft
 
   modalStack: ModalPayload[]
-}
-
-/**
- * Frame embed types
- */
-export enum UIEmbedType {
-  /**
-   * The web app is not embedded
-   */
-  Standalone = 'standalone',
-
-  /**
-   * The web app is embedded within the official website
-   */
-  Website = 'website',
-
-  /**
-   * The web app is embedded within the Electron-based desktop app
-   */
-  Electron = 'electron',
-
-  /**
-   * The web app is embedded within a third-party website
-   */
-  Embed = 'embed'
-}
-
-/**
- * Canvas states
- */
-export enum UICanvasState {
-  Idle = 'idle',
-  Wire = 'wire',
-  Modal = 'modal'
 }
 
 /**

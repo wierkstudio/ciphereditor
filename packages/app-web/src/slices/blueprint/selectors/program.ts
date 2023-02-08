@@ -5,11 +5,7 @@ import {
   roundPoint,
   roundRect
 } from '@ciphereditor/library'
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
 import { ProgramNodeState } from '../types/program'
 import { getNode, getNodeChildren, serializeNode } from './blueprint'
@@ -27,7 +23,7 @@ export const getProgramNode = (
   state: BlueprintState,
   id: BlueprintNodeId
 ): ProgramNodeState =>
-  getNode(state, id, BlueprintNodeType.Program) as ProgramNodeState
+  getNode(state, id, 'program') as ProgramNodeState
 
 /**
  * Get active program node.
@@ -58,7 +54,7 @@ export const getContentBounds = (state: BlueprintState): Rect | undefined => {
 export const getVisibleNodeIds = (state: BlueprintState): BlueprintNodeId[] => {
   if (state.activeProgramId !== undefined) {
     return getNodeChildren(state, state.activeProgramId)
-      .filter(node => node.type !== BlueprintNodeType.Variable)
+      .filter(node => node.type !== 'variable')
       .map(node => node.id)
   } else {
     // Outside the root program you can only see the root program itself
@@ -72,7 +68,7 @@ export const getVisibleNodeIds = (state: BlueprintState): BlueprintNodeId[] => {
 export const getVisibleVariableIds = (state: BlueprintState): BlueprintNodeId[] => {
   if (state.activeProgramId !== undefined) {
     return getNodeChildren(state, state.activeProgramId)
-      .filter(node => node.type === BlueprintNodeType.Variable)
+      .filter(node => node.type === 'variable')
       .map(node => node.id)
   } else {
     // Outside the root program there are no variables or wires
@@ -99,14 +95,14 @@ export const serializeProgram = (
 
   const serializedChildren: ProgramNode['children'] = []
   for (const child of children) {
-    if (child.type !== BlueprintNodeType.Variable) {
+    if (child.type !== 'variable') {
       serializedChildren.push(serializeNode(state, directory, child.id))
     }
   }
 
   // Append variable nodes at the end
   for (const child of children) {
-    if (child.type === BlueprintNodeType.Variable) {
+    if (child.type === 'variable') {
       const serializedVariable = serializeVariable(state, child.id)
       if (serializedVariable !== undefined) {
         serializedChildren.push(serializedVariable)

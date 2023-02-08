@@ -1,6 +1,6 @@
 
 import { BlueprintNodeId } from '../blueprint/types/blueprint'
-import { ModalPayload, UICanvasState, UIEmbedType, UIState } from './types'
+import { ModalPayload, UIState } from './types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { popModal, pushModal } from './reducers'
 import { postWebsiteMessage } from '../../lib/embed'
@@ -8,15 +8,12 @@ import { postWebsiteMessage } from '../../lib/embed'
 const detectDefaultState = (): Partial<UIState> => {
   if (typeof (window as any).electronContext !== 'undefined') {
     return {
-      embedType: UIEmbedType.Electron,
+      embedType: 'electron',
       embedEnv: (window as any).electronContext.platform
     }
   } else {
     return {
-      embedType:
-        window.parent === window
-          ? UIEmbedType.Standalone
-          : UIEmbedType.Embed,
+      embedType: window.parent === window ? 'standalone' : 'embed',
       shareBaseUrl:
         // Use current location without hash
         location.href.substring(0, location.href.length - location.hash.length)
@@ -25,14 +22,14 @@ const detectDefaultState = (): Partial<UIState> => {
 }
 
 const defaultUIState: UIState = {
-  embedType: UIEmbedType.Standalone,
+  embedType: 'standalone',
   embedEnv: 'chrome',
   embedMaximizable: false,
   embedMaximized: false,
 
   shareBaseUrl: 'https://app.ciphereditor.com/',
 
-  canvasState: UICanvasState.Idle,
+  canvasState: 'idle',
 
   modalStack: [],
 
@@ -44,7 +41,7 @@ export const settingsSlice = createSlice({
   initialState: defaultUIState,
   reducers: {
     configureEmbedAction: (state, { payload }: PayloadAction<{
-      embedType?: UIEmbedType
+      embedType?: UIState['embedType']
       maximizable?: boolean
       shareBaseUrl?: string
     }>) => {
@@ -53,7 +50,7 @@ export const settingsSlice = createSlice({
       }
       if (payload.embedType !== undefined) {
         state.embedType = payload.embedType
-        if (state.embedType !== UIEmbedType.Website) {
+        if (state.embedType !== 'website') {
           state.embedMaximized = false
           state.embedMaximizable = false
         }
@@ -63,22 +60,22 @@ export const settingsSlice = createSlice({
       }
     },
     toggleEmbedMaximizedAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.embedType === UIEmbedType.Website) {
+      if (state.embedType === 'website') {
         state.embedMaximized = !state.embedMaximized
       }
     },
     startWireAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId
     }>) => {
-      if (state.canvasState === UICanvasState.Idle) {
-        state.canvasState = UICanvasState.Wire
+      if (state.canvasState === 'idle') {
+        state.canvasState = 'wire'
         state.wireDraft = { sourceControlId: payload.controlId }
       }
     },
     targetWireAction: (state, { payload }: PayloadAction<{
       controlId: BlueprintNodeId | undefined
     }>) => {
-      if (state.canvasState === UICanvasState.Wire && state.wireDraft !== undefined) {
+      if (state.canvasState === 'wire' && state.wireDraft !== undefined) {
         state.wireDraft = {
           ...state.wireDraft,
           targetControlId: payload.controlId
@@ -86,8 +83,8 @@ export const settingsSlice = createSlice({
       }
     },
     endWireAction: (state, { payload }: PayloadAction<{}>) => {
-      if (state.canvasState === UICanvasState.Wire) {
-        state.canvasState = UICanvasState.Idle
+      if (state.canvasState === 'wire') {
+        state.canvasState = 'idle'
         state.wireDraft = undefined
       }
     },
@@ -130,7 +127,7 @@ export const settingsSlice = createSlice({
       url: string
     }>) => {
       // TODO: This action has side effects, is that allowed?
-      if (state.embedType === UIEmbedType.Website) {
+      if (state.embedType === 'website') {
         // Ask parent website to open the given URL
         postWebsiteMessage({ type: 'open', url: payload.url })
 

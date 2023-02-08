@@ -16,7 +16,6 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
-import { UIEmbedType } from '../../slices/ui/types'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
 import { getHasSelection, getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
@@ -67,7 +66,7 @@ export default function AppHeaderView (): JSX.Element {
     <header className='app-header'>
       <div className='app-header__toolbar'>
         <ToolbarView>
-          {embedType !== UIEmbedType.Website && embedType !== UIEmbedType.Electron && (
+          {embedType !== 'website' && embedType !== 'electron' && (
             <ToolbarView.BrandView />
           )}
           <ButtonView
@@ -149,7 +148,7 @@ export default function AppHeaderView (): JSX.Element {
               payload: { type: 'settings' }
             }))}
           />
-          {embedType !== UIEmbedType.Website && (
+          {embedType !== 'website' && (
             <ButtonView
               title={t('View docs')}
               icon='help'

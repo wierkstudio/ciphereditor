@@ -1,13 +1,7 @@
 
-import {
-  ModalPayload,
-  UICanvasState,
-  UIEmbedType,
-  UIState,
-  UIWireDraft
-} from './types'
+import { ModalPayload, UIState, UIWireDraft } from './types'
 
-export const getEmbedType = (state: UIState): UIEmbedType =>
+export const getEmbedType = (state: UIState): UIState['embedType'] =>
   state.embedType
 
 export const getEmbedEnv = (state: UIState): string =>
@@ -19,7 +13,7 @@ export const isEmbedMaximizable = (state: UIState): boolean =>
 export const isEmbedMaximized = (state: UIState): boolean =>
   state.embedMaximized
 
-export const getCanvasState = (state: UIState): UICanvasState =>
+export const getCanvasState = (state: UIState): UIState['canvasState'] =>
   state.canvasState
 
 export const getWireDraft = (state: UIState): UIWireDraft | undefined =>

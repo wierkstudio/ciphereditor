@@ -2,7 +2,6 @@
 import {
   BlueprintNodeState,
   BlueprintNodeId,
-  BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
 import {
@@ -38,7 +37,7 @@ import { serializeVariable } from './variable'
 export const getNode = (
   state: BlueprintState,
   id: BlueprintNodeId,
-  expectedType?: BlueprintNodeType
+  expectedType?: BlueprintNode['type']
 ): BlueprintNodeState => {
   const node = state.nodes[id]
   if (node === undefined) {
@@ -81,7 +80,7 @@ export const getHasSelection = (state: BlueprintState): boolean =>
 export const getNodeChildren = (
   state: BlueprintState,
   parentId: BlueprintNodeId,
-  type?: BlueprintNodeType
+  type?: BlueprintNode['type']
 ): BlueprintNodeState[] =>
   getNode(state, parentId)
     .childIds
@@ -182,13 +181,13 @@ export const serializeNode = (
 ): BlueprintNode => {
   const node = getNode(state, nodeId)
   switch (node.type) {
-    case BlueprintNodeType.Control: {
+    case 'control': {
       return serializeControl(state, nodeId)
     }
-    case BlueprintNodeType.Operation: {
+    case 'operation': {
       return serializeOperation(state, directory, nodeId)
     }
-    case BlueprintNodeType.Program: {
+    case 'program': {
       return serializeProgram(state, directory, nodeId)
     }
     default: {
@@ -215,7 +214,7 @@ export const serializeNodes = (
   // Retrieve selected nodes and filter out variables
   const nodes = nodeIds
     .map(nodeId => getNode(state, nodeId))
-    .filter(node => node.type !== BlueprintNodeType.Variable)
+    .filter(node => node.type !== 'variable')
 
   if (nodes.length === 0) {
     return []
@@ -240,7 +239,7 @@ export const serializeNodes = (
   // Finally, strip variable nodes that do not form a connection between two or
   // more nodes.
   const serializedVariables = (
-    getNodeChildren(state, parentId, BlueprintNodeType.Variable)
+    getNodeChildren(state, parentId, 'variable')
       .map(variable => serializeVariable(state, variable.id))
       .map(serializedVariable => serializedVariable === undefined
         ? undefined

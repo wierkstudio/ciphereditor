@@ -6,7 +6,7 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
 import useResizeObserver from '@react-hook/resize-observer'
-import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { Point, roundRect } from '@ciphereditor/library'
 import { arrayRemove, arrayUniquePush } from '../../lib/utils/array'
@@ -29,9 +29,9 @@ export default function NodeView (props: {
   const planeCanvas = useBlueprintSelector(getPlaneCanvas)
   const controlIds = useBlueprintSelector(state => {
     const controls =
-      node.type === BlueprintNodeType.Control
+      node.type === 'control'
         ? [node as ControlNodeState]
-        : getNodeChildren(state, node.id, BlueprintNodeType.Control) as ControlNodeState[]
+        : getNodeChildren(state, node.id, 'control') as ControlNodeState[]
     return controls.map(control => control.id)
   })
 
@@ -127,10 +127,10 @@ export default function NodeView (props: {
       tabIndex={0}
       onPointerDown={planeCanvas ? onPlanePointerDown : onLinePointerDown}
     >
-      {(node.type === BlueprintNodeType.Operation || node.type === BlueprintNodeType.Program) && (
+      {(node.type === 'operation' || node.type === 'program') && (
         <OperationView nodeId={nodeId} onOutletRef={onOutletRef} />
       )}
-      {node.type === BlueprintNodeType.Control && (
+      {node.type === 'control' && (
         <ControlView controlId={nodeId} onOutletRef={onOutletRef} />
       )}
     </div>

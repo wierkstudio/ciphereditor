@@ -9,17 +9,14 @@ const defaultContentSecurityPolicy = 'default-src \'none\'; script-src data:;'
 
 /**
  * State of the processor worker
+ *
+ * Possible states:
+ * - `initial` - Iframe and worker are uninitialized (least memory consumption)
+ * - `loading` - Await the iframe and worker to be loaded
+ * - `initializing` - Await the initialize handler to complete (if any)
+ * - `running` - The worker is ready to receive messages
  */
-enum ProcessorWorkerState {
-  // Iframe and worker have not been initialized (least memory consumption)
-  Initial = 'initial',
-  // Await the iframe and worker to be loaded
-  Loading = 'loading',
-  // Await the initialize handler to complete (if any)
-  Initializing = 'initializing',
-  // The worker is ready to receive messages
-  Running = 'running'
-}
+type ProcessorWorkerState = 'initial' | 'loading' | 'initializing' | 'running'
 
 interface PromiseCallbacks {
   resolve: (value: any) => void
@@ -45,7 +42,7 @@ const defaultRequestTimeout = 10000
  */
 export class ProcessorWorker {
   // Internal state
-  private state = ProcessorWorkerState.Initial
+  private state: ProcessorWorkerState = 'initial'
   private readonly contentSecurityPolicy: string
   private readonly functionPointerMap = new Map<string, Function>()
   private readonly pendingRequestMap = new Map<number, PendingWorkerRequest>()
@@ -74,12 +71,12 @@ export class ProcessorWorker {
    * Load the iframe and prepare the worker inside it
    */
   private doLoadTransition (): void {
-    if (this.state !== ProcessorWorkerState.Initial) {
+    if (this.state !== 'initial') {
       throw new Error(`No load transition available from state '${this.state}'`)
     }
 
     // Update state
-    this.state = ProcessorWorkerState.Loading
+    this.state = 'loading'
 
     // Create sandbox iframe element
     const iframe = document.createElement('iframe')
@@ -119,12 +116,12 @@ export class ProcessorWorker {
    * Trigger and await the initialize handler
    */
   private doInitializeTransition (): void {
-    if (this.state !== ProcessorWorkerState.Loading) {
+    if (this.state !== 'loading') {
       throw new Error(`No initialize transition available from state '${this.state}'`)
     }
 
     // Update state
-    this.state = ProcessorWorkerState.Initializing
+    this.state = 'initializing'
 
     // Await initialization handler before transitioning to the run state
     const undefinedOrPromise = this.initializeHandler?.(this)
@@ -141,19 +138,19 @@ export class ProcessorWorker {
    * Transition to the run state and execute queued messages
    */
   private doRunTransition (): void {
-    if (this.state !== ProcessorWorkerState.Initializing) {
+    if (this.state !== 'initializing') {
       throw new Error(`No run transition available from state '${this.state}'`)
     }
 
     // Update state
-    this.state = ProcessorWorkerState.Running
+    this.state = 'running'
     clearTimeout(this.iframeTimeout)
 
     // Send queued messages
     const queuedMessages = this.queuedMessages
     this.queuedMessages = []
     for (const queuedMessage of queuedMessages) {
-      this.queueWorkerMessage(ProcessorWorkerState.Running, queuedMessage.message)
+      this.queueWorkerMessage('running', queuedMessage.message)
         .then(queuedMessage.resolve)
         .catch(queuedMessage.reject)
     }
@@ -163,12 +160,12 @@ export class ProcessorWorker {
    * Transition to the initial state resetting state and rejecting queued messages
    */
   private doResetTransition (reason?: unknown): void {
-    if (this.state === ProcessorWorkerState.Initial) {
+    if (this.state === 'initial') {
       throw new Error(`No reset transition available from state '${this.state}'`)
     }
 
     // Reset state
-    this.state = ProcessorWorkerState.Initial
+    this.state = 'initial'
     const queuedMessages = this.queuedMessages
     this.queuedMessages = []
     this.functionPointerMap.clear()
@@ -336,8 +333,8 @@ export class ProcessorWorker {
     message: WorkerMessage | undefined
   ): Promise<void> {
     if (
-      (targetState === 'initializing' && this.state === ProcessorWorkerState.Initializing) ||
-      (targetState !== 'initializing' && this.state === ProcessorWorkerState.Running)
+      (targetState === 'initializing' && this.state === 'initializing') ||
+      (targetState !== 'initializing' && this.state === 'running')
     ) {
       // To await a target state, the message may be undefined
       if (message !== undefined) {
@@ -352,7 +349,7 @@ export class ProcessorWorker {
       })
 
       // Trigger initialization, if not done yet
-      if (this.state === ProcessorWorkerState.Initial) {
+      if (this.state === 'initial') {
         this.doLoadTransition()
       }
 

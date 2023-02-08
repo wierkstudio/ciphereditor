@@ -13,7 +13,6 @@ import useResizeObserver from '@react-hook/resize-observer'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
 import { DragEvent, FocusEvent, useCallback, useRef } from 'react'
-import { UICanvasState } from '../../slices/ui/types'
 import { blueprintSchema } from '@ciphereditor/library'
 import { getCanvasState, getWireDraft } from '../../slices/ui/selectors'
 import { getContentBounds, getVisibleNodeIds, getVisibleVariableIds } from '../../slices/blueprint/selectors/program'
@@ -64,7 +63,7 @@ export default function CanvasView (): JSX.Element {
     event.preventDefault()
     const deltaOffset = { x: wheelFacts.pixelX, y: wheelFacts.pixelY }
     dispatch(moveOffsetAction({ offset: deltaOffset, relative: true }))
-  }, planeCanvas && canvasState === UICanvasState.Idle)
+  }, planeCanvas && canvasState === 'idle')
 
   const onScroll = (deltaX: number, deltaY: number): void => {
     const deltaOffset = { x: deltaX, y: deltaY }

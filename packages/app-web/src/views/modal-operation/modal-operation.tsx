@@ -6,7 +6,6 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useDirectorySelector from '../../hooks/useDirectorySelector'
 import useTranslation from '../../hooks/useTranslation'
-import { BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
 import { OperationContribution } from '@ciphereditor/library'
 import { OperationModalPayload } from '../../slices/ui/types'
 import { OperationNodeState } from '../../slices/blueprint/types/operation'
@@ -30,7 +29,7 @@ export default function OperationModalView (props: OperationModalPayload): JSX.E
     'together as a custom operation.'
   )
   let contribution: OperationContribution | undefined
-  if (node.type === BlueprintNodeType.Operation) {
+  if (node.type === 'operation') {
     const operation = node
     // TODO: Needs translation
     title = `Configure ${operation.label}`

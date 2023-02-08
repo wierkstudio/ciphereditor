@@ -7,9 +7,9 @@ import MovableButtonView from '../movable-button/movable-button'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useTranslation from '../../hooks/useTranslation'
-import { BlueprintNodeId, BlueprintNodeType } from '../../slices/blueprint/types/blueprint'
+import { BlueprintNodeId } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
-import { OperationNodeState, OperationExecutionState } from '../../slices/blueprint/types/operation'
+import { OperationNodeState } from '../../slices/blueprint/types/operation'
 import { ProgramNodeState } from '../../slices/blueprint/types/program'
 import { chooseMostImportantIssue } from '@ciphereditor/library'
 import { enterProgramAction, executeOperationAction } from '../../slices/blueprint'
@@ -34,7 +34,7 @@ export default function OperationView (props: {
 
   // Retrieve sorted control ids and order numbers
   const controls = useBlueprintSelector(state =>
-    (getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNodeState[])
+    (getNodeChildren(state, nodeId, 'control') as ControlNodeState[])
       .slice()
       .sort((a, b) => a.order - b.order)
       .map(control => ({ id: control.id, order: control.order }))
@@ -46,15 +46,15 @@ export default function OperationView (props: {
   const issues = useBlueprintSelector(state => getOperationIssues(state, nodeId))
   const highestIssueLevel = chooseMostImportantIssue(issues)?.level
 
-  let state = OperationExecutionState.Ready
-  if (node.type === BlueprintNodeType.Operation) {
+  let state: OperationNodeState['state'] = 'ready'
+  if (node.type === 'operation') {
     state = node.state
   }
 
   const canExecute =
-    node.type === BlueprintNodeType.Operation &&
-    node.state !== OperationExecutionState.Busy &&
-    (!node.reproducible || node.state === OperationExecutionState.Error)
+    node.type === 'operation' &&
+    node.state !== 'busy' &&
+    (!node.reproducible || node.state === 'error')
 
   // TODO: Right now, we assume that the last control conveys the 'result' of
   // the operation. Therefore we show the operation header above it. From a
@@ -81,7 +81,7 @@ export default function OperationView (props: {
             }))}
           >
             <span className='operation__icon'>
-              <IconView icon={node.type === BlueprintNodeType.Program ? 'program' : 'switch'} />
+              <IconView icon={node.type === 'program' ? 'program' : 'switch'} />
             </span>
             <h3 className='operation__label'>
               {node.alias ?? node.label}
@@ -101,7 +101,7 @@ export default function OperationView (props: {
               onClick={() => dispatch(executeOperationAction({ nodeId }))}
             />
           )}
-          {node.type === BlueprintNodeType.Program && (
+          {node.type === 'program' && (
             <ButtonView
               icon='edit'
               title={t('Edit program')}

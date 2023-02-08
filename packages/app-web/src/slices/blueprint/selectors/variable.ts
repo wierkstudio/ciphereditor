@@ -1,9 +1,5 @@
 
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { SerializedValue, VariableNode } from '@ciphereditor/library'
 import { VariableNodeState } from '../types/variable'
@@ -22,7 +18,7 @@ export const getVariableNode = (
   state: BlueprintState,
   id: BlueprintNodeId
 ): VariableNodeState =>
-  getNode(state, id, BlueprintNodeType.Variable) as VariableNodeState
+  getNode(state, id, 'variable') as VariableNodeState
 
 /**
  * Return the variable currently attached to a control (inward or outward)
@@ -44,7 +40,7 @@ export const getProgramVariables = (
   state: BlueprintState,
   programId: BlueprintNodeId
 ): VariableNodeState[] =>
-  getNodeChildren(state, programId, BlueprintNodeType.Variable) as VariableNodeState[]
+  getNodeChildren(state, programId, 'variable') as VariableNodeState[]
 
 /**
  * Return the control that last propagated to a given variable.

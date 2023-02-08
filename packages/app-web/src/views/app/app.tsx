@@ -11,7 +11,6 @@ import useResizeObserver from '@react-hook/resize-observer'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useUISelector from '../../hooks/useUISelector'
 import useWindowLoadListener from '../../hooks/useWindowLoadListener'
-import { UIEmbedType } from '../../slices/ui/types'
 import { addNodesAction, loadBlueprintAction } from '../../slices/blueprint'
 import { base64urlStringToBuffer, blueprintSchema, bufferToString, EditorMessage, editorMessageSchema } from '@ciphereditor/library'
 import { configureEmbedAction } from '../../slices/ui'
@@ -41,7 +40,7 @@ export default function AppView (): JSX.Element {
     const messageType = message.type
     switch (messageType) {
       case 'configure': {
-        const embedType = message.embedType as UIEmbedType | undefined
+        const embedType = message.embedType
         const maximizable = message.maximizable
         const shareBaseUrl = message.shareBaseUrl
         dispatch(configureEmbedAction({ embedType, maximizable, shareBaseUrl }))
@@ -144,7 +143,7 @@ export default function AppView (): JSX.Element {
     document.documentElement.className = className
 
     // Notify parent frame about updated accessibility settings, if any
-    if (embedType !== UIEmbedType.Standalone) {
+    if (embedType !== 'standalone') {
       postWebsiteMessage({
         type: 'settingsChange',
         theme,
@@ -154,7 +153,7 @@ export default function AppView (): JSX.Element {
   }, [embedType, theme, reducedMotionPreference, embedEnv, planeCanvas, canvasState])
 
   // Handle changes to the intrinsic app size (if embedded)
-  const embedded = embedType !== UIEmbedType.Standalone
+  const embedded = embedType !== 'standalone'
   const onIntrinsicHeightChange = useCallback(() => {
     if (embedded && appRef.current !== null) {
       const clientRect = appRef.current.getBoundingClientRect()
@@ -166,7 +165,7 @@ export default function AppView (): JSX.Element {
 
   // React to maximized changes
   useEffect(() => {
-    if (embedType !== UIEmbedType.Standalone) {
+    if (embedType !== 'standalone') {
       postWebsiteMessage({
         type: 'maximizedChange',
         maximized: embedMaximized

@@ -1,5 +1,5 @@
 
-import { BlueprintNodeState, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState } from './blueprint'
 import { Point, Rect } from '@ciphereditor/library'
 
 /**
@@ -11,7 +11,7 @@ export interface ProgramNodeState extends BlueprintNodeState {
   /**
    * Node type
    */
-  type: BlueprintNodeType.Program
+  type: 'program'
 
   /**
    * Size and position of the node

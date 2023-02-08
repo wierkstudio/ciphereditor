@@ -1,13 +1,9 @@
 
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
 import { OperationIssue, OperationNode } from '@ciphereditor/library'
-import { OperationNodeState, OperationExecutionState } from '../types/operation'
+import { OperationNodeState } from '../types/operation'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addOperationControlNode } from './control'
 import { arrayRemove, arrayUniquePush } from '../../../lib/utils/array'
@@ -55,7 +51,7 @@ export const addOperationNode = (
       : undefined
 
   const operation: OperationNodeState = {
-    type: BlueprintNodeType.Operation,
+    type: 'operation',
     id: nextNodeId(state),
     parentId: programId,
     name: operationContribution.name,
@@ -63,9 +59,7 @@ export const addOperationNode = (
     alias,
     childIds: [],
     reproducible: operationContribution.reproducible !== false,
-    state: initialExecution
-      ? OperationExecutionState.Busy
-      : OperationExecutionState.Ready,
+    state: initialExecution ? 'busy' : 'ready',
     requestVersion: initialExecution ? 0 : undefined,
     issues: [],
     priorityControlIds: [],
@@ -107,7 +101,7 @@ export const addOperationNode = (
 export const setOperationState = (
   state: BlueprintState,
   operationId: BlueprintNodeId,
-  newState: OperationExecutionState,
+  newState: OperationNodeState['state'],
   issues?: OperationIssue[]
 ): void => {
   const operation = getOperationNode(state, operationId)
@@ -117,19 +111,19 @@ export const setOperationState = (
   operation.state = newState
   operation.issues = issues ?? []
   switch (newState) {
-    case OperationExecutionState.Ready: {
+    case 'ready': {
       state.busyOperationIds =
         arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
       break
     }
-    case OperationExecutionState.Busy: {
+    case 'busy': {
       state.busyOperationIds =
         arrayUniquePush(state.busyOperationIds, operation.id)
       operation.requestVersion = 0
       break
     }
-    case OperationExecutionState.Error: {
+    case 'error': {
       state.busyOperationIds =
         arrayRemove(state.busyOperationIds, operation.id)
       delete operation.requestVersion
@@ -144,10 +138,10 @@ export const executeOperation = (
 ): void => {
   const node = getNode(state, nodeId)
   // TODO: Handle retry/execute on programs
-  if (node.type === BlueprintNodeType.Operation) {
-    if ((node as OperationNodeState).state !== OperationExecutionState.Busy) {
+  if (node.type === 'operation') {
+    if ((node as OperationNodeState).state !== 'busy') {
       // Mark operation as busy to repeat operation request
-      setOperationState(state, nodeId, OperationExecutionState.Busy)
+      setOperationState(state, nodeId, 'busy')
     }
   }
 }

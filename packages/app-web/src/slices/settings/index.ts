@@ -5,8 +5,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { defaultMacOSKeyBindings, defaultKeyBindings } from './key-bindings'
 
 const defaultSettingsState: SettingsState = {
-  theme: ThemeOption.SystemDefault,
-  reducedMotionPreference: ReducedMotionPreferenceOption.SystemDefault,
+  theme: 'system',
+  reducedMotionPreference: 'system',
   keyBindings:
     checkPlatform('macos')
       ? defaultMacOSKeyBindings

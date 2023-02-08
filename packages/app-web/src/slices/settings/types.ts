@@ -24,16 +24,9 @@ export interface SettingsState {
 /**
  * Theme preference options
  */
-export enum ThemeOption {
-  SystemDefault = 'system',
-  Light = 'light',
-  Dark = 'dark'
-}
+export type ThemeOption = 'system' | 'light' | 'dark'
 
 /**
  * Reduced motion options
  */
-export enum ReducedMotionPreferenceOption {
-  SystemDefault = 'system',
-  Reduce = 'reduce'
-}
+export type ReducedMotionPreferenceOption = 'system' | 'reduce'

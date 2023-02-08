@@ -1,5 +1,5 @@
 
-import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId } from './blueprint'
 
 /**
  * Variable node
@@ -9,7 +9,7 @@ export interface VariableNodeState extends BlueprintNodeState {
   /**
    * Node type
    */
-  type: BlueprintNodeType.Variable
+  type: 'variable'
 
   /**
    * Variables do not have an own frame. Their positioning depends

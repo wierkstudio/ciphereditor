@@ -3,13 +3,6 @@ import { Point, Rect, Size } from '@ciphereditor/library'
 
 export type BlueprintNodeId = number
 
-export enum BlueprintNodeType {
-  Control = 'control',
-  Operation = 'operation',
-  Program = 'program',
-  Variable = 'variable',
-}
-
 /**
  * Abstract node within the blueprint state
  */
@@ -22,7 +15,7 @@ export interface BlueprintNodeState {
   /**
    * Node type
    */
-  type: BlueprintNodeType
+  type: 'control' | 'operation' | 'program' | 'variable'
 
   /**
    * Id of the parent node this is a child of;

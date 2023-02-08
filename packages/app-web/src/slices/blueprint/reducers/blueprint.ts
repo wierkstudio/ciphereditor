@@ -2,7 +2,6 @@
 import {
   BlueprintNodeId,
   BlueprintNodeState,
-  BlueprintNodeType,
   BlueprintState
 } from '../types/blueprint'
 import {
@@ -20,7 +19,7 @@ import {
 } from '@ciphereditor/library'
 import { ControlNodeState } from '../types/control'
 import { DirectoryState } from '../../directory/types'
-import { OperationExecutionState, OperationNodeState } from '../types/operation'
+import { OperationNodeState } from '../types/operation'
 import { ProgramNodeState } from '../types/program'
 import { VariableNodeState } from '../types/variable'
 import { addControlNode } from './control'
@@ -65,7 +64,7 @@ export const addChildNode = <T extends BlueprintNodeState>(
 
   // Special case: A self-referencing node is considered a new root node
   if (childId === parentId) {
-    if (childType !== BlueprintNodeType.Program) {
+    if (childType !== 'program') {
       throw new Error(
         `The root node must be of type program but found '${childType}'`)
     }
@@ -87,9 +86,9 @@ export const addChildNode = <T extends BlueprintNodeState>(
   // Verify that the child node can be added to this parent node
   const parentNode = getNode(state, parentId)
   const parentType = parentNode.type
-  if (parentType !== BlueprintNodeType.Program &&
-      (parentType !== BlueprintNodeType.Operation ||
-        childType !== BlueprintNodeType.Control)) {
+  if (parentType !== 'program' &&
+      (parentType !== 'operation' ||
+        childType !== 'control')) {
     throw new Error(
       `Node type '${childType}' can't be added to '${parentType}'`)
   }
@@ -98,14 +97,14 @@ export const addChildNode = <T extends BlueprintNodeState>(
     parentNode.childIds.push(childId)
   }
 
-  if (parentNode.type === BlueprintNodeType.Program) {
+  if (parentNode.type === 'program') {
     updateProgramContentBounds(state, parentNode.id)
   }
 
   // Update busy operation ids if a busy operation was added
-  if (childNode.type === BlueprintNodeType.Operation) {
+  if (childNode.type === 'operation') {
     const operation = (childNode as any) as OperationNodeState
-    if (operation.state === OperationExecutionState.Busy) {
+    if (operation.state === 'busy') {
       state.busyOperationIds =
         arrayUniquePush(state.busyOperationIds, operation.id)
     }
@@ -254,7 +253,7 @@ export const removeNode = (
 
   // Clean up relationships between nodes (other than parent-child)
   switch (node.type) {
-    case BlueprintNodeType.Variable: {
+    case 'variable': {
       const variable = node as VariableNodeState
       variable.attachmentIds.forEach(attachmentId => {
         const control = getControlNode(state, attachmentId)
@@ -266,7 +265,7 @@ export const removeNode = (
       })
       break
     }
-    case BlueprintNodeType.Control: {
+    case 'control': {
       const control = node as ControlNodeState
       const variableIds =
         [control.attachedVariableId, control.attachedOutwardVariableId]
@@ -299,7 +298,7 @@ export const removeNode = (
   // Remove self from blueprint
   delete state.nodes[node.id] // eslint-disable-line
 
-  if (parentNode.type === BlueprintNodeType.Program) {
+  if (parentNode.type === 'program') {
     updateProgramContentBounds(state, parentNode.id)
   }
 }
@@ -319,7 +318,7 @@ export const deleteNodes = (
       const parent = getNode(state, node.parentId)
       const allowed =
         // Operation child nodes can't be deleted individually
-        parent.type !== BlueprintNodeType.Operation &&
+        parent.type !== 'operation' &&
         // The root program can't be deleted
         node.id !== node.parentId
 
@@ -356,7 +355,7 @@ export const moveNode = (
 
   // Update parent program boundary
   const parentNode = getNode(state, node.parentId)
-  if (parentNode.type === BlueprintNodeType.Program) {
+  if (parentNode.type === 'program') {
     updateProgramContentBounds(state, parentNode.id)
   }
 }
@@ -390,7 +389,7 @@ export const layoutNode = (
 
   // Update program boundary
   const parentNode = getNode(state, node.parentId)
-  if (parentNode.type === BlueprintNodeType.Program) {
+  if (parentNode.type === 'program') {
     updateProgramContentBounds(state, parentNode.id)
   }
 }

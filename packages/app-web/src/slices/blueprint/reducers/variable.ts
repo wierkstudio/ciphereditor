@@ -1,9 +1,5 @@
 
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { VariableNodeState } from '../types/variable'
 import { addChildNode, nextNodeId, removeNode } from './blueprint'
 import { arrayRemove, arrayUniquePush, arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -20,7 +16,7 @@ export const addVariable = (
   outward: boolean
 ): VariableNodeState => {
   const variable: VariableNodeState = {
-    type: BlueprintNodeType.Variable,
+    type: 'variable',
     id: nextNodeId(state),
     parentId: getControlProgramId(state, controlId, outward),
     childIds: [],

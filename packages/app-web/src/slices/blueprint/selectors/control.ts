@@ -9,11 +9,7 @@ import {
   roundRect,
   SerializedValue
 } from '@ciphereditor/library'
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { ControlNodeState } from '../types/control'
 import { VariableNodeState } from '../types/variable'
 import { getNode, getNodeChildren, getNodePosition } from './blueprint'
@@ -32,7 +28,7 @@ export const getControlNode = (
   state: BlueprintState,
   id: BlueprintNodeId
 ): ControlNodeState =>
-  getNode(state, id, BlueprintNodeType.Control) as ControlNodeState
+  getNode(state, id, 'control') as ControlNodeState
 
 /**
  * Get an object mapping control names to control nodes.
@@ -42,7 +38,7 @@ export const getNodeNamedControls = (
   nodeId: BlueprintNodeId
 ): Record<string, ControlNodeState> =>
   mapNamedObjects(getNodeChildren(
-    state, nodeId, BlueprintNodeType.Control) as ControlNodeState[])
+    state, nodeId, 'control') as ControlNodeState[])
 
 /**
  * Return an object mapping control names to values, embedded in the given node.
@@ -51,7 +47,7 @@ export const getNodeControlValues = (
   state: BlueprintState,
   nodeId: BlueprintNodeId
 ): Record<string, SerializedValue> => {
-  const controls = getNodeChildren(state, nodeId, BlueprintNodeType.Control) as ControlNodeState[]
+  const controls = getNodeChildren(state, nodeId, 'control') as ControlNodeState[]
   const namedValues: Record<string, SerializedValue> = {}
   for (let i = 0; i < controls.length; i++) {
     namedValues[controls[i].name] = controls[i].value
@@ -91,7 +87,7 @@ export const getControlProgramId = (
   const control = getControlNode(state, controlId)
   const parent = getNode(state, control.parentId)
 
-  if (parent.type === BlueprintNodeType.Operation) {
+  if (parent.type === 'operation') {
     // The program of an operation control is always the parent of the operation
     return parent.parentId
   }

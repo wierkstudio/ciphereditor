@@ -17,7 +17,6 @@ import {
 import { BlueprintNodeId, BlueprintState } from './types/blueprint'
 import { ControlNodeChange } from './types/control'
 import { DirectoryState } from '../directory/types'
-import { OperationExecutionState } from './types/operation'
 import { PayloadAction, createAction, createSlice } from '@reduxjs/toolkit'
 import { addNodes, clearBlueprint, deleteNodes, labelNode, layoutNode, loadBlueprint, moveNode, selectNodes } from './reducers/blueprint'
 import { attachControls, attachControlToVariable, detachControlFromVariable } from './reducers/variable'
@@ -220,9 +219,9 @@ export const blueprintSlice = createSlice({
         for (let i = 0; i < changes.length; i++) {
           changeControl(state, changeControlIds[i], changes[i])
         }
-        setOperationState(state, operation.id, OperationExecutionState.Ready, issues)
+        setOperationState(state, operation.id, 'ready', issues)
       } else {
-        setOperationState(state, operation.id, OperationExecutionState.Error, issues)
+        setOperationState(state, operation.id, 'error', issues)
       }
     },
 

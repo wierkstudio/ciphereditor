@@ -1,8 +1,8 @@
 
-import { ReducedMotionPreferenceOption, SettingsState, ThemeOption } from './types'
+import { ReducedMotionPreferenceOption, SettingsState } from './types'
 
 export const getAccessibilitySettings = (state: SettingsState): {
-  theme: ThemeOption
+  theme: SettingsState['theme']
   reducedMotionPreference: ReducedMotionPreferenceOption
 } => ({
   theme: state.theme,

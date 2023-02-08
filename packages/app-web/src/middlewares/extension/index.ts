@@ -2,7 +2,6 @@
 import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeChange } from '../../slices/blueprint/types/control'
-import { OperationExecutionState } from '../../slices/blueprint/types/operation'
 import { OperationIssue, OperationResult, serializeValue } from '@ciphereditor/library'
 import { RootState } from '../../slices'
 import { applyOperationResultAction } from '../../slices/blueprint'
@@ -155,7 +154,7 @@ const executeOperation = async (
   const postState: BlueprintState = store.getState().blueprint.present
   if (hasNode(postState, operationId)) {
     const postOperation = getOperationNode(postState, operationId)
-    if (postOperation.state === OperationExecutionState.Busy) {
+    if (postOperation.state === 'busy') {
       // Controls changed in the meantime, start from scratch
       void executeOperation(store, operationId)
     }

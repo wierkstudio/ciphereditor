@@ -1,5 +1,5 @@
 
-import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId } from './blueprint'
 import { ControlVisibility, SerializedValue } from '@ciphereditor/library'
 
 /**
@@ -9,7 +9,7 @@ export interface ControlNodeState extends BlueprintNodeState {
   /**
    * Node type
    */
-  type: BlueprintNodeType.Control
+  type: 'control'
 
   /**
    * Control name unique within the enclosing operation or program

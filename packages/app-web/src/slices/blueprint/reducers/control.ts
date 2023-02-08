@@ -10,13 +10,9 @@ import {
   serializeValue,
   SerializedValue
 } from '@ciphereditor/library'
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { ControlNodeState, ControlNodeChange } from '../types/control'
-import { OperationNodeState, OperationExecutionState } from '../types/operation'
+import { OperationNodeState } from '../types/operation'
 import { addChildNode, nextNodeId } from './blueprint'
 import { addVariable, propagateChange } from './variable'
 import { arrayUniqueUnshift } from '../../../lib/utils/array'
@@ -31,7 +27,7 @@ import { setOperationState } from './operation'
  */
 export const defaultControlNode: ControlNodeState = {
   id: -1,
-  type: BlueprintNodeType.Control,
+  type: 'control',
   parentId: -1,
   childIds: [],
   name: '',
@@ -65,7 +61,7 @@ export const addControlNode = (
   const id = nextNodeId(state)
 
   // Choose label and optional unique alias
-  const controls = getNodeChildren(state, programId, BlueprintNodeType.Control) as ControlNodeState[]
+  const controls = getNodeChildren(state, programId, 'control') as ControlNodeState[]
   const usedLabels = controls.map(control => control.alias ?? control.label)
   const label = controlNode.label ?? defaultControlNode.label
   const uniqueLabel = deriveUniqueName(label, usedLabels)
@@ -148,11 +144,11 @@ export const changeControl = (
   const parent = getNode(state, control.parentId)
   const source = getNode(state, change.sourceNodeId)
   switch (parent.type) {
-    case BlueprintNodeType.Operation: {
+    case 'operation': {
       operation = parent as OperationNodeState
-      if (source.type !== BlueprintNodeType.Operation) {
+      if (source.type !== 'operation') {
         // Change is not originating from the operation, so mark it busy
-        setOperationState(state, operation.id, OperationExecutionState.Busy)
+        setOperationState(state, operation.id, 'busy')
         // Increment the request version every time a control changes
         if (operation.requestVersion !== undefined) {
           operation.requestVersion += 1
@@ -161,13 +157,13 @@ export const changeControl = (
         operation.priorityControlIds =
           arrayUniqueUnshift(operation.priorityControlIds, control.id)
       }
-      if (source.type !== BlueprintNodeType.Variable) {
+      if (source.type !== 'variable') {
         propagateChange(state, control.id, true)
       }
       break
     }
-    case BlueprintNodeType.Program: {
-      if (source.type === BlueprintNodeType.Variable) {
+    case 'program': {
+      if (source.type === 'variable') {
         if (source.id === control.attachedVariableId) {
           // Propagate change outside the program (if not root)
           if (state.rootProgramId !== parent.id) {

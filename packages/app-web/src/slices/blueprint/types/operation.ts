@@ -1,26 +1,6 @@
 
-import { BlueprintNodeState, BlueprintNodeId, BlueprintNodeType } from './blueprint'
+import { BlueprintNodeState, BlueprintNodeId } from './blueprint'
 import { OperationIssue, Rect } from '@ciphereditor/library'
-
-/**
- * Operation execution state
- */
-export enum OperationExecutionState {
-  /**
-   * The operation is idle and ready
-   */
-  Ready = 'ready',
-
-  /**
-   * Operation request is currently being processed
-   */
-  Busy = 'busy',
-
-  /**
-   * An error occured during the last request, await manual retry
-   */
-  Error = 'error'
-}
 
 /**
  * Operation node
@@ -29,7 +9,7 @@ export interface OperationNodeState extends BlueprintNodeState {
   /**
    * Node type
    */
-  type: BlueprintNodeType.Operation
+  type: 'operation'
 
   /**
    * Size and position of the node
@@ -53,8 +33,13 @@ export interface OperationNodeState extends BlueprintNodeState {
 
   /**
    * Operation execution state
+   *
+   * Possible states:
+   * - `idle` - The operation is idle and ready
+   * - `busy` - Operation request is currently being processed
+   * - `error` - An error occured during the last request, await manual retry
    */
-  state: OperationExecutionState
+  state: 'ready' | 'busy' | 'error'
 
   /**
    * Issues occurred while processing the last operation response

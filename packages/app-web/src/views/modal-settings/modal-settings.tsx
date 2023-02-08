@@ -19,9 +19,9 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
       <ModalView.SectionView headline={t('Theme')}>
         <SelectView
           elements={[
-            { type: 'option', value: ThemeOption.SystemDefault, label: t('System default') },
-            { type: 'option', value: ThemeOption.Light, label: t('Light theme') },
-            { type: 'option', value: ThemeOption.Dark, label: t('Dark theme') }
+            { type: 'option', value: 'system', label: t('System default') },
+            { type: 'option', value: 'light', label: t('Light theme') },
+            { type: 'option', value: 'dark', label: t('Dark theme') }
           ]}
           value={accessibilitySettings.theme}
           onChange={event => dispatch(applyTheme({
@@ -32,8 +32,8 @@ export default function SettingsModalView (props: SettingsModalPayload): JSX.Ele
       <ModalView.SectionView headline={t('Reduced motion')}>
         <SelectView
           elements={[
-            { type: 'option', value: ReducedMotionPreferenceOption.SystemDefault, label: t('System default') },
-            { type: 'option', value: ReducedMotionPreferenceOption.Reduce, label: t('Reduce motion') }
+            { type: 'option', value: 'system', label: t('System default') },
+            { type: 'option', value: 'reduce', label: t('Reduce motion') }
           ]}
           value={accessibilitySettings.reducedMotionPreference}
           onChange={event => dispatch(applyReducedMotionPreference({

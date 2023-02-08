@@ -1,9 +1,5 @@
 
-import {
-  BlueprintNodeId,
-  BlueprintNodeType,
-  BlueprintState
-} from '../types/blueprint'
+import { BlueprintNodeId, BlueprintState } from '../types/blueprint'
 import { DirectoryState } from '../../directory/types'
 import { ProgramNodeState } from '../types/program'
 import { addChildNode, addNodes, nextNodeId } from './blueprint'
@@ -17,7 +13,7 @@ import { movePointBy, Point, ProgramNode } from '@ciphereditor/library'
  */
 export const defaultProgramNode: ProgramNodeState = {
   id: 1,
-  type: BlueprintNodeType.Program,
+  type: 'program',
   parentId: 1,
   childIds: [],
   label: 'Program',
@@ -55,7 +51,7 @@ export const addProgramNode = (
 
   // Choose label and optional unique alias
   const programs = parentId !== undefined
-    ? getNodeChildren(state, parentId, BlueprintNodeType.Program) as ProgramNodeState[]
+    ? getNodeChildren(state, parentId, 'program') as ProgramNodeState[]
     : []
   const usedLabels = programs.map(program => program.alias ?? program.label)
   const label = programNode.label ?? defaultProgramNode.label
@@ -92,7 +88,7 @@ export const updateProgramContentBounds = (
   state: BlueprintState,
   programId: BlueprintNodeId
 ): void => {
-  const program = getNode(state, programId, BlueprintNodeType.Program) as ProgramNodeState
+  const program = getNode(state, programId, 'program') as ProgramNodeState
   const children = getNodeChildren(state, programId)
 
   let leadingX: number | undefined
@@ -145,7 +141,7 @@ export const moveOffset = (
   if (state.activeProgramId === undefined) {
     state.rootOffset = relative ? movePointBy(state.rootOffset, offset) : offset
   } else {
-    const program = getNode(state, state.activeProgramId, BlueprintNodeType.Program) as ProgramNodeState
+    const program = getNode(state, state.activeProgramId, 'program') as ProgramNodeState
     program.offset = relative ? movePointBy(program.offset, offset) : offset
   }
 }
