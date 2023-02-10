@@ -93,7 +93,7 @@ const execute: OperationExecuteExport = (request) => {
     issues.push({
       level: 'error',
       targetControlNames: ['a'],
-      message: 'Must be coprime to the size of the alphabet (' + m + ')'
+      message: 'Must be coprime to the size of the alphabet (' + m.toString() + ')'
     })
   }
 

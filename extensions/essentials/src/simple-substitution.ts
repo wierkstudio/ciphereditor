@@ -168,7 +168,8 @@ const generateSimpleSubstitutionMap = (
   // Cache and return generated map
   cachedPlaintextAlphabet = plaintextAlphabet
   cachedCiphertextAlphabet = ciphertextAlphabet
-  return cachedMap = map
+  cachedMap = map
+  return map
 }
 
 export default {
