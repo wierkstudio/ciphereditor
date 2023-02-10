@@ -92,6 +92,134 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/affine-cipher',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Affine cipher',
+      description: 'The Affine cipher maps each letter in an alphabet to its numeric equivalent, encrypts it using a linear mathematical function, and converts it back to a letter.',
+      url: 'https://ciphereditor.com/explore/affine-cipher',
+      keywords: ['linear function', 'affine function', 'mathematics'],
+      controls: [
+        {
+          name: 'plaintext',
+          value: 'the quick brown fox jumps over the lazy dog',
+          types: ['text']
+        },
+        {
+          name: 'a',
+          label: 'Slope (a)',
+          value: 5,
+          types: ['integer']
+        },
+        {
+          name: 'b',
+          label: 'Intercept (b)',
+          value: 8,
+          types: ['integer']
+        },
+        {
+          name: 'alphabet',
+          value: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'ciphertext',
+          value: 'zrc kewsg npaov hat beqfu ajcp zrc lidy xam',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/simple-substitution',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Simple substitution cipher',
+      description: 'A Simple substitution cipher replaces each letter in the plaintext alphabet by a letter in the fixed ciphertext alphabet.',
+      url: 'https://ciphereditor.com/explore/simple-substitution-cipher',
+      keywords: ['monoalphabetic cipher'],
+      controls: [
+        {
+          name: 'plaintext',
+          value: 'the quick brown fox jumps over the lazy dog',
+          types: ['text']
+        },
+        {
+          name: 'plaintextAlphabet',
+          value: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'ciphertextAlphabet',
+          value: 'zyxwvutsrqponmlkjihgfedcba',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'ciphertext',
+          value: 'gsv jfrxp yildm ulc qfnkh levi gsv ozab wlt',
+          types: ['text'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/vigenere-cipher',
       label: 'Vigenère cipher',
       description: 'Method in which each letter in a text is replaced by a letter a number of places down the alphabet dependent on a provided key.',
