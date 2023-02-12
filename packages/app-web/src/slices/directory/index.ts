@@ -13,16 +13,16 @@ const defaultDirectoryState: DirectoryState = {
       label: 'Caesar cipher',
       description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
       url: 'https://ciphereditor.com/explore/caesar-cipher',
-      keywords: ['substitution', 'cipher', 'shift', 'julius'],
+      keywords: ['substitution', 'shift', 'julius'],
       controls: [
         {
           name: 'plaintext',
-          value: 'The quick brown fox jumps over the lazy dog.',
+          value: 'the quick brown fox jumps over the lazy dog',
           types: ['text']
         },
         {
           name: 'shift',
-          value: 7,
+          value: 3,
           types: ['integer']
         },
         {
@@ -51,7 +51,7 @@ const defaultDirectoryState: DirectoryState = {
         },
         {
           name: 'ciphertext',
-          value: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
+          value: 'wkh txlfn eurzq ira mxpsv ryhu wkh odcb grj',
           types: ['text'],
           order: 1000
         }
@@ -60,15 +60,15 @@ const defaultDirectoryState: DirectoryState = {
     {
       type: 'operation',
       name: '@ciphereditor/extension-essentials/rot13',
-      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      extensionUrl: 'https://localhost:3010/extensions/essentials/extension.js',
       label: 'ROT13',
       description: 'Method in which each letter in a text is rotated by 13 places.',
       url: 'https://ciphereditor.com/explore/rot13',
-      keywords: ['substitution', 'cipher', 'shift'],
+      keywords: ['substitution', 'cipher', 'shift', 'rot5', 'rot18', 'rot47'],
       controls: [
         {
           name: 'plaintext',
-          value: 'The quick brown fox jumps over the lazy dog.',
+          value: 'the quick brown fox jumps over the lazy dog',
           types: ['text']
         },
         {
@@ -77,14 +77,14 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text'],
           options: [
             { value: 'rot5', label: 'ROT5 (0-9)' },
-            { value: 'rot13', label: 'ROT13 (A-Z, a-z)' },
-            { value: 'rot18', label: 'ROT18 (0-9, A-Z, a-z)' },
+            { value: 'rot13', label: 'ROT13 (A-Z)' },
+            { value: 'rot18', label: 'ROT18 (0-9, A-Z)' },
             { value: 'rot47', label: 'ROT47 (!-~)' }
           ]
         },
         {
           name: 'ciphertext',
-          value: 'Gur dhvpx oebja sbk whzcf bire gur ynml qbt.',
+          value: 'gur dhvpx oebja sbk whzcf bire gur ynml qbt',
           types: ['text'],
           order: 1000
         }
@@ -97,7 +97,7 @@ const defaultDirectoryState: DirectoryState = {
       label: 'Affine cipher',
       description: 'The Affine cipher maps each letter in an alphabet to its numeric equivalent, encrypts it using a linear mathematical function, and converts it back to a letter.',
       url: 'https://ciphereditor.com/explore/affine-cipher',
-      keywords: ['linear function', 'affine function', 'mathematics'],
+      keywords: ['substitution', 'linear function', 'affine function', 'mathematics'],
       controls: [
         {
           name: 'plaintext',
@@ -153,9 +153,9 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-essentials/simple-substitution',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Simple substitution cipher',
-      description: 'A Simple substitution cipher replaces each letter in the plaintext alphabet by a letter in the fixed ciphertext alphabet.',
+      description: 'A simple substitution cipher replaces each letter in the plaintext alphabet by a letter in the fixed ciphertext alphabet.',
       url: 'https://ciphereditor.com/explore/simple-substitution-cipher',
-      keywords: ['monoalphabetic cipher'],
+      keywords: ['monoalphabetic cipher', 'atbash'],
       controls: [
         {
           name: 'plaintext',

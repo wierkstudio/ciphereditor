@@ -1,8 +1,9 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
+import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
 import { alphabetTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { mod } from './lib/math'
+import { simpleSubstitutionEncode } from './simple-substitution'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
 const contribution: Contribution = {
@@ -11,16 +12,16 @@ const contribution: Contribution = {
   label: 'Caesar cipher',
   description: 'Method in which each letter in a text is replaced by a letter a fixed number of places down the alphabet.',
   url: 'https://ciphereditor.com/explore/caesar-cipher',
-  keywords: ['substitution', 'cipher', 'shift', 'julius'],
+  keywords: ['substitution', 'shift', 'julius'],
   controls: [
     {
       name: 'plaintext',
-      value: 'The quick brown fox jumps over the lazy dog.',
+      value: 'the quick brown fox jumps over the lazy dog',
       types: ['text']
     },
     {
       name: 'shift',
-      value: 7,
+      value: 3,
       types: ['integer']
     },
     {
@@ -32,7 +33,7 @@ const contribution: Contribution = {
     },
     {
       name: 'ciphertext',
-      value: 'Aol xbpjr iyvdu mve qbtwz vcly aol shgf kvn.',
+      value: 'wkh txlfn eurzq ira mxpsv ryhu wkh odcb grj',
       types: ['text'],
       order: 1000
     }
@@ -44,82 +45,57 @@ const execute: OperationExecuteExport = (request) => {
 
   const shift = values.shift as number
 
-  const forward = controlPriorities.indexOf('plaintext') < controlPriorities.indexOf('ciphertext')
-  const inputControl = forward ? 'plaintext' : 'ciphertext'
+  const encode =
+    controlPriorities.indexOf('plaintext') <
+    controlPriorities.indexOf('ciphertext')
 
-  const input = values[inputControl] as string
-  const inputCodePoints = stringToUnicodeCodePoints(input)
+  const plaintextAlphabet = values.alphabet as string
+  const plaintextAlphabetChars = stringToUnicodeCodePoints(plaintextAlphabet)
 
-  // Prepare alphabet
-  const alphabet = (values.alphabet as string).toLowerCase()
-  const alphabetCodePoints = stringToUnicodeCodePoints(alphabet)
+  // Validate input
+  const issues: OperationIssue[] = []
 
-  // Validate alphabet
-  if (alphabetCodePoints.length <= 1) {
-    return {
-      issues: [{
-        level: 'error',
-        targetControlNames: ['alphabet'],
-        message: 'The alphabet must have a size of 2 characters or more'
-      }]
-    }
+  if (plaintextAlphabetChars.length <= 1) {
+    issues.push({
+      level: 'error',
+      targetControlNames: ['alphabet'],
+      message: 'The alphabet must have a size of 2 characters or more'
+    })
   }
 
-  if (!hasUniqueElements(alphabetCodePoints)) {
-    return {
-      issues: [{
-        level: 'error',
-        targetControlNames: ['alphabet'],
-        message: 'The alphabet must not contain duplicate characters'
-      }]
-    }
+  if (!hasUniqueElements(plaintextAlphabetChars)) {
+    issues.push({
+      level: 'error',
+      targetControlNames: ['alphabet'],
+      message: 'The alphabet must not contain duplicate characters'
+    })
   }
 
-  // Prepare uppercase alphabet
-  const uppercaseAlphabetCodePoints = stringToUnicodeCodePoints(alphabet.toUpperCase())
-
-  const m = alphabetCodePoints.length
-  const n = inputCodePoints.length
-  const result = new Array(n)
-
-  let codePoint, x, y, uppercase
-  let j = 0
-
-  // Go through each character in content
-  for (let i = 0; i < n; i++) {
-    codePoint = inputCodePoints[i]
-
-    // Match alphabet character
-    x = alphabetCodePoints.indexOf(codePoint)
-    uppercase = false
-
-    // Match uppercase alphabet character (depending on case strategy)
-    if (x === -1) {
-      x = uppercaseAlphabetCodePoints.indexOf(codePoint)
-      uppercase = true
-    }
-
-    if (x === -1) {
-      // Character is not in the alphabet
-      result[j++] = codePoint
-    } else {
-      // Shift character
-      y = mod(x + shift * (forward ? 1 : -1), m)
-
-      // Translate index to character following the case strategy
-      if (uppercase) {
-        result[j++] = uppercaseAlphabetCodePoints[y]
-      } else {
-        result[j++] = alphabetCodePoints[y]
-      }
-    }
+  // Bail out, if the input is not valid
+  if (issues.length > 0) {
+    return { issues }
   }
 
-  const resultCodePoints = result.slice(0, j)
-  const outputControl = forward ? 'ciphertext' : 'plaintext'
-  const output = stringFromUnicodeCodePoints(resultCodePoints)
+  // Shift the alphabet to form the ciphertext alphabet
+  const alphabetShift = mod(shift, plaintextAlphabetChars.length)
+  const ciphertextAlphabetChars =
+    plaintextAlphabetChars.slice(alphabetShift)
+      .concat(plaintextAlphabetChars.slice(0, alphabetShift))
+  const ciphertextAlphabet =
+    stringFromUnicodeCodePoints(ciphertextAlphabetChars)
 
-  return { changes: [{ name: outputControl, value: output }] }
+  // Encode or decode using simple substitution implementation
+  if (encode) {
+    const plaintext = values.plaintext as string
+    const ciphertext = simpleSubstitutionEncode(
+      plaintext, plaintextAlphabet, ciphertextAlphabet)
+    return { changes: [{ name: 'ciphertext', value: ciphertext }] }
+  } else {
+    const ciphertext = values.ciphertext as string
+    const plaintext = simpleSubstitutionEncode(
+      ciphertext, ciphertextAlphabet, plaintextAlphabet)
+    return { changes: [{ name: 'plaintext', value: plaintext }] }
+  }
 }
 
 export default {

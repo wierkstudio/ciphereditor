@@ -8,9 +8,9 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-essentials/simple-substitution',
   label: 'Simple substitution cipher',
-  description: 'A Simple substitution cipher replaces each letter in the plaintext alphabet by a letter in the fixed ciphertext alphabet.',
+  description: 'A simple substitution cipher replaces each letter in the plaintext alphabet by a letter in the fixed ciphertext alphabet.',
   url: 'https://ciphereditor.com/explore/simple-substitution-cipher',
-  keywords: ['monoalphabetic cipher'],
+  keywords: ['monoalphabetic cipher', 'atbash'],
   controls: [
     {
       name: 'plaintext',
@@ -80,7 +80,7 @@ const execute: OperationExecuteExport = (request) => {
     })
   }
 
-  // Bail out, if there are critical issues
+  // Bail out, if the input is not valid
   if (issues.length > 0) {
     return { issues }
   }
@@ -158,10 +158,16 @@ const generateSimpleSubstitutionMap = (
   // Build substitution map
   const map: Map<number, number> = new Map()
   const m = plaintextChars.length
+
+  // Map out lower case and upper case versions of the key to make the
+  // simple substitution work no matter what casing was used
   for (let i = 0; i < m; i++) {
-    // Prefer the unchanged case over the lower case over the upper case version
     map.set(upperCasePlaintextChars[i], upperCaseCiphertextChars[i])
     map.set(lowerCasePlaintextChars[i], lowerCaseCiphertextChars[i])
+  }
+
+  // Prefer the unchanged case over the lower case over the upper case version
+  for (let i = 0; i < m; i++) {
     map.set(plaintextChars[i], ciphertextChars[i])
   }
 

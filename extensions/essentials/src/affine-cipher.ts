@@ -12,7 +12,7 @@ const contribution: Contribution = {
   label: 'Affine cipher',
   description: 'The Affine cipher maps each letter in an alphabet to its numeric equivalent, encrypts it using a linear mathematical function, and converts it back to a letter.',
   url: 'https://ciphereditor.com/explore/affine-cipher',
-  keywords: ['linear function', 'affine function', 'mathematics'],
+  keywords: ['substitution', 'linear function', 'affine function', 'mathematics'],
   controls: [
     {
       name: 'plaintext',
@@ -97,7 +97,7 @@ const execute: OperationExecuteExport = (request) => {
     })
   }
 
-  // Bail out, if there are critical issues
+  // Bail out, if the input is not valid
   if (issues.length > 0) {
     return { issues }
   }
