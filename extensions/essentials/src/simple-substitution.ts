@@ -1,6 +1,5 @@
 
 import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
-import { alphabetTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
 
@@ -20,16 +19,12 @@ const contribution: Contribution = {
     {
       name: 'plaintextAlphabet',
       value: 'abcdefghijklmnopqrstuvwxyz',
-      types: ['text'],
-      options: alphabetTextChoices,
-      enforceOptions: false
+      types: ['text']
     },
     {
       name: 'ciphertextAlphabet',
       value: 'zyxwvutsrqponmlkjihgfedcba',
-      types: ['text'],
-      options: alphabetTextChoices,
-      enforceOptions: false
+      types: ['text']
     },
     {
       name: 'ciphertext',

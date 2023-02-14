@@ -64,7 +64,7 @@ const defaultDirectoryState: DirectoryState = {
       label: 'ROT13',
       description: 'Method in which each letter in a text is rotated by 13 places.',
       url: 'https://ciphereditor.com/explore/rot13',
-      keywords: ['substitution', 'cipher', 'shift', 'rot5', 'rot18', 'rot47'],
+      keywords: ['substitution', 'cipher', 'shift', 'rot5', 'rot18', 'rot47', 'rot8000'],
       controls: [
         {
           name: 'plaintext',
@@ -79,7 +79,8 @@ const defaultDirectoryState: DirectoryState = {
             { value: 'rot5', label: 'ROT5 (0-9)' },
             { value: 'rot13', label: 'ROT13 (A-Z)' },
             { value: 'rot18', label: 'ROT18 (0-9, A-Z)' },
-            { value: 'rot47', label: 'ROT47 (!-~)' }
+            { value: 'rot47', label: 'ROT47 (!-~)' },
+            { value: 'rot8000', label: 'ROT8000' }
           ]
         },
         {
@@ -165,50 +166,12 @@ const defaultDirectoryState: DirectoryState = {
         {
           name: 'plaintextAlphabet',
           value: 'abcdefghijklmnopqrstuvwxyz',
-          types: ['text'],
-          options: [
-            {
-              value: 'abcdefghijklmnopqrstuvwxyz',
-              label: 'Latin alphabet (a-z)'
-            },
-            {
-              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-              label: 'Uppercase Latin alphabet (A-Z)'
-            },
-            {
-              value: 'αβγδεζηθικλμνξοπρστυφχψω',
-              label: 'Greek alphabet (α-ω)'
-            },
-            {
-              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
-              label: 'Uppercase Greek alphabet (Α-Ω)'
-            }
-          ],
-          enforceOptions: false
+          types: ['text']
         },
         {
           name: 'ciphertextAlphabet',
           value: 'zyxwvutsrqponmlkjihgfedcba',
-          types: ['text'],
-          options: [
-            {
-              value: 'abcdefghijklmnopqrstuvwxyz',
-              label: 'Latin alphabet (a-z)'
-            },
-            {
-              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-              label: 'Uppercase Latin alphabet (A-Z)'
-            },
-            {
-              value: 'αβγδεζηθικλμνξοπρστυφχψω',
-              label: 'Greek alphabet (α-ω)'
-            },
-            {
-              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
-              label: 'Uppercase Greek alphabet (Α-Ω)'
-            }
-          ],
-          enforceOptions: false
+          types: ['text']
         },
         {
           name: 'ciphertext',
