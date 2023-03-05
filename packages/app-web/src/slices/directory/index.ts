@@ -1779,6 +1779,85 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/substring',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Substring',
+      description: 'Extract a portion of a text that begins at a zero-based start index and ends before a zero-based end index. Negative indices may be used to indicate offsets from the end of the text.',
+      keywords: ['trim', 'extract', 'slice'],
+      controls: [
+        {
+          name: 'string',
+          value: 'the quick brown fox jumps over the lazy dog',
+          types: ['text']
+        },
+        {
+          name: 'start',
+          value: 10,
+          types: ['integer']
+        },
+        {
+          name: 'end',
+          value: 19,
+          types: ['integer']
+        },
+        {
+          name: 'substring',
+          value: 'brown fox',
+          types: ['text'],
+          order: 1000,
+          writable: false
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/binary-slice',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Binary slice',
+      description: 'Extract a portion of a binary sequence that begins at a zero-based start index and ends before a zero-based end index. Negative indices may be used to indicate offsets from the end of the sequence.',
+      keywords: ['trim', 'extract', 'substring'],
+      controls: [
+        {
+          name: 'whole',
+          value: { type: 'bytes', data: 'ABEiM0RVZneImQ==' },
+          types: ['bytes']
+        },
+        {
+          name: 'start',
+          value: 3,
+          types: ['integer']
+        },
+        {
+          name: 'end',
+          value: 7,
+          types: ['integer']
+        },
+        {
+          name: 'unit',
+          value: 'byte',
+          types: ['text'],
+          options: [
+            {
+              value: 'bit',
+              label: 'Bit'
+            },
+            {
+              value: 'byte',
+              label: 'Byte'
+            }
+          ]
+        },
+        {
+          name: 'slice',
+          value: { type: 'bytes', data: 'M0RVZg==' },
+          types: ['bytes'],
+          order: 1000,
+          writable: false
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/concatenate',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Concatenate',
