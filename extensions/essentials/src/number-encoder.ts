@@ -79,6 +79,7 @@ const execute: OperationExecuteExport = (request) => {
   const format = values.format as NumberFormat
   const FormatTypedArray = formatTypedArrayMap[format]
   const bytesPerElement = FormatTypedArray.BYTES_PER_ELEMENT
+  const useMultipleNumbers = typeof values.numbers === 'string'
 
   const bigEndian = values.endianness === 'BE'
   const systemBigEndian = isBigEndianEnvironment()
@@ -186,6 +187,13 @@ const execute: OperationExecuteExport = (request) => {
       : swapBufferEndianness(rawEncodedData, bytesPerElement)
 
     const typedArray = new FormatTypedArray(encodedData)
+
+    // Maintain the numbers control type
+    if (!useMultipleNumbers) {
+      const number = typedArray[0] ?? 0
+      return { changes: [{ name: 'numbers', value: number }] }
+    }
+
     const numbers = [...typedArray].map(value => value.toString()).join(' ')
     return { changes: [{ name: 'numbers', value: numbers }] }
   }

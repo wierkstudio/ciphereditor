@@ -157,25 +157,54 @@ export const castValue = (
   value: Value,
   type: string
 ): Value | undefined => {
-  // Bytes to text
-  if (value instanceof ArrayBuffer && type === 'text') {
-    const string = bufferToString(value)
-    if (string !== undefined) {
-      return string
-    }
-  }
-
-  // Text to bytes
-  if (typeof value === 'string' && type === 'bytes') {
-    const buffer = stringToBuffer(value)
-    if (buffer !== undefined) {
-      return buffer
-    }
-  }
+  const valueType = identifyValueType(value)
 
   // Cast to the same type
-  if (identifyValueType(value) === type) {
+  if (valueType === type) {
     return value
+  }
+
+  switch (valueType + '->' + type) {
+    case 'bytes->text': {
+      const string = bufferToString(value as ArrayBuffer)
+      if (string !== undefined) {
+        return string
+      }
+      break
+    }
+    case 'text->bytes': {
+      const buffer = stringToBuffer(value as string)
+      if (buffer !== undefined) {
+        return buffer
+      }
+      break
+    }
+    case 'text->number': {
+      const number = parseFloat(value as string)
+      if (!isNaN(number)) {
+        return number
+      }
+      break
+    }
+    case 'text->integer': {
+      const integer = parseInt(value as string)
+      if (!isNaN(integer)) {
+        return integer
+      }
+      break
+    }
+    case 'text->bigint': {
+      try {
+        return BigInt(value as string)
+      } catch (error) {
+        break
+      }
+    }
+    case 'number->text':
+    case 'integer->text':
+    case 'bigint->text': {
+      return (value as number | bigint).toString()
+    }
   }
 
   // Cast to text
