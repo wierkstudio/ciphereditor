@@ -1,5 +1,6 @@
 
 import {
+  cloneSerializedValue,
   compareSerializedValues,
   extractValue,
   OperationIssue,
@@ -145,7 +146,7 @@ export const serializeOperation = (
 
     // Include the `value` attribute only when it differs from the initial
     if (!compareSerializedValues(control.value, directoryControl.value)) {
-      serializedControl.value = control.value
+      serializedControl.value = cloneSerializedValue(control.value)
     }
 
     // Include the `visibility` attribute only when it differs from the initial

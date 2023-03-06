@@ -1,5 +1,6 @@
 
 import {
+  cloneSerializedValue,
   compareSerializedValues,
   ControlNode,
   identifySerializedValueType,
@@ -211,7 +212,7 @@ export const serializeControl = (
     type: 'control',
     id: control.id.toString(),
     label: control.label,
-    value: control.value,
+    value: cloneSerializedValue(control.value),
     visibility: control.visibility,
     frame: control.frame !== undefined ? roundRect(control.frame) : undefined
   }

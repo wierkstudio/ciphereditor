@@ -216,6 +216,13 @@ export const castValue = (
 }
 
 /**
+ * Clone the given serialized value object.
+ * Useful to turn Proxy value objects back into plain objects.
+ */
+export const cloneSerializedValue = (value: SerializedValue): SerializedValue =>
+  serializeValue(extractValue(value))
+
+/**
  * Cast a serialized value to the given type.
  * If no implicit conversion is available, `undefined` is returned.
  */
