@@ -1,6 +1,6 @@
 
 import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
-import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/unicode'
 
 const contribution: Contribution = {
   type: 'operation',

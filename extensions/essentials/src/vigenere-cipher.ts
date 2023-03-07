@@ -3,7 +3,7 @@ import { Contribution, ControlChange, OperationExecuteExport, OperationIssue } f
 import { alphabetTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
 import { mod } from './lib/math'
-import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/unicode'
 
 const contribution: Contribution = {
   type: 'operation',

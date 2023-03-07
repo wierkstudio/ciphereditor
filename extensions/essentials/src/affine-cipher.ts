@@ -4,7 +4,7 @@ import { alphabetTextChoices } from './shared/options'
 import { gcd, mod } from './lib/math'
 import { hasUniqueElements } from './lib/array'
 import { simpleSubstitutionEncode } from './simple-substitution'
-import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/unicode'
 
 const contribution: Contribution = {
   type: 'operation',

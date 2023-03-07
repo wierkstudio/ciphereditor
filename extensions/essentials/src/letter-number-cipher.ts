@@ -2,7 +2,7 @@
 import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
 import { alphabetTextChoices, separatorTextChoices } from './shared/options'
 import { hasUniqueElements } from './lib/array'
-import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/unicode'
 
 const contribution: Contribution = {
   type: 'operation',

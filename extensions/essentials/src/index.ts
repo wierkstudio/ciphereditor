@@ -9,6 +9,7 @@ import caseTransform from './case-transform'
 import concatenate from './concatenate'
 import division from './division'
 import googleTranslate from './google-translate'
+import indexOfCoincidence from './index-of-coincidence'
 import letterNumberCipher from './letter-number-cipher'
 import logicalAnd from './logical-and'
 import logicalNot from './logical-not'
@@ -40,6 +41,7 @@ export const activate: ExtensionActivateExport = (context) => [
   concatenate,
   division,
   googleTranslate,
+  indexOfCoincidence,
   letterNumberCipher,
   logicalAnd,
   logicalNot,

@@ -2,7 +2,7 @@
 import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
 import { hasUniqueElements } from './lib/array'
 import { lcm } from './lib/math'
-import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/string'
+import { stringFromUnicodeCodePoints, stringToUnicodeCodePoints } from './lib/unicode'
 import { bufferToString, stringToBuffer, transformUnitSize } from './lib/binary'
 
 const contribution: Contribution = {

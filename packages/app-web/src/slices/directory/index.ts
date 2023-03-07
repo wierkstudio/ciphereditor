@@ -1746,6 +1746,30 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-essentials/index-of-coincidence',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Index of coincidence',
+      description: 'Index of coincidence measures how likely it is to draw two matching letters by choosing two random letters from a text.',
+      url: 'https://ciphereditor.com/explore/index-of-coincidence',
+      keywords: ['ic', 'ioc', 'frequency', 'analysis'],
+      controls: [
+        {
+          name: 'text',
+          value: 'the quick brown fox jumps over the lazy dog',
+          types: ['text']
+        },
+        {
+          name: 'index',
+          label: 'IC',
+          value: 0.021848739495798318,
+          types: ['number', 'integer'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-essentials/case-transform',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
       label: 'Case transform',
