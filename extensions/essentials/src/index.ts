@@ -8,6 +8,7 @@ import caesarCipher from './caesar-cipher'
 import caseTransform from './case-transform'
 import concatenate from './concatenate'
 import division from './division'
+import entropy from './entropy'
 import googleTranslate from './google-translate'
 import indexOfCoincidence from './index-of-coincidence'
 import letterNumberCipher from './letter-number-cipher'
@@ -40,6 +41,7 @@ export const activate: ExtensionActivateExport = (context) => [
   caseTransform,
   concatenate,
   division,
+  entropy,
   googleTranslate,
   indexOfCoincidence,
   letterNumberCipher,

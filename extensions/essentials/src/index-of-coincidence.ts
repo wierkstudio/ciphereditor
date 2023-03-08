@@ -22,6 +22,14 @@ const contribution: Contribution = {
       types: ['number', 'integer'],
       writable: false,
       order: 1000
+    },
+    {
+      name: 'indexNormalized',
+      label: 'Normalized IC',
+      value: 0.5680672268907563,
+      types: ['number', 'integer'],
+      writable: false,
+      order: 1000
     }
   ]
 }
@@ -44,21 +52,28 @@ const execute: OperationExecuteExport = (request) => {
   }
 
   // Count appearances for each unique char
-  const charFrequencies = new Map<number, number>()
+  const valueAppearances = new Map<number, number>()
   for (const char of chars) {
-    charFrequencies.set(char, (charFrequencies.get(char) ?? 0) + 1)
+    valueAppearances.set(char, (valueAppearances.get(char) ?? 0) + 1)
   }
 
   // Index of coincidence calculation
   // \text{IC} = \frac{\sum_{i=1}^nf_i(f_i-1)}{n(n-1)}
-  // with f_i is the frequency of letter i and N is the total number of letters
-  let index = 0
-  for (const frequency of charFrequencies.values()) {
-    index += frequency * (frequency - 1)
+  // with f_i is the appearances of letter i and N is the total number of letters
+  let coincidence = 0
+  for (const appearances of valueAppearances.values()) {
+    coincidence += appearances * (appearances - 1)
   }
-  index = index / (n * (n - 1))
 
-  return { changes: [{ name: 'index', value: index }] }
+  const index = coincidence / (n * (n - 1))
+  const normalizedIndex = index * valueAppearances.size
+
+  return {
+    changes: [
+      { name: 'index', value: index },
+      { name: 'indexNormalized', value: normalizedIndex }
+    ]
+  }
 }
 
 export default {

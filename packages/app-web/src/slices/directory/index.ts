@@ -1765,6 +1765,57 @@ const defaultDirectoryState: DirectoryState = {
           types: ['number', 'integer'],
           writable: false,
           order: 1000
+        },
+        {
+          name: 'indexNormalized',
+          label: 'Normalized IC',
+          value: 0.5680672268907563,
+          types: ['number', 'integer'],
+          writable: false,
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-essentials/entropy',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-essentials/1.0.0-alpha.1/extension.js',
+      label: 'Entropy',
+      description: 'Entropy measures the rate at which information is produced by a source of data. It can be used to detect whether data is likely to be structured or unstructured.',
+      url: 'https://ciphereditor.com/explore/shannon-entropy',
+      keywords: ['shannon', 'information theory'],
+      controls: [
+        {
+          name: 'data',
+          value: 'the quick brown fox jumps over the lazy dog',
+          types: ['text', 'bytes']
+        },
+        {
+          name: 'base',
+          value: 2,
+          types: ['number', 'integer'],
+          options: [
+            {
+              value: 2,
+              label: 'Base 2 (Bits)'
+            },
+            {
+              value: Math.E,
+              label: 'Base e (Nats)'
+            },
+            {
+              value: 10,
+              label: 'Base 10 (Dits)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
+          name: 'entropy',
+          value: 0.021848739495798318,
+          types: ['number', 'integer'],
+          writable: false,
+          order: 1000
         }
       ]
     },
