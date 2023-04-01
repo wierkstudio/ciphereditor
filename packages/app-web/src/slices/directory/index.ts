@@ -547,6 +547,153 @@ const defaultDirectoryState: DirectoryState = {
     },
     {
       type: 'operation',
+      name: '@ciphereditor/extension-forge/aes',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-forge/1.0.0-alpha.1/extension.js',
+      label: 'AES encryption',
+      description: 'Advanced Encryption Standard (AES) is a symmetric-key algorithm for data encryption',
+      url: 'https://ciphereditor.com/explore/aes-advanced-encryption-standard',
+      keywords: ['rijndael', 'block cipher', 'encryption'],
+      controls: [
+        {
+          name: 'data',
+          value: {
+            type: 'bytes',
+            data: 'dGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZw=='
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'key',
+          value: {
+            type: 'bytes',
+            data: 'Y2lwaGVyZWRpdG9yY2lwaGVyZWRpdG9y'
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'iv',
+          label: 'Initialization vector',
+          value: {
+            type: 'bytes',
+            data: 'AAECAwQFBgcICQoLDA0ODw=='
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'mode',
+          value: 'CBC',
+          types: ['text'],
+          options: [
+            {
+              value: 'CBC',
+              label: 'Cipher-Block Chaining (CBC)'
+            },
+            {
+              value: 'CFB',
+              label: 'Cipher Feedback (CFB)'
+            },
+            {
+              value: 'OFB',
+              label: 'Output Feedback (OFB)'
+            },
+            {
+              value: 'CTR',
+              label: 'Counter (CTR)'
+            },
+            {
+              value: 'GCM',
+              label: 'Galois/Counter Mode (GCM)'
+            },
+            {
+              value: 'ECB',
+              label: 'Electronic Codebook (ECB)'
+            }
+          ]
+        },
+        {
+          name: 'additionalData',
+          value: { type: 'bytes', data: '' },
+          types: ['bytes']
+        },
+        {
+          name: 'encryptedData',
+          value: {
+            type: 'bytes',
+            data: 'NO6UkDn59xhJZzVjVrk0Ul6phvguPrUTboCwf9k81tQrq4x8hc61TsUFTkFlGkxd'
+          },
+          types: ['bytes'],
+          order: 1000
+        },
+        {
+          name: 'tag',
+          value: { type: 'bytes', data: '' },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
+      name: '@ciphereditor/extension-forge/des',
+      extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-forge/1.0.0-alpha.1/extension.js',
+      label: 'DES encryption',
+      description: 'Data Encryption Standard (DES) is a symmetric-key algorithm for data encryption',
+      url: 'https://ciphereditor.com/explore/des-data-encryption-standard',
+      keywords: ['block cipher', 'encryption'],
+      controls: [
+        {
+          name: 'data',
+          value: {
+            type: 'bytes',
+            data: 'dGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZw=='
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'key',
+          value: {
+            type: 'bytes',
+            data: 'Y2lwaGVyZWQ='
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'iv',
+          label: 'Initialization vector',
+          value: {
+            type: 'bytes',
+            data: 'AAECAwQFBgc='
+          },
+          types: ['bytes']
+        },
+        {
+          name: 'mode',
+          value: 'CBC',
+          types: ['text'],
+          options: [
+            {
+              value: 'CBC',
+              label: 'Cipher-Block Chaining (CBC)'
+            },
+            {
+              value: 'ECB',
+              label: 'Electronic Codebook (ECB)'
+            }
+          ]
+        },
+        {
+          name: 'encryptedData',
+          value: {
+            type: 'bytes',
+            data: '+pg4BtejNxB9rAhFoIYgmBFSPd3pT0V+LB8naY7rj1PCGQ5UShGmgdKKn7JKJG+m'
+          },
+          types: ['bytes'],
+          order: 1000
+        }
+      ]
+    },
+    {
+      type: 'operation',
       name: '@ciphereditor/extension-pgp/encryption',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-pgp/1.0.0-alpha.1/extension.js?v=1',
       label: 'PGP Encryption',

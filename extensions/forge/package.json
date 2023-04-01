@@ -1,0 +1,25 @@
+{
+  "name": "@ciphereditor/extension-forge",
+  "version": "1.0.0-alpha",
+  "description": "Extension providing operations related to the forge library",
+  "author": "Fränz Friederes <fraenz@frieder.es> (https://fraenz.frieder.es/)",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-standard && tsc --noEmit",
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "dependencies": {
+    "node-forge": "^1.3.1",
+    "@types/node-forge": "^1.3.1"
+  },
+  "devDependencies": {
+    "@ciphereditor/library": "*",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.1.0",
+    "@rollup/plugin-typescript": "^10.0.1",
+    "rollup": "^3.3.0",
+    "ts-standard": "^12.0.1",
+    "typescript": "^4.8.4"
+  }
+}
