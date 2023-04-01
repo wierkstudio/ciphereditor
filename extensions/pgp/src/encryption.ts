@@ -6,7 +6,7 @@ import { isStringOrArrayBufferEmpty } from './lib/shared'
 const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-pgp/encryption',
-  label: 'PGP Encryption',
+  label: 'PGP encryption',
   description: 'Apply OpenPGP encryption and decryption on text or binary messages',
   url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],

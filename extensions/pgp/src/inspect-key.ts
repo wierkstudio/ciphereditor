@@ -6,7 +6,7 @@ import { isStringOrArrayBufferEmpty } from './lib/shared'
 const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-pgp/inspect-key',
-  label: 'Inspect PGP Key',
+  label: 'PGP key inspection',
   description: 'Inspect a given PGP key to reveal its type and fingerprint among other facts',
   url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],

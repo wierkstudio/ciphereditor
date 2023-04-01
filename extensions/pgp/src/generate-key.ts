@@ -5,7 +5,7 @@ import * as openpgp from 'openpgp'
 const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-pgp/generate-key',
-  label: 'Generate PGP Key',
+  label: 'PGP key generation',
   description: 'Generate new PGP key pairs providing the private key, the public key and the revocation certificate',
   url: 'https://ciphereditor.com/explore/pgp-encryption',
   keywords: ['pgp', 'gpg'],
