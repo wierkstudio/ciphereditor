@@ -1906,6 +1906,30 @@ const defaultDirectoryState: DirectoryState = {
           types: ['text']
         },
         {
+          name: 'alphabet',
+          value: 'abcdefghijklmnopqrstuvwxyz',
+          types: ['text'],
+          options: [
+            {
+              value: 'abcdefghijklmnopqrstuvwxyz',
+              label: 'Latin alphabet (a-z)'
+            },
+            {
+              value: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+              label: 'Uppercase Latin alphabet (A-Z)'
+            },
+            {
+              value: 'αβγδεζηθικλμνξοπρστυφχψω',
+              label: 'Greek alphabet (α-ω)'
+            },
+            {
+              value: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ',
+              label: 'Uppercase Greek alphabet (Α-Ω)'
+            }
+          ],
+          enforceOptions: false
+        },
+        {
           name: 'index',
           label: 'IC',
           value: 0.021848739495798318,

@@ -1,6 +1,8 @@
 
-import { Contribution, OperationExecuteExport } from '@ciphereditor/library'
-import { stringToUnicodeCodePoints, whitespaceCodePoints } from './lib/unicode'
+import { Contribution, OperationExecuteExport, OperationIssue } from '@ciphereditor/library'
+import { alphabetTextChoices } from './shared/options'
+import { hasUniqueElements } from './lib/array'
+import { stringToUnicodeCodePoints } from './lib/unicode'
 
 const contribution: Contribution = {
   type: 'operation',
@@ -14,6 +16,13 @@ const contribution: Contribution = {
       name: 'text',
       value: 'the quick brown fox jumps over the lazy dog',
       types: ['text']
+    },
+    {
+      name: 'alphabet',
+      value: 'abcdefghijklmnopqrstuvwxyz',
+      types: ['text'],
+      options: alphabetTextChoices,
+      enforceOptions: false
     },
     {
       name: 'index',
@@ -36,37 +45,69 @@ const contribution: Contribution = {
 
 const execute: OperationExecuteExport = (request) => {
   const text = request.values.text as string
-  const chars = stringToUnicodeCodePoints(text)
-    // Remove whitespace characters
-    .filter(char => !whitespaceCodePoints.includes(char))
+  const alphabet = request.values.alphabet as string
 
-  const n = chars.length
-  if (n <= 1) {
-    return {
-      issues: [{
-        level: 'error',
-        targetControlNames: ['text'],
-        message: 'Must contain at least two characters'
-      }]
-    }
+  const textChars = stringToUnicodeCodePoints(text)
+  const alphabetChars = stringToUnicodeCodePoints(alphabet)
+
+  // Validate alphabet
+  const issues: OperationIssue[] = []
+
+  if (alphabetChars.length <= 1) {
+    issues.push({
+      level: 'error',
+      targetControlNames: ['alphabet'],
+      message: 'The alphabet must have a size of 2 characters or more'
+    })
   }
 
-  // Count appearances for each unique char
-  const valueAppearances = new Map<number, number>()
-  for (const char of chars) {
-    valueAppearances.set(char, (valueAppearances.get(char) ?? 0) + 1)
+  if (!hasUniqueElements(alphabetChars)) {
+    issues.push({
+      level: 'error',
+      targetControlNames: ['alphabet'],
+      message: 'The alphabet must not contain duplicate characters'
+    })
+  }
+
+  // Bail out, if the input is not valid
+  if (issues.length > 0) {
+    return { issues }
+  }
+
+  // Prepare alphabets
+  const lowerCaseAlphabetChars = stringToUnicodeCodePoints(alphabet.toLowerCase())
+  const upperCaseAlphabetChars = stringToUnicodeCodePoints(alphabet.toUpperCase())
+  const c = alphabetChars.length
+
+  // Measure char frequency for the given text
+  const charFrequency = new Array(c).fill(0)
+  let n = 0
+  let charIndex
+  for (const char of textChars) {
+    // Try to match character in a case-insensitive way
+    charIndex = alphabetChars.indexOf(char)
+    if (charIndex === -1) {
+      charIndex = lowerCaseAlphabetChars.indexOf(char)
+    }
+    if (charIndex === -1) {
+      charIndex = upperCaseAlphabetChars.indexOf(char)
+    }
+
+    if (charIndex !== -1) {
+      charFrequency[charIndex]++
+      n++
+    }
   }
 
   // Index of coincidence calculation
   // \text{IC} = \frac{\sum_{i=1}^nf_i(f_i-1)}{n(n-1)}
-  // with f_i is the appearances of letter i and N is the total number of letters
+  // with f_i is the frequency of letter i and n is the total number of letters
   let coincidence = 0
-  for (const appearances of valueAppearances.values()) {
-    coincidence += appearances * (appearances - 1)
+  for (let i = 0; i < c; i++) {
+    coincidence += charFrequency[i] * (charFrequency[i] - 1)
   }
-
-  const index = coincidence / (n * (n - 1))
-  const normalizedIndex = index * valueAppearances.size
+  const index = n > 1 ? (coincidence / (n * (n - 1))) : 0
+  const normalizedIndex = index * c
 
   return {
     changes: [
