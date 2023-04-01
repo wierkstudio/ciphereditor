@@ -575,7 +575,7 @@ const defaultDirectoryState: DirectoryState = {
           label: 'Initialization vector',
           value: {
             type: 'bytes',
-            data: 'AAECAwQFBgcICQoLDA0ODw=='
+            data: 'AAAAAAAAAAAAAAAAAAAAAA=='
           },
           types: ['bytes']
         },
@@ -619,7 +619,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'encryptedData',
           value: {
             type: 'bytes',
-            data: 'NO6UkDn59xhJZzVjVrk0Ul6phvguPrUTboCwf9k81tQrq4x8hc61TsUFTkFlGkxd'
+            data: 'iTrQ6VU8OAaF40MPEL8MA0Ium+vQg4wFhQwuPdMLdC4XVjlqoShtqsExQ3JtofkO'
           },
           types: ['bytes'],
           order: 1000
@@ -662,7 +662,7 @@ const defaultDirectoryState: DirectoryState = {
           label: 'Initialization vector',
           value: {
             type: 'bytes',
-            data: 'AAECAwQFBgc='
+            data: 'AAAAAAAAAAA='
           },
           types: ['bytes']
         },
@@ -685,7 +685,7 @@ const defaultDirectoryState: DirectoryState = {
           name: 'encryptedData',
           value: {
             type: 'bytes',
-            data: '+pg4BtejNxB9rAhFoIYgmBFSPd3pT0V+LB8naY7rj1PCGQ5UShGmgdKKn7JKJG+m'
+            data: 'C8E+TfWI8jMK/JTFwHrN4RbwV1xxjBY7grfn3sTgOdHiqOA+H+m2w1YXEORIrNIo'
           },
           types: ['bytes'],
           order: 1000

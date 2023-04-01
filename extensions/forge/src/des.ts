@@ -32,7 +32,7 @@ const contribution: Contribution = {
       label: 'Initialization vector',
       value: {
         type: 'bytes',
-        data: 'AAECAwQFBgc='
+        data: 'AAAAAAAAAAA='
       },
       types: ['bytes']
     },
@@ -55,7 +55,7 @@ const contribution: Contribution = {
       name: 'encryptedData',
       value: {
         type: 'bytes',
-        data: '+pg4BtejNxB9rAhFoIYgmBFSPd3pT0V+LB8naY7rj1PCGQ5UShGmgdKKn7JKJG+m'
+        data: 'C8E+TfWI8jMK/JTFwHrN4RbwV1xxjBY7grfn3sTgOdHiqOA+H+m2w1YXEORIrNIo'
       },
       types: ['bytes'],
       order: 1000
