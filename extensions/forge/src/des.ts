@@ -43,11 +43,11 @@ const contribution: Contribution = {
       options: [
         {
           value: 'CBC',
-          label: 'Cipher-Block Chaining (CBC)'
+          label: 'CBC (Cipher-Block Chaining)'
         },
         {
           value: 'ECB',
-          label: 'Electronic Codebook (ECB)'
+          label: 'ECB (Electronic Codebook)'
         }
       ]
     },

@@ -43,27 +43,27 @@ const contribution: Contribution = {
       options: [
         {
           value: 'CBC',
-          label: 'Cipher-Block Chaining (CBC)'
+          label: 'CBC (Cipher-Block Chaining)'
         },
         {
           value: 'CFB',
-          label: 'Cipher Feedback (CFB)'
+          label: 'CFB (Cipher Feedback)'
         },
         {
           value: 'OFB',
-          label: 'Output Feedback (OFB)'
+          label: 'OFB (Output Feedback)'
         },
         {
           value: 'CTR',
-          label: 'Counter (CTR)'
+          label: 'CTR (Counter)'
         },
         {
           value: 'GCM',
-          label: 'Galois/Counter Mode (GCM)'
+          label: 'GCM (Galois/Counter Mode)'
         },
         {
           value: 'ECB',
-          label: 'Electronic Codebook (ECB)'
+          label: 'ECB (Electronic Codebook)'
         }
       ]
     },
