@@ -7,8 +7,8 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-forge/aes',
   label: 'AES encryption',
-  description: 'Advanced Encryption Standard (AES) is a symmetric-key algorithm for data encryption',
-  url: 'https://ciphereditor.com/explore/aes-advanced-encryption-standard',
+  description: 'Advanced Encryption Standard (AES) is a symmetric-key algorithm considered to be the most frequently used method of data encryption.',
+  url: 'https://ciphereditor.com/explore/aes-encryption',
   keywords: ['rijndael', 'block cipher', 'encryption'],
   controls: [
     {

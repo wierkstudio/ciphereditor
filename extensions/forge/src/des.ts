@@ -7,8 +7,8 @@ const contribution: Contribution = {
   type: 'operation',
   name: '@ciphereditor/extension-forge/des',
   label: 'DES encryption',
-  description: 'Data Encryption Standard (DES) is a symmetric-key algorithm for data encryption',
-  url: 'https://ciphereditor.com/explore/des-data-encryption-standard',
+  description: 'Data Encryption Standard (DES) is a legacy symmetric-key algorithm that has been highly influential in the advancement of cryptography.',
+  url: 'https://ciphereditor.com/explore/des-encryption',
   keywords: ['block cipher', 'encryption'],
   controls: [
     {

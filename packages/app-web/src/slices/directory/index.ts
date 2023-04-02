@@ -550,8 +550,8 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-forge/aes',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-forge/1.0.0-alpha.1/extension.js',
       label: 'AES encryption',
-      description: 'Advanced Encryption Standard (AES) is a symmetric-key algorithm for data encryption',
-      url: 'https://ciphereditor.com/explore/aes-advanced-encryption-standard',
+      description: 'Advanced Encryption Standard (AES) is a symmetric-key algorithm considered to be the most frequently used method of data encryption.',
+      url: 'https://ciphereditor.com/explore/aes-encryption',
       keywords: ['rijndael', 'block cipher', 'encryption'],
       controls: [
         {
@@ -637,8 +637,8 @@ const defaultDirectoryState: DirectoryState = {
       name: '@ciphereditor/extension-forge/des',
       extensionUrl: 'https://cdn.ciphereditor.com/extensions/@ciphereditor/extension-forge/1.0.0-alpha.1/extension.js',
       label: 'DES encryption',
-      description: 'Data Encryption Standard (DES) is a symmetric-key algorithm for data encryption',
-      url: 'https://ciphereditor.com/explore/des-data-encryption-standard',
+      description: 'Data Encryption Standard (DES) is a legacy symmetric-key algorithm that has been highly influential in the advancement of cryptography.',
+      url: 'https://ciphereditor.com/explore/des-encryption',
       keywords: ['block cipher', 'encryption'],
       controls: [
         {
