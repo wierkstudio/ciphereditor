@@ -68,7 +68,7 @@ const execute: OperationExecuteExport = (request) => {
 
       // Transform the array of bytes to an array of bits and slice them
       // precisely to create the bit slice
-      const bitSlice = transformUnitSize(byteSlice, 8, 1).slice(
+      const bitSlice = transformUnitSize(byteSlice, 8, 1, true).slice(
         bitSliceArgs.start - byteSliceStart * 8,
         bitSliceArgs.end - byteSliceStart * 8
       )
@@ -76,7 +76,7 @@ const execute: OperationExecuteExport = (request) => {
       // Fill up the first byte with zero bits and turn the bits back into bytes
       const paddingBits = bitSlice.length % 8 > 0 ? 8 - bitSlice.length % 8 : 0
       const sliceBitsPadded = new Array(paddingBits).fill(0).concat(bitSlice)
-      const sliceBytes = transformUnitSize(sliceBitsPadded, 1, 8)
+      const sliceBytes = transformUnitSize(sliceBitsPadded, 8, 1, false)
       slice = new Uint8Array(sliceBytes).buffer
       break
     }

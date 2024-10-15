@@ -75,7 +75,8 @@ export const isBigEndianEnvironment = (): boolean =>
 export const transformUnitSize = (
   inputUnits: number[],
   inUnitSize: number,
-  outUnitSize: number
+  outUnitSize: number,
+  forward: boolean
 ): number[] => {
   if (inUnitSize === outUnitSize) {
     return inputUnits
@@ -84,11 +85,18 @@ export const transformUnitSize = (
     return []
   }
 
+  // Some bits may not hold any information when decoding, see issue #40
+  if (!forward) {
+    [inUnitSize, outUnitSize] = [outUnitSize, inUnitSize]
+  }
+
   const commonSize = lcm(inUnitSize, outUnitSize)
   const inUnits = commonSize / inUnitSize
   const outUnits = commonSize / outUnitSize
 
-  const outputUnitsLength = Math.ceil((outUnits * inputUnits.length) / inUnits)
+  const outputUnitsLength = forward
+    ? Math.ceil((outUnits * inputUnits.length) / inUnits)
+    : Math.floor((outUnits * inputUnits.length) / inUnits)
   const outputUnits = new Array<number>(outputUnitsLength)
 
   let remainingInBits, inUnit, moveBits
@@ -104,6 +112,12 @@ export const transformUnitSize = (
       // If the current out unit is full, move to the next one
       if (remainingOutBits === 0) {
         outputUnits[o++] = outUnit
+        // If the remaining input bits contain no information, don't add a null unit (only occurs when decoding)
+        // TODO: This works, but I, anderium, don't like that this `if` executes on each iteration.
+        if (o === outputUnitsLength) {
+          o--
+          break
+        }
         outUnit = 0
         remainingOutBits = outUnitSize
       }
