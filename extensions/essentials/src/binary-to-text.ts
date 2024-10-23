@@ -149,7 +149,7 @@ const execute: OperationExecuteExport = (request) => {
     ))
 
     // Transform unit size (encode)
-    const encodedUnits = transformUnitSize(units, inUnitSize, outUnitSize)
+    const encodedUnits = transformUnitSize(units, inUnitSize, outUnitSize, true)
     const encodedCodePoints = encodedUnits.map(unit => alphabet[unit])
 
     // Apply padding
@@ -195,7 +195,7 @@ const execute: OperationExecuteExport = (request) => {
     encodedUnits = encodedUnits.slice(0, j)
 
     // Transform unit size (decode)
-    const units = transformUnitSize(encodedUnits, outUnitSize, inUnitSize)
+    const units = transformUnitSize(encodedUnits, inUnitSize, outUnitSize, false)
     const buffer = Uint8Array.from(units).buffer
 
     // Add an issue if foreign characters were encountered

@@ -101,7 +101,7 @@ export const blueprintSlice = createSlice({
       programId?: BlueprintNodeId
     }>) => {
       const programId = payload.programId ?? state.selectedNodeIds[0]
-      if (programId !== undefined) {
+      if (programId !== undefined && getNode(state, programId).type === 'program') {
         state.activeProgramId = programId
         state.selectedNodeIds = []
       }
