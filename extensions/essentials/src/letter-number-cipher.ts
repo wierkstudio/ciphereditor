@@ -132,8 +132,7 @@ const execute: OperationExecuteExport = (request) => {
     }
 
     // Filter out of range numbers
-    const letterCodePoints = rawLetterCodePoints
-      .filter(e => e !== undefined) as number[]
+    const letterCodePoints = rawLetterCodePoints.filter(e => e !== undefined)
     const letters = stringFromUnicodeCodePoints(letterCodePoints)
     return { changes: [{ name: 'letters', value: letters }], issues }
   }

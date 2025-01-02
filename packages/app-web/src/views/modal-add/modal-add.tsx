@@ -11,7 +11,7 @@ import { addNodesAction } from '../../slices/blueprint'
 import { capitalCase } from 'change-case'
 import { getContributions } from '../../slices/directory/selectors'
 import { openUrlAction, popModalAction } from '../../slices/ui'
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 
 export default function AddModalView (props: AddModalPayload): JSX.Element {
   const dispatch = useAppDispatch()

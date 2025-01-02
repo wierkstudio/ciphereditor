@@ -3,6 +3,7 @@ import './value-boolean.scss'
 import InputCheckboxView from '../input-checkbox/input-checkbox'
 import { ValueViewProps } from '../../views/value/value'
 import { renderClassName } from '../../lib/utils/dom'
+import { JSX } from 'react'
 
 export default function ValueBooleanView (
   props: ValueViewProps<boolean>

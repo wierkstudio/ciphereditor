@@ -3,7 +3,7 @@ import './value-number.scss'
 import ButtonView from '../../views/button/button'
 import InputTextView from '../../views/input-text/input-text'
 import useTranslation from '../../hooks/useTranslation'
-import { BaseSyntheticEvent, ChangeEvent, FocusEvent, MouseEvent, useCallback, useEffect, useState } from 'react'
+import { BaseSyntheticEvent, ChangeEvent, FocusEvent, JSX, MouseEvent, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from '../../views/value/value'
 import { isNumericString } from '../../lib/utils/string'
 

@@ -104,7 +104,7 @@
       resolve(id, factory)
     } else if (typeof factory === 'function') {
       req(deps, function () {
-        const value = (factory as Function).apply(0, arguments)
+        const value = factory.apply(0, arguments)
         const exportsArg = deps.indexOf('exports')
         resolve(id, exportsArg !== -1 ? arguments[exportsArg] : value)
       }, id)

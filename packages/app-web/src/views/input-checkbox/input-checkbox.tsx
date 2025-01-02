@@ -1,6 +1,6 @@
 
 import './input-checkbox.scss'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, JSX } from 'react'
 import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 type InputCheckboxViewProps =

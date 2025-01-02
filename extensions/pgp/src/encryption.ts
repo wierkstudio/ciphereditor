@@ -132,7 +132,7 @@ const execute: OperationExecuteExport = async (request) => {
           format: 'armored'
         }) as string
       } else {
-        encryptedMessage = (await openpgp.encrypt({
+        encryptedMessage = new Uint8Array(await openpgp.encrypt({
           message: await openpgp.createMessage({
             binary: new Uint8Array(rawMessage)
           }),
@@ -199,7 +199,9 @@ const execute: OperationExecuteExport = async (request) => {
     }
 
     const decryptedData = decryptResult.data as string | Uint8Array
-    const message = typeof decryptedData === 'string' ? decryptedData : decryptedData.buffer
+    const message = typeof decryptedData === 'string'
+      ? decryptedData
+      : new Uint8Array(decryptedData).buffer
 
     // Verify each signature against the public key
     const issues: OperationIssue[] = []

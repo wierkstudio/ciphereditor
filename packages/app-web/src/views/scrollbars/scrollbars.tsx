@@ -2,7 +2,7 @@
 import './scrollbars.scss'
 import usePointerDrag, { PointerDragState } from '../../hooks/usePointerDrag'
 import { expandRect, mergeRects, Point, Rect } from '@ciphereditor/library'
-import { useCallback, useState } from 'react'
+import { JSX, useCallback, useState } from 'react'
 
 export interface ScrollbarsLayout {
   verticalScope: number

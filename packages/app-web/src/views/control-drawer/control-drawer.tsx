@@ -7,7 +7,7 @@ import {
 } from '../../slices/blueprint'
 import ButtonView from '../../views/button/button'
 import IssueListView from '../issue-list/issue-list'
-import React, { BaseSyntheticEvent, MouseEvent, useCallback } from 'react'
+import React, { BaseSyntheticEvent, JSX, MouseEvent, useCallback } from 'react'
 import SelectView, { SelectViewElement } from '../../views/select/select'
 import ValueView from '../../views/value/value'
 import useAppDispatch from '../../hooks/useAppDispatch'

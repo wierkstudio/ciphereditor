@@ -95,8 +95,12 @@ const execute: OperationExecuteExport = async (request) => {
   })
 
   // Export keys
-  const publicKeyExport = armored ? publicKey.armor() : publicKey.write().buffer
-  const privateKeyExport = armored ? privateKey.armor() : privateKey.write().buffer
+  const publicKeyExport = armored
+    ? publicKey.armor()
+    : new Uint8Array(publicKey.write()).buffer
+  const privateKeyExport = armored
+    ? privateKey.armor()
+    : new Uint8Array(privateKey.write()).buffer
 
   return {
     changes: [

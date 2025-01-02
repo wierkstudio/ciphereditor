@@ -7,7 +7,7 @@ import {
   loadBlueprintAction,
   pasteAction
 } from '../../slices/blueprint'
-import { AnyAction, Middleware } from '@reduxjs/toolkit'
+import { Middleware } from '@reduxjs/toolkit'
 import { RootState } from '../../slices'
 
 /**
@@ -23,15 +23,31 @@ const directoryDependentActionTypes = [
 ]
 
 export const directoryMiddleware: Middleware<{}, RootState> = store => {
-  return next => (action: AnyAction) => {
-    // Inject the directory state into actions that depend on it
-    if (directoryDependentActionTypes.includes(action.type)) {
-      if (action.payload === undefined) {
-        action.payload = {
-          directory: store.getState().directory
+  return next => (action) => {
+    if (
+      typeof action === 'object' &&
+      action !== null &&
+      'type' in action &&
+      typeof action.type === 'string' &&
+      'payload' in action &&
+      (
+        action.payload === undefined ||
+        (
+          typeof action.payload === 'object' &&
+          action.payload !== null &&
+          'directory' in action.payload
+        )
+      )
+    ) {
+      // Inject the directory state into actions that depend on it
+      if ((directoryDependentActionTypes as string[]).includes(action.type)) {
+        if (action.payload === undefined) {
+          action.payload = {
+            directory: store.getState().directory
+          }
+        } else if (action.payload.directory === undefined) {
+          action.payload.directory = store.getState().directory
         }
-      } else if (action.payload.directory === undefined) {
-        action.payload.directory = store.getState().directory
       }
     }
     return next(action)

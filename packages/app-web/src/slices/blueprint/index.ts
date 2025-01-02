@@ -428,7 +428,14 @@ export const {
 export const undoAction = createAction(`${blueprintSlice.name}/undoAction`)
 export const redoAction = createAction(`${blueprintSlice.name}/redoAction`)
 
-export default undoable(blueprintSlice.reducer, {
+type BlueprintAction = ReturnType<
+typeof blueprintSlice.actions[keyof typeof blueprintSlice.actions]
+>
+
+export default undoable<
+BlueprintState,
+BlueprintAction
+>(blueprintSlice.reducer, {
   limit: 50,
   undoType: undoAction.type,
   redoType: redoAction.type,
@@ -456,12 +463,12 @@ export default undoable(blueprintSlice.reducer, {
       // User initiated changes to controls should be grouped together when they
       // refer to the same control and happen after small time intervals (30s)
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
-      return `control-${action.payload.controlId as number}-${timeUnit}`
+      return `control-${action.payload.controlId}-${timeUnit}`
     } else if (action.type === moveAction.type) {
       // See case above
       const timeUnit = Math.floor(new Date().getTime() / (60 * 1000))
       const selectionIdentifier =
-        ((action.payload.nodeIds ?? []) as number[]).join('')
+        (action.payload.nodeIds ?? []).join('')
       return `move-node-${selectionIdentifier}-${timeUnit}`
     }
     // Put this action into a separate group

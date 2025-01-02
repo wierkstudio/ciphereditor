@@ -1,13 +1,5 @@
 
 import './app-header.scss'
-import {
-  copyAction,
-  deleteAction,
-  leaveProgramAction,
-  pasteAction,
-  redoAction,
-  undoAction
-} from '../../slices/blueprint'
 import ButtonView from '../../views/button/button'
 import ToolbarView from '../../views/toolbar/toolbar'
 import useAppDispatch from '../../hooks/useAppDispatch'
@@ -16,11 +8,20 @@ import useBlueprintSelector from '../../hooks/useBlueprintSelector'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import useUISelector from '../../hooks/useUISelector'
+import { JSX } from 'react'
 import { getActiveProgram } from '../../slices/blueprint/selectors/program'
 import { getEmbedType, isEmbedMaximizable, isEmbedMaximized } from '../../slices/ui/selectors'
 import { getHasSelection, getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { getKeyCombination } from '../../slices/settings/selectors'
 import { openUrlAction, pushModalAction, toggleEmbedMaximizedAction } from '../../slices/ui'
+import {
+  copyAction,
+  deleteAction,
+  leaveProgramAction,
+  pasteAction,
+  redoAction,
+  undoAction
+} from '../../slices/blueprint'
 
 export default function AppHeaderView (): JSX.Element {
   const dispatch = useAppDispatch()

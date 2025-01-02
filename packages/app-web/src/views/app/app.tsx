@@ -20,7 +20,7 @@ import { getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { keyBindingTargetDispatchActions } from '../../slices/settings/key-bindings'
 import { mergeModifiers, renderClassName, ViewModifiers } from '../../lib/utils/dom'
 import { postIntrinsicHeightChange, postWebsiteMessage } from '../../lib/embed'
-import { useCallback, useEffect, useRef } from 'react'
+import { JSX, useCallback, useEffect, useRef } from 'react'
 
 export default function AppView (): JSX.Element {
   const dispatch = useAppDispatch()

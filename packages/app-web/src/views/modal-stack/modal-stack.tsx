@@ -7,7 +7,7 @@ import SettingsModalView from '../../views/modal-settings/modal-settings'
 import SaveModalView from '../modal-save/modal-save'
 import useAppDispatch from '../../hooks/useAppDispatch'
 import useAppSelector from '../../hooks/useAppSelector'
-import { MouseEvent, useCallback } from 'react'
+import { JSX, MouseEvent, useCallback } from 'react'
 import { getModalStack } from '../../slices/ui/selectors'
 import { popModalAction } from '../../slices/ui'
 

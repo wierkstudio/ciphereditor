@@ -1,8 +1,10 @@
 
+import { IHasher } from 'hash-wasm/dist/lib/WASMInterface'
 import {
   createAdler32,
   createCRC32,
-  createCRC32C,
+  createCRC64,
+  createHMAC,
   createKeccak,
   createMD4,
   createMD5,
@@ -10,14 +12,12 @@ import {
   createSHA1,
   createSHA224,
   createSHA256,
+  createSHA3,
   createSHA384,
   createSHA512,
-  createSHA3,
   createSM3,
-  createWhirlpool,
-  createHMAC
+  createWhirlpool
 } from 'hash-wasm'
-import { IHasher } from 'hash-wasm/dist/lib/WASMInterface'
 
 const algorithms: {
   [name: string]: {
@@ -33,9 +33,9 @@ const algorithms: {
     create: createCRC32,
     label: 'CRC32'
   },
-  crc32c: {
-    create: createCRC32C,
-    label: 'CRC32C'
+  crc64: {
+    create: createCRC64,
+    label: 'CRC64'
   },
   'keccak-224': {
     create: createKeccak.bind(null, 224),
@@ -149,7 +149,7 @@ export const createDigest = async (
   const hashFunction = await createAlgorithmHashFunction(algorithm)
   hashFunction.init()
   hashFunction.update(prepareData(message))
-  return hashFunction.digest('binary').buffer
+  return new Uint8Array(hashFunction.digest('binary')).buffer
 }
 
 export const createHMACDigest = async (
@@ -161,5 +161,5 @@ export const createHMACDigest = async (
   const hashFunction = await createHMAC(childHashFunction, prepareData(key))
   hashFunction.init()
   hashFunction.update(prepareData(message))
-  return hashFunction.digest('binary').buffer
+  return new Uint8Array(hashFunction.digest('binary')).buffer
 }

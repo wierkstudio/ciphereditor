@@ -5,7 +5,7 @@ import useAppDispatch from '../../hooks/useAppDispatch'
 import useSettingsSelector from '../../hooks/useSettingsSelector'
 import useTranslation from '../../hooks/useTranslation'
 import { Icon } from '../icon/icon'
-import { MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react'
+import { JSX, MouseEvent, MouseEventHandler, ReactNode, useCallback } from 'react'
 import { getKeyCombination } from '../../slices/settings/selectors'
 import { popModalAction } from '../../slices/ui'
 

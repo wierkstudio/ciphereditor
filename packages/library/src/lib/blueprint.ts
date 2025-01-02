@@ -45,7 +45,7 @@ export const collectNodesIds = (nodes: BlueprintNode[]): NodeId[] =>
         }
         return Object.values(node.controls)
           .map(control => control.id)
-          .filter(id => id !== undefined) as NodeId[]
+          .filter(id => id !== undefined)
       }
       case 'program': {
         return collectNodesIds(node.children ?? [])

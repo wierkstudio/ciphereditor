@@ -3,6 +3,7 @@ import './issue-list.scss'
 import IconView from '../../views/icon/icon'
 import { OperationIssue } from '@ciphereditor/library'
 import { renderClassName } from '../../lib/utils/dom'
+import { JSX } from 'react'
 
 export default function IssueListView (props: {
   issues: OperationIssue[]

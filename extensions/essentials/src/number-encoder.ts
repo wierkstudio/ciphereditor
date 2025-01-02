@@ -114,7 +114,7 @@ const execute: OperationExecuteExport = (request) => {
                 return undefined
               }
             })
-            .filter(value => value !== undefined) as bigint[]
+            .filter(value => value !== undefined)
           break
         }
         case 'number': {

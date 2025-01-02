@@ -17,7 +17,7 @@ export const bufferToString = (buffer: ArrayBuffer): string | undefined => {
  * Encode a string to a binary buffer.
  */
 export const stringToBuffer = (string: string): ArrayBuffer => {
-  return new TextEncoder().encode(string).buffer
+  return new Uint8Array(new TextEncoder().encode(string)).buffer
 }
 
 /**

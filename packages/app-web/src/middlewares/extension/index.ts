@@ -1,7 +1,7 @@
 
-import { AnyAction, Middleware } from 'redux'
 import { BlueprintNodeId, BlueprintState } from '../../slices/blueprint/types/blueprint'
 import { ControlNodeChange } from '../../slices/blueprint/types/control'
+import { Middleware } from 'redux'
 import { OperationIssue, OperationResult, serializeValue } from '@ciphereditor/library'
 import { RootState } from '../../slices'
 import { applyOperationResultAction } from '../../slices/blueprint'
@@ -16,7 +16,7 @@ import { hasNode } from '../../slices/blueprint/selectors/blueprint'
  * that facilitates the content flow within a blueprint.
  */
 export const extensionMiddleware: Middleware<{}, RootState> = store => {
-  return next => (action: AnyAction) => {
+  return next => (action) => {
     // Dispatch action as usual tracking the state beforehand and afterwards
     const preState = store.getState()
     const result = next(action)

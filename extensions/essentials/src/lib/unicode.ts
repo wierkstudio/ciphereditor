@@ -5,7 +5,7 @@
 export const stringToUnicodeCodePoints = (string: string): number[] =>
   Array.from(string.normalize())
     .map(char => char.codePointAt(0))
-    .filter(char => char !== undefined) as number[]
+    .filter(char => char !== undefined)
 
 /**
  * Turn an array of Unicode code points into a string.

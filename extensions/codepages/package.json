@@ -14,11 +14,11 @@
   },
   "devDependencies": {
     "@ciphereditor/library": "*",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "rollup": "^3.3.0",
+    "@rollup/plugin-typescript": "^12.1.2",
+    "rollup": "^4.29.1",
     "ts-standard": "^12.0.1",
     "typescript": "^5.0.3"
   }

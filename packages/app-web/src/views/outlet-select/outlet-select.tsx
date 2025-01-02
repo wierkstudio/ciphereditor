@@ -11,7 +11,7 @@ import useTranslation from '../../hooks/useTranslation'
 import { ControlNodeState } from '../../slices/blueprint/types/control'
 import { getControlVariable, getVariableControl } from '../../slices/blueprint/selectors/variable'
 import { getControlVariableOptions } from '../../slices/blueprint/selectors/control'
-import { useCallback } from 'react'
+import { JSX, useCallback } from 'react'
 
 export default function OutletSelectView (props: {
   control: ControlNodeState

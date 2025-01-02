@@ -1,5 +1,6 @@
 
 import InputTextView from '../../views/input-text/input-text'
+import { JSX } from 'react'
 import { ValueViewProps } from '../../views/value/value'
 
 export default function ValueTextView (props: ValueViewProps<string>): JSX.Element {

@@ -1,6 +1,6 @@
 
 import InputTextView from '../../views/input-text/input-text'
-import { BaseSyntheticEvent, ChangeEvent, FocusEvent, useCallback, useEffect, useState } from 'react'
+import { BaseSyntheticEvent, ChangeEvent, FocusEvent, JSX, useCallback, useEffect, useState } from 'react'
 import { ValueViewProps } from '../../views/value/value'
 import { bufferToHexString, hexStringToBuffer } from '../../lib/utils/binary'
 import { compareSerializedValues, extractValue, SerializedValue, serializeValue } from '@ciphereditor/library'

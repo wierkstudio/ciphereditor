@@ -1,7 +1,7 @@
 
 import './input-text.scss'
 import IconView, { Icon } from '../icon/icon'
-import React, { useRef, ChangeEvent } from 'react'
+import React, { useRef, ChangeEvent, JSX } from 'react'
 import useKeyBindingHandler from '../../hooks/useKeyBindingHandler'
 import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 

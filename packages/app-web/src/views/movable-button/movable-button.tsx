@@ -1,5 +1,5 @@
 
-import { PointerEvent as ReactPointerEvent, useEffect, useState } from 'react'
+import { JSX, PointerEvent as ReactPointerEvent, useEffect, useState } from 'react'
 import { euclideanDistance } from '../../lib/utils/math'
 import { passiveListenerOptions } from '../../lib/utils/dom'
 

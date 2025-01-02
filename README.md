@@ -114,4 +114,4 @@ Iconic Pro icons are copyrighted. Redistribution is not permitted. Use in source
 
 ---
 
-This is a project by [Wierk](https://wierk.lu/) and [contributors](https://github.com/wierkstudio/ciphereditor/graphs/contributors).
+This is a project by [Wierk](https://wierk.lu/?utm_source=ciphereditor&utm_medium=referral&utm_campaign=open_source_projects) and [contributors](https://github.com/wierkstudio/ciphereditor/graphs/contributors).

@@ -1,7 +1,8 @@
 
-import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
-import LogoView from '../logo/logo'
 import './toolbar.scss'
+import LogoView from '../logo/logo'
+import { JSX } from 'react'
+import { renderClassName, ViewModifiers } from '../../lib/utils/dom'
 
 export default function ToolbarView (props: {
   children: JSX.Element | Array<JSX.Element | false>
@@ -9,7 +10,7 @@ export default function ToolbarView (props: {
   return (
     <div className='toolbar' role='toolbar'>
       {Array.isArray(props.children)
-        ? (props.children.filter(child => child !== false) as JSX.Element[])
+        ? (props.children.filter(child => child !== false))
             .map((child, index) => {
               if (child.type === BrandView || child.type === SpacerView) {
                 return child

@@ -10,7 +10,7 @@ import { attachControlsAction } from '../../slices/blueprint'
 import { endWireAction } from '../../slices/ui'
 import { getControlNode, getOutletPosition } from '../../slices/blueprint/selectors/control'
 import { getViewportRect } from '../../slices/blueprint/selectors/blueprint'
-import { useRef, useState } from 'react'
+import { JSX, useRef, useState } from 'react'
 
 export default function WireDraftView (props: {
   wireDraft: UIWireDraft

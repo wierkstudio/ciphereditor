@@ -4,7 +4,7 @@ import ValueBooleanView from '../../views/value-boolean/value-boolean'
 import ValueBytesView from '../../views/value-bytes/value-bytes'
 import ValueNumberView from '../../views/value-number/value-number'
 import ValueTextView from '../../views/value-text/value-text'
-import { BaseSyntheticEvent } from 'react'
+import { BaseSyntheticEvent, JSX } from 'react'
 import { ViewModifiers } from '../../lib/utils/dom'
 import { identifySerializedValueType, labelType, SerializedValue } from '@ciphereditor/library'
 

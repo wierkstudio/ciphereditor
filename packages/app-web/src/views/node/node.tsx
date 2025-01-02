@@ -13,7 +13,7 @@ import { arrayRemove, arrayUniquePush } from '../../lib/utils/array'
 import { getNode, getNodeChildren, getPlaneCanvas } from '../../slices/blueprint/selectors/blueprint'
 import { layoutNodeAction, moveAction, selectAction } from '../../slices/blueprint'
 import { renderClassName } from '../../lib/utils/dom'
-import { useCallback, useLayoutEffect, useRef } from 'react'
+import { JSX, useCallback, useLayoutEffect, useRef } from 'react'
 
 export default function NodeView (props: {
   nodeId: BlueprintNodeId
