@@ -28,25 +28,20 @@ export const directoryMiddleware: Middleware<{}, RootState> = store => {
       typeof action === 'object' &&
       action !== null &&
       'type' in action &&
-      typeof action.type === 'string' &&
-      'payload' in action &&
-      (
-        action.payload === undefined ||
-        (
-          typeof action.payload === 'object' &&
-          action.payload !== null &&
-          'directory' in action.payload
-        )
-      )
+      typeof action.type === 'string'
     ) {
       // Inject the directory state into actions that depend on it
       if ((directoryDependentActionTypes as string[]).includes(action.type)) {
-        if (action.payload === undefined) {
-          action.payload = {
+        action = {
+          ...action,
+          payload: {
+            ...(
+              'payload' in action && typeof action.payload === 'object'
+                ? action.payload
+                : {}
+            ),
             directory: store.getState().directory
           }
-        } else if (action.payload.directory === undefined) {
-          action.payload.directory = store.getState().directory
         }
       }
     }
