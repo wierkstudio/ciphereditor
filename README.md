@@ -39,6 +39,10 @@ Extensions provide operations, the nodes or methods you can use on the cipheredi
 
 ## Development setup
 
+You may either develop with your local Node.js installation or inside a development container as described below.
+
+### Local setup
+
 Make sure you have [Node.js](https://nodejs.org/en/) installed and use the same version as written in `.nvmrc`.
 
 To build the project on your own machine [download a release](https://github.com/wierkstudio/ciphereditor/releases) or clone the entire repository using Git by issuing the following command in your terminal:
@@ -82,6 +86,18 @@ npm run app-web-start
 It will make the app available at https://localhost:3010. As the certificate in use is self-signed you will get a nasty warning by the browser which you can ignore. To stop the server, press `Ctrl+C`.
 
 Find the full list of available project commands in the root `package.json`.
+
+### Develop inside a container
+
+[![Clone in volume in Visual Studio Remote - Containers](https://img.shields.io/static/v1?style=flat-square&label=vscode%20Remote%20-%20Containers&message=Clone%20in%20volume&color=blue&logo=visualstudiocode)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/wierkstudio/ciphereditor)
+
+A development container is a running Docker container with a well-defined tool/runtime stack and its prerequisites. It allows you to get up and running within minutes. To learn more, head to the [Visual Studio Code documentation](https://code.visualstudio.com/docs/remote/containers).
+
+To use a development container, make sure that you have [Docker](https://www.docker.com/get-started/), [Visual Studio Code](https://code.visualstudio.com/), and the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension installed.
+
+Get started by pressing the “Clone in volume” badge above.
+
+Alternatively, clone or download the repository and manually open its root folder in Visual Studio Code. Then, open the command palette by pressing `Ctrl+Shift+P` on Windows/Linux, or `Cmd+Shift+P` on macOS, and issue the task “Remote-Containers: Open Folder in Container”.
 
 ## License
 

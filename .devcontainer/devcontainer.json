@@ -1,0 +1,48 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.0/containers/typescript-node
+{
+	"name": "ciphereditor Dev Container Suite",
+	"build": {
+		"dockerfile": "Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 18, 16, 14.
+		// Append -bullseye or -buster to pin to an OS version.
+		// Use -bullseye variants on local on arm64/Apple Silicon.
+		"args": {
+			"VARIANT": "16-bullseye"
+		}
+	},
+
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"standard.vscode-standard",
+				"folke.vscode-monorepo-workspace"
+			],
+			"settings": {
+				"monorepoWorkspace.folders.regex.apps": "^app|web|api|frontend|backend|desktop",
+				"monorepoWorkspace.folders.prefix.root": "🏠 "
+			}
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [3010],
+	"portsAttributes": {
+		"3010": {
+			"label": "ciphereditor web app",
+			"protocol": "https"
+		}
+	},
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "echo \"[POST CONTAINER CREATE SETUP]: LOG: Installing packages\" && npm install || echo \"[POST CONTAINER CREATE SETUP]: ERROR: NPM Install failed. Skipping further npm actions...\" >&2; echo \"[POST CONTAINER CREATE SETUP]: LOG: Building package processor\" && npm run processor-build || echo \"[POST CONTAINER CREATE SETUP]: ERROR: Package '@ciphereditor/processor' failed to build\" >&2; $([ ! -f .env.local ] && echo \"[POST CONTAINER CREATE SETUP]: LOG: Copying .env.local.example to .env.local\" && cp .env.local.example .env.local) || echo \"[POST CONTAINER CREATE SETUP]: WARN: .env.local already exists. Skipping...\"; echo \"[POST CONTAINER CREATE SETUP]: LOG: Attempting to generate SSL files...\" && $(mkdir -p assets && [ ! -f assets/localhost.key -a ! -f assets/localhost.crt ] && openssl req -x509 -newkey rsa:4096 -keyout assets/localhost.key -out assets/localhost.crt -sha256 -days 365 -nodes -subj '/CN=localhost') || echo \"[POST CONTAINER CREATE SETUP]: WARN: SSL files found in assets folder or creation of assets folder failed. Skipping...\" >&2; $([ ! -f .devcontainer/ciphereditor.code-workspace ] && echo \"[POST CONTAINER CREATE SETUP]: LOG: Copying .devcontainer/ciphereditor.code-workspace.template to .devcontainer/ciphereditor.code-workspace\" && cp .devcontainer/ciphereditor.code-workspace.template .devcontainer/ciphereditor.code-workspace) || echo \"[POST CONTAINER CREATE SETUP]: WARN: .devcontainer/ciphereditor.code-workspace already exists. Skipping...\"",
+
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "node",
+	"features": {
+		"git": "os-provided"
+	}
+}

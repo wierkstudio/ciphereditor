@@ -19,4 +19,8 @@ npm-debug.log*
 
 # Misc
 .DS_Store
+
+# Workspaces
+/.devcontainer/ciphereditor.code-workspace
+
 .vercel
